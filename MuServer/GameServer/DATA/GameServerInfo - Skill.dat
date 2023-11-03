@@ -1,0 +1,103 @@
+[GameServerInfo]
+;==================================================
+; Mana Shield Skill Settings
+; Defense = ManaShieldConstA + (Player->Dexterity / ManaShieldConstB) + (Player->Energy / ManaShieldConstC);
+; If Defense is greater than ManaShieldMaxRate, then -> Defense = ManaShieldMaxRate
+; Rate = ((Defense * ManaShieldRateDW[Player->Class]) / 100)
+; Time -> In Seconds
+; Time = ManaShieldTime
+;==================================================
+ManaShieldConstA = 10
+ManaShieldConstB = 50
+ManaShieldConstC = 200
+ManaShieldRateDW = 100
+ManaShieldRateDK = 100
+ManaShieldRateFE = 100
+ManaShieldRateMG = 100
+ManaShieldTime = 180
+ManaShieldMaxRate = 50
+
+;==================================================
+; Defense Skill Settings
+; Time -> In Seconds
+; Time = DefenseTime
+;==================================================
+DefenseConstA = 50
+DefenseTime = 4
+
+;==================================================
+; Heal Skill Settings
+; Value = HealConstA + (Player->Energy / HealConstB);
+;==================================================
+HealConstA = 5
+HealConstB = 5
+
+;==================================================
+; Greater Defense Skill Settings
+; Defense = GreaterDefenseConstA + (Player->Energy / GreaterDefenseConstB);
+; Rate = ((Defense * GreaterDefenseRate[Player->Class]) / 100)
+; Time -> In Seconds
+; Time = GreaterDefenseTime
+;==================================================
+GreaterDefenseConstA = 2
+GreaterDefenseConstB = 8
+GreaterDefenseRateDW = 100
+GreaterDefenseRateDK = 100
+GreaterDefenseRateFE = 100
+GreaterDefenseRateMG = 100
+GreaterDefenseTime = 60
+
+;==================================================
+; Greater Damage Skill Settings
+; Damage = GreaterDamageConstA + (Player->Energy / GreaterDamageConstB);
+; Rate = ((Damage * GreaterDefenseRate[Player->Class]) / 100)
+; Time -> In Seconds
+; Time = GreaterDamageTime
+;==================================================
+GreaterDamageConstA = 3
+GreaterDamageConstB = 7
+GreaterDamageRateDW = 100
+GreaterDamageRateDK = 100
+GreaterDamageRateFE = 100
+GreaterDamageRateMG = 100
+GreaterDamageTime = 60
+
+;==================================================
+; Summon Monster Skill Settings
+;==================================================
+SummonMonster1 = 26
+SummonMonster2 = 32
+SummonMonster3 = 21
+SummonMonster4 = 20
+SummonMonster5 = 10
+SummonMonster6 = 150
+SummonMonster7 = 151
+
+;==================================================
+; Greater Life Skill Settings
+; LifeRate = GreaterLifeConstA + (Player->Vitality / GreaterLifeConstB) + (Player->Energy / GreaterLifeConstC);
+; If LifeRate is greater than GreaterLifeMaxRate, then -> LifeRate = GreaterLifeMaxRate
+; Time -> In Seconds
+; Time = GreaterLifeTime
+;==================================================
+GreaterLifeConstA = 12
+GreaterLifeConstB = 100
+GreaterLifeConstC = 20
+GreaterLifeRateDW = 100
+GreaterLifeRateDK = 100
+GreaterLifeRateFE = 100
+GreaterLifeRateMG = 100
+GreaterLifeTime = 180
+GreaterLifeMaxRate = 100
+
+;==================================================
+; Fire Slash Skill Settings
+; Damage = FireSlashConstA + (Player->Strength / FireSlashConstB);
+; If Damage is greater than FireSlashMaxRate, then -> Damage = FireSlashMaxRate
+; Time -> In Seconds
+; Time = FireSlashTime
+;==================================================
+FireSlashConstA = 10
+FireSlashConstB = 50
+FireSlashTime = 10
+FireSlashMaxRate = 30

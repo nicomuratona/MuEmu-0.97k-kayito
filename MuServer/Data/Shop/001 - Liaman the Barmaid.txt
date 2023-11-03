@@ -1,0 +1,33 @@
+//==============================================================
+// SHOP
+//==============================================================
+//SLOTS X = 0~7 , Y = 0~14 , * = Orden original
+//Index	Level	Dur	Skill	Luck	Option	ExcOp	SlotX	SlotY	Comment
+
+14,001	0	255	0	0	0	0	*	*	// Small Healing Potion
+14,002	0	255	0	0	0	0	*	*	// Medium Healing Potion
+14,003	0	255	0	0	0	0	*	*	// Large Healing Potion
+
+14,001	0	100	0	0	0	0	*	*	// Small Healing Potion
+14,002	0	100	0	0	0	0	*	*	// Medium Healing Potion
+14,003	0	100	0	0	0	0	*	*	// Large Healing Potion
+
+14,001	0	50	0	0	0	0	*	*	// Small Healing Potion
+14,002	0	50	0	0	0	0	*	*	// Medium Healing Potion
+14,003	0	50	0	0	0	0	*	*	// Large Healing Potion
+
+14,004	0	255	0	0	0	0	*	*	// Small Mana Potion
+14,005	0	255	0	0	0	0	*	*	// Medium Mana Potion
+14,006	0	255	0	0	0	0	*	*	// Large Mana Potion
+
+14,004	0	100	0	0	0	0	*	*	// Small Mana Potion
+14,005	0	100	0	0	0	0	*	*	// Medium Mana Potion
+14,006	0	100	0	0	0	0	*	*	// Large Mana Potion
+
+14,004	0	50	0	0	0	0	*	*	// Small Mana Potion
+14,005	0	50	0	0	0	0	*	*	// Medium Mana Potion
+14,006	0	50	0	0	0	0	*	*	// Large Mana Potion
+
+14,008	0	255	0	0	0	0	*	*	// Antidote
+
+end

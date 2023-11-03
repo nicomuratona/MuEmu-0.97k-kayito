@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Util Files">
+      <UniqueIdentifier>{2d98712e-7860-4e76-a39c-e80cf261b364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{3bc6fe72-220f-4fbd-9bf1-00c4b3e23e14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Defines">
+      <UniqueIdentifier>{6e52ae05-1756-42bd-acdf-56c3cd02acd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Connection">
+      <UniqueIdentifier>{e35848bd-e0af-4aff-b28f-e2b68582df0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{ebebc0ff-1742-4bc9-abaa-5f285538f323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fixes">
+      <UniqueIdentifier>{acaa872e-e190-4d94-8e2f-bf981578eb20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{dd0b305d-babf-4fc9-9614-61915780a46e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{cfdcf06d-76de-48a0-8f0d-b43631bae980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MuEmu">
+      <UniqueIdentifier>{70f1b382-e54f-401b-baa6-db9505238895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Visual">
+      <UniqueIdentifier>{90c068f1-4e7e-42b1-b434-48b5cd2c41a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{7fca7508-ccd6-4e97-ba47-304faf81ef98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{dcec8401-b9c7-4260-afc4-5d82ad70d6f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Monster">
+      <UniqueIdentifier>{733da232-637c-4f5a-aaf9-130c4b7c5a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{d2f99edf-d312-40dd-a62f-b9cf3daed2d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{c519d097-8522-40d1-b574-53ae14fb2f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{c2cb8b9d-6921-4790-b2ec-ea1e226efb9b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CCRC32.H">
+      <Filter>Util Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Resolution.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="TrayMode.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Util Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Language.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthBar.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="HWID.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyDome.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="stb.h">
+      <Filter>Util Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponView.h">
+      <Filter>Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="GuildLogo.h">
+      <Filter>Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="RightClickMove.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ChaosMix.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveList.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemValue.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemStack.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="MapManager.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerList.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadModels.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomItem.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="MathLib.h">
+      <Filter>Util Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Offsets.h">
+      <Filter>Core\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Core\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketManager.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtocolDefines.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Patchs.h">
+      <Filter>Fixes</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintPlayer.h">
+      <Filter>Fixes</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="HackCheck.h">
+      <Filter>MuEmu</Filter>
+    </ClInclude>
+    <ClInclude Include="Protect.h">
+      <Filter>MuEmu</Filter>
+    </ClInclude>
+    <ClInclude Include="Reconnect.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Core\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Core\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemManager.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Buff.h">
+      <Filter>Fixes</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomGlow.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsMenu.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemOption.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CCRC32.Cpp">
+      <Filter>Util Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Resolution.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="TrayMode.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>Util Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Language.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthBar.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="HWID.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyDome.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponView.cpp">
+      <Filter>Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="GuildLogo.cpp">
+      <Filter>Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="stb.cpp">
+      <Filter>Util Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RightClickMove.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ChaosMix.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveList.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemValue.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemStack.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="MapManager.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerList.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadModels.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomItem.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="MathLib.cpp">
+      <Filter>Util Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketManager.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocol.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Patchs.cpp">
+      <Filter>Fixes</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintPlayer.cpp">
+      <Filter>Fixes</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="HackCheck.cpp">
+      <Filter>MuEmu</Filter>
+    </ClCompile>
+    <ClCompile Include="Protect.cpp">
+      <Filter>MuEmu</Filter>
+    </ClCompile>
+    <ClCompile Include="Reconnect.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemManager.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Buff.cpp">
+      <Filter>Fixes</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomGlow.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsMenu.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemOption.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Main.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Client.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

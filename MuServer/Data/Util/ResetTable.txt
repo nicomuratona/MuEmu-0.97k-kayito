@@ -1,0 +1,6 @@
+//Min	Max	VIP0	VIP1	VIP2	VIP3	VIP1	VIP2	VIP3	VIP4	VIP1	VIP2	VIP3	VIP4
+//Reset	Reset	Level	Level	Level	Level	Money	Money	Money	Money	Point	Point	Point	Point
+
+
+
+end

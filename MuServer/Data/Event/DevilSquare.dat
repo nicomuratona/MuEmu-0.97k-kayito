@@ -1,0 +1,31 @@
+0
+//WarningTime	NotifyTime	EventTime	CloseTime
+5		1		5		4
+end
+
+// DOW: 1=Sunday / 2=Monday / 3=Tuesday / 4=Wednesday / 5=Thursday / 6=Friday / 7=Saturday
+1
+//Year	Month	Day	DoW	Hour	Minute	Second
+*	*	*	*	0	30	0
+*	*	*	*	4	30	0
+*	*	*	*	8	30	0
+*	*	*	*	12	30	0
+*	*	*	*	16	30	0
+*	*	*	*	20	30	0
+end
+
+2
+//Level	RewardExp1	RewardExp2	RewardExp3	RewardExp4	RewardExp5	RewardExp6	RewardExp7	RewardExp8	RewardExp9	RewardExp10
+0	6000		4000		4000		2000		2000		2000		1000		1000		1000		1000
+1	8000		6000		6000		4000		4000		4000		2000		2000		2000		2000
+2	10000		8000		8000		6000		6000		6000		4000		4000		4000		4000
+3	20000		10000		10000		8000		8000		8000		6000		6000		6000		6000
+end
+
+3
+//Level	RewardMoney1	RewardMoney2	RewardMoney3	RewardMoney4	RewardMoney5	RewardMoney6	RewardMoney7	RewardMoney8	RewardMoney9	RewardMoney10
+0	30000		25000		25000		20000		20000		20000		15000		15000		15000		15000
+1	40000		35000		35000		30000		30000		30000		25000		25000		25000		25000
+2	50000		45000		45000		40000		40000		40000		35000		35000		35000		35000
+3	60000		55000		55000		50000		50000		50000		45000		45000		45000		45000
+end

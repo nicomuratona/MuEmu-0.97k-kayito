@@ -1,0 +1,16 @@
+//Index		MonsterClass	Comment
+0		251		//Hanzo the Blacksmith
+1		255		//Liaman the Barmaid
+2		254		//Pasi the Wizard
+3		250		//Harold the Wandering Merchant
+4		248		//Martin the Wandering Merchant
+5		253		//Amy the Potion Girl
+6		244		//Lumen the Barmaid
+7		245		//Isabel the Wizard
+8		246		//Zienna the Weapon Merchant
+9		243		//Eo the Craftsman
+10		242		//Elf Lala
+11		230		//Alex the Wandering Merchant
+12		231		//Thompson Kenel
+13		239		//Stadium Guard
+end

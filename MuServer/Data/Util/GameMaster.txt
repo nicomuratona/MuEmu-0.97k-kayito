@@ -1,0 +1,10 @@
+//Account	Name				Level
+"test1"		"test1sm"			2
+"test1"		"test1bk"			2
+"test1"		"test1elf"			2
+"test1"		"test1mg"			2
+"test2"		"test2sm"			2
+"test2"		"test2bk"			2
+"test2"		"test2elf"			2
+"test2"		"test2mg"			2
+end

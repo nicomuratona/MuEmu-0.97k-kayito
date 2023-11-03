@@ -1,0 +1,258 @@
+[GameServerInfo]
+;==================================================
+; Chaos Item Mix Settings
+; Rate
+;	-1 = (Total SellPrice of every item inside ChaosBox) / 20000
+;	0 ~ 100
+; Cost
+;	-1 = Rate * 10000
+;	0 ~ MAXMONEY
+; AddItemRate
+;	-1 = (Total SellPrice of every additional item inside ChaosBox) / 20000
+;	0 ~ 100
+; AddJewelRate
+;	-1 = (Total SellPrice of every jewel inside ChaosBox) / 20000
+;	0 ~ 100
+;==================================================
+ChaosItemMixRate_AL0 = -1
+ChaosItemMixRate_AL1 = -1
+ChaosItemMixRate_AL2 = -1
+ChaosItemMixRate_AL3 = -1
+
+ChaosItemMixCost_AL0 = -1
+ChaosItemMixCost_AL1 = -1
+ChaosItemMixCost_AL2 = -1
+ChaosItemMixCost_AL3 = -1
+
+ChaosItemMixAddItemRate_AL0 = -1
+ChaosItemMixAddItemRate_AL1 = -1
+ChaosItemMixAddItemRate_AL2 = -1
+ChaosItemMixAddItemRate_AL3 = -1
+
+ChaosItemMixAddJewelRate_AL0 = -1
+ChaosItemMixAddJewelRate_AL1 = -1
+ChaosItemMixAddJewelRate_AL2 = -1
+ChaosItemMixAddJewelRate_AL3 = -1
+
+;==================================================
+; Devil Square Mix Settings
+; Rate
+;	0 ~ 100
+; Cost
+;	0 ~ MAXMONEY
+;==================================================
+DevilSquareMixRate1_AL0 = 80
+DevilSquareMixRate1_AL1 = 80
+DevilSquareMixRate1_AL2 = 80
+DevilSquareMixRate1_AL3 = 80
+DevilSquareMixRate2_AL0 = 80
+DevilSquareMixRate2_AL1 = 80
+DevilSquareMixRate2_AL2 = 80
+DevilSquareMixRate2_AL3 = 80
+DevilSquareMixRate3_AL0 = 80
+DevilSquareMixRate3_AL1 = 80
+DevilSquareMixRate3_AL2 = 80
+DevilSquareMixRate3_AL3 = 80
+DevilSquareMixRate4_AL0 = 80
+DevilSquareMixRate4_AL1 = 80
+DevilSquareMixRate4_AL2 = 80
+DevilSquareMixRate4_AL3 = 80
+
+DevilSquareMixCost1_AL0 = 100000
+DevilSquareMixCost1_AL1 = 100000
+DevilSquareMixCost1_AL2 = 100000
+DevilSquareMixCost1_AL3 = 100000
+DevilSquareMixCost2_AL0 = 110000
+DevilSquareMixCost2_AL1 = 200000
+DevilSquareMixCost2_AL2 = 200000
+DevilSquareMixCost2_AL3 = 200000
+DevilSquareMixCost3_AL0 = 400000
+DevilSquareMixCost3_AL1 = 400000
+DevilSquareMixCost3_AL2 = 400000
+DevilSquareMixCost3_AL3 = 400000
+DevilSquareMixCost4_AL0 = 700000
+DevilSquareMixCost4_AL1 = 700000
+DevilSquareMixCost4_AL2 = 700000
+DevilSquareMixCost4_AL3 = 700000
+
+;==================================================
+; Plus Item Mix Settings
+; Rate
+;	0 ~ 100
+; Cost
+;	0 ~ MAXMONEY
+;==================================================
+PlusItemLevelMixRate1_AL0 = 60
+PlusItemLevelMixRate1_AL1 = 60
+PlusItemLevelMixRate1_AL2 = 60
+PlusItemLevelMixRate1_AL3 = 60
+PlusItemLevelMixRate2_AL0 = 60
+PlusItemLevelMixRate2_AL1 = 60
+PlusItemLevelMixRate2_AL2 = 60
+PlusItemLevelMixRate2_AL3 = 60
+
+PlusItemLevelMixCost1_AL0 = 2000000
+PlusItemLevelMixCost1_AL1 = 2000000
+PlusItemLevelMixCost1_AL2 = 2000000
+PlusItemLevelMixCost1_AL3 = 2000000
+PlusItemLevelMixCost2_AL0 = 4000000
+PlusItemLevelMixCost2_AL1 = 4000000
+PlusItemLevelMixCost2_AL2 = 4000000
+PlusItemLevelMixCost2_AL3 = 4000000
+
+PlusItemLevelAddLuckRate_AL0 = 20
+PlusItemLevelAddLuckRate_AL1 = 20
+PlusItemLevelAddLuckRate_AL2 = 20
+PlusItemLevelAddLuckRate_AL3 = 20
+
+;==================================================
+; Dinorant Mix Settings
+; Rate
+;	0 ~ 100
+; Cost
+;	0 ~ MAXMONEY
+;==================================================
+DinorantMixRate_AL0 = 70
+DinorantMixRate_AL1 = 70
+DinorantMixRate_AL2 = 70
+DinorantMixRate_AL3 = 70
+
+DinorantMixCost_AL0 = 500000
+DinorantMixCost_AL1 = 500000
+DinorantMixCost_AL2 = 500000
+DinorantMixCost_AL3 = 500000
+
+;==================================================
+; Fruit Mix Settings
+; Rate
+;	0 ~ 100
+; Cost
+;	0 ~ MAXMONEY
+;==================================================
+FruitMixRate_AL0 = 90
+FruitMixRate_AL1 = 90
+FruitMixRate_AL2 = 90
+FruitMixRate_AL3 = 90
+
+FruitMixCost_AL0 = 3000000
+FruitMixCost_AL1 = 3000000
+FruitMixCost_AL2 = 3000000
+FruitMixCost_AL3 = 3000000
+
+;==================================================
+; Wing1 Mix Settings
+; Rate
+;	-1 = (Total SellPrice of every item inside ChaosBox) / 20000
+;	0 ~ 100
+; Cost
+;	-1 = Rate * 10000
+;	0 ~ MAXMONEY
+; AddItemRate
+;	-1 = (Total SellPrice of every additional item inside ChaosBox) / 20000
+;	0 ~ 100
+; AddJewelRate
+;	-1 = (Total SellPrice of every jewel inside ChaosBox) / 20000
+;	0 ~ 100
+;==================================================
+Wing1MixRate_AL0 = -1
+Wing1MixRate_AL1 = -1
+Wing1MixRate_AL2 = -1
+Wing1MixRate_AL3 = -1
+
+Wing1MixCost_AL0 = -1
+Wing1MixCost_AL1 = -1
+Wing1MixCost_AL2 = -1
+Wing1MixCost_AL3 = -1
+
+Wing1MixAddItemRate_AL0 = -1
+Wing1MixAddItemRate_AL1 = -1
+Wing1MixAddItemRate_AL2 = -1
+Wing1MixAddItemRate_AL3 = -1
+
+Wing1MixAddJewelRate_AL0 = -1
+Wing1MixAddJewelRate_AL1 = -1
+Wing1MixAddJewelRate_AL2 = -1
+Wing1MixAddJewelRate_AL3 = -1
+
+;==================================================
+; Blood Castle Mix Settings
+; Rate
+;	0 ~ 100
+; Cost
+;	0 ~ MAXMONEY
+;==================================================
+BloodCastleMixRate1_AL0 = 80
+BloodCastleMixRate1_AL1 = 80
+BloodCastleMixRate1_AL2 = 80
+BloodCastleMixRate1_AL3 = 80
+BloodCastleMixRate2_AL0 = 80
+BloodCastleMixRate2_AL1 = 80
+BloodCastleMixRate2_AL2 = 80
+BloodCastleMixRate2_AL3 = 80
+BloodCastleMixRate3_AL0 = 80
+BloodCastleMixRate3_AL1 = 80
+BloodCastleMixRate3_AL2 = 80
+BloodCastleMixRate3_AL3 = 80
+BloodCastleMixRate4_AL0 = 80
+BloodCastleMixRate4_AL1 = 80
+BloodCastleMixRate4_AL2 = 80
+BloodCastleMixRate4_AL3 = 80
+BloodCastleMixRate5_AL0 = 80
+BloodCastleMixRate5_AL1 = 80
+BloodCastleMixRate5_AL2 = 80
+BloodCastleMixRate5_AL3 = 80
+BloodCastleMixRate6_AL0 = 80
+BloodCastleMixRate6_AL1 = 80
+BloodCastleMixRate6_AL2 = 80
+BloodCastleMixRate6_AL3 = 80
+
+BloodCastleMixCost1_AL0 = 50000
+BloodCastleMixCost1_AL1 = 50000
+BloodCastleMixCost1_AL2 = 50000
+BloodCastleMixCost1_AL3 = 50000
+BloodCastleMixCost2_AL0 = 80000
+BloodCastleMixCost2_AL1 = 80000
+BloodCastleMixCost2_AL2 = 80000
+BloodCastleMixCost2_AL3 = 80000
+BloodCastleMixCost3_AL0 = 150000
+BloodCastleMixCost3_AL1 = 150000
+BloodCastleMixCost3_AL2 = 150000
+BloodCastleMixCost3_AL3 = 150000
+BloodCastleMixCost4_AL0 = 250000
+BloodCastleMixCost4_AL1 = 250000
+BloodCastleMixCost4_AL2 = 250000
+BloodCastleMixCost4_AL3 = 250000
+BloodCastleMixCost5_AL0 = 400000
+BloodCastleMixCost5_AL1 = 400000
+BloodCastleMixCost5_AL2 = 400000
+BloodCastleMixCost5_AL3 = 400000
+BloodCastleMixCost6_AL0 = 600000
+BloodCastleMixCost6_AL1 = 600000
+BloodCastleMixCost6_AL2 = 600000
+BloodCastleMixCost6_AL3 = 600000
+
+;==================================================
+; Wing2 Mix Settings
+; Rate
+;	-1 = (Wing SellPrice) / 4000000
+;	0 ~ 100
+; Cost
+;	0 ~ MAXMONEY
+; AddItemRate
+;	-1 = (Total SellPrice of every additional item inside ChaosBox) / 40000
+;	0 ~ 100
+;==================================================
+Wing2MixRate_AL0 = -1
+Wing2MixRate_AL1 = -1
+Wing2MixRate_AL2 = -1
+Wing2MixRate_AL3 = -1
+
+Wing2MixCost_AL0 = 5000000
+Wing2MixCost_AL1 = 5000000
+Wing2MixCost_AL2 = 5000000
+Wing2MixCost_AL3 = 5000000
+
+Wing2MixAddItemRate_AL0 = -1
+Wing2MixAddItemRate_AL1 = -1
+Wing2MixAddItemRate_AL2 = -1
+Wing2MixAddItemRate_AL3 = -1

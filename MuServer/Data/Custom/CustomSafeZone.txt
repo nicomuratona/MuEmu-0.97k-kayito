@@ -1,0 +1,28 @@
+//=================================================================
+// Declare the zone where the characters can't be hurt
+//=================================================================
+// Map = Map Number
+// X = Starting Pos X
+// Y = Starting Pos Y
+// TX = Ending Pos X
+// TY = Ending Pos Y
+//=================================================================
+
+//Map	X	Y	TX	TY	Comment
+//========== Jaulas de Arena protegidas de PKs ==========//
+6	42	68	53	98	//Jaula Arena
+6	61	61	72	88	//Jaula Arena
+6	42	51	53	62	//Jaula Arena
+6	42	33	53	44	//Jaula Arena
+6	24	33	35	44	//Jaula Arena
+6	24	51	35	62	//Jaula Arena
+6	24	69	35	80	//Jaula Arena
+6	24	86	35	98	//Jaula Arena
+6	6	33	16	44	//Jaula Arena
+6	6	51	16	62	//Jaula Arena
+6	6	69	16	80	//Jaula Arena
+6	6	86	16	98	//Jaula Arena
+//========== Jaulas de Arena protegidas de PKs ==========//
+
+
+end

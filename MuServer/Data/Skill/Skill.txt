@@ -1,0 +1,47 @@
+//Index	Name				Damage	MP	BP	Range	Radio	Delay	Attrib	Effect	ReqLvl	ReqEne	DW	DK	FE	MG
+1	"Poison"			12	42	0	6	0	0	1	55	0	0	1	0	0	1
+2	"Meteorite"			21	12	0	6	0	0	4	0	0	0	1	0	0	1
+3	"Lightning"			17	15	0	6	0	0	2	0	0	0	1	0	0	1
+4	"Fire Ball"			8	3	0	6	0	0	3	0	0	0	1	0	0	1
+5	"Flame"				25	50	0	6	6	0	3	0	0	0	1	0	0	1
+6	"Teleport"			0	30	0	6	0	0	*	0	0	0	1	0	0	0
+7	"Ice"				10	38	0	6	0	0	0	56	0	0	1	0	0	1
+8	"Twister"			35	60	0	6	6	0	5	0	0	0	1	0	0	1
+9	"Evil Spirit"			45	90	0	6	6	0	*	0	0	0	1	0	0	1
+10	"Hell Fire"			120	160	0	0	6	0	3	0	0	0	1	0	0	1
+11	"Power Wave"			14	5	0	6	0	0	*	0	0	0	1	0	0	1
+12	"Aqua Beam"			80	140	0	6	6	0	6	0	0	0	1	0	0	1
+13	"Blast"				70	150	0	3	6	0	2	0	0	0	1	0	0	1
+14	"Inferno"			100	200	0	0	6	0	3	0	0	0	1	0	0	1
+15	"Teleport Party"		0	90	25	6	0	0	*	0	0	0	2	0	0	0
+16	"Mana Shield"			0	70	22	6	0	0	*	4	0	0	1	0	0	0
+17	"Energy Ball"			3	1	0	6	0	0	*	0	0	0	1	0	0	1
+18	"Defense"			0	30	0	0	0	0	*	0	0	0	0	1	0	1
+19	"Falling Slash"			0	9	0	3	0	0	*	0	0	0	0	1	0	1
+20	"Lunge"				0	9	0	2	0	0	*	0	0	0	0	1	0	1
+21	"Uppercut"			0	8	0	2	0	0	*	0	0	0	0	1	0	1
+22	"Cyclone"			0	9	0	2	0	0	*	0	0	0	0	1	0	1
+23	"Slash"				0	10	0	2	0	0	*	0	0	0	0	1	0	1
+24	"Triple Shot"			0	5	0	6	6	0	*	0	0	0	0	0	1	0
+26	"Heal"				0	20	0	6	0	0	*	0	0	0	0	0	1	0
+27	"Greater Defense"		0	30	0	6	0	0	*	2	0	0	0	0	1	0
+28	"Greater Damage"		0	40	0	6	0	0	*	1	0	0	0	0	1	0
+30	"Summon Goblin"			0	40	0	0	0	0	*	0	0	0	0	0	1	0
+31	"Summon Stone Golem"		0	70	0	0	0	0	*	0	0	0	0	0	1	0
+32	"Summon Assassin"		0	110	0	0	0	0	*	0	0	0	0	0	1	0
+33	"Summon Elite Yeti"		0	160	0	0	0	0	*	0	0	0	0	0	1	0
+34	"Summon Dark Knight"		0	200	0	0	0	0	*	0	0	0	0	0	1	0
+35	"Summon Bali"			0	250	0	0	0	0	*	0	0	0	0	0	1	0
+36	"Summon Soldier"		0	350	0	0	0	0	*	0	0	0	0	0	1	0
+41	"Twisting Slash"		0	10	10	2	3	0	5	0	0	0	0	1	0	1
+42	"Rageful Blow"			60	25	20	3	4	0	4	0	0	0	0	2	0	0
+43	"Death Stab"			70	15	12	2	2	0	5	0	0	0	0	2	0	0
+47	"Impale"			15	8	0	3	6	0	*	0	0	0	0	1	0	1
+48	"Greater Life"			0	22	24	0	5	0	*	8	0	0	0	1	0	0
+49	"Fire Breath"			30	9	0	3	0	0	*	0	0	0	0	1	0	0
+50	"Monster Area Attack"		0	0	0	0	6	0	*	0	0	0	0	0	0	0
+51	"Ice Arrow"			105	10	12	8	0	0	0	57	0	0	0	0	2	0
+52	"Penetration"			70	7	9	6	6	0	5	0	0	0	0	0	1	0
+55	"Fire Slash"			80	15	20	2	6	0	1	58	0	0	0	0	0	1
+56	"Power Slash"			0	15	0	5	5	0	*	0	0	0	0	0	0	1
+end

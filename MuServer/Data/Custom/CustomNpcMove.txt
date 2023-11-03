@@ -1,0 +1,22 @@
+//=================================================================
+// When click the NPC located on the coordinates
+// moves the character to the specified location
+//=================================================================
+// Npc = Monster Number
+// NpcMap = Map Number of the Npc (0~16)
+// NpcX = Pos X of the Npc (1~255)
+// NpcY = Pos Y of the Npc (1~255)
+// MoveMap = Map Number where the Npc takes the character (0~16)
+// MoveX = Pos X where the Npc takes the character (1~255)
+// MoveY = Pos Y where the Npc takes the character (1~255)
+// MinLvl = Minimum Level required to move (* or 1~400)
+// Max Lvl = Maximum Level required to move (* or 1~400)
+// MinRes = Minimum Reset required to move (* or 0~)
+// MaxRes = Maximum Reset required to move (* or 0~)
+// VipLvl = VIP Level required to move (0,1,2,3)
+// PKMove = Allow PKs to move (0/1)
+//=================================================================
+
+//Npc	NpcMap	NpcX	NpcY	MoveMap	MoveX	MoveY	MinLvl	MaxLvl	MinRes	MaxRes	VIPLvl	PKMove	Comment
+247	0	145	157	37	227	15	50	*	*	*	1	1	//Greed Island
+end

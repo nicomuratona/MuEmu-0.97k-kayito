@@ -1,0 +1,11 @@
+# Compilation folders
+Obj/
+bin/
+
+# Visual Studio
+.vs
+*.suo
+*.pdb
+*.map
+*.exp
+*.lib

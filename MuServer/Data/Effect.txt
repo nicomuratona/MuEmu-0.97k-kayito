@@ -1,0 +1,14 @@
+//Index	Group	Item	Name						Save	Type	Flag	Count	Value1	Value2	Value3	Value4
+1	1	*	"Greater Damage"				0	0	0	*	*	*	*	*
+2	2	*	"Greater Defense"				0	0	0	*	*	*	*	*
+4	4	*	"Mana Shield"					0	0	0	*	*	*	*	*
+7	7	*	"BP Recovery"					0	0	0	*	*	*	*	*
+8	8	*	"Greater Life"					0	0	0	*	*	*	*	*
+12	12	*	"Disable Magic"					0	0	0	*	*	*	*	*
+55	27	*	"Poison"					0	0	1	*	*	*	*	*
+56	28	*	"Ice"						0	0	1	*	*	*	*	*
+57	29	*	"Ice Arrow"					0	0	1	*	*	*	*	*
+58	30	*	"Fire Slash"					0	0	1	*	*	*	*	*
+63	35	*	"Monster Physi Damage Immunity"			0	0	0	*	*	*	*	*
+64	36	*	"Monster Magic Damage Immunity"			0	0	0	*	*	*	*	*
+end

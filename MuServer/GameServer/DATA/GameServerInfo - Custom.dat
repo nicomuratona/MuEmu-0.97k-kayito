@@ -1,0 +1,7 @@
+[GameServerInfo]
+;==================================================
+; Announce Chaos Mix Settings
+; 0 = Disabled / 1 = Actual Server / 2 = All Servers
+;==================================================
+AnnounceChaosMix = 1
+AnnounceChaosMixText = "%s put the item %s +11"

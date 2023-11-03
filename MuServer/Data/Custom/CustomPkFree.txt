@@ -1,0 +1,13 @@
+//=================================================================
+// Declare the zone where the characters don't turn PK when killin
+//=================================================================
+// Map = Map Number
+// X = Starting Pos X
+// Y = Starting Pos Y
+// TX = Ending Pos X
+// TY = Ending Pos Y
+//=================================================================
+
+//Map	X	Y	TX	TY	Comment
+0	139	123	148	133	//Ring de Lorencia
+end

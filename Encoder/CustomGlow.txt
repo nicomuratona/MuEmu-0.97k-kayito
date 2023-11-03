@@ -1,0 +1,275 @@
+// CUSTOM GLOW
+// Developer: Nico
+//========================================================================================================
+//========================================================================================================
+//========================================================================================================
+
+//=====================================
+//	SWORDS
+//=====================================
+//Index	ColorR	ColorG	ColorB	Comment
+00,000	255	127	000	// Kris
+00,001	255	127	000	// Short Sword
+00,002	255	127	000	// Rapier
+00,003	255	127	000	// Katana
+00,004	255	127	000	// Sword of Assassin
+00,005	255	127	000	// Blade
+00,006	255	127	000	// Gladius
+00,007	255	127	000	// Falchion
+00,008	255	127	000	// Serpent Sword
+00,009	255	127	000	// Sword of Salamander
+00,010	255	127	000	// Light Saber
+00,011	255	127	000	// Legendary Sword
+00,012	255	127	000	// Heliacal Sword
+00,013	255	127	000	// Double Blade
+00,014	000	127	255	// Lighting Sword
+00,015	255	127	000	// Giant Sword
+00,016	255	127	000	// Sword of Destruction
+00,017	255	127	000	// Dark Breaker
+00,018	255	127	000	// Thunder Blade
+00,019	255	127	000	// Divine Sword of Archangel
+00,020	191	165	127	// Knight Blade
+00,031	191	165	127	// Rune Blade
+
+//=====================================
+//	AXES
+//=====================================
+//Index	ColorR	ColorG	ColorB	Comment
+01,000	255	127	000	// Small Axe
+01,001	255	127	000	// Hand Axe
+01,002	255	127	000	// Double Axe
+01,003	255	127	000	// Tomahawk
+01,004	255	127	000	// Elven Axe
+01,005	255	127	000	// Battle Axe
+01,006	255	127	000	// Nikea Axe
+01,007	255	127	000	// Larkan Axe
+01,008	255	127	000	// Crescent Axe
+
+//=====================================
+//	MACES & SCEPTERS
+//=====================================
+//Index	ColorR	ColorG	ColorB	Comment
+02,000	255	127	000	// Mace
+02,001	255	127	000	// Morning Star
+02,002	255	127	000	// Flail
+02,003	255	127	000	// Great Hammer
+02,004	255	127	000	// Crystal Morning Star
+02,005	255	127	000	// Crystal Sword
+02,006	255	127	000	// Chaos Dragon Axe
+02,007	255	127	000	// Elemental Mace
+
+02,008	255	127	000	// Mace of the King
+
+//=====================================
+//	SPEARS
+//=====================================
+//Index	ColorR	ColorG	ColorB	Comment
+03,000	255	127	000	// Light Spear
+03,001	255	127	000	// Spear
+03,002	255	127	000	// Dragon Lance
+03,003	255	127	000	// Giant Trident
+03,004	255	127	000	// Serpent Spear
+03,005	255	127	000	// Double Poleaxe
+03,006	255	127	000	// Halberd
+03,007	255	127	000	// Berdysh
+03,008	255	127	000	// Great Scythe
+03,009	255	051	000	// Bill of Balrog
+03,010	127	127	204	// Dragon Spear
+
+//=====================================
+//	BOWS & CROSSBOWS
+//=====================================
+//Index	ColorR	ColorG	ColorB	Comment
+04,000	255	127	000	// Short Bow
+04,001	255	127	000	// Bow
+04,002	255	127	000	// Elven Bow
+04,003	255	127	000	// Battle Bow
+04,004	255	127	000	// Tiger Bow
+04,005	255	255	255	// Silver Bow
+04,006	255	127	000	// Chaos Nature Bow
+04,007	255	127	000	// Bolt
+04,008	255	127	000	// Crossbow
+04,009	255	127	000	// Golden Crossbow
+04,010	255	127	000	// Arquebus
+04,011	255	127	000	// Light Crossbow
+04,012	255	127	000	// Serpent Crossbow
+04,013	255	255	255	// Bluewing Crossbow
+04,014	255	127	000	// Aquagold Crossbow
+04,015	255	127	000	// Arrow
+04,016	255	127	000	// Saint Crossbow
+04,017	127	127	204	// Celestial Bow
+04,018	191	165	127	// Divine Crossbow of Archangel
+
+//=====================================
+//	STAFFS
+//=====================================
+//Index	ColorR	ColorG	ColorB	Comment
+05,000	255	127	000	// Skull Staff
+05,001	255	127	000	// Angelic Staff
+05,002	255	127	000	// Serpent Staff
+05,003	255	127	000	// Thunder Staff
+05,004	255	127	000	// Gorgon Staff
+05,005	000	127	255	// Legendary Staff
+05,006	255	127	000	// Staff of Resurrection
+05,007	255	127	000	// Chaos Lighting Staff
+05,008	255	127	000	// Staff of Destruction
+05,009	255	255	255	// Dragon Soul Staff
+05,010	255	127	000	// Divine Staff of Archangel
+
+//=====================================
+//	SHIELDS
+//=====================================
+//Index	ColorR	ColorG	ColorB	Comment
+06,000	255	127	000	// Small Shield
+06,001	255	127	000	// Horn Shield
+06,002	255	127	000	// Kite Shield
+06,003	255	127	000	// Elven Shield
+06,004	255	127	000	// Buckler
+06,005	255	127	000	// Dragon Slayer Shield
+06,006	255	127	000	// Skull Shield
+06,007	255	127	000	// Spiked Shield
+06,008	255	127	000	// Tower Shield
+06,009	255	127	000	// Plate Shield
+06,010	255	127	000	// Large Round Shield
+06,011	255	127	000	// Serpent Shield
+06,012	255	127	000	// Bronze Shield
+06,013	255	127	000	// Dragon Shield
+06,014	255	127	000	// Legendary Shield
+06,015	255	127	000	// Grand Soul Shield
+06,016	153	204	102	// Elemental Shield
+
+//=====================================
+//	SETS
+//=====================================
+//Index	ColorR	ColorG	ColorB	Comment
+07,000	255	127	000	// Bronze Helm
+08,000	255	127	000	// Bronze Armor
+09,000	255	127	000	// Bronze Pant
+10,000	255	127	000	// Bronze Gloves
+11,000	255	127	000	// Bronze Boots
+
+07,001	255	051	000	// Dragon Helm
+08,001	255	051	000	// Dragon Armor
+09,001	255	051	000	// Dragon Pant
+10,001	255	051	000	// Dragon Gloves
+11,001	255	051	000	// Dragon Boots
+
+07,002	255	127	000	// Pad Helm
+08,002	255	127	000	// Pad Armor
+09,002	255	127	000	// Pad Pant
+10,002	255	127	000	// Pad Gloves
+11,002	255	127	000	// Pad Boots
+
+07,003	000	127	255	// Legendary Helm
+08,003	000	127	255	// Legendary Armor
+09,003	000	127	255	// Legendary Pant
+10,003	000	127	255	// Legendary Gloves
+11,003	000	127	255	// Legendary Boots
+
+07,004	255	255	255	// Bone Helm
+08,004	255	255	255	// Bone Armor
+09,004	255	255	255	// Bone Pant
+10,004	255	255	255	// Bone Gloves
+11,004	255	255	255	// Bone Boots
+
+07,005	255	127	000	// Leather Helm
+08,005	255	127	000	// Leather Armor
+09,005	255	127	000	// Leather Pant
+10,005	255	127	000	// Leather Gloves
+11,005	255	127	000	// Leather Boots
+
+07,006	153	204	102	// Scale Helm
+08,006	153	204	102	// Scale Armor
+09,006	153	204	102	// Scale Pant
+10,006	153	204	102	// Scale Gloves
+11,006	153	204	102	// Scale Boots
+
+07,007	204	178	102	// Sphinx Helm
+08,007	204	178	102	// Sphinx Armor
+09,007	204	178	102	// Sphinx Pant
+10,007	204	178	102	// Sphinx Gloves
+11,007	204	178	102	// Sphinx Boots
+
+07,008	255	127	000	// Brass Helm
+08,008	255	127	000	// Brass Armor
+09,008	255	127	000	// Brass Pant
+10,008	255	127	000	// Brass Gloves
+11,008	255	127	000	// Brass Boots
+
+07,009	000	127	255	// Plate Helm
+08,009	000	127	255	// Plate Armor
+09,009	000	127	255	// Plate Pant
+10,009	000	127	255	// Plate Gloves
+11,009	000	127	255	// Plate Boots
+
+07,010	255	127	000	// Vine Helm
+08,010	255	127	000	// Vine Armor
+09,010	255	127	000	// Vine Pant
+10,010	255	127	000	// Vine Gloves
+11,010	255	127	000	// Vine Boots
+
+07,011	255	127	000	// Silk Helm
+08,011	255	127	000	// Silk Armor
+09,011	255	127	000	// Silk Pant
+10,011	255	127	000	// Silk Gloves
+11,011	255	127	000	// Silk Boots
+
+07,012	000	127	255	// Wind Helm
+08,012	000	127	255	// Wind Armor
+09,012	000	127	255	// Wind Pant
+10,012	000	127	255	// Wind Gloves
+11,012	000	127	255	// Wind Boots
+
+07,013	000	204	102	// Spirit Helm
+08,013	000	204	102	// Spirit Armor
+09,013	000	204	102	// Spirit Pant
+10,013	000	204	102	// Spirit Gloves
+11,013	000	204	102	// Spirit Boots
+
+07,014	255	255	255	// Guardian Helm
+08,014	255	255	255	// Guardian Armor
+09,014	255	255	255	// Guardian Pant
+10,014	255	255	255	// Guardian Gloves
+11,014	255	255	255	// Guardian Boots
+
+08,015	229	204	255	// Storm Crow Armor
+09,015	229	204	255	// Storm Crow Pant
+10,015	229	204	255	// Storm Crow Gloves
+11,015	229	204	255	// Storm Crow Boots
+
+07,016	191	165	127	// Black Dragon Helm
+08,016	191	165	127	// Black Dragon Armor
+09,016	191	165	127	// Black Dragon Pant
+10,016	191	165	127	// Black Dragon Gloves
+11,016	191	165	127	// Black Dragon Boots
+
+07,017	127	127	204	// Dark Phoenix Helm
+08,017	127	127	204	// Dark Phoenix Armor
+09,017	127	127	204	// Dark Phoenix Pant
+10,017	127	127	204	// Dark Phoenix Gloves
+11,017	127	127	204	// Dark Phoenix Boots
+
+07,018	255	255	255	// Grand Soul Helm
+08,018	255	255	255	// Grand Soul Armor
+09,018	255	255	255	// Grand Soul Pant
+10,018	255	255	255	// Grand Soul Gloves
+11,018	255	255	255	// Grand Soul Boots
+
+07,019	127	127	204	// Divine Helm
+08,019	127	127	204	// Divine Armor
+09,019	127	127	204	// Divine Pant
+10,019	127	127	204	// Divine Gloves
+11,019	127	127	204	// Divine Boots
+
+08,020	127	127	204	// Thunder Hawk Armor
+09,020	127	127	204	// Thunder Hawk Pant
+10,020	127	127	204	// Thunder Hawk Gloves
+11,020	127	127	204	// Thunder Hawk Boots
+
+07,021	204	117	063	// Great Dragon Helm
+08,021	204	117	063	// Great Dragon Armor
+09,021	204	117	063	// Great Dragon Pant
+10,021	204	117	063	// Great Dragon Gloves
+11,021	204	117	063	// Great Dragon Boots
+
+end

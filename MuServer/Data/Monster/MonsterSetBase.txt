@@ -1,0 +1,1749 @@
+//======================================//
+//		NPCS			//
+//======================================//
+
+//=========================================================================================================================================
+// Lorencia
+//=========================================================================================================================================
+0
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+255	0	0	123	135	1	// Lumen the Barmaid
+254	0	0	118	113	3	// Pasi the Mage
+251	0	0	116	141	3	// Hanzo the Blacksmith
+248	0	0	6	145	2	// Wandering Merchant Martin
+250	0	0	183	137	2	// Wandering Merchant Peddler
+236	0	0	130	127	3	// Golden Archer
+240	0	0	146	110	3	// Safety Guardian
+240	0	0	147	145	1	// Safety Guardian
+249	0	10	131	88	1	// Berdysh Guard
+249	0	20	173	125	3	// Berdysh Guard
+249	0	20	94	125	7	// Berdysh Guard
+249	0	20	94	130	7	// Berdysh Guard
+249	0	30	131	148	1	// Berdysh Guard
+end
+
+//=========================================================================================================================================
+// Devias
+//=========================================================================================================================================
+0
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+244	2	0	226	25	3	// Caren the Barmaid
+245	2	0	225	41	3	// Wizard Izabel
+246	2	0	186	47	3	// Weapons Merchant Zienna
+235	2	0	183	32	3	// Sebina the Priest
+241	2	0	214	47	2	// Captain Lorence
+236	2	0	226	66	1	// Golden Archer
+233	2	0	208	30	1	// Messenger of Archangel
+240	2	0	218	63	2	// Safety Guardian
+end
+
+//=========================================================================================================================================
+//Noria
+//=========================================================================================================================================
+0
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+242	3	0	173	125	1	// Elf Lala
+243	3	0	195	124	2	// Eo the Craftsman
+238	3	0	180	103	1	// Chaos Goblin
+236	3	0	169	109	3	// Golden Archer
+237	3	0	171	105	3	// Charon
+240	3	0	172	96	3	// Safety Guardian
+end
+
+//======================================//
+//		TRAPS			//
+//======================================//
+
+//=========================================================================================================================================
+// Dungeon
+//=========================================================================================================================================
+0
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+100	1	0	117	99	1	// Lance
+100	1	0	120	99	1	// Lance
+100	1	0	123	99	1	// Lance
+100	1	0	126	99	1	// Lance
+100	1	0	136	95	1	// Lance
+100	1	0	139	95	1	// Lance
+100	1	0	166	12	1	// Lance
+100	1	0	172	12	1	// Lance
+100	1	0	177	103	1	// Lance
+100	1	0	178	12	1	// Lance
+100	1	0	180	103	1	// Lance
+100	1	0	183	103	1	// Lance
+100	1	0	186	103	1	// Lance
+100	1	0	186	151	3	// Lance
+100	1	0	189	103	1	// Lance
+100	1	0	193	33	1	// Lance
+100	1	0	196	33	1	// Lance
+100	1	0	198	130	1	// Lance
+100	1	0	202	150	1	// Lance
+100	1	0	202	93	1	// Lance
+100	1	0	205	93	1	// Lance
+100	1	0	227	61	1	// Lance
+100	1	0	229	93	1	// Lance
+100	1	0	232	37	3	// Lance
+100	1	0	232	40	3	// Lance
+100	1	0	232	46	3	// Lance
+100	1	0	232	93	1	// Lance
+101	1	0	10	26	1	// Iron Stick
+101	1	0	11	26	1	// Iron Stick
+101	1	0	128	212	1	// Iron Stick
+101	1	0	130	213	1	// Iron Stick
+101	1	0	143	214	1	// Iron Stick
+101	1	0	155	230	5	// Iron Stick
+101	1	0	19	19	1	// Iron Stick
+101	1	0	22	24	1	// Iron Stick
+101	1	0	23	24	1	// Iron Stick
+101	1	0	23	28	1	// Iron Stick
+101	1	0	23	29	1	// Iron Stick
+101	1	0	24	4	1	// Iron Stick
+101	1	0	24	5	1	// Iron Stick
+101	1	0	27	11	1	// Iron Stick
+101	1	0	27	12	1	// Iron Stick
+101	1	0	27	21	1	// Iron Stick
+101	1	0	33	9	1	// Iron Stick
+101	1	0	35	9	1	// Iron Stick
+101	1	0	39	16	1	// Iron Stick
+101	1	0	39	17	1	// Iron Stick
+101	1	0	39	18	1	// Iron Stick
+101	1	0	48	193	1	// Iron Stick
+101	1	0	49	193	1	// Iron Stick
+101	1	0	90	164	1	// Iron Stick
+101	1	0	91	164	1	// Iron Stick
+101	1	0	92	164	1	// Iron Stick
+102	1	0	169	12	1	// Fire
+102	1	0	175	12	1	// Fire
+102	1	0	45	224	3	// Fire
+102	1	0	66	71	3	// Fire
+102	1	0	80	61	1	// Fire
+end
+
+//=========================================================================================================================================
+// LostTower
+//=========================================================================================================================================
+0
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+103	4	0	100	185	3	// Meteorite
+103	4	0	100	225	3	// Meteorite
+103	4	0	101	185	3	// Meteorite
+103	4	0	101	225	3	// Meteorite
+103	4	0	102	185	3	// Meteorite
+103	4	0	103	185	3	// Meteorite
+103	4	0	107	242	3	// Meteorite
+103	4	0	107	243	3	// Meteorite
+103	4	0	107	244	3	// Meteorite
+103	4	0	110	227	3	// Meteorite
+103	4	0	111	227	3	// Meteorite
+103	4	0	112	227	3	// Meteorite
+103	4	0	113	227	3	// Meteorite
+103	4	0	120	208	3	// Meteorite
+103	4	0	121	208	3	// Meteorite
+103	4	0	122	208	3	// Meteorite
+103	4	0	123	132	3	// Meteorite
+103	4	0	123	133	3	// Meteorite
+103	4	0	123	134	3	// Meteorite
+103	4	0	123	135	3	// Meteorite
+103	4	0	125	115	3	// Meteorite
+103	4	0	126	104	3	// Meteorite
+103	4	0	126	105	3	// Meteorite
+103	4	0	126	106	3	// Meteorite
+103	4	0	126	107	3	// Meteorite
+103	4	0	126	115	3	// Meteorite
+103	4	0	127	115	3	// Meteorite
+103	4	0	128	221	3	// Meteorite
+103	4	0	129	221	3	// Meteorite
+103	4	0	130	221	3	// Meteorite
+103	4	0	132	126	3	// Meteorite
+103	4	0	132	178	3	// Meteorite
+103	4	0	133	126	3	// Meteorite
+103	4	0	133	178	3	// Meteorite
+103	4	0	134	126	3	// Meteorite
+103	4	0	14	207	3	// Meteorite
+103	4	0	14	208	3	// Meteorite
+103	4	0	15	172	3	// Meteorite
+103	4	0	15	173	3	// Meteorite
+103	4	0	15	174	3	// Meteorite
+103	4	0	196	56	3	// Meteorite
+103	4	0	196	57	3	// Meteorite
+103	4	0	196	58	3	// Meteorite
+103	4	0	196	62	3	// Meteorite
+103	4	0	197	62	3	// Meteorite
+103	4	0	198	62	3	// Meteorite
+103	4	0	199	62	3	// Meteorite
+103	4	0	202	45	3	// Meteorite
+103	4	0	202	46	3	// Meteorite
+103	4	0	202	47	3	// Meteorite
+103	4	0	202	48	3	// Meteorite
+103	4	0	21	243	3	// Meteorite
+103	4	0	219	234	1	// Meteorite
+103	4	0	219	235	1	// Meteorite
+103	4	0	219	236	1	// Meteorite
+103	4	0	219	237	1	// Meteorite
+103	4	0	22	243	3	// Meteorite
+103	4	0	226	115	3	// Meteorite
+103	4	0	226	116	3	// Meteorite
+103	4	0	226	117	3	// Meteorite
+103	4	0	226	233	1	// Meteorite
+103	4	0	227	233	1	// Meteorite
+103	4	0	228	233	1	// Meteorite
+103	4	0	23	243	3	// Meteorite
+103	4	0	26	101	3	// Meteorite
+103	4	0	26	102	3	// Meteorite
+103	4	0	26	103	3	// Meteorite
+103	4	0	26	104	3	// Meteorite
+103	4	0	26	125	1	// Meteorite
+103	4	0	27	125	1	// Meteorite
+103	4	0	27	128	1	// Meteorite
+103	4	0	27	129	1	// Meteorite
+103	4	0	27	130	1	// Meteorite
+103	4	0	28	125	1	// Meteorite
+103	4	0	29	125	1	// Meteorite
+103	4	0	30	100	3	// Meteorite
+103	4	0	30	101	3	// Meteorite
+103	4	0	30	99	3	// Meteorite
+103	4	0	33	125	1	// Meteorite
+103	4	0	34	125	1	// Meteorite
+103	4	0	34	128	1	// Meteorite
+103	4	0	34	129	1	// Meteorite
+103	4	0	34	130	1	// Meteorite
+103	4	0	35	125	1	// Meteorite
+103	4	0	36	125	1	// Meteorite
+103	4	0	36	133	1	// Meteorite
+103	4	0	36	134	1	// Meteorite
+103	4	0	37	119	3	// Meteorite
+103	4	0	37	120	3	// Meteorite
+103	4	0	38	108	5	// Meteorite
+103	4	0	38	109	5	// Meteorite
+103	4	0	38	110	5	// Meteorite
+103	4	0	4	175	3	// Meteorite
+103	4	0	4	194	3	// Meteorite
+103	4	0	41	132	1	// Meteorite
+103	4	0	41	133	1	// Meteorite
+103	4	0	42	245	3	// Meteorite
+103	4	0	42	246	3	// Meteorite
+103	4	0	45	108	5	// Meteorite
+103	4	0	45	109	5	// Meteorite
+103	4	0	45	110	1	// Meteorite
+103	4	0	45	110	1	// Meteorite
+103	4	0	45	110	5	// Meteorite
+103	4	0	46	169	3	// Meteorite
+103	4	0	46	170	3	// Meteorite
+103	4	0	46	171	3	// Meteorite
+103	4	0	46	172	3	// Meteorite
+103	4	0	47	131	1	// Meteorite
+103	4	0	47	132	1	// Meteorite
+103	4	0	5	175	3	// Meteorite
+103	4	0	5	194	3	// Meteorite
+103	4	0	5	237	3	// Meteorite
+103	4	0	51	198	3	// Meteorite
+103	4	0	51	199	3	// Meteorite
+103	4	0	51	200	3	// Meteorite
+103	4	0	51	201	3	// Meteorite
+103	4	0	52	114	3	// Meteorite
+103	4	0	52	178	3	// Meteorite
+103	4	0	53	114	3	// Meteorite
+103	4	0	53	178	3	// Meteorite
+103	4	0	54	114	3	// Meteorite
+103	4	0	54	178	3	// Meteorite
+103	4	0	6	175	3	// Meteorite
+103	4	0	6	194	3	// Meteorite
+103	4	0	6	237	3	// Meteorite
+103	4	0	7	237	3	// Meteorite
+103	4	0	82	175	3	// Meteorite
+103	4	0	82	184	3	// Meteorite
+103	4	0	82	201	3	// Meteorite
+103	4	0	83	175	3	// Meteorite
+103	4	0	83	184	3	// Meteorite
+103	4	0	83	201	3	// Meteorite
+103	4	0	84	120	3	// Meteorite
+103	4	0	84	175	3	// Meteorite
+103	4	0	84	184	3	// Meteorite
+103	4	0	84	201	3	// Meteorite
+103	4	0	85	120	3	// Meteorite
+103	4	0	85	175	3	// Meteorite
+103	4	0	86	120	3	// Meteorite
+103	4	0	93	130	3	// Meteorite
+103	4	0	93	131	3	// Meteorite
+103	4	0	93	132	3	// Meteorite
+103	4	0	93	243	3	// Meteorite
+103	4	0	93	244	3	// Meteorite
+103	4	0	93	245	3	// Meteorite
+103	4	0	93	246	3	// Meteorite
+103	4	0	98	225	3	// Meteorite
+103	4	0	99	225	3	// Meteorite
+end
+
+//======================================//
+//		SPOTS			//
+//======================================//
+
+//=========================================================================================================================================
+// Lorencia
+//=========================================================================================================================================
+1
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+3	0	2	187	119	188	117	-1	4	// Spider
+2	0	2	191	142	194	142	-1	4	// Budge Dragon
+3	0	2	179	154	174	155	-1	2	// Spider
+2	0	2	179	154	174	155	-1	3	// Budge Dragon
+0	0	2	152	53	155	51	-1	3	// Bull Fighter
+1	0	2	143	76	145	75	-1	2	// Hound
+6	0	2	131	171	135	174	-1	3	// Lich
+14	0	2	131	171	135	174	-1	2	// Skeleton
+4	0	2	87	124	91	128	-1	3	// Elite Bull Fighter
+7	0	2	87	124	91	128	-1	2	// Giant
+
+3	0	30	180	90	226	244	-1	10	// Spider
+2	0	30	180	90	226	244	-1	10	// Budge Dragon
+2	0	30	135	20	240	88	-1	10	// Budge Dragon
+4	0	30	135	20	240	88	-1	10	// Bull Fighter
+6	0	30	95	168	175	244	-1	10	// Lich	
+14	0	30	95	168	175	244	-1	10	// Skeleton
+1	0	30	8	11	94	244	-1	10	// Hound
+4	0	30	8	11	94	244	-1	10	// Elite Bull Fighter
+7	0	30	8	11	60	80	-1	10	// Giant
+end
+
+//=========================================================================================================================================
+// Dungeon 1
+//=========================================================================================================================================
+1
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+5	1	10	112	230	121	233	-1	5	// Hell Hound
+8	1	10	88	235	94	244	-1	5	// Poison Bull Fighter
+9	1	10	83	205	86	223	-1	5	// Thunder Lich
+10	1	10	94	185	104	195	-1	5	// Dark Knight
+10	1	10	70	177	80	187	-1	5	// Dark Knight
+10	1	10	63	216	78	231	-1	5	// Dark Knight
+11	1	10	26	241	48	247	-1	5	// Ghost
+12	1	10	6	242	19	247	-1	5	// Larva
+13	1	10	11	218	28	226	-1	5	// Hell Spider
+14	1	10	47	228	57	238	-1	5	// Skeleton
+14	1	10	42	195	54	212	-1	5	// Skeleton
+15	1	10	38	156	54	169	-1	5	// Skeleton Archer
+10	1	10	78	146	88	156	-1	5	// Dark Knight
+10	1	10	117	148	128	158	-1	5	// Dark Knight
+16	1	10	61	163	75	177	-1	5	// Chief Skeleton Warrior
+17	1	10	107	175	122	190	-1	5	// Cyclops
+15	1	10	125	141	131	157	-1	5	// Skeleton Archer
+14	1	10	112	210	122	224	-1	5	// Skeleton
+13	1	10	115	237	145	249	-1	7	// Hell Spider
+11	1	10	149	238	162	249	-1	7	// Ghost
+13	1	10	187	217	196	242	-1	7	// Hell Spider
+15	1	10	199	221	212	233	-1	5	// Skeleton Archer
+12	1	10	235	235	245	245	-1	5	// Larva
+10	1	10	240	193	250	203	-1	5	// Dark Knight
+10	1	10	207	173	217	183	-1	5	// Dark Knight
+13	1	10	171	195	179	202	-1	7	// Hell Spider
+13	1	10	153	146	168	183	-1	7	// Hell Spider
+17	1	10	206	150	212	163	-1	5	// Cyclops
+16	1	10	224	168	238	175	-1	5	// Chief Skeleton Warrior
+//=========================================================================================================================================
+// Dungeon 2
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+17	1	10	228	111	231	121	-1	6	// Cyclops
+16	1	10	198	116	201	123	-1	6	// Chief Skeleton Warrior
+15	1	10	161	124	171	129	-1	6	// Skeleton Archer
+14	1	10	121	116	126	125	-1	6	// Skeleton
+13	1	10	93	109	96	117	-1	6	// Hell Spider
+13	1	10	83	111	106	119	-1	6	// Hell Spider
+17	1	10	62	105	71	113	-1	6	// Cyclops
+16	1	10	93	99	97	106	-1	6	// Chief Skeleton Warrior
+15	1	10	67	47	77	53	-1	6	// Skeleton Archer
+14	1	10	96	46	102	54	-1	6	// Skeleton
+17	1	10	117	70	122	78	-1	6	// Cyclops
+16	1	10	135	84	142	89	-1	6	// Chief Skeleton Warrior
+17	1	10	162	92	175	102	-1	6	// Cyclops
+16	1	10	209	82	222	92	-1	6	// Chief Skeleton Warrior
+14	1	10	241	68	249	80	-1	6	// Skeleton
+15	1	10	233	36	239	50	-1	6	// Skeleton Archer
+15	1	10	240	11	245	23	-1	6	// Skeleton Archer
+15	1	10	217	11	223	15	-1	6	// Skeleton Archer
+17	1	10	194	8	199	21	-1	6	// Cyclops
+16	1	10	155	40	162	45	-1	6	// Chief Skeleton Warrior
+16	1	10	118	42	125	48	-1	6	// Chief Skeleton Warrior
+10	1	10	112	5	122	15	-1	6	// Dark Knight
+10	1	10	75	3	85	13	-1	6	// Dark Knight
+10	1	10	45	7	55	17	-1	6	// Dark Knight
+17	1	10	34	22	44	32	-1	6	// Cyclops
+//=========================================================================================================================================
+// Dungeon 3
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+15	1	10	20	89	30	99	-1	4	// Skeleton Archer
+16	1	10	20	89	30	99	-1	4	// Chief Skeleton Warrior
+17	1	10	20	89	30	99	-1	4	// Cyclops
+15	1	10	13	69	25	81	-1	4	// Skeleton Archer
+16	1	10	13	69	25	81	-1	4	// Chief Skeleton Warrior
+17	1	10	13	69	25	81	-1	4	// Cyclops
+15	1	10	1	50	13	62	-1	4	// Skeleton Archer
+16	1	10	1	50	13	62	-1	4	// Chief Skeleton Warrior
+17	1	10	1	50	13	62	-1	4	// Cyclops
+15	1	10	20	50	32	62	-1	4	// Skeleton Archer
+16	1	10	20	50	32	62	-1	4	// Chief Skeleton Warrior
+17	1	10	20	50	32	62	-1	4	// Cyclops
+15	1	10	40	50	46	62	-1	4	// Skeleton Archer
+16	1	10	40	50	46	62	-1	4	// Chief Skeleton Warrior
+17	1	10	40	50	46	62	-1	4	// Cyclops
+15	1	10	40	80	46	92	-1	4	// Skeleton Archer
+16	1	10	40	80	46	92	-1	4	// Chief Skeleton Warrior
+17	1	10	40	80	46	92	-1	4	// Cyclops
+15	1	10	40	115	46	128	-1	4	// Skeleton Archer
+16	1	10	40	115	46	128	-1	4	// Chief Skeleton Warrior
+17	1	10	40	115	46	128	-1	4	// Cyclops
+15	1	10	1	118	10	128	-1	4	// Skeleton Archer
+16	1	10	1	118	10	128	-1	4	// Chief Skeleton Warrior
+17	1	10	1	118	10	128	-1	4	// Cyclops
+end
+
+//=========================================================================================================================================
+// Devias
+//=========================================================================================================================================
+1
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+24	2	2	220	82	225	87	-1	3	// Worm
+21	2	2	220	82	225	87	-1	2	// Assassin
+24	2	2	160	35	165	40	-1	3	// Worm
+21	2	2	160	35	165	40	-1	2	// Assassin
+20	2	10	193	232	203	244	-1	5	// Elite Yeti
+
+24	2	30	170	80	245	200	-1	10	// Worm
+23	2	30	170	80	245	200	-1	10	// Hommerd
+22	2	30	50	6	166	244	-1	10	// Ice Monster
+23	2	30	50	6	166	244	-1	10	// Hommerd
+19	2	30	50	6	166	244	-1	10	// Yeti
+21	2	30	50	6	166	244	-1	10	// Assassin
+20	2	30	50	6	166	244	-1	10	// Elite Yeti
+20	2	30	5	50	50	155	-1	10	// Elite Yeti
+20	2	30	6	184	80	244	-1	10	// Elite Yeti	
+end
+
+//=========================================================================================================================================
+// Noria
+//=========================================================================================================================================
+1
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+26	3	2	148	116	152	120	-1	4	// Goblin
+30	3	2	205	138	210	143	-1	4	// Forest Monster
+27	3	2	157	73	162	78	-1	4	// Chain Scorpion
+
+26	3	30	109	46	154	181	-1	10	// Goblin
+26	3	30	136	156	247	204	-1	10	// Goblin
+26	3	30	135	42	247	73	-1	10	// Goblin
+27	3	30	109	46	154	181	-1	10	// Chain Scorpion
+27	3	30	135	42	247	73	-1	10	// Chain Scorpion	
+27	3	30	136	156	247	204	-1	10	// Chains Scorpion
+33	3	30	106	3	247	40	-1	10	// Elite Goblin
+33	3	30	59	6	128	106	-1	10	// Elite Goblin
+28	3	30	59	6	128	106	-1	10	// Beetle Monster
+28	3	30	106	3	247	40	-1	10	// Beetle Monster
+29	3	30	106	3	247	40	-1	10	// Hunter
+29	3	30	59	6	128	106	-1	10	// Hunter
+30	3	30	7	4	63	176	-1	10	// Forest Monster
+30	3	30	41	107	107	181	-1	10	// Forest Monster
+30	3	30	105	184	247	246	-1	10	// Forest Monster
+31	3	30	7	4	63	176	-1	10	// Agon
+31	3	30	41	107	107	181	-1	10	// Agon
+31	3	30	105	184	247	246	-1	10	// Agon
+32	3	30	4	168	115	248	-1	10	// Stone Golem
+32	3	30	160	71	160	71 	-1	10	// Stone Golem
+end
+
+//=========================================================================================================================================
+// LostTower 1
+//=========================================================================================================================================
+1
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+36	4	10	199	39	206	54	-1	4	// Shadow
+39	4	10	199	39	206	54	-1	3	// Poison Shadow
+36	4	10	192	100	200	108	-1	5	// Shadow
+39	4	10	192	100	200	108	-1	7	// Poison Shadow
+36	4	10	162	33	166	123	-1	5	// Shadow
+39	4	10	162	33	166	123	-1	7	// Poison Shadow
+36	4	10	240	11	247	120	-1	5	// Shadow
+39	4	10	240	11	247	120	-1	7	// Poison Shadow
+//=========================================================================================================================================
+// LostTower 2
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+34	4	10	217	242	224	250	-1	3	// Cursed Wizard
+39	4	10	217	242	224	250	-1	3	// Poison Shadow
+34	4	10	206	204	218	218	-1	3	// Cursed Wizard
+39	4	10	206	204	218	218	-1	3	// Poison Shadow
+34	4	10	232	206	241	224	-1	3	// Cursed Wizard
+39	4	10	232	206	241	224	-1	3	// Poison Shadow
+//=========================================================================================================================================
+// LostTower 3
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+41	4	10	97	166	106	171	-1	3	// Death Cow
+34	4	10	97	166	106	171	-1	3	// Cursed Wizard
+41	4	10	82	196	85	206	-1	3	// Death Cow
+34	4	10	82	196	85	206	-1	3	// Cursed Wizard
+41	4	10	98	182	104	188	-1	3	// Death Cow
+34	4	10	98	182	104	188	-1	3	// Cursed Wizard
+41	4	10	110	200	116	206	-1	3	// Death Cow
+34	4	10	110	200	116	206	-1	3	// Cursed Wizard
+41	4	10	129	199	134	204	-1	3	// Death Cow
+34	4	10	129	199	134	204	-1	3	// Cursed Wizard
+41	4	10	120	165	125	170	-1	3	// Death Cow
+34	4	10	120	165	125	170	-1	3	// Cursed Wizard
+//=========================================================================================================================================
+// LostTower 4
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+37	4	10	106	106	110	112	-1	3	// Devil
+41	4	10	106	106	110	112	-1	3	// Death Cow
+37	4	10	115	106	119	112	-1	3	// Devil
+41	4	10	115	106	119	112	-1	3	// Death Cow
+37	4	10	83	130	88	135	-1	3	// Devil
+41	4	10	83	130	88	135	-1	3	// Death Cow
+37	4	10	107	130	112	135	-1	3	// Devil
+41	4	10	107	130	112	135	-1	3	// Death Cow
+//=========================================================================================================================================
+// LostTower 5
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+37	4	10	127	39	132	44	-1	2	// Devil
+41	4	10	127	39	132	44	-1	2	// Death Cow
+40	4	10	127	39	132	44	-1	2	// Death Knight
+37	4	10	109	22	115	28	-1	2	// Devil
+41	4	10	109	22	115	28	-1	2	// Death Cow
+40	4	10	109	22	115	28	-1	2	// Death Knight
+37	4	10	81	14	86	19	-1	2	// Devil
+41	4	10	81	14	86	19	-1	2	// Death Cow
+40	4	10	81	14	86	19	-1	2	// Death Knight
+37	4	10	84	49	91	56	-1	3	// Devil
+41	4	10	84	49	91	56	-1	3	// Death Cow
+40	4	10	84	49	91	56	-1	2	// Death Knight
+//=========================================================================================================================================
+// LostTower 6
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+37	4	10	52	23	57	28	-1	3	// Devil
+40	4	10	52	23	57	28	-1	3	// Death Knight
+37	4	10	52	5	57	10	-1	3	// Devil
+40	4	10	52	5	57	10	-1	3	// Death Knight
+37	4	10	27	37	32	42	-1	3	// Devil
+40	4	10	27	37	32	42	-1	3	// Death Knight
+37	4	10	11	47	16	52	-1	3	// Devil
+40	4	10	11	47	16	52	-1	3	// Death Knight
+37	4	10	20	9	27	12	-1	3	// Devil
+40	4	10	20	9	27	12	-1	3	// Death Knight
+//=========================================================================================================================================
+// LostTower 7
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+37	4	10	52	87	56	94	-1	6	// Devil
+40	4	10	12	99	18	105	-1	4	// Death Knight
+37	4	10	12	99	18	105	-1	3	// Devil
+40	4	10	52	111	56	118	-1	6	// Death Knight
+40	4	10	10	126	19	134	-1	3	// Death Knight
+37	4	10	10	126	19	134	-1	4	// Devil
+35	4	10	21	185	25	198	-1	7	// Death Gorgon
+35	4	10	35	185	39	198	-1	7	// Death Gorgon
+35	4	10	21	226	25	239	-1	7	// Death Gorgon
+35	4	10	35	226	39	239	-1	7	// Death Gorgon
+end
+
+//=========================================================================================================================================
+// Stadium
+//=========================================================================================================================================
+1
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+200	6	0	62	160	62	160	-1	1	// Soccer Ball
+
+84	6	2	44	80	50	86	-1	3	// Chief Skeleton Warrior
+127	6	2	44	80	50	86	-1	2	// Dark Skull Soldier
+72	6	2	66	72	71	77	-1	5	// Phantom Knight
+36	6	2	47	57	47	57	-1	5	// Shadow
+58	6	2	42	34	51	43	-1	5	// Tantalos
+92	6	2	25	34	34	43	-1	5	// Dark Skull Soldier
+74	6	2	25	52	34	61	-1	5	// Alpha Crust
+93	6	2	30	74	30	74	-1	5	// Giant Ogre
+63	6	2	25	87	34	97	-1	5	// Death Beam Knight
+129	6	2	12	74	12	74	-1	5	// Red Skeleton Knight
+129	6	2	7	52	15	61	-1	5	// Red Skeleton Knight
+60	6	2	11	38	11	38	-1	5	// Bloody wolf
+57	6	2	8	90	15	95	-1	6	// Iron Wheel
+125	6	2	47	10	50	06	-1	5	// Chief Skeleton Warrior
+126	6	2	83	13	86	10	-1	5	// Chief Skeleton Archer
+127	6	60	79	23	99	115	-1	22	// Dark Skull Soldier
+125	6	4	29	110	32	110	-1	5	// Chief Skeleton Warrior
+126	6	4	12	111	14	108	-1	5	// Chief Skeleton Archer
+end
+
+//=========================================================================================================================================
+// Atlans 1
+//=========================================================================================================================================
+1
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+45	7	2	18	40	22	44	-1	3	// Bahamut
+46	7	2	18	40	22	44	-1	2	// Vepar
+45	7	2	60	9	65	14	-1	2	// Bahamut
+46	7	2	60	9	65	14	-1	3	// Vepar
+45	7	10	15	90	25	125	-1	4	// Bahamut
+46	7	10	42	84	72	95	-1	4	// Vepar
+47	7	10	100	14	125	25	-1	4	// Valkyrie
+45	7	10	180	10	200	30	-1	4	// Bahamut
+45	7	10	12	127	16	131	-1	4	// Bahamut
+//=========================================================================================================================================
+// Atlans 2
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+51	7	10	214	10	230	22	-1	4	// Great Bahamut
+51	7	10	217	66	227	76	-1	4	// Great Bahamut
+48	7	10	128	58	180	66	-1	4	// Lizard King
+52	7	10	133	126	145	130	-1	4	// Silver Valkyrie
+52	7	10	219	189	226	195	-1	3	// Silver Valkyrie
+49	7	10	219	189	226	195	-1	3	// Hydra
+51	7	10	240	5	244	9	-1	5	// Great Bahamut
+//=========================================================================================================================================
+// Atlans 3
+//=========================================================================================================================================
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+48	7	10	30	160	40	170	-1	4	// Lizard King
+52	7	10	158	138	180	150	-1	4	// Silver Valkyrie
+49	7	10	158	138	180	150	-1	4	// Hydra
+52	7	10	28	212	42	226	-1	4	// Silver Valkyrie
+49	7	10	28	212	42	226	-1	4	// Hydra
+end
+
+//=========================================================================================================================================
+// Tarkan
+//=========================================================================================================================================
+1
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+57	8	2	200	105	210	115	-1	2	// Iron Wheel
+58	8	2	200	105	210	115	-1	3	// Tantalos
+57	8	2	142	52	147	57	-1	2	// Iron Wheel
+58	8	2	142	52	152	62	-1	3	// Tantalos
+59	8	10	151	146	159	153	-1	3	// Zaikan
+60	8	10	65	90	75	100	-1	4	// Blood wolf
+61	8	10	25	118	35	128	-1	3	// Beam Knight
+62	8	10	90	145	100	155	-1	4	// Mutant
+63	8	10	150	205	160	215	-1	3	// Death Beam Knight
+61	8	10	105	210	115	215	-1	4	// Beam Knight
+63	8	10	10	232	20	242	-1	4	// Death Beam Knight
+end
+
+//=========================================================================================================================================
+// Icarus
+//=========================================================================================================================================
+1
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir 	Quant	Name
+69	10	10	30	23	65	45	-1	6	// Alquamos
+70	10	10	30	23	65	45	-1	7	// Queen Rainier
+71	10	10	87	28	97	67	-1	6	// Mega Crust
+72	10	10	60	66	80	88	-1	7	// Phantom Knight
+73	10	10	28	95	46	117	-1	6	// Drakan
+75	10	10	37	140	62	171	-1	7	// Great Drakan
+74	10	10	40	197	54	219	-1	5	// Alpha Crust
+77	10	10	35	226	45	236	-1	3	// Phoenix of Darkness
+end
+
+//======================================//
+//		INVASIONS		//
+//======================================//
+
+//=========================================================================================================================================
+// Death King Invasion
+//=========================================================================================================================================
+3
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir	Quant	Value	Name
+55	0	30	125	190	140	203	-1	1	0	// Death King
+56	0	30	125	190	140	203	-1	10	0	// Death Bone
+55	3	30	95	70	205	86	-1	1	0	// Death King
+56	3	30	195	70	205	86	-1	10	0	// Death Bone
+end
+
+//=========================================================================================================================================
+// Red Dragons Invasion
+//=========================================================================================================================================
+3
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir	Quant	Value	Name
+42	0	30	10	10	240	240	-1	1	0	// Red Dragon
+42	2	30	10	10	240	240	-1	1	0	// Red Dragon
+end
+
+//=========================================================================================================================================
+// Goldens Invasion
+//=========================================================================================================================================
+3
+//Mob	Map	Radio	CordX	CordY	CordX2	CordY2	Dir	Quant	Value	Name
+43	0	30	10	10	240	240	-1	15	0	// Golden Budge Dragon
+53	2	30	10	10	240	240	-1	15	0	// Golden Titan
+54	2	30	10	10	240	240	-1	15	0	// Golden Soldier
+78	3	30	10	10	240	240	-1	15	0	// Golden Goblin
+79	0	30	10	10	240	240	-1	1	0	// Golden Dragon
+79	1	30	10	10	240	240	-1	1	0	// Golden Dragon
+79	2	30	10	10	240	240	-1	1	0	// Golden Dragon
+79	3	30	10	10	240	240	-1	1	0	// Golden Dragon
+79	4	30	10	10	240	240	-1	1	0	// Golden Dragon
+79	7	30	10	10	240	240	-1	1	0	// Golden Dragon
+79	8	30	10	10	240	240	-1	1	0	// Golden Dragon
+79	10	30	10	10	240	240	-1	1	0	// Golden Dragon
+80	7	30	10	10	240	240	-1	15	0	// Golden Lizard King
+81	7	30	10	10	240	240	-1	15	0	// Golden Vepar
+82	8	30	10	10	240	240	-1	15	0	// Golden Tantalos
+83	8	30	10	10	240	240	-1	15	0	// Golden Wheel
+end
+
+//======================================//
+//		EVENTS			//
+//======================================//
+
+//=========================================================================================================================================
+// Blood Castle NPCS
+//=========================================================================================================================================
+0
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+232	11	0	10	9	1	// Archangel
+232	12	0	10	9	1	// Archangel
+232	13	0	10	9	1	// Archangel
+232	14	0	10	9	1	// Archangel
+232	15	0	10	9	1	// Archangel
+232	16	0	10	9	1	// Archangel
+end
+
+//=========================================================================================================================================
+// Blood Castle 1
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+84	11	30	14	34	7	// Chief Skeleton Warrior
+84	11	30	14	38	7	// Chief Skeleton Warrior
+84	11	30	13	35	7	// Chief Skeleton Warrior
+84	11	30	13	28	7	// Chief Skeleton Warrior
+84	11	30	15	35	7	// Chief Skeleton Warrior
+84	11	30	14	33	7	// Chief Skeleton Warrior
+84	11	30	15	41	7	// Chief Skeleton Warrior
+84	11	30	14	42	7	// Chief Skeleton Warrior
+84	11	30	15	25	7	// Chief Skeleton Warrior
+84	11	30	15	23	7	// Chief Skeleton Warrior
+84	11	30	13	26	7	// Chief Skeleton Warrior
+84	11	30	13	37	7	// Chief Skeleton Warrior
+84	11	30	14	40	7	// Chief Skeleton Warrior
+84	11	30	13	39	7	// Chief Skeleton Warrior
+84	11	30	14	27	7	// Chief Skeleton Warrior
+84	11	30	14	24	7	// Chief Skeleton Warrior
+84	11	30	14	32	7	// Chief Skeleton Warrior
+84	11	30	15	45	7	// Chief Skeleton Warrior
+84	11	30	15	31	7	// Chief Skeleton Warrior
+85	11	30	15	26	7	// Chief Skeleton Archer
+85	11	30	13	45	7	// Chief Skeleton Archer
+85	11	30	13	23	7	// Chief Skeleton Archer
+85	11	30	15	43	7	// Chief Skeleton Archer
+85	11	30	15	39	7	// Chief Skeleton Archer
+85	11	30	15	37	7	// Chief Skeleton Archer
+85	11	30	13	29	7	// Chief Skeleton Archer
+85	11	30	15	28	7	// Chief Skeleton Archer
+85	11	30	13	25	7	// Chief Skeleton Archer
+85	11	30	13	21	7	// Chief Skeleton Archer
+85	11	30	14	22	7	// Chief Skeleton Archer
+85	11	30	15	21	7	// Chief Skeleton Archer
+85	11	30	13	31	7	// Chief Skeleton Archer
+85	11	30	15	30	7	// Chief Skeleton Archer
+85	11	30	15	33	7	// Chief Skeleton Archer
+85	11	30	14	21	7	// Chief Skeleton Archer
+85	11	30	13	43	7	// Chief Skeleton Archer
+86	11	30	15	46	7	// Dark Skull Soldier
+86	11	30	15	63	7	// Dark Skull Soldier
+86	11	30	15	53	7	// Dark Skull Soldier
+86	11	30	13	65	7	// Dark Skull Soldier
+86	11	30	13	67	7	// Dark Skull Soldier
+86	11	30	15	59	7	// Dark Skull Soldier
+86	11	30	13	59	7	// Dark Skull Soldier
+86	11	30	15	55	7	// Dark Skull Soldier
+86	11	30	13	62	7	// Dark Skull Soldier
+86	11	30	13	41	7	// Dark Skull Soldier
+86	11	30	15	69	7	// Dark Skull Soldier
+86	11	30	13	50	7	// Dark Skull Soldier
+86	11	30	15	48	7	// Dark Skull Soldier
+86	11	30	13	46	7	// Dark Skull Soldier
+86	11	30	14	44	7	// Dark Skull Soldier
+86	11	30	15	51	7	// Dark Skull Soldier
+86	11	30	14	49	7	// Dark Skull Soldier
+86	11	30	15	57	7	// Dark Skull Soldier
+86	11	30	14	64	7	// Dark Skull Soldier
+86	11	30	14	67	7	// Dark Skull Soldier
+86	11	30	13	53	7	// Dark Skull Soldier
+86	11	30	15	65	7	// Dark Skull Soldier
+86	11	30	15	60	7	// Dark Skull Soldier
+86	11	30	13	57	7	// Dark Skull Soldier
+87	11	30	13	69	7	// Giant Ogre
+87	11	30	14	61	7	// Giant Ogre
+87	11	30	13	55	7	// Giant Ogre
+87	11	30	14	58	7	// Giant Ogre
+87	11	30	14	52	7	// Giant Ogre
+87	11	30	15	50	7	// Giant Ogre
+87	11	30	15	66	7	// Giant Ogre
+87	11	30	14	56	7	// Giant Ogre
+87	11	30	14	70	7	// Giant Ogre
+87	11	30	13	63	7	// Giant Ogre
+87	11	30	13	48	7	// Giant Ogre
+88	11	30	13	78	7	// Red Skeleton Knight
+88	11	30	14	83	7	// Red Skeleton Knight
+88	11	30	14	78	7	// Red Skeleton Knight
+88	11	30	15	78	7	// Red Skeleton Knight
+88	11	30	16	80	7	// Red Skeleton Knight
+88	11	30	15	62	7	// Red Skeleton Knight
+88	11	30	52	83	7	// Red Skeleton Knight
+88	11	30	14	90	7	// Red Skeleton Knight
+88	11	30	11	83	7	// Red Skeleton Knight
+88	11	30	15	94	7	// Red Skeleton Knight
+88	11	30	20	82	7	// Red Skeleton Knight
+88	11	30	20	88	7	// Red Skeleton Knight
+88	11	30	14	54	7	// Red Skeleton Knight
+88	11	30	14	36	7	// Red Skeleton Knight
+88	11	30	15	68	7	// Red Skeleton Knight
+88	11	30	14	47	7	// Red Skeleton Knight
+89	11	30	16	87	7	// Magic Skeleton
+89	11	30	12	81	7	// Magic Skeleton
+89	11	30	13	88	7	// Magic Skeleton
+89	11	30	13	85	7	// Magic Skeleton
+89	11	30	19	85	7	// Magic Skeleton
+89	11	30	13	93	7	// Magic Skeleton
+89	11	30	14	80	7	// Magic Skeleton
+89	11	30	18	81	7	// Magic Skeleton
+end
+
+//=========================================================================================================================================
+// Blood Castle 2
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+90	12	30	14	34	7	// Chief Skeleton Warrior
+90	12	30	14	38	7	// Chief Skeleton Warrior
+90	12	30	13	35	7	// Chief Skeleton Warrior
+90	12	30	13	28	7	// Chief Skeleton Warrior
+90	12	30	15	35	7	// Chief Skeleton Warrior
+90	12	30	14	33	7	// Chief Skeleton Warrior
+90	12	30	15	41	7	// Chief Skeleton Warrior
+90	12	30	14	42	7	// Chief Skeleton Warrior
+90	12	30	15	25	7	// Chief Skeleton Warrior
+90	12	30	15	23	7	// Chief Skeleton Warrior
+90	12	30	13	26	7	// Chief Skeleton Warrior
+90	12	30	13	37	7	// Chief Skeleton Warrior
+90	12	30	14	40	7	// Chief Skeleton Warrior
+90	12	30	13	39	7	// Chief Skeleton Warrior
+90	12	30	14	27	7	// Chief Skeleton Warrior
+90	12	30	14	24	7	// Chief Skeleton Warrior
+90	12	30	14	32	7	// Chief Skeleton Warrior
+90	12	30	15	45	7	// Chief Skeleton Warrior
+90	12	30	15	31	7	// Chief Skeleton Warrior
+91	12	30	15	26	7	// Chief Skeleton Archer
+91	12	30	13	45	7	// Chief Skeleton Archer
+91	12	30	13	23	7	// Chief Skeleton Archer
+91	12	30	15	43	7	// Chief Skeleton Archer
+91	12	30	15	39	7	// Chief Skeleton Archer
+91	12	30	15	37	7	// Chief Skeleton Archer
+91	12	30	13	29	7	// Chief Skeleton Archer
+91	12	30	15	28	7	// Chief Skeleton Archer
+91	12	30	13	25	7	// Chief Skeleton Archer
+91	12	30	13	21	7	// Chief Skeleton Archer
+91	12	30	14	22	7	// Chief Skeleton Archer
+91	12	30	15	21	7	// Chief Skeleton Archer
+91	12	30	13	31	7	// Chief Skeleton Archer
+91	12	30	15	30	7	// Chief Skeleton Archer
+91	12	30	15	33	7	// Chief Skeleton Archer
+91	12	30	14	21	7	// Chief Skeleton Archer
+91	12	30	13	43	7	// Chief Skeleton Archer
+92	12	30	15	46	7	// Dark Skull Soldier
+92	12	30	15	63	7	// Dark Skull Soldier
+92	12	30	15	53	7	// Dark Skull Soldier
+92	12	30	13	65	7	// Dark Skull Soldier
+92	12	30	13	67	7	// Dark Skull Soldier
+92	12	30	15	59	7	// Dark Skull Soldier
+92	12	30	13	59	7	// Dark Skull Soldier
+92	12	30	15	55	7	// Dark Skull Soldier
+92	12	30	13	62	7	// Dark Skull Soldier
+92	12	30	13	41	7	// Dark Skull Soldier
+92	12	30	15	69	7	// Dark Skull Soldier
+92	12	30	13	50	7	// Dark Skull Soldier
+92	12	30	15	48	7	// Dark Skull Soldier
+92	12	30	13	46	7	// Dark Skull Soldier
+92	12	30	14	44	7	// Dark Skull Soldier
+92	12	30	15	51	7	// Dark Skull Soldier
+92	12	30	14	49	7	// Dark Skull Soldier
+92	12	30	15	57	7	// Dark Skull Soldier
+92	12	30	14	64	7	// Dark Skull Soldier
+92	12	30	14	67	7	// Dark Skull Soldier
+92	12	30	13	53	7	// Dark Skull Soldier
+92	12	30	15	65	7	// Dark Skull Soldier
+92	12	30	15	60	7	// Dark Skull Soldier
+92	12	30	13	57	7	// Dark Skull Soldier
+92	12	30	13	69	7	// Giant Ogre
+93	12	30	14	61	7	// Giant Ogre
+93	12	30	13	55	7	// Giant Ogre
+93	12	30	14	58	7	// Giant Ogre
+93	12	30	14	52	7	// Giant Ogre
+93	12	30	15	50	7	// Giant Ogre
+93	12	30	15	66	7	// Giant Ogre
+93	12	30	14	56	7	// Giant Ogre
+93	12	30	14	70	7	// Giant Ogre
+93	12	30	13	63	7	// Giant Ogre
+93	12	30	13	48	7	// Giant Ogre
+94	12	30	13	78	7	// Red Skeleton Knight
+94	12	30	14	83	7	// Red Skeleton Knight
+94	12	30	14	78	7	// Red Skeleton Knight
+94	12	30	15	78	7	// Red Skeleton Knight
+94	12	30	16	80	7	// Red Skeleton Knight
+94	12	30	15	62	7	// Red Skeleton Knight
+94	12	30	52	83	7	// Red Skeleton Knight
+94	12	30	14	90	7	// Red Skeleton Knight
+94	12	30	11	83	7	// Red Skeleton Knight
+94	12	30	15	94	7	// Red Skeleton Knight
+94	12	30	20	82	7	// Red Skeleton Knight
+94	12	30	20	88	7	// Red Skeleton Knight
+94	12	30	14	54	7	// Red Skeleton Knight
+94	12	30	14	36	7	// Red Skeleton Knight
+94	12	30	15	68	7	// Red Skeleton Knight
+94	12	30	14	47	7	// Red Skeleton Knight
+95	12	30	16	87	7	// Magic Skeleton
+95	12	30	12	81	7	// Magic Skeleton
+95	12	30	13	88	7	// Magic Skeleton
+95	12	30	13	85	7	// Magic Skeleton
+95	12	30	19	85	7	// Magic Skeleton
+95	12	30	13	93	7	// Magic Skeleton
+95	12	30	14	80	7	// Magic Skeleton
+95	12	30	18	81	7	// Magic Skeleton
+end
+
+//=========================================================================================================================================
+// Blood Castle 3
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+96	13	30	14	34	7	// Chief Skeleton Warrior
+96	13	30	14	38	7	// Chief Skeleton Warrior
+96	13	30	13	35	7	// Chief Skeleton Warrior
+96	13	30	13	28	7	// Chief Skeleton Warrior
+96	13	30	15	35	7	// Chief Skeleton Warrior
+96	13	30	14	33	7	// Chief Skeleton Warrior
+96	13	30	15	41	7	// Chief Skeleton Warrior
+96	13	30	14	42	7	// Chief Skeleton Warrior
+96	13	30	15	25	7	// Chief Skeleton Warrior
+96	13	30	15	23	7	// Chief Skeleton Warrior
+96	13	30	13	26	7	// Chief Skeleton Warrior
+96	13	30	13	37	7	// Chief Skeleton Warrior
+96	13	30	14	40	7	// Chief Skeleton Warrior
+96	13	30	13	39	7	// Chief Skeleton Warrior
+96	13	30	14	27	7	// Chief Skeleton Warrior
+96	13	30	14	24	7	// Chief Skeleton Warrior
+96	13	30	14	32	7	// Chief Skeleton Warrior
+96	13	30	15	45	7	// Chief Skeleton Warrior
+96	13	30	15	31	7	// Chief Skeleton Warrior
+97	13	30	15	26	7	// Chief Skeleton Archer
+97	13	30	13	45	7	// Chief Skeleton Archer
+97	13	30	13	23	7	// Chief Skeleton Archer
+97	13	30	15	43	7	// Chief Skeleton Archer
+97	13	30	15	39	7	// Chief Skeleton Archer
+97	13	30	15	37	7	// Chief Skeleton Archer
+97	13	30	13	29	7	// Chief Skeleton Archer
+97	13	30	15	28	7	// Chief Skeleton Archer
+97	13	30	13	25	7	// Chief Skeleton Archer
+97	13	30	13	21	7	// Chief Skeleton Archer
+97	13	30	14	22	7	// Chief Skeleton Archer
+97	13	30	15	21	7	// Chief Skeleton Archer
+97	13	30	13	31	7	// Chief Skeleton Archer
+97	13	30	15	30	7	// Chief Skeleton Archer
+97	13	30	15	33	7	// Chief Skeleton Archer
+97	13	30	14	21	7	// Chief Skeleton Archer
+97	13	30	13	43	7	// Chief Skeleton Archer
+98	13	30	15	46	7	// Dark Skull Soldier
+98	13	30	15	63	7	// Dark Skull Soldier
+98	13	30	15	53	7	// Dark Skull Soldier
+98	13	30	13	65	7	// Dark Skull Soldier
+98	13	30	13	67	7	// Dark Skull Soldier
+98	13	30	15	59	7	// Dark Skull Soldier
+98	13	30	13	59	7	// Dark Skull Soldier
+98	13	30	15	55	7	// Dark Skull Soldier
+98	13	30	13	62	7	// Dark Skull Soldier
+98	13	30	13	41	7	// Dark Skull Soldier
+98	13	30	15	69	7	// Dark Skull Soldier
+98	13	30	13	50	7	// Dark Skull Soldier
+98	13	30	15	48	7	// Dark Skull Soldier
+98	13	30	13	46	7	// Dark Skull Soldier
+98	13	30	14	44	7	// Dark Skull Soldier
+98	13	30	15	51	7	// Dark Skull Soldier
+98	13	30	14	49	7	// Dark Skull Soldier
+98	13	30	15	57	7	// Dark Skull Soldier
+98	13	30	14	64	7	// Dark Skull Soldier
+98	13	30	14	67	7	// Dark Skull Soldier
+98	13	30	13	53	7	// Dark Skull Soldier
+98	13	30	15	65	7	// Dark Skull Soldier
+98	13	30	15	60	7	// Dark Skull Soldier
+98	13	30	13	57	7	// Dark Skull Soldier
+99	13	30	13	69	7	// Giant Ogre
+99	13	30	14	61	7	// Giant Ogre
+99	13	30	13	55	7	// Giant Ogre
+99	13	30	14	58	7	// Giant Ogre
+99	13	30	14	52	7	// Giant Ogre
+99	13	30	15	50	7	// Giant Ogre
+99	13	30	15	66	7	// Giant Ogre
+99	13	30	14	56	7	// Giant Ogre
+99	13	30	14	70	7	// Giant Ogre
+99	13	30	13	63	7	// Giant Ogre
+99	13	30	13	48	7	// Giant Ogre
+111	13	30	13	78	7	// Red Skeleton Knight
+111	13	30	14	83	7	// Red Skeleton Knight
+111	13	30	14	78	7	// Red Skeleton Knight
+111	13	30	15	78	7	// Red Skeleton Knight
+111	13	30	16	80	7	// Red Skeleton Knight
+111	13	30	15	62	7	// Red Skeleton Knight
+111	13	30	52	83	7	// Red Skeleton Knight
+111	13	30	14	90	7	// Red Skeleton Knight
+111	13	30	11	83	7	// Red Skeleton Knight
+111	13	30	15	94	7	// Red Skeleton Knight
+111	13	30	20	82	7	// Red Skeleton Knight
+111	13	30	20	88	7	// Red Skeleton Knight
+111	13	30	14	54	7	// Red Skeleton Knight
+111	13	30	14	36	7	// Red Skeleton Knight
+111	13	30	15	68	7	// Red Skeleton Knight
+111	13	30	14	47	7	// Red Skeleton Knight
+112	13	30	16	87	7	// Magic Skeleton
+112	13	30	12	81	7	// Magic Skeleton
+112	13	30	13	88	7	// Magic Skeleton
+112	13	30	13	85	7	// Magic Skeleton
+112	13	30	19	85	7	// Magic Skeleton
+112	13	30	13	93	7	// Magic Skeleton
+112	13	30	14	80	7	// Magic Skeleton
+112	13	30	18	81	7	// Magic Skeleton
+end
+
+//=========================================================================================================================================
+// Blood Castle 4
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+113	14	30	14	34	7	// Chief Skeleton Warrior
+113	14	30	14	38	7	// Chief Skeleton Warrior
+113	14	30	13	35	7	// Chief Skeleton Warrior
+113	14	30	13	28	7	// Chief Skeleton Warrior
+113	14	30	15	35	7	// Chief Skeleton Warrior
+113	14	30	14	33	7	// Chief Skeleton Warrior
+113	14	30	15	41	7	// Chief Skeleton Warrior
+113	14	30	14	42	7	// Chief Skeleton Warrior
+113	14	30	15	25	7	// Chief Skeleton Warrior
+113	14	30	15	23	7	// Chief Skeleton Warrior
+113	14	30	13	26	7	// Chief Skeleton Warrior
+113	14	30	13	37	7	// Chief Skeleton Warrior
+113	14	30	14	40	7	// Chief Skeleton Warrior
+113	14	30	13	39	7	// Chief Skeleton Warrior
+113	14	30	14	27	7	// Chief Skeleton Warrior
+113	14	30	14	24	7	// Chief Skeleton Warrior
+113	14	30	14	32	7	// Chief Skeleton Warrior
+113	14	30	15	45	7	// Chief Skeleton Warrior
+113	14	30	15	31	7	// Chief Skeleton Warrior
+114	14	30	15	26	7	// Chief Skeleton Archer
+114	14	30	13	45	7	// Chief Skeleton Archer
+114	14	30	13	23	7	// Chief Skeleton Archer
+114	14	30	15	43	7	// Chief Skeleton Archer
+114	14	30	15	39	7	// Chief Skeleton Archer
+114	14	30	15	37	7	// Chief Skeleton Archer
+114	14	30	13	29	7	// Chief Skeleton Archer
+114	14	30	15	28	7	// Chief Skeleton Archer
+114	14	30	13	25	7	// Chief Skeleton Archer
+114	14	30	13	21	7	// Chief Skeleton Archer
+114	14	30	14	22	7	// Chief Skeleton Archer
+114	14	30	15	21	7	// Chief Skeleton Archer
+114	14	30	13	31	7	// Chief Skeleton Archer
+114	14	30	15	30	7	// Chief Skeleton Archer
+114	14	30	15	33	7	// Chief Skeleton Archer
+114	14	30	14	21	7	// Chief Skeleton Archer
+114	14	30	13	43	7	// Chief Skeleton Archer
+115	14	30	15	46	7	// Dark Skull Soldier
+115	14	30	15	63	7	// Dark Skull Soldier
+115	14	30	15	53	7	// Dark Skull Soldier
+115	14	30	13	65	7	// Dark Skull Soldier
+115	14	30	13	67	7	// Dark Skull Soldier
+115	14	30	15	59	7	// Dark Skull Soldier
+115	14	30	13	59	7	// Dark Skull Soldier
+115	14	30	15	55	7	// Dark Skull Soldier
+115	14	30	13	62	7	// Dark Skull Soldier
+115	14	30	13	41	7	// Dark Skull Soldier
+115	14	30	15	69	7	// Dark Skull Soldier
+115	14	30	13	50	7	// Dark Skull Soldier
+115	14	30	15	48	7	// Dark Skull Soldier
+115	14	30	13	46	7	// Dark Skull Soldier
+115	14	30	14	44	7	// Dark Skull Soldier
+115	14	30	15	51	7	// Dark Skull Soldier
+115	14	30	14	49	7	// Dark Skull Soldier
+115	14	30	15	57	7	// Dark Skull Soldier
+115	14	30	14	64	7	// Dark Skull Soldier
+115	14	30	14	67	7	// Dark Skull Soldier
+115	14	30	13	53	7	// Dark Skull Soldier
+115	14	30	15	65	7	// Dark Skull Soldier
+115	14	30	15	60	7	// Dark Skull Soldier
+115	14	30	13	57	7	// Dark Skull Soldier
+116	14	30	13	69	7	// Giant Ogre
+116	14	30	14	61	7	// Giant Ogre
+116	14	30	13	55	7	// Giant Ogre
+116	14	30	14	58	7	// Giant Ogre
+116	14	30	14	52	7	// Giant Ogre
+116	14	30	15	50	7	// Giant Ogre
+116	14	30	15	66	7	// Giant Ogre
+116	14	30	14	56	7	// Giant Ogre
+116	14	30	14	70	7	// Giant Ogre
+116	14	30	13	63	7	// Giant Ogre
+116	14	30	13	48	7	// Giant Ogre
+117	14	30	13	78	7	// Red Skeleton Knight
+117	14	30	14	83	7	// Red Skeleton Knight
+117	14	30	14	78	7	// Red Skeleton Knight
+117	14	30	15	78	7	// Red Skeleton Knight
+117	14	30	16	80	7	// Red Skeleton Knight
+117	14	30	15	62	7	// Red Skeleton Knight
+117	14	30	52	83	7	// Red Skeleton Knight
+117	14	30	14	90	7	// Red Skeleton Knight
+117	14	30	11	83	7	// Red Skeleton Knight
+117	14	30	15	94	7	// Red Skeleton Knight
+117	14	30	20	82	7	// Red Skeleton Knight
+117	14	30	20	88	7	// Red Skeleton Knight
+117	14	30	14	54	7	// Red Skeleton Knight
+117	14	30	14	36	7	// Red Skeleton Knight
+117	14	30	15	68	7	// Red Skeleton Knight
+117	14	30	14	47	7	// Red Skeleton Knight
+118	14	30	16	87	7	// Magic Skeleton
+118	14	30	12	81	7	// Magic Skeleton
+118	14	30	13	88	7	// Magic Skeleton
+118	14	30	13	85	7	// Magic Skeleton
+118	14	30	19	85	7	// Magic Skeleton
+118	14	30	13	93	7	// Magic Skeleton
+118	14	30	14	80	7	// Magic Skeleton
+118	14	30	18	81	7	// Magic Skeleton
+end
+
+//=========================================================================================================================================
+// Blood Castle 5
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+119	15	30	14	34	7	// Chief Skeleton Warrior
+119	15	30	14	38	7	// Chief Skeleton Warrior
+119	15	30	13	35	7	// Chief Skeleton Warrior
+119	15	30	13	28	7	// Chief Skeleton Warrior
+119	15	30	15	35	7	// Chief Skeleton Warrior
+119	15	30	14	33	7	// Chief Skeleton Warrior
+119	15	30	15	41	7	// Chief Skeleton Warrior
+119	15	30	14	42	7	// Chief Skeleton Warrior
+119	15	30	15	25	7	// Chief Skeleton Warrior
+119	15	30	15	23	7	// Chief Skeleton Warrior
+119	15	30	13	26	7	// Chief Skeleton Warrior
+119	15	30	13	37	7	// Chief Skeleton Warrior
+119	15	30	14	40	7	// Chief Skeleton Warrior
+119	15	30	13	39	7	// Chief Skeleton Warrior
+119	15	30	14	27	7	// Chief Skeleton Warrior
+119	15	30	14	24	7	// Chief Skeleton Warrior
+119	15	30	14	32	7	// Chief Skeleton Warrior
+119	15	30	15	45	7	// Chief Skeleton Warrior
+119	15	30	15	31	7	// Chief Skeleton Warrior
+120	15	30	15	26	7	// Chief Skeleton Archer
+120	15	30	13	45	7	// Chief Skeleton Archer
+120	15	30	13	23	7	// Chief Skeleton Archer
+120	15	30	15	43	7	// Chief Skeleton Archer
+120	15	30	15	39	7	// Chief Skeleton Archer
+120	15	30	15	37	7	// Chief Skeleton Archer
+120	15	30	13	29	7	// Chief Skeleton Archer
+120	15	30	15	28	7	// Chief Skeleton Archer
+120	15	30	13	25	7	// Chief Skeleton Archer
+120	15	30	13	21	7	// Chief Skeleton Archer
+120	15	30	14	22	7	// Chief Skeleton Archer
+120	15	30	15	21	7	// Chief Skeleton Archer
+120	15	30	13	31	7	// Chief Skeleton Archer
+120	15	30	15	30	7	// Chief Skeleton Archer
+120	15	30	15	33	7	// Chief Skeleton Archer
+120	15	30	14	21	7	// Chief Skeleton Archer
+120	15	30	13	43	7	// Chief Skeleton Archer
+121	15	30	15	46	7	// Dark Skull Soldier
+121	15	30	15	63	7	// Dark Skull Soldier
+121	15	30	15	53	7	// Dark Skull Soldier
+121	15	30	13	65	7	// Dark Skull Soldier
+121	15	30	13	67	7	// Dark Skull Soldier
+121	15	30	15	59	7	// Dark Skull Soldier
+121	15	30	13	59	7	// Dark Skull Soldier
+121	15	30	15	55	7	// Dark Skull Soldier
+121	15	30	13	62	7	// Dark Skull Soldier
+121	15	30	13	41	7	// Dark Skull Soldier
+121	15	30	15	69	7	// Dark Skull Soldier
+121	15	30	13	50	7	// Dark Skull Soldier
+121	15	30	15	48	7	// Dark Skull Soldier
+121	15	30	13	46	7	// Dark Skull Soldier
+121	15	30	14	44	7	// Dark Skull Soldier
+121	15	30	15	51	7	// Dark Skull Soldier
+121	15	30	14	49	7	// Dark Skull Soldier
+121	15	30	15	57	7	// Dark Skull Soldier
+121	15	30	14	64	7	// Dark Skull Soldier
+121	15	30	14	67	7	// Dark Skull Soldier
+121	15	30	13	53	7	// Dark Skull Soldier
+121	15	30	15	65	7	// Dark Skull Soldier
+121	15	30	15	60	7	// Dark Skull Soldier
+121	15	30	13	57	7	// Dark Skull Soldier
+122	15	30	13	69	7	// Giant Ogre
+122	15	30	14	61	7	// Giant Ogre
+122	15	30	13	55	7	// Giant Ogre
+122	15	30	14	58	7	// Giant Ogre
+122	15	30	14	52	7	// Giant Ogre
+122	15	30	15	50	7	// Giant Ogre
+122	15	30	15	66	7	// Giant Ogre
+122	15	30	14	56	7	// Giant Ogre
+122	15	30	14	70	7	// Giant Ogre
+122	15	30	13	63	7	// Giant Ogre
+122	15	30	13	48	7	// Giant Ogre
+123	15	30	13	78	7	// Red Skeleton Knight
+123	15	30	14	83	7	// Red Skeleton Knight
+123	15	30	14	78	7	// Red Skeleton Knight
+123	15	30	15	78	7	// Red Skeleton Knight
+123	15	30	16	80	7	// Red Skeleton Knight
+123	15	30	15	62	7	// Red Skeleton Knight
+123	15	30	52	83	7	// Red Skeleton Knight
+123	15	30	14	90	7	// Red Skeleton Knight
+123	15	30	11	83	7	// Red Skeleton Knight
+123	15	30	15	94	7	// Red Skeleton Knight
+123	15	30	20	82	7	// Red Skeleton Knight
+123	15	30	20	88	7	// Red Skeleton Knight
+123	15	30	14	54	7	// Red Skeleton Knight
+123	15	30	14	36	7	// Red Skeleton Knight
+123	15	30	15	68	7	// Red Skeleton Knight
+123	15	30	14	47	7	// Red Skeleton Knight
+124	15	30	16	87	7	// Magic Skeleton
+124	15	30	12	81	7	// Magic Skeleton
+124	15	30	13	88	7	// Magic Skeleton
+124	15	30	13	85	7	// Magic Skeleton
+124	15	30	19	85	7	// Magic Skeleton
+124	15	30	13	93	7	// Magic Skeleton
+124	15	30	14	80	7	// Magic Skeleton
+124	15	30	18	81	7	// Magic Skeleton
+end
+
+//=========================================================================================================================================
+// Blood Castle 6
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+125	16	30	14	34	7	// Chief Skeleton Warrior
+125	16	30	14	38	7	// Chief Skeleton Warrior
+125	16	30	13	35	7	// Chief Skeleton Warrior
+125	16	30	13	28	7	// Chief Skeleton Warrior
+125	16	30	15	35	7	// Chief Skeleton Warrior
+125	16	30	14	33	7	// Chief Skeleton Warrior
+125	16	30	15	41	7	// Chief Skeleton Warrior
+125	16	30	14	42	7	// Chief Skeleton Warrior
+125	16	30	15	25	7	// Chief Skeleton Warrior
+125	16	30	15	23	7	// Chief Skeleton Warrior
+125	16	30	13	26	7	// Chief Skeleton Warrior
+125	16	30	13	37	7	// Chief Skeleton Warrior
+125	16	30	14	40	7	// Chief Skeleton Warrior
+125	16	30	13	39	7	// Chief Skeleton Warrior
+125	16	30	14	27	7	// Chief Skeleton Warrior
+125	16	30	14	24	7	// Chief Skeleton Warrior
+125	16	30	14	32	7	// Chief Skeleton Warrior
+125	16	30	15	45	7	// Chief Skeleton Warrior
+125	16	30	15	31	7	// Chief Skeleton Warrior
+126	16	30	15	26	7	// Chief Skeleton Archer
+126	16	30	13	45	7	// Chief Skeleton Archer
+126	16	30	13	23	7	// Chief Skeleton Archer
+126	16	30	15	43	7	// Chief Skeleton Archer
+126	16	30	15	39	7	// Chief Skeleton Archer
+126	16	30	15	37	7	// Chief Skeleton Archer
+126	16	30	13	29	7	// Chief Skeleton Archer
+126	16	30	15	28	7	// Chief Skeleton Archer
+126	16	30	13	25	7	// Chief Skeleton Archer
+126	16	30	13	21	7	// Chief Skeleton Archer
+126	16	30	14	22	7	// Chief Skeleton Archer
+126	16	30	15	21	7	// Chief Skeleton Archer
+126	16	30	13	31	7	// Chief Skeleton Archer
+126	16	30	15	30	7	// Chief Skeleton Archer
+126	16	30	15	33	7	// Chief Skeleton Archer
+126	16	30	14	21	7	// Chief Skeleton Archer
+126	16	30	13	43	7	// Chief Skeleton Archer
+127	16	30	15	46	7	// Dark Skull Soldier
+127	16	30	15	63	7	// Dark Skull Soldier
+127	16	30	15	53	7	// Dark Skull Soldier
+127	16	30	13	65	7	// Dark Skull Soldier
+127	16	30	13	67	7	// Dark Skull Soldier
+127	16	30	15	59	7	// Dark Skull Soldier
+127	16	30	13	59	7	// Dark Skull Soldier
+127	16	30	15	55	7	// Dark Skull Soldier
+127	16	30	13	62	7	// Dark Skull Soldier
+127	16	30	13	41	7	// Dark Skull Soldier
+127	16	30	15	69	7	// Dark Skull Soldier
+127	16	30	13	50	7	// Dark Skull Soldier
+127	16	30	15	48	7	// Dark Skull Soldier
+127	16	30	13	46	7	// Dark Skull Soldier
+127	16	30	14	44	7	// Dark Skull Soldier
+127	16	30	15	51	7	// Dark Skull Soldier
+127	16	30	14	49	7	// Dark Skull Soldier
+127	16	30	15	57	7	// Dark Skull Soldier
+127	16	30	14	64	7	// Dark Skull Soldier
+127	16	30	14	67	7	// Dark Skull Soldier
+127	16	30	13	53	7	// Dark Skull Soldier
+127	16	30	15	65	7	// Dark Skull Soldier
+127	16	30	15	60	7	// Dark Skull Soldier
+127	16	30	13	57	7	// Dark Skull Soldier
+128	16	30	13	69	7	// Giant Ogre
+128	16	30	14	61	7	// Giant Ogre
+128	16	30	13	55	7	// Giant Ogre
+128	16	30	14	58	7	// Giant Ogre
+128	16	30	14	52	7	// Giant Ogre
+128	16	30	15	50	7	// Giant Ogre
+128	16	30	15	66	7	// Giant Ogre
+128	16	30	14	56	7	// Giant Ogre
+128	16	30	14	70	7	// Giant Ogre
+128	16	30	13	63	7	// Giant Ogre
+128	16	30	13	48	7	// Giant Ogre
+129	16	30	13	78	7	// Red Skeleton Knight
+129	16	30	14	83	7	// Red Skeleton Knight
+129	16	30	14	78	7	// Red Skeleton Knight
+129	16	30	15	78	7	// Red Skeleton Knight
+129	16	30	16	80	7	// Red Skeleton Knight
+129	16	30	15	62	7	// Red Skeleton Knight
+129	16	30	52	83	7	// Red Skeleton Knight
+129	16	30	14	90	7	// Red Skeleton Knight
+129	16	30	11	83	7	// Red Skeleton Knight
+129	16	30	15	94	7	// Red Skeleton Knight
+129	16	30	20	82	7	// Red Skeleton Knight
+129	16	30	20	88	7	// Red Skeleton Knight
+129	16	30	14	54	7	// Red Skeleton Knight
+129	16	30	14	36	7	// Red Skeleton Knight
+129	16	30	15	68	7	// Red Skeleton Knight
+129	16	30	14	47	7	// Red Skeleton Knight
+130	16	30	16	87	7	// Magic Skeleton
+130	16	30	12	81	7	// Magic Skeleton
+130	16	30	13	88	7	// Magic Skeleton
+130	16	30	13	85	7	// Magic Skeleton
+130	16	30	19	85	7	// Magic Skeleton
+130	16	30	13	93	7	// Magic Skeleton
+130	16	30	14	80	7	// Magic Skeleton
+130	16	30	18	81	7	// Magic Skeleton
+end
+
+//=========================================================================================================================================
+// Devil Square 1
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+17	9	30	145	96	-1	// Cyclops
+17	9	30	129	105	-1	// Cyclops
+17	9	30	147	94	-1	// Cyclops
+17	9	30	133	87	-1	// Cyclops
+17	9	30	141	104	-1	// Cyclops
+17	9	30	144	102	-1	// Cyclops
+17	9	30	143	109	-1	// Cyclops
+17	9	30	127	85	-1	// Cyclops
+17	9	30	141	97	-1	// Cyclops
+17	9	30	135	94	-1	// Cyclops
+17	9	30	142	103	-1	// Cyclops
+17	9	30	128	97	-1	// Cyclops
+17	9	30	128	84	-1	// Cyclops
+17	9	30	134	95	-1	// Cyclops
+17	9	30	121	84	-1	// Cyclops
+17	9	30	139	100	-1	// Cyclops
+17	9	30	141	108	-1	// Cyclops
+17	9	30	145	91	-1	// Cyclops
+17	9	30	145	85	-1	// Cyclops
+17	9	30	145	100	-1	// Cyclops
+15	9	30	135	92	-1	// Skeleton Archer
+15	9	30	124	82	-1	// Skeleton Archer
+15	9	30	135	102	-1	// Skeleton Archer
+15	9	30	131	87	-1	// Skeleton Archer
+15	9	30	126	83	-1	// Skeleton Archer
+15	9	30	146	87	-1	// Skeleton Archer
+15	9	30	128	96	-1	// Skeleton Archer
+15	9	30	139	98	-1	// Skeleton Archer
+15	9	30	134	109	-1	// Skeleton Archer
+15	9	30	146	102	-1	// Skeleton Archer
+15	9	30	127	89	-1	// Skeleton Archer
+15	9	30	144	98	-1	// Skeleton Archer
+15	9	30	148	97	-1	// Skeleton Archer
+15	9	30	134	95	-1	// Skeleton Archer
+15	9	30	128	103	-1	// Skeleton Archer
+15	9	30	148	101	-1	// Skeleton Archer
+15	9	30	130	109	-1	// Skeleton Archer
+15	9	30	122	86	-1	// Skeleton Archer
+15	9	30	129	90	-1	// Skeleton Archer
+15	9	30	121	100	-1	// Skeleton Archer
+5	9	30	148	108	-1	// Hell Hound
+5	9	30	148	90	-1	// Hell Hound
+5	9	30	132	103	-1	// Hell Hound
+5	9	30	129	102	-1	// Hell Hound
+5	9	30	143	86	-1	// Hell Hound
+5	9	30	140	104	-1	// Hell Hound
+5	9	30	146	106	-1	// Hell Hound
+5	9	30	134	105	-1	// Hell Hound
+5	9	30	134	106	-1	// Hell Hound
+5	9	30	124	109	-1	// Hell Hound
+5	9	30	141	83	-1	// Hell Hound
+5	9	30	136	85	-1	// Hell Hound
+5	9	30	131	98	-1	// Hell Hound
+5	9	30	121	83	-1	// Hell Hound
+5	9	30	138	107	-1	// Hell Hound
+16	9	30	121	82	-1	// Chief Skeleton Warrior
+16	9	30	123	100	-1	// Chief Skeleton Warrior
+16	9	30	141	94	-1	// Chief Skeleton Warrior
+16	9	30	124	90	-1	// Chief Skeleton Warrior
+16	9	30	137	90	-1	// Chief Skeleton Warrior
+16	9	30	130	98	-1	// Chief Skeleton Warrior
+16	9	30	144	89	-1	// Chief Skeleton Warrior
+16	9	30	124	92	-1	// Chief Skeleton Warrior
+16	9	30	140	102	-1	// Chief Skeleton Warrior
+16	9	30	130	86	-1	// Chief Skeleton Warrior
+9	9	30	142	109	-1	// Thunder Lich
+9	9	30	143	88	-1	// Thunder Lich
+9	9	30	146	96	-1	// Thunder Lich
+9	9	30	146	101	-1	// Thunder Lich
+9	9	30	139	82	-1	// Thunder Lich
+9	9	30	139	99	-1	// Thunder Lich
+9	9	30	137	105	-1	// Thunder Lich
+9	9	30	134	108	-1	// Thunder Lich
+9	9	30	128	109	-1	// Thunder Lich
+9	9	30	139	90	-1	// Thunder Lich
+9	9	30	148	96	-1	// Thunder Lich
+9	9	30	127	92	-1	// Thunder Lich
+9	9	30	144	97	-1	// Thunder Lich
+9	9	30	127	95	-1	// Thunder Lich
+9	9	30	121	107	-1	// Thunder Lich
+10	9	30	130	96	-1	// Dark Knight
+10	9	30	137	90	-1	// Dark Knight
+10	9	30	137	93	-1	// Dark Knight
+10	9	30	131	94	-1	// Dark Knight
+10	9	30	133	102	-1	// Dark Knight
+10	9	30	124	91	-1	// Dark Knight
+10	9	30	141	82	-1	// Dark Knight
+10	9	30	142	105	-1	// Dark Knight
+10	9	30	132	86	-1	// Dark Knight
+10	9	30	136	90	-1	// Dark Knight
+18	9	30	132	96	-1	// Gorgon
+18	9	30	124	107	-1	// Gorgon
+18	9	30	132	84	-1	// Gorgon
+18	9	30	132	105	-1	// Gorgon
+18	9	30	133	100	-1	// Gorgon
+18	9	30	122	86	-1	// Gorgon
+18	9	30	126	94	-1	// Gorgon
+18	9	30	148	101	-1	// Gorgon
+18	9	30	140	90	-1	// Gorgon
+18	9	30	139	106	-1	// Gorgon
+end
+
+//=========================================================================================================================================
+// Devil Square 2
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+36	9	30	137	164	-1	// Shadow
+36	9	30	126	154	-1	// Shadow
+36	9	30	137	174	-1	// Shadow
+36	9	30	133	159	-1	// Shadow
+36	9	30	128	155	-1	// Shadow
+36	9	30	148	159	-1	// Shadow
+36	9	30	130	168	-1	// Shadow
+36	9	30	141	170	-1	// Shadow
+36	9	30	136	181	-1	// Shadow
+36	9	30	148	174	-1	// Shadow
+36	9	30	129	161	-1	// Shadow
+36	9	30	146	170	-1	// Shadow
+36	9	30	150	169	-1	// Shadow
+36	9	30	136	167	-1	// Shadow
+36	9	30	130	175	-1	// Shadow
+36	9	30	150	173	-1	// Shadow
+36	9	30	132	181	-1	// Shadow
+36	9	30	124	158	-1	// Shadow
+36	9	30	131	162	-1	// Shadow
+36	9	30	123	172	-1	// Shadow
+39	9	30	147	168	-1	// Poison Shadow
+39	9	30	131	177	-1	// Poison Shadow
+39	9	30	149	166	-1	// Poison Shadow
+39	9	30	135	159	-1	// Poison Shadow
+39	9	30	143	176	-1	// Poison Shadow
+39	9	30	146	174	-1	// Poison Shadow
+39	9	30	145	181	-1	// Poison Shadow
+39	9	30	129	157	-1	// Poison Shadow
+39	9	30	143	169	-1	// Poison Shadow
+39	9	30	137	166	-1	// Poison Shadow
+39	9	30	144	175	-1	// Poison Shadow
+39	9	30	130	169	-1	// Poison Shadow
+39	9	30	130	156	-1	// Poison Shadow
+39	9	30	136	167	-1	// Poison Shadow
+39	9	30	123	156	-1	// Poison Shadow
+39	9	30	141	172	-1	// Poison Shadow
+39	9	30	143	180	-1	// Poison Shadow
+39	9	30	147	163	-1	// Poison Shadow
+39	9	30	147	157	-1	// Poison Shadow
+39	9	30	147	172	-1	// Poison Shadow
+34	9	30	150	180	-1	// Cursed Wizard
+34	9	30	150	162	-1	// Cursed Wizard
+34	9	30	134	175	-1	// Cursed Wizard
+34	9	30	131	174	-1	// Cursed Wizard
+34	9	30	145	158	-1	// Cursed Wizard
+34	9	30	142	176	-1	// Cursed Wizard
+34	9	30	148	178	-1	// Cursed Wizard
+34	9	30	136	177	-1	// Cursed Wizard
+34	9	30	136	178	-1	// Cursed Wizard
+34	9	30	126	181	-1	// Cursed Wizard
+34	9	30	143	155	-1	// Cursed Wizard
+34	9	30	138	157	-1	// Cursed Wizard
+34	9	30	133	170	-1	// Cursed Wizard
+34	9	30	123	155	-1	// Cursed Wizard
+34	9	30	140	179	-1	// Cursed Wizard
+41	9	30	144	181	-1	// Death Cow
+41	9	30	145	160	-1	// Death Cow
+41	9	30	148	168	-1	// Death Cow
+41	9	30	148	173	-1	// Death Cow
+41	9	30	141	154	-1	// Death Cow
+41	9	30	141	171	-1	// Death Cow
+41	9	30	139	177	-1	// Death Cow
+41	9	30	136	180	-1	// Death Cow
+41	9	30	130	181	-1	// Death Cow
+41	9	30	141	162	-1	// Death Cow
+41	9	30	150	168	-1	// Death Cow
+41	9	30	129	164	-1	// Death Cow
+41	9	30	146	169	-1	// Death Cow
+41	9	30	129	167	-1	// Death Cow
+41	9	30	123	179	-1	// Death Cow
+40	9	30	123	154	-1	// Death Knight
+40	9	30	125	172	-1	// Death Knight
+40	9	30	143	166	-1	// Death Knight
+40	9	30	126	162	-1	// Death Knight
+40	9	30	139	162	-1	// Death Knight
+40	9	30	132	170	-1	// Death Knight
+40	9	30	146	161	-1	// Death Knight
+40	9	30	126	164	-1	// Death Knight
+40	9	30	142	174	-1	// Death Knight
+40	9	30	132	158	-1	// Death Knight
+35	9	30	132	168	-1	// Death Gorgon
+35	9	30	139	162	-1	// Death Gorgon
+35	9	30	139	165	-1	// Death Gorgon
+35	9	30	133	166	-1	// Death Gorgon
+35	9	30	135	174	-1	// Death Gorgon
+35	9	30	126	163	-1	// Death Gorgon
+35	9	30	143	154	-1	// Death Gorgon
+35	9	30	144	177	-1	// Death Gorgon
+35	9	30	134	158	-1	// Death Gorgon
+35	9	30	138	162	-1	// Death Gorgon
+38	9	30	134	168	-1	// Balrog
+38	9	30	126	179	-1	// Balrog
+38	9	30	134	156	-1	// Balrog
+38	9	30	134	177	-1	// Balrog
+38	9	30	135	172	-1	// Balrog
+38	9	30	124	158	-1	// Balrog
+38	9	30	128	166	-1	// Balrog
+38	9	30	150	173	-1	// Balrog
+38	9	30	142	162	-1	// Balrog
+38	9	30	141	178	-1	// Balrog
+end
+
+//=========================================================================================================================================
+// Devil Square 3
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+45	9	30	65	150	-1	// Bahamut
+45	9	30	54	140	-1	// Bahamut
+45	9	30	65	160	-1	// Bahamut
+45	9	30	61	145	-1	// Bahamut
+45	9	30	56	141	-1	// Bahamut
+45	9	30	76	145	-1	// Bahamut
+45	9	30	58	154	-1	// Bahamut
+45	9	30	69	156	-1	// Bahamut
+45	9	30	64	167	-1	// Bahamut
+45	9	30	76	160	-1	// Bahamut
+45	9	30	57	147	-1	// Bahamut
+45	9	30	74	156	-1	// Bahamut
+45	9	30	78	155	-1	// Bahamut
+45	9	30	64	153	-1	// Bahamut
+45	9	30	58	161	-1	// Bahamut
+45	9	30	78	159	-1	// Bahamut
+45	9	30	60	167	-1	// Bahamut
+45	9	30	52	144	-1	// Bahamut
+45	9	30	59	148	-1	// Bahamut
+45	9	30	51	158	-1	// Bahamut
+46	9	30	75	154	-1	// Vepar
+46	9	30	59	163	-1	// Vepar
+46	9	30	77	152	-1	// Vepar
+46	9	30	63	145	-1	// Vepar
+46	9	30	71	162	-1	// Vepar
+46	9	30	74	160	-1	// Vepar
+46	9	30	73	167	-1	// Vepar
+46	9	30	57	143	-1	// Vepar
+46	9	30	71	155	-1	// Vepar
+46	9	30	65	152	-1	// Vepar
+46	9	30	72	161	-1	// Vepar
+46	9	30	58	155	-1	// Vepar
+46	9	30	58	142	-1	// Vepar
+46	9	30	64	153	-1	// Vepar
+46	9	30	51	142	-1	// Vepar
+46	9	30	69	158	-1	// Vepar
+46	9	30	71	166	-1	// Vepar
+46	9	30	75	149	-1	// Vepar
+46	9	30	75	143	-1	// Vepar
+46	9	30	75	158	-1	// Vepar
+37	9	30	78	166	-1	// Devil
+37	9	30	78	148	-1	// Devil
+37	9	30	62	161	-1	// Devil
+37	9	30	59	160	-1	// Devil
+37	9	30	73	144	-1	// Devil
+37	9	30	70	162	-1	// Devil
+37	9	30	76	164	-1	// Devil
+37	9	30	64	163	-1	// Devil
+37	9	30	64	164	-1	// Devil
+37	9	30	54	167	-1	// Devil
+37	9	30	71	141	-1	// Devil
+37	9	30	66	143	-1	// Devil
+37	9	30	61	156	-1	// Devil
+37	9	30	51	141	-1	// Devil
+37	9	30	68	165	-1	// Devil
+51	9	30	72	167	-1	// Great Bahamut
+51	9	30	73	146	-1	// Great Bahamut
+51	9	30	76	154	-1	// Great Bahamut
+51	9	30	76	159	-1	// Great Bahamut
+51	9	30	69	140	-1	// Great Bahamut
+51	9	30	69	157	-1	// Great Bahamut
+51	9	30	67	163	-1	// Great Bahamut
+51	9	30	64	166	-1	// Great Bahamut
+51	9	30	58	167	-1	// Great Bahamut
+51	9	30	69	148	-1	// Great Bahamut
+51	9	30	78	154	-1	// Great Bahamut
+51	9	30	57	150	-1	// Great Bahamut
+51	9	30	74	155	-1	// Great Bahamut
+51	9	30	57	153	-1	// Great Bahamut
+51	9	30	51	165	-1	// Great Bahamut
+52	9	30	51	140	-1	// Silver Valkyrie
+52	9	30	53	158	-1	// Silver Valkyrie
+52	9	30	71	152	-1	// Silver Valkyrie
+52	9	30	54	148	-1	// Silver Valkyrie
+52	9	30	67	148	-1	// Silver Valkyrie
+52	9	30	60	156	-1	// Silver Valkyrie
+52	9	30	74	147	-1	// Silver Valkyrie
+52	9	30	54	150	-1	// Silver Valkyrie
+52	9	30	70	160	-1	// Silver Valkyrie
+52	9	30	60	144	-1	// Silver Valkyrie
+48	9	30	60	154	-1	// Lizard King
+48	9	30	67	148	-1	// Lizard King
+48	9	30	67	151	-1	// Lizard King
+48	9	30	61	152	-1	// Lizard King
+48	9	30	63	160	-1	// Lizard King
+48	9	30	54	149	-1	// Lizard King
+48	9	30	71	140	-1	// Lizard King
+48	9	30	72	163	-1	// Lizard King
+48	9	30	62	144	-1	// Lizard King
+48	9	30	66	148	-1	// Lizard King
+49	9	30	62	154	-1	// Hydra
+49	9	30	54	165	-1	// Hydra
+49	9	30	62	142	-1	// Hydra
+49	9	30	62	163	-1	// Hydra
+49	9	30	63	158	-1	// Hydra
+49	9	30	52	144	-1	// Hydra
+49	9	30	56	152	-1	// Hydra
+49	9	30	78	159	-1	// Hydra
+49	9	30	70	148	-1	// Hydra
+49	9	30	69	164	-1	// Hydra
+end
+
+//=========================================================================================================================================
+// Devil Square 4
+//=========================================================================================================================================
+4
+//Mob	MapNum	Range	PosX	PosY	Direct	Name
+64	9	30	69	86	-1	// Ogre archer
+64	9	30	58	76	-1	// Ogre archer
+64	9	30	69	96	-1	// Ogre archer
+64	9	30	65	81	-1	// Ogre archer
+64	9	30	60	77	-1	// Ogre archer
+64	9	30	80	81	-1	// Ogre archer
+64	9	30	62	90	-1	// Ogre archer
+64	9	30	73	92	-1	// Ogre archer
+64	9	30	68	103	-1	// Ogre archer
+64	9	30	80	96	-1	// Ogre archer
+64	9	30	61	83	-1	// Ogre archer
+64	9	30	78	92	-1	// Ogre archer
+64	9	30	82	91	-1	// Ogre archer
+64	9	30	68	89	-1	// Ogre archer
+64	9	30	62	97	-1	// Ogre archer
+64	9	30	82	95	-1	// Ogre archer
+64	9	30	64	103	-1	// Ogre archer
+64	9	30	56	80	-1	// Ogre archer
+64	9	30	63	84	-1	// Ogre archer
+64	9	30	55	94	-1	// Ogre archer
+65	9	30	79	90	-1	// Elite Ogre
+65	9	30	63	99	-1	// Elite Ogre
+65	9	30	81	88	-1	// Elite Ogre
+65	9	30	67	81	-1	// Elite Ogre
+65	9	30	75	98	-1	// Elite Ogre
+65	9	30	78	96	-1	// Elite Ogre
+65	9	30	77	103	-1	// Elite Ogre
+65	9	30	61	79	-1	// Elite Ogre
+65	9	30	75	91	-1	// Elite Ogre
+65	9	30	69	88	-1	// Elite Ogre
+65	9	30	76	97	-1	// Elite Ogre
+65	9	30	62	91	-1	// Elite Ogre
+65	9	30	62	78	-1	// Elite Ogre
+65	9	30	68	89	-1	// Elite Ogre
+65	9	30	55	78	-1	// Elite Ogre
+65	9	30	73	94	-1	// Elite Ogre
+65	9	30	75	102	-1	// Elite Ogre
+65	9	30	79	85	-1	// Elite Ogre
+65	9	30	79	79	-1	// Elite Ogre
+65	9	30	79	94	-1	// Elite Ogre
+69	9	30	82	102	-1	// Alquamos
+69	9	30	82	84	-1	// Alquamos
+69	9	30	66	97	-1	// Alquamos
+69	9	30	63	96	-1	// Alquamos
+69	9	30	77	80	-1	// Alquamos
+69	9	30	74	98	-1	// Alquamos
+69	9	30	80	100	-1	// Alquamos
+69	9	30	68	99	-1	// Alquamos
+69	9	30	68	100	-1	// Alquamos
+69	9	30	58	103	-1	// Alquamos
+69	9	30	75	77	-1	// Alquamos
+69	9	30	70	79	-1	// Alquamos
+69	9	30	65	92	-1	// Alquamos
+69	9	30	55	77	-1	// Alquamos
+69	9	30	72	101	-1	// Alquamos
+71	9	30	76	103	-1	// Mega Crust
+71	9	30	77	82	-1	// Mega Crust
+71	9	30	80	90	-1	// Mega Crust
+71	9	30	80	95	-1	// Mega Crust
+71	9	30	73	76	-1	// Mega Crust
+71	9	30	73	93	-1	// Mega Crust
+71	9	30	71	99	-1	// Mega Crust
+71	9	30	68	102	-1	// Mega Crust
+71	9	30	62	103	-1	// Mega Crust
+71	9	30	73	84	-1	// Mega Crust
+71	9	30	82	90	-1	// Mega Crust
+71	9	30	61	86	-1	// Mega Crust
+71	9	30	78	91	-1	// Mega Crust
+71	9	30	61	89	-1	// Mega Crust
+71	9	30	55	101	-1	// Mega Crust
+61	9	30	64	90	-1	// Beam Knight
+61	9	30	71	84	-1	// Beam Knight
+61	9	30	71	87	-1	// Beam Knight
+61	9	30	65	88	-1	// Beam Knight
+61	9	30	67	96	-1	// Beam Knight
+61	9	30	58	85	-1	// Beam Knight
+61	9	30	75	76	-1	// Beam Knight
+61	9	30	76	99	-1	// Beam Knight
+61	9	30	66	80	-1	// Beam Knight
+61	9	30	70	84	-1	// Beam Knight
+70	9	30	55	76	-1	// Queen Rainier
+70	9	30	57	94	-1	// Queen Rainier
+70	9	30	75	88	-1	// Queen Rainier
+70	9	30	58	84	-1	// Queen Rainier
+70	9	30	71	84	-1	// Queen Rainier
+70	9	30	64	92	-1	// Queen Rainier
+70	9	30	78	83	-1	// Queen Rainier
+70	9	30	58	86	-1	// Queen Rainier
+70	9	30	74	96	-1	// Queen Rainier
+70	9	30	64	80	-1	// Queen Rainier
+63	9	30	66	90	-1	// Death Beam Knight
+63	9	30	58	101	-1	// Death Beam Knight
+63	9	30	66	78	-1	// Death Beam Knight
+63	9	30	66	99	-1	// Death Beam Knight
+63	9	30	67	94	-1	// Death Beam Knight
+63	9	30	56	80	-1	// Death Beam Knight
+63	9	30	60	88	-1	// Death Beam Knight
+63	9	30	82	95	-1	// Death Beam Knight
+63	9	30	74	84	-1	// Death Beam Knight
+63	9	30	73	100	-1	// Death Beam Knight
+end

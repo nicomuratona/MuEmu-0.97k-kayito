@@ -1,0 +1,13 @@
+//Index		Level		MaxStack	CreateIndex	Comment
+04,007		*		255		*		//Bolt
+04,015		*		255		*		//Arrow
+14,000		*		255		*		//Apple
+14,001		*		255		*		//Small Healing Potion
+14,002		*		255		*		//Healing Potion
+14,003		*		255		*		//Large Healing Potion
+14,004		*		255		*		//Small Mana Potion
+14,005		*		255		*		//Mana Potion
+14,006		*		255		*		//Large Mana Potion
+14,008		*		255		*		//Antidote
+
+end

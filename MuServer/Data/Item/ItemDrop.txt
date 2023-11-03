@@ -1,0 +1,37 @@
+// ItemGrade works when ExcellentRate = 0
+// Level, Skill, Luck, Option and Exe
+// Uses ItemOptionRate Indexes
+
+//Index	Level	Grade	Level	Skill	Luck	Option	Exe	MapNum	Monster	MonsterLvlMin	MonsterLvlMax	Rate		Comment
+12,015	0	0	1	3	5	1	0	*	*	1		400		10000		//Jewel of Chaos
+13,014	0	0	1	3	5	1	0	10	*	25		150		1000		//Loch's Feather  
+13,016	1	0	*	3	5	1	0	*	*	1		32		1000		//Scroll of Archangel 1
+13,016	2	0	*	3	5	1	0	*	*	33		45		1000		//Scroll of Archangel 2
+13,016	3	0	*	3	5	1	0	*	*	46		57		1000		//Scroll of Archangel 3
+13,016	4	0	*	3	5	1	0	*	*	58		68		1000		//Scroll of Archangel 4
+13,016	5	0	*	3	5	1	0	*	*	69		76		1000		//Scroll of Archangel 5
+13,016	6	0	*	3	5	1	0	*	*	77		84		1000		//Scroll of Archangel 6
+13,017	1	0	*	3	5	1	0	*	*	1		32		1000		//Blood Bone 1
+13,017	2	0	*	3	5	1	0	*	*	33		45		1000		//Blood Bone 2
+13,017	3	0	*	3	5	1	0	*	*	46		57		1000		//Blood Bone 3
+13,017	4	0	*	3	5	1	0	*	*	58		68		1000		//Blood Bone 4
+13,017	5	0	*	3	5	1	0	*	*	69		76		1000		//Blood Bone 5
+13,017	6	0	*	3	5	1	0	*	*	77		84		1000		//Blood Bone 6
+14,011	1	0	*	3	5	1	0	*	*	12		69		1000		//Star of Christmas
+14,011	3	0	*	3	5	1	0	*	*	12		69		1000		//Heart of Love
+14,011	5	0	*	3	5	1	0	*	*	12		49		1000		//Silver Medal
+14,011	6	0	*	3	5	1	0	*	*	50		69		1000		//Gold Medal
+14,011	7	0	*	3	5	1	0	*	*	50		69		1000		//Box of Heaven
+14,013	0	0	1	3	5	1	0	*	*	1		400		10000		//Jewel of Bless
+14,014	0	0	1	3	5	1	0	*	*	1		400		10000		//Jewel of Soul
+14,016	0	0	1	3	5	1	0	*	*	1		400		10000		//Jewel of Life
+14,017	1	0	*	3	5	1	0	*	*	1		32		1000		//Devil's Eye 1
+14,017	2	0	*	3	5	1	0	*	*	33		45		1000		//Devil's Eye 2
+14,017	3	0	*	3	5	1	0	*	*	46		57		1000		//Devil's Eye 3
+14,017	4	0	*	3	5	1	0	*	*	58		68		1000		//Devil's Eye 4
+14,018	1	0	*	3	5	1	0	*	*	1		32		1000		//Devil's Key 1
+14,018	2	0	*	3	5	1	0	*	*	33		45		1000		//Devil's Key 2
+14,018	3	0	*	3	5	1	0	*	*	46		57		1000		//Devil's Key 3
+14,018	4	0	*	3	5	1	0	*	*	58		68		1000		//Devil's Key 4
+14,022	0	0	1	3	5	1	0	*	*	46		150		100000		//Jewel of Creation
+end

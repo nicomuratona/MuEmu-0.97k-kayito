@@ -1,0 +1,5 @@
+//Num	Type	Index	Quant	Level	Skill	Luck	Option	Excel	RequireIndex	RequireState	DW	DK	FE	MG
+0	1	200	10	0	0	0	0	0	0		1		1	1	1	0
+0	1	200	10	0	0	0	0	0	1		1		1	1	1	0
+1	2	201	0	0	0	0	0	0	1		1		1	1	1	0
+end

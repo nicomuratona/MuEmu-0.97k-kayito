@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{93F80160-07A8-42A6-B46C-70B72AFF74C4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>GameServer</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(ProjectDir)bin\$(Configuration)\</IntDir>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(ProjectDir)bin\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</OutDir>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateMapFile>false</GenerateMapFile>
+      <MapFileName>$(TargetDir)$(TargetName).map</MapFileName>
+      <MapExports>false</MapExports>
+      <AssemblyDebug>
+      </AssemblyDebug>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <MapFileName>$(TargetDir)$(TargetName).map</MapFileName>
+      <GenerateMapFile>false</GenerateMapFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="GameServer.ico" />
+    <None Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Attack.h" />
+    <ClInclude Include="BattleGround.h" />
+    <ClInclude Include="BattleSoccer.h" />
+    <ClInclude Include="BattleSoccerManager.h" />
+    <ClInclude Include="Blacklist.h" />
+    <ClInclude Include="BloodCastle.h" />
+    <ClInclude Include="BonusManager.h" />
+    <ClInclude Include="ChaosBox.h" />
+    <ClInclude Include="CommandManager.h" />
+    <ClInclude Include="Connection.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="CriticalSection.h" />
+    <ClInclude Include="CustomNpcMove.h" />
+    <ClInclude Include="CustomPkFree.h" />
+    <ClInclude Include="CustomSafeZone.h" />
+    <ClInclude Include="DefaultClassInfo.h" />
+    <ClInclude Include="DevilSquare.h" />
+    <ClInclude Include="DSProtocol.h" />
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="EventSpawnMonster.h" />
+    <ClInclude Include="ExperienceTable.h" />
+    <ClInclude Include="Filter.h" />
+    <ClInclude Include="FlyingDragons.h" />
+    <ClInclude Include="Fruit.h" />
+    <ClInclude Include="GameMain.h" />
+    <ClInclude Include="GameMaster.h" />
+    <ClInclude Include="GameServer.h" />
+    <ClInclude Include="Gate.h" />
+    <ClInclude Include="Guild.h" />
+    <ClInclude Include="GuildManager.h" />
+    <ClInclude Include="HackCheck.h" />
+    <ClInclude Include="HackPacketCheck.h" />
+    <ClInclude Include="InvasionManager.h" />
+    <ClInclude Include="IpManager.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemBag.h" />
+    <ClInclude Include="ItemBagEx.h" />
+    <ClInclude Include="ItemBagManager.h" />
+    <ClInclude Include="ItemDrop.h" />
+    <ClInclude Include="ItemManager.h" />
+    <ClInclude Include="ItemMove.h" />
+    <ClInclude Include="ItemOption.h" />
+    <ClInclude Include="ItemOptionRate.h" />
+    <ClInclude Include="ItemStack.h" />
+    <ClInclude Include="ItemValue.h" />
+    <ClInclude Include="JSProtocol.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="MapItem.h" />
+    <ClInclude Include="MapManager.h" />
+    <ClInclude Include="MapPath.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="MemoryAllocator.h" />
+    <ClInclude Include="MemoryAllocatorInfo.h" />
+    <ClInclude Include="MemScript.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="MiniDump.h" />
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterAI.h" />
+    <ClInclude Include="MonsterAIAgro.h" />
+    <ClInclude Include="MonsterAIAutomata.h" />
+    <ClInclude Include="MonsterAIAutomataInfo.h" />
+    <ClInclude Include="MonsterAIElement.h" />
+    <ClInclude Include="MonsterAIElementInfo.h" />
+    <ClInclude Include="MonsterAIGroup.h" />
+    <ClInclude Include="MonsterAIGroupMember.h" />
+    <ClInclude Include="MonsterAIMovePath.h" />
+    <ClInclude Include="MonsterAIMovePathInfo.h" />
+    <ClInclude Include="MonsterAIRule.h" />
+    <ClInclude Include="MonsterAIRuleInfo.h" />
+    <ClInclude Include="MonsterAIState.h" />
+    <ClInclude Include="MonsterAIUnit.h" />
+    <ClInclude Include="MonsterAIUnitInfo.h" />
+    <ClInclude Include="MonsterAIUtil.h" />
+    <ClInclude Include="MonsterManager.h" />
+    <ClInclude Include="MonsterSetBase.h" />
+    <ClInclude Include="MonsterSkillElement.h" />
+    <ClInclude Include="MonsterSkillElementInfo.h" />
+    <ClInclude Include="MonsterSkillElementOption.h" />
+    <ClInclude Include="MonsterSkillInfo.h" />
+    <ClInclude Include="MonsterSkillManager.h" />
+    <ClInclude Include="MonsterSkillUnit.h" />
+    <ClInclude Include="MonsterSkillUnitInfo.h" />
+    <ClInclude Include="Move.h" />
+    <ClInclude Include="Notice.h" />
+    <ClInclude Include="NpcTalk.h" />
+    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="PacketManager.h" />
+    <ClInclude Include="Party.h" />
+    <ClInclude Include="Path.h" />
+    <ClInclude Include="Protocol.h" />
+    <ClInclude Include="ProtocolDefines.h" />
+    <ClInclude Include="Quest.h" />
+    <ClInclude Include="QuestObjective.h" />
+    <ClInclude Include="QuestReward.h" />
+    <ClInclude Include="Queue.h" />
+    <ClInclude Include="QueueTimer.h" />
+    <ClInclude Include="RandomManager.h" />
+    <ClInclude Include="Reconnect.h" />
+    <ClInclude Include="ResetTable.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ScheduleManager.h" />
+    <ClInclude Include="SerialCheck.h" />
+    <ClInclude Include="ServerDisplayer.h" />
+    <ClInclude Include="ServerInfo.h" />
+    <ClInclude Include="Shop.h" />
+    <ClInclude Include="ShopManager.h" />
+    <ClInclude Include="Skill.h" />
+    <ClInclude Include="SkillHitBox.h" />
+    <ClInclude Include="SkillManager.h" />
+    <ClInclude Include="SocketManager.h" />
+    <ClInclude Include="SocketManagerUdp.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Trade.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="Viewport.h" />
+    <ClInclude Include="Warehouse.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Attack.cpp" />
+    <ClCompile Include="BattleGround.cpp" />
+    <ClCompile Include="BattleSoccer.cpp" />
+    <ClCompile Include="BattleSoccerManager.cpp" />
+    <ClCompile Include="Blacklist.cpp" />
+    <ClCompile Include="BloodCastle.cpp" />
+    <ClCompile Include="BonusManager.cpp" />
+    <ClCompile Include="ChaosBox.cpp" />
+    <ClCompile Include="CommandManager.cpp" />
+    <ClCompile Include="Connection.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="CriticalSection.cpp" />
+    <ClCompile Include="CustomNpcMove.cpp" />
+    <ClCompile Include="CustomPkFree.cpp" />
+    <ClCompile Include="CustomSafeZone.cpp" />
+    <ClCompile Include="DefaultClassInfo.cpp" />
+    <ClCompile Include="DevilSquare.cpp" />
+    <ClCompile Include="DSProtocol.cpp" />
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="EventSpawnMonster.cpp" />
+    <ClCompile Include="ExperienceTable.cpp" />
+    <ClCompile Include="Filter.cpp" />
+    <ClCompile Include="FlyingDragons.cpp" />
+    <ClCompile Include="Fruit.cpp" />
+    <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="GameMaster.cpp" />
+    <ClCompile Include="GameServer.cpp" />
+    <ClCompile Include="Gate.cpp" />
+    <ClCompile Include="Guild.cpp" />
+    <ClCompile Include="GuildManager.cpp" />
+    <ClCompile Include="HackCheck.cpp" />
+    <ClCompile Include="HackPacketCheck.cpp" />
+    <ClCompile Include="InvasionManager.cpp" />
+    <ClCompile Include="IpManager.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemBag.cpp" />
+    <ClCompile Include="ItemBagEx.cpp" />
+    <ClCompile Include="ItemBagManager.cpp" />
+    <ClCompile Include="ItemDrop.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
+    <ClCompile Include="ItemMove.cpp" />
+    <ClCompile Include="ItemOption.cpp" />
+    <ClCompile Include="ItemOptionRate.cpp" />
+    <ClCompile Include="ItemStack.cpp" />
+    <ClCompile Include="ItemValue.cpp" />
+    <ClCompile Include="JSProtocol.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapItem.cpp" />
+    <ClCompile Include="MapManager.cpp" />
+    <ClCompile Include="MapPath.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="MemoryAllocator.cpp" />
+    <ClCompile Include="MemoryAllocatorInfo.cpp" />
+    <ClCompile Include="MemScript.cpp" />
+    <ClCompile Include="Message.cpp" />
+    <ClCompile Include="MiniDump.cpp" />
+    <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterAI.cpp" />
+    <ClCompile Include="MonsterAIAgro.cpp" />
+    <ClCompile Include="MonsterAIAutomata.cpp" />
+    <ClCompile Include="MonsterAIAutomataInfo.cpp" />
+    <ClCompile Include="MonsterAIElement.cpp" />
+    <ClCompile Include="MonsterAIElementInfo.cpp" />
+    <ClCompile Include="MonsterAIGroup.cpp" />
+    <ClCompile Include="MonsterAIGroupMember.cpp" />
+    <ClCompile Include="MonsterAIMovePath.cpp" />
+    <ClCompile Include="MonsterAIMovePathInfo.cpp" />
+    <ClCompile Include="MonsterAIRule.cpp" />
+    <ClCompile Include="MonsterAIRuleInfo.cpp" />
+    <ClCompile Include="MonsterAIState.cpp" />
+    <ClCompile Include="MonsterAIUnit.cpp" />
+    <ClCompile Include="MonsterAIUnitInfo.cpp" />
+    <ClCompile Include="MonsterAIUtil.cpp" />
+    <ClCompile Include="MonsterManager.cpp" />
+    <ClCompile Include="MonsterSetBase.cpp" />
+    <ClCompile Include="MonsterSkillElement.cpp" />
+    <ClCompile Include="MonsterSkillElementInfo.cpp" />
+    <ClCompile Include="MonsterSkillElementOption.cpp" />
+    <ClCompile Include="MonsterSkillInfo.cpp" />
+    <ClCompile Include="MonsterSkillManager.cpp" />
+    <ClCompile Include="MonsterSkillUnit.cpp" />
+    <ClCompile Include="MonsterSkillUnitInfo.cpp" />
+    <ClCompile Include="Move.cpp" />
+    <ClCompile Include="Notice.cpp" />
+    <ClCompile Include="NpcTalk.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="PacketManager.cpp" />
+    <ClCompile Include="Party.cpp" />
+    <ClCompile Include="Path.cpp" />
+    <ClCompile Include="Protocol.cpp" />
+    <ClCompile Include="Quest.cpp" />
+    <ClCompile Include="QuestObjective.cpp" />
+    <ClCompile Include="QuestReward.cpp" />
+    <ClCompile Include="Queue.cpp" />
+    <ClCompile Include="QueueTimer.cpp" />
+    <ClCompile Include="RandomManager.cpp" />
+    <ClCompile Include="Reconnect.cpp" />
+    <ClCompile Include="ResetTable.cpp" />
+    <ClCompile Include="ScheduleManager.cpp" />
+    <ClCompile Include="SerialCheck.cpp" />
+    <ClCompile Include="ServerDisplayer.cpp" />
+    <ClCompile Include="ServerInfo.cpp" />
+    <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="ShopManager.cpp" />
+    <ClCompile Include="Skill.cpp" />
+    <ClCompile Include="SkillHitBox.cpp" />
+    <ClCompile Include="SkillManager.cpp" />
+    <ClCompile Include="SocketManager.cpp" />
+    <ClCompile Include="SocketManagerUdp.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Trade.cpp" />
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="Viewport.cpp" />
+    <ClCompile Include="Warehouse.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameServer.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

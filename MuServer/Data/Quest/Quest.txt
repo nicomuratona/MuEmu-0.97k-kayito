@@ -1,0 +1,13 @@
+//Index	MonsterClass	CurrentState	RequireIndex	RequireState	RequireMinLevel	RequireMaxLevel	DW	DK	FE	MG
+0	235		3		*		*		150		*		1	1	1	0
+1	235		3		0		2		150		*		1	1	1	0
+
+0	235		0		*		*		150		*		1	1	1	0
+1	235		0		0		2		150		*		1	1	1	0
+
+0	235		1		*		*		150		*		1	1	1	0
+1	235		1		0		2		150		*		1	1	1	0
+
+1	235		2		0		2		150		*		1	1	1	0
+0	235		2		*		*		150		*		1	1	1	0
+end

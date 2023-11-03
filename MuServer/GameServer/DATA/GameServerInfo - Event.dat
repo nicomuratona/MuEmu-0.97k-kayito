@@ -1,0 +1,25 @@
+[GameServerInfo]
+;==================================================
+; Blood Castle Event Settings
+;==================================================
+BloodCastleEvent = 1
+BloodCastleMaxUser = 10
+
+;==================================================
+; Bonus Manager Settings
+;==================================================
+BonusManagerSwitch = 1
+
+;==================================================
+; Devil Square Event Settings
+;==================================================
+DevilSquareEvent = 1
+DevilSquareMaxUser = 15
+
+;==================================================
+; Invasion Manager Settings
+;==================================================
+InvasionManagerSwitch = 1
+FlyingDragonsSwitch = 1
+FlyingDragonsOnlyBossMapSpawn = 0		; Dragons will only spawn in the map of the boss
+FlyingDragonsKillBossDisappear = 0		; Dragons will disappear when the boss dies

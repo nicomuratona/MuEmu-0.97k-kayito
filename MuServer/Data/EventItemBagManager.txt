@@ -1,0 +1,29 @@
+//ItemIndex	ItemLevel	MonsterClass	SpecialValue	Comment
+14,011		0		*		*		//Box of Luck
+*		*		55		*		//Skeleton King
+*		*		42		*		//Red Dragon
+14,011		1		*		*		//Star of Christmas
+14,011		3		*		*		//Heart of Love
+14,011		5		*		*		//Silver Medal
+14,011		6		*		*		//Gold Medal
+14,011		7		*		*		//Box of Heaven
+14,011		8		*		*		//Box of Kundun 1
+14,011		9		*		*		//Box of Kundun 2
+14,011		10		*		*		//Box of Kundun 3
+14,011		11		*		*		//Box of Kundun 4
+*		*		*		0		//Blood Castle 1
+*		*		*		1		//Blood Castle 2
+*		*		*		2		//Blood Castle 3
+*		*		*		3		//Blood Castle 4
+*		*		*		4		//Blood Castle 5
+*		*		*		5		//Blood Castle 6
+*		*		43		*		//Golden Budge Dragon
+*		*		78		*		//Golden Goblin
+*		*		54		*		//Golden Soldier
+*		*		53		*		//Golden Titan
+*		*		79		*		//Golden Dragon
+*		*		80		*		//Golden Lizard King
+*		*		81		*		//Golden Vepar
+*		*		82		*		//Golden Tantalos
+*		*		83		*		//Golden Iron Wheel
+end

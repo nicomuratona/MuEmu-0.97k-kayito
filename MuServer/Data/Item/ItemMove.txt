@@ -1,0 +1,24 @@
+//Index	AllowDrop	AllowSell	AllowTrade	AllowVault	Comment
+12,000	0		1		1		1		//Wings of Elf
+12,001	0		1		1		1		//Wings of Heaven
+12,002	0		1		1		1		//Wings of Satan
+12,003	0		1		1		1		//Wings of Spirits
+12,004	0		1		1		1		//Wings of Soul
+12,005	0		1		1		1		//Wings of Dragon
+12,006	0		1		1		1		//Wings of Darkness
+12,015	0		1		1		1		//Jewel of Chaos
+13,000	0		1		1		1		//Guardian Angel
+13,001	0		1		1		1		//Imp
+13,002	0		1		1		1		//Horn of Uniria
+13,003	0		1		1		1		//Horn of Dinorant
+13,019	1		0		0		0		//Divine Weapon of Archangel
+14,013	0		1		1		1		//Jewel of Bless
+14,015	0		1		1		1		//Jewel of Soul
+14,016	0		1		1		1		//Jewel of Life
+14,021	1		1		1		1		//Rena
+14,022	0		1		1		1		//Jewel of Creation
+14,023	0		1		0		0		//Scroll of Emperor
+14,024	0		1		0		0		//Broken Sword
+14,025	0		1		0		0		//Tear of Elf
+14,026	0		1		0		0		//Soul shard of wizard
+end

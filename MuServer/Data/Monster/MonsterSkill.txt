@@ -1,0 +1,4 @@
+0
+//Monster	Name			Type1	Unit1	Type2	Unit2	Type3	Unit3	Type4	Unit4	Type5	Unit5	Type6	Unit6	Type7	Unit7	Type8	Unit8	Type9	Unit9	Type10	Unit10
+
+end

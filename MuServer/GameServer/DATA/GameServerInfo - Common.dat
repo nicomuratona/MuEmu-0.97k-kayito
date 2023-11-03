@@ -1,0 +1,234 @@
+[GameServerInfo]
+CustomerName = "Nico"
+;==================================================
+; Server Settings
+;==================================================
+ServerName = "SV1"
+WindowName = "Server 1"
+ServerCode = 0
+ServerLock = 0
+ServerPort = 55901
+ServerVersion = "0.97.11"
+ServerSerial = "TbYehR2hFUPBKgZj"
+ServerMaxUserNumber = 1000
+
+;==================================================
+; Connection Settings
+;==================================================
+DataServerAddress = "127.0.0.1"
+DataServerPort = 55980
+JoinServerAddress = "127.0.0.1"
+JoinServerPort = 55990
+ConnectServerAddress = "127.0.0.1"
+ConnectServerPort = 55601
+
+;==================================================
+; Log Settings
+;==================================================
+WriteChatLog = 1
+WriteCommandLog = 1
+WriteTradeLog = 1
+WriteConnectLog = 1
+WriteHackLog = 1
+WriteChaosMixLog = 1
+
+;==================================================
+; Hack Settings
+;==================================================
+CheckSpeedHack = 0
+CheckSpeedHackTolerance = 0
+CheckLatencyHack = 0
+CheckLatencyHackTolerance = 0
+CheckAutoPotionHack = 0
+CheckAutoPotionHackTolerance = 0
+
+;==================================================
+; Common Settings
+;==================================================
+MaxItemOption = 7
+MaxIpConnection = 10
+DisconnectOnlineAccount = 0
+PersonalCodeCheck = 0
+
+;==================================================
+; Monster Settings
+;==================================================
+MonsterLifeRate = 100
+MonsterHealthBarSwitch = 1
+
+;==================================================
+; PK Settings
+;==================================================
+NonPK = 0
+PKLimitFree = 0
+PKDownTime1 = 3600
+PKDownTime2 = 3600
+
+;==================================================
+; Guild Settings
+;==================================================
+GuildCreateSwitch = 1	
+GuildDeleteSwitch = 1
+GuildCreateMinLevel = 100
+GuildCreateMinReset = 0
+GuildInsertMaxUser_AL0 = 40
+GuildInsertMaxUser_AL1 = 80
+GuildInsertMaxUser_AL2 = 80
+GuildInsertMaxUser_AL3 = 80
+
+;==================================================
+; Guild War/Soccer Settings
+;==================================================
+GuildWarWinScore = 10			; Score need to win the guild war
+GuildWarSoccerWinScore = 100		; Score need to win the battle soccer
+GuildWarWinPointsGain_Max = 3		; Enemy guild score is 0
+GuildWarWinPointsGain_Half = 2		; Enemy guild score < (WinScore / 2)
+GuildWarWinPointsGain_Normal = 1	; Normal win
+
+;==================================================
+; Golden Archer Settings
+;==================================================
+GoldenArcherRewardSwitch = 1
+GoldenArcherMinRenas = 30
+GoldenArcherMinStones = 30
+GoldenArcherRewardItemIndex = 459	; 459 = Box of Luck
+
+;==================================================
+; Experience Settings
+;==================================================
+AddExperienceRate_AL0 = 9999
+AddExperienceRate_AL1 = 9999
+AddExperienceRate_AL2 = 9999
+AddExperienceRate_AL3 = 9999
+AddEventExperienceRate_AL0 = 1
+AddEventExperienceRate_AL1 = 1
+AddEventExperienceRate_AL2 = 1
+AddEventExperienceRate_AL3 = 1
+
+;==================================================
+; Item Drop Settings
+;==================================================
+ItemDropTime = 30
+ItemDropRate_AL0 = 100
+ItemDropRate_AL1 = 100
+ItemDropRate_AL2 = 100
+ItemDropRate_AL3 = 100
+
+;==================================================
+; Money Drop Settings
+;==================================================
+MoneyDropTime = 30
+MoneyAmountDropRate_AL0 = 50
+MoneyAmountDropRate_AL1 = 50
+MoneyAmountDropRate_AL2 = 50
+MoneyAmountDropRate_AL3 = 50
+
+;==================================================
+; Item Durability Settings
+;==================================================
+WeaponDurabilityRate = 100
+ArmorDurabilityRate = 100
+WingDurabilityRate = 100
+GuardianDurabilityRate = 100
+PendantDurabilityRate = 100
+RingDurabilityRate = 100
+
+;==================================================
+; Trade Item Block Settings
+;==================================================
+TradeSwitch = 1
+TradeItemBlock = 0
+TradeItemBlockExc = 0
+TradeItemBlockSell = 0
+
+;==================================================
+; Shop Item Settings
+;==================================================
+ShopItemBlockSellOnMaxMoney = 1
+
+;==================================================
+; Level Up Settings
+;==================================================
+MaxLevelUp = 1
+MaxLevelUpEvent = 1
+MaxStatPoint_AL0 = 32767
+MaxStatPoint_AL1 = 32767
+MaxStatPoint_AL2 = 32767
+MaxStatPoint_AL3 = 32767
+DWLevelUpPoint = 5
+DKLevelUpPoint = 5
+FELevelUpPoint = 5
+MGLevelUpPoint = 7
+PlusStatPoint = 1
+
+;==================================================
+; Create Character Settings
+;==================================================
+CharacterCreateSwitch = 1
+MGCreateLevel_AL0 = 0
+MGCreateLevel_AL1 = 0
+MGCreateLevel_AL2 = 0
+MGCreateLevel_AL3 = 0
+
+;==================================================
+; Party Settings
+;==================================================
+PartyLevelDifference = 130
+PartyReconnectTime = 300
+PartyGeneralExperience1 = 50
+PartyGeneralExperience2 = 125
+PartyGeneralExperience3 = 150
+PartyGeneralExperience4 = 175
+PartyGeneralExperience5 = 200
+PartySpecialExperience1 = 50
+PartySpecialExperience2 = 125
+PartySpecialExperience3 = 150
+PartySpecialExperience4 = 175
+PartySpecialExperience5 = 200
+
+;==================================================
+; Potion Settings
+;==================================================
+ApplePotionRate = 10
+SmallLifePotionRate = 20
+MidleLifePotionRate = 30
+LargeLifePotionRate = 40
+SmallManaPotionRate = 20
+MidleManaPotionRate = 30
+LargeManaPotionRate = 40
+
+;==================================================
+; Transformation Ring Settings
+;==================================================
+TransformationRing1 = 2
+TransformationRing2 = 7
+TransformationRing3 = 14
+TransformationRing4 = 8
+TransformationRing5 = 9
+TransformationRing6 = 41
+
+;==================================================
+; Jewel Settings
+;==================================================
+JewelOfSoulSuccessRate_AL1 = 50
+JewelOfSoulSuccessRate_AL0 = 50
+JewelOfSoulSuccessRate_AL2 = 50
+JewelOfSoulSuccessRate_AL3 = 50
+JewelOfLifeSuccessRate_AL0 = 50
+JewelOfLifeSuccessRate_AL1 = 50
+JewelOfLifeSuccessRate_AL2 = 50
+JewelOfLifeSuccessRate_AL3 = 50
+JewelOfSoulAddLuckRate_AL0 = 25
+JewelOfSoulAddLuckRate_AL1 = 25
+JewelOfSoulAddLuckRate_AL2 = 25
+JewelOfSoulAddLuckRate_AL3 = 25
+
+;==================================================
+; Fruit Settings
+;==================================================
+FruitAddPointMin = 1
+FruitAddPointMax = 3
+FruitAddPointSuccessRate_AL0 = -1
+FruitAddPointSuccessRate_AL1 = -1
+FruitAddPointSuccessRate_AL2 = -1
+FruitAddPointSuccessRate_AL3 = -1

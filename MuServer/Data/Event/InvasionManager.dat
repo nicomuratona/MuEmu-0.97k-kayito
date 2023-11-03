@@ -1,0 +1,59 @@
+// DOW: 1=Sunday / 2=Monday / 3=Tuesday / 4=Wednesday / 5=Thursday / 6=Friday / 7=Saturday
+0
+//Index	Year	Month	Day	DoW	Hour	Minute	Second
+0	*	*	*	*	14	50	0
+1	*	*	*	*	19	35	0
+2	*	*	*	*	14	58	0
+end
+
+//0 Death King - Lorencia y Noria
+//1 Red Dragon - Lorencia y Devias
+//2 Dorados - Lorencia, Devias, Noria, Atlans y Tarkan
+
+// Invasion Effect
+// 1 = Flying Red Dragons ; 3 = Flying Golden Dragons
+
+1
+//Index	RespawnMessage	DespawnMessage	BossIndex	BossMessage	InvasionTime	AlarmTime	AlarmMsg	InvasionEffect	InvasionName
+0	19		21		55		20		60		5		18		3		"Death King"
+1	19		21		42		20		60		5		18		1		"Red Dragon"
+2	19		21		*		20		60		5		18		3		"Golden"
+end
+
+2
+//Index	Group	Map	Value
+0	0	0	0
+0	0	3	0
+1	0	0	0
+1	0	2	0
+2	0	0	0
+2	0	2	0
+2	0	3	0
+2	1	2	0
+2	2	2	0
+2	3	3	0
+2	4	0	0
+2	4	2	0
+2	4	3	0
+2	4	4	0
+2	5	7	0
+2	6	7	0
+2	7	8	0
+2	8	8	0
+end
+
+3
+//Index	Group	MonsterClass	RegenType	RegenTime
+0	0	55		0		0
+0	0	56		0		0
+1	0	42		0		0
+2	0	43		0		0
+2	1	53		0		0
+2	2	54		0		0
+2	3	78		0		0
+2	4	79		0		0
+2	5	80		0		0
+2	6	81		0		0
+2	7	82		0		0
+2	8	83		0		0
+end

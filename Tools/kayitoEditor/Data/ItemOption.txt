@@ -1,0 +1,228 @@
+//Index	OptionIndex	OptionValue	ItemMinIndex	ItemMaxIndex	ItemSkillOption	ItemLuckOption	ItemAddOption	ItemExceOption	Comment
+//***************** Skill Option *****************//
+0	0		0		00,000		00,002		1		*		*		*		// Swords With No Skill
+0	20		0		00,003		00,003		1		*		*		*		// Katana Skill
+0	21		0		00,004		00,004		1		*		*		*		// Sword of Assassin Skill
+0	22		0		00,005		00,005		1		*		*		*		// Blade Skill
+0	20		0		00,006		00,006		1		*		*		*		// Gladius Skill
+0	21		0		00,007		00,008		1		*		*		*		// Falchion, Serpent Sword Skill
+0	20		0		00,009		00,009		1		*		*		*		// Sword of Salamander Skill
+0	22		0		00,010		00,010		1		*		*		*		// Light Saber Skill
+0	20		0		00,011		00,011		1		*		*		*		// Legendary Sword Skill
+0	19		0		00,012		00,012		1		*		*		*		// Heliacal Sword Skill
+0	22		0		00,013		00,014		1		*		*		*		// Double Blade, Lightning Sword Skill
+0	23		0		00,015		00,015		1		*		*		*		// Giant Sword Skill
+0	22		0		00,016		00,016		1		*		*		*		// Sword of Destruction Skill
+0	23		0		00,017		00,018		1		*		*		*		// Dark Breaker, Thunder Blade Skill
+0	22		0		00,019		00,019		1		*		*		*		// Divine Sword of Archangel Skill
+0	0		0		00,020		00,030		1		*		*		*		// Swords With No Skill
+0	56		0		00,031		00,031		1		*		*		*		// Rune Blade Skill
+
+0	0		0		01,000		01,001		1		*		*		*		// Axes With No Skill
+0	19		0		01,002		01,003		1		*		*		*		// Double Axe, Tomahawk Skill
+0	0		0		01,004		01,004		1		*		*		*		// Axes With No Skill
+0	19		0		01,005		01,008		1		*		*		*		// Battle Axe, Nikea Axe, Larkan Axe, Crescent Axe Skill
+0	0		0		01,009		01,031		1		*		*		*		// Axes With No Skill
+
+0	0		0		02,000		02,000		1		*		*		*		// Maces With No Skill
+0	19		0		02,001		02,001		1		*		*		*		// Morning Star Skill
+0	0		0		02,002		02,002		1		*		*		*		// Maces With No Skill
+0	19		0		02,003		02,004		1		*		*		*		// Great Hammer, Crystal Morning Star Skill
+0	23		0		02,005		02,006		1		*		*		*		// Crystal Sword, Chaos Dragon Axe Skill
+0	0		0		02,007		02,031		1		*		*		*		// Maces With No Skill
+
+0	22		0		03,000		03,000		1		*		*		*		// Light Spear Skill
+0	0		0		03,001		03,003		1		*		*		*		// Spears With No Skill
+0	20		0		03,004		03,004		1		*		*		*		// Serpent Spear Skill
+0	0		0		03,005		03,006		1		*		*		*		// Spears With No Skill
+0	22		0		03,007		03,010		1		*		*		*		// Berdysh, Great Scythe, Bill of Balrog, Dragon Spear Skill
+0	0		0		03,011		03,031		1		*		*		*		// Spears With No Skill
+
+0	24		0		04,000		04,006		1		*		*		*		// Bows/Crossbows Skill
+0	24		0		04,008		04,014		1		*		*		*		// Bows/Crossbows Skill
+0	24		0		04,016		04,018		1		*		*		*		// Bows/Crossbows Skill
+0	0		0		04,019		04,031		1		*		*		*		// Bows/Crossbows With No Skill
+
+0	0		0		05,000		05,031		1		*		*		*		// Staffs With No Skill
+
+0	0		0		06,000		06,003		1		*		*		*		// Shields With No Skill
+0	18		0		06,004		06,013		1		*		*		*		// Shields Skill
+0	0		0		06,014		06,031		1		*		*		*		// Shields With No Skill
+
+0	49		0		13,003		13,003		1		*		*		*		// Dinorant Skill
+
+//***************** Luck Option *****************//
+1	64		5		00,000		00,031		*		1		*		*		// Sword Luck
+1	64		5		01,000		01,031		*		1		*		*		// Axe Luck
+1	64		5		02,000		02,031		*		1		*		*		// Mace Luck
+1	64		5		03,000		03,031		*		1		*		*		// Spear Luck
+1	64		5		04,000		04,031		*		1		*		*		// Bow/Crossbow Luck
+1	64		5		05,000		05,031		*		1		*		*		// Staff Luck
+1	64		5		06,000		06,031		*		1		*		*		// Shield Luck
+1	64		5		07,000		11,031		*		1		*		*		// Body Parts Luck
+
+1	64		5		12,000		12,000		*		1		*		*		// Level 1 Elf Wings Luck
+1	64		5		12,001		12,001		*		1		*		*		// Level 1 Wizard Wings Luck
+1	64		5		12,002		12,002		*		1		*		*		// Level 1 Knight Wings Luck
+
+1	64		5		12,003		12,003		*		1		*		*		// Level 2 Elf Wings Luck
+1	64		5		12,004		12,004		*		1		*		*		// Level 2 Wizard Wings Luck
+1	64		5		12,005		12,005		*		1		*		*		// Level 2 Knight Wings Luck
+1	64		5		12,006		12,006		*		1		*		*		// Level 2 Gladiator Wings Luck
+
+//***************** Additional Option *****************//
+2	60		4		00,000		00,031		*		*		1		*		// Sword Additional Option
+2	60		4		01,000		01,031		*		*		1		*		// Axe Additional Option
+2	60		4		02,000		02,031		*		*		1		*		// Mace Additional Option
+2	60		4		03,000		03,031		*		*		1		*		// Spear Additional Option
+2	60		4		04,000		04,031		*		*		1		*		// Bow/Crossbow Additional Option
+2	61		4		05,000		05,031		*		*		1		*		// Staff Additional Option
+2	62		5		06,000		06,031		*		*		1		*		// Shield Additional Option
+2	63		4		07,000		11,031		*		*		1		*		// Body Parts Additional Option
+
+2	65		1		12,000		12,000		*		*		1		*		// Level 1 Elf Wings Additional Option
+2	61		4		12,001		12,001		*		*		1		*		// Level 1 Wizard Wings Additional Option
+2	60		4		12,002		12,002		*		*		1		*		// Level 1 Knight Wings Additional Option
+
+2	60		4		12,003		12,003		*		*		1		*		// Level 2 Elf Wings Additional Option
+2	65		1		12,003		12,003		*		*		1		32		// Level 2 Elf Wings Additional Option
+2	61		4		12,004		12,004		*		*		1		*		// Level 2 Wizard Wings Additional Option
+2	65		1		12,004		12,004		*		*		1		32		// Level 2 Wizard Wings Additional Option
+2	60		4		12,005		12,005		*		*		1		*		// Level 2 Knight Wings Additional Option
+2	65		1		12,005		12,005		*		*		1		32		// Level 2 Knight Wings Additional Option
+2	60		4		12,006		12,006		*		*		1		*		// Level 2 Gladiator Wings Additional Option
+2	61		4		12,006		12,006		*		*		1		32		// Level 2 Gladiator Wings Additional Option
+
+2	65		1		13,008		13,008		*		*		1		*		// Ring of Ice Additional Option
+2	65		1		13,009		13,009		*		*		1		*		// Ring of Poison Wings Additional Option
+
+2	65		1		13,012		13,012		*		*		1		*		// Pendant of Lightning Additional Option
+2	65		1		13,013		13,013		*		*		1		*		// Pendant of Fire Wings Additional Option
+
+//***************** Excellent Option 1 *****************//
+3	72		10		00,000		00,031		*		*		*		1		// Sword Excellent 1
+3	72		10		01,000		01,031		*		*		*		1		// Axe Excellent 1
+3	72		10		02,000		02,031		*		*		*		1		// Mace Excellent 1
+3	72		10		03,000		03,031		*		*		*		1		// Spear Excellent 1
+3	72		10		04,000		04,031		*		*		*		1		// Bow/Crossbow Excellent 1
+3	72		10		05,000		05,031		*		*		*		1		// Staff Excellent 1
+3	66		30		06,000		06,031		*		*		*		1		// Shield Excellent 1
+3	66		30		07,000		11,031		*		*		*		1		// Body Parts Excellent 1
+
+3	80		5		12,003		12,003		*		*		*		1		// Level 2 Elf Wings Excellent 1
+3	80		5		12,004		12,004		*		*		*		1		// Level 2 Wizard Wings Excellent 1
+3	80		5		12,005		12,005		*		*		*		1		// Level 2 Knight Wings Excellent 1
+3	80		5		12,006		12,006		*		*		*		1		// Level 2 Gladiator Wings Excellent 1
+
+3	84		5		13,003		13,003		*		*		*		1		// Dinorant Excellent 1
+
+3	66		30		13,008		13,008		*		*		*		1		// Ring of Ice Excellent 1
+3	66		30		13,009		13,009		*		*		*		1		// Ring of Poison Wings Excellent 1
+
+3	72		10		13,012		13,012		*		*		*		1		// Pendant of Lightning Excellent 1
+3	72		10		13,013		13,013		*		*		*		1		// Pendant of Fire Wings Excellent 1
+
+//***************** Excellent Option 2 *****************//
+4	73		20		00,000		00,031		*		*		*		2		// Sword Excellent 2
+4	73		20		01,000		01,031		*		*		*		2		// Axe Excellent 2
+4	73		20		02,000		02,031		*		*		*		2		// Mace Excellent 2
+4	73		20		03,000		03,031		*		*		*		2		// Spear Excellent 2
+4	73		20		04,000		04,031		*		*		*		2		// Bow/Crossbow Excellent 2
+4	75		20		05,000		05,031		*		*		*		2		// Staff Excellent 2
+4	67		10		06,000		06,031		*		*		*		2		// Shield Excellent 2
+4	67		10		07,000		11,031		*		*		*		2		// Body Parts Excellent 2
+
+4	81		5		12,003		12,003		*		*		*		2		// Level 2 Elf Wings Excellent 2
+4	81		5		12,004		12,004		*		*		*		2		// Level 2 Wizard Wings Excellent 2
+4	81		5		12,005		12,005		*		*		*		2		// Level 2 Knight Wings Excellent 2
+4	81		5		12,006		12,006		*		*		*		2		// Level 2 Gladiator Wings Excellent 2
+
+4	83		50		13,003		13,003		*		*		*		2		// Dinorant Excellent 2
+
+4	67		10		13,008		13,008		*		*		*		2		// Ring of Ice Excellent 2
+4	67		10		13,009		13,009		*		*		*		2		// Ring of Poison Wings Excellent 2
+
+4	75		20		13,012		13,012		*		*		*		2		// Pendant of Lightning Excellent 2
+4	73		20		13,013		13,013		*		*		*		2		// Pendant of Fire Wings Excellent 2
+
+//***************** Excellent Option 3 *****************//
+5	74		2		00,000		00,031		*		*		*		4		// Sword Excellent 3
+5	74		2		01,000		01,031		*		*		*		4		// Axe Excellent 3
+5	74		2		02,000		02,031		*		*		*		4		// Mace Excellent 3
+5	74		2		03,000		03,031		*		*		*		4		// Spear Excellent 3
+5	74		2		04,000		04,031		*		*		*		4		// Bow/Crossbow Excellent 3
+5	76		2		05,000		05,031		*		*		*		4		// Staff Excellent 3
+5	68		5		06,000		06,031		*		*		*		4		// Shield Excellent 3
+5	68		5		07,000		11,031		*		*		*		4		// Body Parts Excellent 3
+
+5	82		3		12,003		12,003		*		*		*		4		// Level 2 Elf Wings Excellent 3
+5	82		3		12,004		12,004		*		*		*		4		// Level 2 Wizard Wings Excellent 3
+5	82		3		12,005		12,005		*		*		*		4		// Level 2 Knight Wings Excellent 3
+5	82		3		12,006		12,006		*		*		*		4		// Level 2 Gladiator Wings Excellent 3
+
+5	77		5		13,003		13,003		*		*		*		4		// Dinorant Excellent 3
+
+5	68		5		13,008		13,008		*		*		*		4		// Ring of Ice Excellent 3
+5	68		5		13,009		13,009		*		*		*		4		// Ring of Poison Wings Excellent 3
+
+5	76		2		13,012		13,012		*		*		*		4		// Pendant of Lightning Excellent 3
+5	74		2		13,013		13,013		*		*		*		4		// Pendant of Fire Wings Excellent 3
+
+//***************** Excellent Option 4 *****************//
+6	77		7		00,000		00,031		*		*		*		8		// Sword Excellent 4
+6	77		7		01,000		01,031		*		*		*		8		// Axe Excellent 4
+6	77		7		02,000		02,031		*		*		*		8		// Mace Excellent 4
+6	77		7		03,000		03,031		*		*		*		8		// Spear Excellent 4
+6	77		7		04,000		04,031		*		*		*		8		// Bow/Crossbow Excellent 4
+6	77		7		05,000		05,031		*		*		*		8		// Staff Excellent 4
+6	69		4		06,000		06,031		*		*		*		8		// Shield Excellent 4
+6	69		4		07,000		11,031		*		*		*		8		// Body Parts Excellent 4
+
+6	83		50		12,003		12,003		*		*		*		8		// Level 2 Elf Wings Excellent 4
+6	83		50		12,004		12,004		*		*		*		8		// Level 2 Wizard Wings Excellent 4
+6	83		50		12,005		12,005		*		*		*		8		// Level 2 Knight Wings Excellent 4
+6	83		50		12,006		12,006		*		*		*		8		// Level 2 Gladiator Wings Excellent 4
+
+6	69		4		13,008		13,008		*		*		*		8		// Ring of Ice Excellent 4
+6	69		4		13,009		13,009		*		*		*		8		// Ring of Poison Wings Excellent 4
+
+6	77		7		13,012		13,012		*		*		*		8		// Pendant of Lightning Excellent 4
+6	77		7		13,013		13,013		*		*		*		8		// Pendant of Fire Wings Excellent 4
+
+//***************** Excellent Option 5 *****************//
+7	78		12		00,000		00,031		*		*		*		16		// Sword Excellent 5
+7	78		12		01,000		01,031		*		*		*		16		// Axe Excellent 5
+7	78		12		02,000		02,031		*		*		*		16		// Mace Excellent 5
+7	78		12		03,000		03,031		*		*		*		16		// Spear Excellent 5
+7	78		12		04,000		04,031		*		*		*		16		// Bow/Crossbow Excellent 5
+7	78		12		05,000		05,031		*		*		*		16		// Staff Excellent 5
+7	70		4		06,000		06,031		*		*		*		16		// Shield Excellent 5
+7	70		4		07,000		11,031		*		*		*		16		// Body Parts Excellent 5
+
+7	77		5		12,003		12,003		*		*		*		16		// Level 2 Elf Wings Excellent 5
+7	77		5		12,004		12,004		*		*		*		16		// Level 2 Wizard Wings Excellent 5
+7	77		5		12,005		12,005		*		*		*		16		// Level 2 Knight Wings Excellent 5
+7	77		5		12,006		12,006		*		*		*		16		// Level 2 Gladiator Wings Excellent 5
+
+7	70		4		13,008		13,008		*		*		*		16		// Ring of Ice Excellent 5
+7	70		4		13,009		13,009		*		*		*		16		// Ring of Poison Wings Excellent 5
+
+7	78		12		13,012		13,012		*		*		*		16		// Pendant of Lightning Excellent 5
+7	78		12		13,013		13,013		*		*		*		16		// Pendant of Fire Wings Excellent 5
+
+//***************** Excellent Option 6 *****************//
+8	79		12		00,000		00,031		*		*		*		32		// Sword Excellent 6
+8	79		12		01,000		01,031		*		*		*		32		// Axe Excellent 6
+8	79		12		02,000		02,031		*		*		*		32		// Mace Excellent 6
+8	79		12		03,000		03,031		*		*		*		32		// Spear Excellent 6
+8	79		12		04,000		04,031		*		*		*		32		// Bow/Crossbow Excellent 6
+8	79		12		05,000		05,031		*		*		*		32		// Staff Excellent 6
+8	71		4		06,000		06,031		*		*		*		32		// Shield Excellent 6
+8	71		4		07,000		11,031		*		*		*		32		// Body Parts Excellent 6
+
+8	71		4		13,008		13,008		*		*		*		32		// Ring of Ice Excellent 6
+8	71		4		13,009		13,009		*		*		*		32		// Ring of Poison Wings Excellent 6
+
+8	79		12		13,012		13,012		*		*		*		32		// Pendant of Lightning Excellent 6
+8	79		12		13,013		13,013		*		*		*		32		// Pendant of Fire Wings Excellent 6
+end

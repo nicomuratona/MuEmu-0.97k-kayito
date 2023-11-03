@@ -1,0 +1,24 @@
+// DOW: 1=Sunday / 2=Monday / 3=Tuesday / 4=Wednesday / 5=Thursday / 6=Friday / 7=Saturday
+0
+//Index	Year	Month	Day	DoW	Hour	Minute	Second
+
+end
+
+// Bonus Time = Seconds
+1
+//Index	StartMessage	FinalMessage	BonusTime
+
+end
+
+// BonusIndexs
+//	EXPERIENCE RATE = 0
+//	ITEM DROP RATE = 1
+//	COMMON ITEM DROP RATE = 2
+//	EXC ITEM DROP RATE = 3
+//	RESET AMOUNT = 4
+//	GRAND RESET AMOUNT = 5
+// ItemIndex format: 00,000 or *
+2
+//Index	BonusIndex	BonusValue_AL0	BonusValue_AL1	BonusValue_AL2	BonusValue_AL3	ItemIndex	ItemLevel	MapNumber	MonsterClass	MonsterLevelMin	MonsterLevelMax
+
+end

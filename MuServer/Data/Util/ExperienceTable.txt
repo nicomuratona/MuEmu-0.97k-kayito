@@ -1,0 +1,6 @@
+//Min	Max	Min	Max	Min	Max	Experience
+//Level	Level	Reset	Reset	GrReset	GrReset	Rate
+
+
+
+end
