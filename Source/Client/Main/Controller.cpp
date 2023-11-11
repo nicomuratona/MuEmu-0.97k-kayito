@@ -1,12 +1,10 @@
 #include "stdafx.h"
 #include "Camera.h"
 #include "Controller.h"
-#include "MiniMap.h"
+#include "FullMap.h"
 #include "MoveList.h"
 #include "resource.h"
 #include "TrayMode.h"
-
-#include "Sound.h"
 
 Controller gController;
 
@@ -195,37 +193,37 @@ void Controller::CheckKeyboardKeys()
 {
 	if (((gController.GetAsyncKeyStateHook('M') >> 8) & 0x80) == 0x80) // M Pressed
 	{
-		if (!*(int*)(KeyState + 'M' * 4))
+		if (!KeyState['M'])
 		{
-			*(int*)(KeyState + 'M' * 4) = 1;
+			KeyState['M'] = 1;
 
 			gMoveList.Toggle();
 		}
 	}
 	else
 	{
-		*(int*)(KeyState + 'M' * 4) = 0;
+		KeyState['M'] = 0;
 	}
 
 	if (((gController.GetAsyncKeyStateHook(VK_TAB) >> 8) & 0x80) == 0x80) // Tab Pressed
 	{
-		if (!*(int*)(KeyState + VK_TAB * 4))
+		if (!KeyState[VK_TAB])
 		{
-			*(int*)(KeyState + VK_TAB * 4) = 1;
+			KeyState[VK_TAB] = 1;
 
-			gMiniMap.Toggle();
+			gFullMap.Toggle();
 		}
 	}
 	else
 	{
-		*(int*)(KeyState + VK_TAB * 4) = 0;
+		KeyState[VK_TAB] = 0;
 	}
 
 	if (((gController.GetAsyncKeyStateHook(VK_SPACE) >> 8) & 0x80) == 0x80) // Space Pressed
 	{
-		if (!*(int*)(KeyState + VK_SPACE * 4))
+		if (!KeyState[VK_SPACE])
 		{
-			*(int*)(KeyState + VK_SPACE * 4) = 1;
+			KeyState[VK_SPACE] = 1;
 
 			if (!InputEnable && !MouseOnWindow)
 			{
@@ -261,7 +259,7 @@ void Controller::CheckKeyboardKeys()
 	}
 	else
 	{
-		*(int*)(KeyState + VK_SPACE * 4) = 0;
+		KeyState[VK_SPACE] = 0;
 	}
 
 	((void(__cdecl*)()) 0x004C04A0)(); // Original Function

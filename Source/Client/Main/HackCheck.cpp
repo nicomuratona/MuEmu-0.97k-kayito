@@ -2,35 +2,64 @@
 #include "HackCheck.h"
 #include "Protect.h"
 
-typedef int(WINAPI* WSRECV)(SOCKET, BYTE*, int, int);
+CHackCheck gHackCheck;
 
-typedef int(WINAPI* WSSEND)(SOCKET, BYTE*, int, int);
-
-WSRECV HookRecv;
-
-WSSEND HookSend;
-
-BYTE EncDecKey1;
-
-BYTE EncDecKey2;
-
-void DecryptData(BYTE* lpMsg, int size)
+void CHackCheck::Init()
 {
-	for (int n = 0; n < size; n++)
+	WORD EncDecKey = 0;
+
+	for (int n = 0; n < sizeof(gProtect.m_MainInfo.CustomerName); n++)
 	{
-		lpMsg[n] = (lpMsg[n] ^ EncDecKey1) - (EncDecKey2 * EncDecKey1);
+		EncDecKey += (BYTE)(gProtect.m_MainInfo.CustomerName[n] ^ gProtect.m_MainInfo.ClientSerial[(n % sizeof(gProtect.m_MainInfo.ClientSerial))]);
+
+		EncDecKey ^= (BYTE)(gProtect.m_MainInfo.CustomerName[n] - gProtect.m_MainInfo.ClientSerial[(n % sizeof(gProtect.m_MainInfo.ClientSerial))]);
 	}
+
+	this->EncDecKey1 = (BYTE)0xB0;
+
+	this->EncDecKey2 = (BYTE)0xF8;
+
+	this->EncDecKey1 += LOBYTE(EncDecKey);
+
+	this->EncDecKey2 += HIBYTE(EncDecKey);
+
+	this->HookRecv = *(WSRECV*)(0x00552430);
+
+	this->HookSend = *(WSSEND*)(0x00552440);
+
+	SetDword(0x00552430, (DWORD)&this->MyRecv);
+
+	SetDword(0x00552440, (DWORD)&this->MySend);
 }
 
-void EncryptData(BYTE* lpMsg, int size)
+int WINAPI CHackCheck::MyRecv(SOCKET s, BYTE* buf, int len, int flags)
 {
-	for (int n = 0; n < size; n++)
+	int result = gHackCheck.HookRecv(s, buf, len, flags);
+
+	if (result == SOCKET_ERROR || result == 0)
 	{
-		lpMsg[n] = (lpMsg[n] + (EncDecKey2 * EncDecKey1)) ^ EncDecKey1;
+		return result;
 	}
+
+	if (gHackCheck.CheckSocketPort(s))
+	{
+		gHackCheck.DecryptData(buf, result);
+	}
+
+	return result;
 }
 
-bool CheckSocketPort(SOCKET s)
+int WINAPI CHackCheck::MySend(SOCKET s, BYTE* buf, int len, int flags)
+{
+	if (gHackCheck.CheckSocketPort(s))
+	{
+		gHackCheck.EncryptData(buf, len);
+	}
+
+	return gHackCheck.HookSend(s, buf, len, flags);
+}
+
+bool CHackCheck::CheckSocketPort(SOCKET s)
 {
 	SOCKADDR_IN addr;
 
@@ -49,57 +78,18 @@ bool CheckSocketPort(SOCKET s)
 	return true;
 }
 
-int WINAPI MyRecv(SOCKET s, BYTE* buf, int len, int flags)
+void CHackCheck::DecryptData(BYTE* lpMsg, int size)
 {
-	int result = HookRecv(s, buf, len, flags);
-
-	if (result == SOCKET_ERROR || result == 0)
+	for (int n = 0; n < size; n++)
 	{
-		return result;
+		lpMsg[n] = (lpMsg[n] ^ this->EncDecKey1) - (this->EncDecKey2 * this->EncDecKey1);
 	}
-
-	if (CheckSocketPort(s) != false)
-	{
-		DecryptData(buf, result);
-	}
-
-	return result;
 }
 
-int WINAPI MySend(SOCKET s, BYTE* buf, int len, int flags)
+void CHackCheck::EncryptData(BYTE* lpMsg, int size)
 {
-	if (CheckSocketPort(s) != false)
+	for (int n = 0; n < size; n++)
 	{
-		EncryptData(buf, len);
+		lpMsg[n] = (lpMsg[n] + (this->EncDecKey2 * this->EncDecKey1)) ^ this->EncDecKey1;
 	}
-
-	return HookSend(s, buf, len, flags);
-}
-
-void InitHackCheck()
-{
-	WORD EncDecKey = 0;
-
-	for (int n = 0; n < sizeof(gProtect.m_MainInfo.CustomerName); n++)
-	{
-		EncDecKey += (BYTE)(gProtect.m_MainInfo.CustomerName[n] ^ gProtect.m_MainInfo.ClientSerial[(n % sizeof(gProtect.m_MainInfo.ClientSerial))]);
-
-		EncDecKey ^= (BYTE)(gProtect.m_MainInfo.CustomerName[n] - gProtect.m_MainInfo.ClientSerial[(n % sizeof(gProtect.m_MainInfo.ClientSerial))]);
-	}
-
-	EncDecKey1 = (BYTE)0xB0;
-
-	EncDecKey2 = (BYTE)0xF8;
-
-	EncDecKey1 += LOBYTE(EncDecKey);
-
-	EncDecKey2 += HIBYTE(EncDecKey);
-
-	HookRecv = *(WSRECV*)(0x00552430);
-
-	HookSend = *(WSSEND*)(0x00552440);
-
-	SetDword(0x00552430, (DWORD)&MyRecv);
-
-	SetDword(0x00552440, (DWORD)&MySend);
 }

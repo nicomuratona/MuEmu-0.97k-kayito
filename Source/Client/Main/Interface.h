@@ -36,25 +36,29 @@ public:
 
 	virtual ~Interface();
 
-	void BindObject(short ObjectID, DWORD ModelID, float Width, float Height, float X, float Y);
-
 	void Init();
 
-	static void LoadImages();
-
-	static void Work();
-
-	void DrawIMG(short ObjectID, float PosX, float PosY, float ScaleX, float ScaleY);
-
-	void DrawIMG(short ObjectID, float PosX, float PosY, float u, float v, float ScaleX, float ScaleY);
-
-	bool IsWorkZone(short ObjectID);
+private:
 
 	static void RenderLogInScene(HDC Hdc);
 
 	static void RenderCharacterScene(HDC Hdc);
 
 	static void RenderMainScene();
+
+	static void LoadImages();
+
+	static void MyUpdateWindowsMouse();
+
+	static void MyRenderWindows();
+
+	void BindObject(short ObjectID, DWORD ModelID, float Width, float Height, float X, float Y);
+
+	void DrawIMG(short ObjectID, float PosX, float PosY, float ScaleX, float ScaleY);
+
+	void DrawIMG(short ObjectID, float PosX, float PosY, float u, float v, float ScaleX, float ScaleY);
+
+	bool IsWorkZone(short ObjectID);
 
 public:
 

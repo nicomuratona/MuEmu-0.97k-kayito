@@ -56,7 +56,7 @@ void cWindow::ChangeWindowText()
 
 	STRUCT_DECRYPT;
 
-	sprintf_s(text, sizeof(text), "%s || Resets: %d || GrandResets: %d || Level: %d", (char*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x00), ViewReset, ViewGrandReset, *(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E));
+	sprintf_s(text, sizeof(text), "%s || Resets: %d || GrandResets: %d || Level: %d", (char*)(*(DWORD*)(CharacterAttribute)+0x00), gPrintPlayer.ViewReset, gPrintPlayer.ViewGrandReset, *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E));
 
 	STRUCT_ENCRYPT;
 

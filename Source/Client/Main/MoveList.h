@@ -46,21 +46,21 @@ public:
 
 	void Toggle();
 
-	static void DrawMoveList(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale);
+	void CheckMoveListMouse();
+
+	void GCMoveListRecv(PMSG_MOVE_LIST_RECV* lpMsg);
+
+private:
+
+	static void MainProc();
 
 	void RenderMoveListBack();
 
 	void RenderMoveListMaps();
 
-	void CheckMoveListMouse();
-
 	bool CheckClickOnMap();
 
 	bool CheckClickOnClose();
-
-	bool CheckClickOnPanel();
-
-	void GCMoveListRecv(PMSG_MOVE_LIST_RECV* lpMsg);
 
 private:
 

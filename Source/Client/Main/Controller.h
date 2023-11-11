@@ -6,6 +6,8 @@ public:
 
 	void Load(HINSTANCE hins);
 
+private:
+
 	static LRESULT WINAPI Mouse(int Code, WPARAM wParam, LPARAM lParam);
 
 	static LRESULT WINAPI Keyboard(int Code, WPARAM wParam, LPARAM lParam);
@@ -14,19 +16,19 @@ public:
 
 	static void CheckKeyboardKeys();
 
-public:
-
-	bool AutoClick;
-
-	bool AutoClickState;
-
 private:
+
+	HINSTANCE Instance;
 
 	HHOOK MouseHook;
 
 	HHOOK KeyboardHook;
 
-	HINSTANCE Instance;
+public:
+
+	bool AutoClick;
+
+	bool AutoClickState;
 };
 
 extern Controller gController;

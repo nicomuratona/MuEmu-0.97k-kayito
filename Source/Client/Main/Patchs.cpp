@@ -3,7 +3,19 @@
 #include "Protect.h"
 #include "Protocol.h"
 
-void InitPatchs()
+CPatchs gPatchs;
+
+CPatchs::CPatchs()
+{
+
+}
+
+CPatchs::~CPatchs()
+{
+
+}
+
+void CPatchs::Init()
 {
 	SetByte(0x00558EA8, 0xA0); // Accent
 
@@ -43,12 +55,6 @@ void InitPatchs()
 
 	MemorySet(0x004127B0, 0x90, 5); // Remove MuError.log
 
-	SetByte(0x0041F0AC, ANTIALIASED_QUALITY); //Font Quality
-
-	SetByte(0x0041F0ED, ANTIALIASED_QUALITY); //Font Quality
-
-	SetByte(0x0041F12E, ANTIALIASED_QUALITY); //Font Quality
-
 	SetCompleteHook(0xE9, 0x00524146, 0x00524231); // Remove Select Character Texts
 
 	SetCompleteHook(0xE9, 0x0052292E, 0x00522953); // Ignore Character Level to Create MG
@@ -56,9 +62,9 @@ void InitPatchs()
 
 	SetWord(0x00444B76, 0x19EB); //-> Uniria & Dinorant Reflect
 
-	SetCompleteHook(0xE9, 0x00526A5A, &ReduceCPU);
+	SetCompleteHook(0xE9, 0x00526A5A, &this->ReduceCPU);
 
-	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)ReduceRam, 0, 0, 0);
+	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)this->ReduceRam, 0, 0, 0);
 
 	// Fix move cursor NPC
 	SetByte(0x00430B9F, 0x90);
@@ -74,7 +80,7 @@ void InitPatchs()
 	MemorySet(0x00492EDB, 0x90, 0x7);
 
 	// Fix Shop NPC Closing send to server
-	SetCompleteHook(0xE9, 0x004CBB15, &FixShopNpcClose);
+	SetCompleteHook(0xE9, 0x004CBB15, &this->FixShopNpcClose);
 
 	// Fix Drop Zen
 	MemorySet(0x0042F2DF, 0x90, 0x7);
@@ -82,12 +88,12 @@ void InitPatchs()
 	// Fix Trade Zen Over 50000000
 	SetByte(0x00515BF7, 0xEB);
 
-	SetCompleteHook(0xE8, 0x0042B33D, &IgnoreRandomStuck);
+	SetCompleteHook(0xE8, 0x0042B33D, &this->IgnoreRandomStuck);
 
-	SetCompleteHook(0xE9, 0x00483AC5, &FixChasingAttackMovement);
+	SetCompleteHook(0xE9, 0x00483AC5, &this->FixChasingAttackMovement);
 
 	// Decrypt BMD
-	SetCompleteHook(0xE9, 0x004424B4, &DecBMD);
+	SetCompleteHook(0xE9, 0x004424B4, &this->DecBMD);
 
 	// EncTerrain%d.map
 	SetByte(0x0050E5F9, 0xEB);
@@ -99,16 +105,16 @@ void InitPatchs()
 	SetDword(0x0050E68D + 1, (DWORD)"Data\\%s\\EncTerrain%d.obj");
 
 	// Decrypt MAP
-	SetCompleteHook(0xE8, 0x0050E636, &OpenTerrainMapping);
+	SetCompleteHook(0xE8, 0x0050E636, &this->OpenTerrainMapping);
 
 	// Decrypt ATT
-	SetCompleteHook(0xE8, 0x0050E658, &OpenTerrainAttribute);
+	SetCompleteHook(0xE8, 0x0050E658, &this->OpenTerrainAttribute);
 
 	// Decrypt OBJ
-	SetCompleteHook(0xE8, 0x0050E6A0, &OpenObjectsEnc);
+	SetCompleteHook(0xE8, 0x0050E6A0, &this->OpenObjectsEnc);
 }
 
-__declspec(naked) void ReduceCPU()
+__declspec(naked) void CPatchs::ReduceCPU()
 {
 	static DWORD JmpBack = 0x00526A60;
 
@@ -116,15 +122,15 @@ __declspec(naked) void ReduceCPU()
 	{
 		Push 1;
 
-		Call Dword Ptr Ds : [0x00552128] ; //Sleep
+		Call Dword Ptr Ds : [0x00552128] ; // Sleep
 
-		Call Dword Ptr Ds : [0x00552198] ; //GetTickCount
+		Call Dword Ptr Ds : [0x00552198] ; // GetTickCount
 
 		Jmp[JmpBack];
 	}
 }
 
-void ReduceRam(LPVOID lpThreadParameter)
+void CPatchs::ReduceRam(LPVOID lpThreadParameter)
 {
 	HANDLE v1;
 
@@ -144,7 +150,7 @@ void ReduceRam(LPVOID lpThreadParameter)
 	}
 }
 
-__declspec(naked) void FixShopNpcClose()
+__declspec(naked) void CPatchs::FixShopNpcClose()
 {
 	static DWORD jmpBack = 0x004CBB1A;
 	static BYTE InterfaceID;
@@ -162,7 +168,7 @@ __declspec(naked) void FixShopNpcClose()
 
 		pMsg.set(0x31, sizeof(pMsg));
 
-		DataSend((BYTE*)&pMsg, pMsg.size);
+		gProtocol.DataSend((BYTE*)&pMsg, pMsg.size);
 	}
 
 	_asm
@@ -174,15 +180,15 @@ __declspec(naked) void FixShopNpcClose()
 	}
 }
 
-void IgnoreRandomStuck(DWORD c, DWORD Damage)
+void CPatchs::IgnoreRandomStuck(DWORD c, DWORD Damage)
 {
 	if (*(WORD*)(c + 2) != 390)
 	{
-		((void(_cdecl*)(DWORD c, DWORD Damage)) 0x00444B60)(c, Damage);
+		SetPlayerShock(c, Damage);
 	}
 }
 
-_declspec(naked) void FixChasingAttackMovement()
+_declspec(naked) void CPatchs::FixChasingAttackMovement()
 {
 	static DWORD jmpBack = 0x00483ACC;
 	static DWORD SendMove = 0x00491C40;
@@ -192,13 +198,13 @@ _declspec(naked) void FixChasingAttackMovement()
 		Mov Byte Ptr[Ebp + 0x2ED], 5;
 		Push Ebp;
 		Push Ebp;
-		Call SendMove;
+		Call[SendMove];
 		Add Esp, 0x8;
 		Jmp jmpBack;
 	}
 }
 
-_declspec(naked) void DecBMD()
+_declspec(naked) void CPatchs::DecBMD()
 {
 	static DWORD jmpBack = 0x004424BA;
 	static int DataSize;
@@ -225,9 +231,9 @@ _declspec(naked) void DecBMD()
 	}
 }
 
-int OpenTerrainMapping(char* FileName)
+int CPatchs::OpenTerrainMapping(char* FileName)
 {
-	((void(*)()) 0x004F6C60)();
+	InitTerrainMappingLayer();
 
 	FILE* fp;
 
@@ -264,11 +270,11 @@ int OpenTerrainMapping(char* FileName)
 
 	DataPtr += 1;
 
-	memcpy((BYTE*)0x080BB2B4, Data + DataPtr, 256 * 256);
+	memcpy(TerrainMappingLayer1, Data + DataPtr, 256 * 256);
 
 	DataPtr += 256 * 256;
 
-	memcpy((BYTE*)0x080AB2B4, Data + DataPtr, 256 * 256);
+	memcpy(TerrainMappingLayer2, Data + DataPtr, 256 * 256);
 
 	DataPtr += 256 * 256;
 
@@ -280,7 +286,7 @@ int OpenTerrainMapping(char* FileName)
 
 		DataPtr += 1;
 
-		*(float*)(0x0834B608 + (i * 4)) = (float)Alpha / 255.0f;
+		TerrainMappingAlpha[i] = (float)Alpha / 255.0f;
 	}
 
 	delete[] Data;
@@ -290,7 +296,7 @@ int OpenTerrainMapping(char* FileName)
 	return iMapNumber;
 }
 
-int OpenTerrainAttribute(char* FileName)
+int CPatchs::OpenTerrainAttribute(char* FileName)
 {
 	FILE* fp;
 
@@ -344,7 +350,7 @@ int OpenTerrainAttribute(char* FileName)
 
 	if (extAtt == false)
 	{
-		memcpy((BYTE*)0x0838BC70, &byBuffer[4], 256 * 256);
+		memcpy(TerrainWall, &byBuffer[4], 256 * 256);
 	}
 	else
 	{
@@ -354,7 +360,7 @@ int OpenTerrainAttribute(char* FileName)
 
 		for (int i = 0; i < 256 * 256; ++i)
 		{
-			*(BYTE*)(0x0838BC70 + i) = TWall[i * 2];
+			TerrainWall[i] = TWall[i * 2];
 		}
 	}
 
@@ -371,7 +377,7 @@ int OpenTerrainAttribute(char* FileName)
 	{
 		case MAP_LORENCIA:
 		{
-			if (*(BYTE*)(0x0838BC70 + (123 * 256 + 135)) != 5)
+			if (TerrainWall[123 * 256 + 135] != 5)
 			{
 				Error = true;
 			}
@@ -381,7 +387,7 @@ int OpenTerrainAttribute(char* FileName)
 
 		case MAP_DUNGEON:
 		{
-			if (*(BYTE*)(0x0838BC70 + (120 * 256 + 227)) != 4)
+			if (TerrainWall[120 * 256 + 227] != 4)
 			{
 				Error = true;
 			}
@@ -391,7 +397,7 @@ int OpenTerrainAttribute(char* FileName)
 
 		case MAP_DEVIAS:
 		{
-			if (*(BYTE*)(0x0838BC70 + (55 * 256 + 208)) != 5)
+			if (TerrainWall[55 * 256 + 208] != 5)
 			{
 				Error = true;
 			}
@@ -401,7 +407,7 @@ int OpenTerrainAttribute(char* FileName)
 
 		case MAP_NORIA:
 		{
-			if (*(BYTE*)(0x0838BC70 + (119 * 256 + 186)) != 5)
+			if (TerrainWall[119 * 256 + 186] != 5)
 			{
 				Error = true;
 			}
@@ -411,7 +417,7 @@ int OpenTerrainAttribute(char* FileName)
 
 		case MAP_LOST_TOWER:
 		{
-			if (*(BYTE*)(0x0838BC70 + (75 * 256 + 193)) != 5)
+			if (TerrainWall[75 * 256 + 193] != 5)
 			{
 				Error = true;
 			}
@@ -422,7 +428,7 @@ int OpenTerrainAttribute(char* FileName)
 
 	for (int i = 0; i < 256 * 256; i++)
 	{
-		if (*(BYTE*)(0x0838BC70 + i) >= 128)
+		if (TerrainWall[i] >= 128)
 		{
 			Error = true;
 		}
@@ -430,7 +436,7 @@ int OpenTerrainAttribute(char* FileName)
 
 	if (Error)
 	{
-		((void(*)()) 0x004F6CB0)();
+		ExitProgram();
 
 		return -1;
 	}
@@ -440,7 +446,7 @@ int OpenTerrainAttribute(char* FileName)
 	return iMap;
 }
 
-int OpenObjectsEnc(char* FileName)
+int CPatchs::OpenObjectsEnc(char* FileName)
 {
 	FILE* fp;
 
@@ -511,7 +517,7 @@ int OpenObjectsEnc(char* FileName)
 
 		DataPtr += 4;
 
-		((DWORD(__cdecl*)(int Type, float Position[3], float Angle[3], float Scale)) 0x004FF5A0)(Type, Position, Angle, Scale); // CreateObject
+		CreateObject(Type, Position, Angle, Scale);
 	}
 
 	delete[] Data;

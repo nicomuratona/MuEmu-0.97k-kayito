@@ -2,92 +2,101 @@
 
 #define GET_MAX_WORD_VALUE(x) (((x)>65000)?65000:((WORD)(x)))
 
-#define MAX_CHARACTER_LEVEL 400
+class CPrintPlayer
+{
+public:
 
-void InitPrintPlayer();
+	CPrintPlayer();
 
-void PrintDrawCircleHPMP(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale);
+	virtual ~CPrintPlayer();
 
-void PrintDrawCircleAG(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale);
+	void Init();
 
-void PrintPlayerViewHP1(char* Dest, char* Format);
+private:
 
-void PrintPlayerViewHP2(float x, float y, int Num, float Width, float Height);
+	static void RenderCircleHPMP(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale);
 
-void PrintPlayerViewMP1(char* Dest, char* Format);
+	static void RenderCircleAG(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale);
 
-void PrintPlayerViewMP2(float x, float y, int Num, float Width, float Height);
+	static void RenderTextHP(char* Dest, char* Format);
 
-void PrintPlayerViewBP1(char* Dest, char* Format);
+	static float RenderNumberHP(float x, float y, int Num, float Width, float Height);
 
-void PrintPlayerViewBP2(float x, float y, int Num, float Width, float Height);
+	static void RenderTextMP(char* Dest, char* Format);
 
-void PrintPlayerViewExperience(char* Dest, char* Format);
+	static float RenderNumberMP(float x, float y, int Num, float Width, float Height);
 
-void PrintPlayerViewLevelUpPoint(char* Dest, char* Format);
+	static void RenderTextBP(char* Dest, char* Format);
 
-void PrintPlayerViewStrength(char* Dest, char* Format);
+	static float RenderNumberBP(float x, float y, int Num, float Width, float Height);
 
-void PrintPlayerViewDexterity(char* Dest, char* Format);
+	static void RenderTextExperience(char* Dest, char* Format);
 
-void PrintPlayerViewVitality(char* Dest, char* Format);
+	static void RenderExperience();
 
-void PrintPlayerViewEnergy(char* Dest, char* Format);
+	static void RenderTextLevelUpPoints(char* Dest, char* Format);
 
-void PrintPlayerSetAttackSpeed();
+	static void RenderTextStrength(char* Dest, char* Format);
 
-void PrintDamageOnScreenHP(float Position[3], int Value, float Color[3], float scale, bool bMove);
+	static void RenderTextDexterity(char* Dest, char* Format);
 
-void gObjSetExperienceTable();
+	static void RenderTextVitality(char* Dest, char* Format);
 
-void PrintExperienceBar(float x, float y, float width, float height);
+	static void RenderTextEnergy(char* Dest, char* Format);
 
-void PrintExperienceNumber(float x, float y, int Num, float Width, float Height);
+	static void PrintPlayerSetAttackSpeed();
 
-extern DWORD ViewIndex;
+	static void RenderDamageHP(float Position[3], int Value, float Color[3], float scale, bool bMove);
 
-extern DWORD ViewReset;
+public:
 
-extern DWORD ViewGrandReset;
+	DWORD ViewIndex;
 
-extern DWORD ViewValue;
+	DWORD ViewReset;
 
-extern DWORD ViewPoint;
+	DWORD ViewGrandReset;
 
-extern DWORD ViewCurHP;
+	DWORD ViewValue;
 
-extern DWORD ViewMaxHP;
+	DWORD ViewPoint;
 
-extern DWORD ViewCurMP;
+	DWORD ViewCurHP;
 
-extern DWORD ViewMaxMP;
+	DWORD ViewMaxHP;
 
-extern DWORD ViewCurBP;
+	DWORD ViewCurMP;
 
-extern DWORD ViewMaxBP;
+	DWORD ViewMaxMP;
 
-extern DWORD ViewDamageHP;
+	DWORD ViewCurBP;
 
-extern DWORD ViewExperience;
+	DWORD ViewMaxBP;
 
-extern DWORD ViewNextExperience;
+	DWORD ViewDamageHP;
 
-extern DWORD ViewStrength;
+	DWORD ViewExperience;
 
-extern DWORD ViewDexterity;
+	DWORD ViewNextExperience;
 
-extern DWORD ViewVitality;
+	DWORD ViewStrength;
 
-extern DWORD ViewEnergy;
+	DWORD ViewDexterity;
 
-extern DWORD ViewAddStrength;
+	DWORD ViewVitality;
 
-extern DWORD ViewAddDexterity;
+	DWORD ViewEnergy;
 
-extern DWORD ViewAddVitality;
+	DWORD ViewAddStrength;
 
-extern DWORD ViewAddEnergy;
+	DWORD ViewAddDexterity;
 
-extern DWORD ViewPhysiSpeed;
+	DWORD ViewAddVitality;
 
-extern DWORD ViewMagicSpeed;
+	DWORD ViewAddEnergy;
+
+	DWORD ViewPhysiSpeed;
+
+	DWORD ViewMagicSpeed;
+};
+
+extern CPrintPlayer gPrintPlayer;

@@ -73,5 +73,5 @@ void Language::SendLanguage()
 
 	pMsg.lang = this->LangNum;
 
-	DataSend((BYTE*)&pMsg, pMsg.header.size);
+	gProtocol.DataSend((BYTE*)&pMsg, pMsg.header.size);
 }

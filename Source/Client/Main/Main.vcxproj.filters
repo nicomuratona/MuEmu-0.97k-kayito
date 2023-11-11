@@ -88,9 +88,6 @@
     <ClInclude Include="stb.h">
       <Filter>Util Files</Filter>
     </ClInclude>
-    <ClInclude Include="MiniMap.h">
-      <Filter>Map</Filter>
-    </ClInclude>
     <ClInclude Include="Interface.h">
       <Filter>Interface</Filter>
     </ClInclude>
@@ -196,6 +193,15 @@
     <ClInclude Include="ItemOption.h">
       <Filter>Item</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="FullMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCRC32.Cpp">
@@ -226,9 +232,6 @@
       <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="SkyDome.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="MiniMap.cpp">
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="Interface.cpp">
@@ -327,6 +330,12 @@
     <ClCompile Include="ItemOption.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="FullMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Main.rc">
@@ -334,7 +343,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Client.ico">
+    <None Include="icon.ico">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

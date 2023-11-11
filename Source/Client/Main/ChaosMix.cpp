@@ -27,6 +27,22 @@ void CChaosMix::Init()
 	SetCompleteHook(0xE9, 0x004DF95E, &this->CGChaosMixSend);
 }
 
+void CChaosMix::Clear()
+{
+	this->m_ChaosMixRate = 0;
+
+	wsprintf(this->m_ChaosMixMoney, "%d", 0);
+
+	this->m_LastChaosValue = 0;
+}
+
+void CChaosMix::GCChaosMixRateRecv(PMSG_CHAOS_MIX_RATE_RECV* lpMsg)
+{
+	this->m_ChaosMixRate = lpMsg->rate;
+
+	wsprintf(this->m_ChaosMixMoney, "%d", lpMsg->money);
+}
+
 void CChaosMix::ChangeChaosRate(char* Dest, char* Format)
 {
 	wsprintf(Dest, Format, gChaosMix.m_ChaosMixRate);
@@ -35,15 +51,6 @@ void CChaosMix::ChangeChaosRate(char* Dest, char* Format)
 void CChaosMix::ChangeChaosMoney(char* Dest, char* Format)
 {
 	wsprintf(Dest, Format, gChaosMix.m_ChaosMixMoney);
-}
-
-void CChaosMix::Clear()
-{
-	this->m_ChaosMixRate = 0;
-
-	wsprintf(this->m_ChaosMixMoney, "%d", 0);
-
-	this->m_LastChaosValue = 0;
 }
 
 _declspec(naked) void CChaosMix::ChaosMixRateSend()
@@ -80,7 +87,7 @@ _declspec(naked) void CChaosMix::ChaosMixRateSend()
 
 			pMsg.type = gChaosMix.m_LastChaosValue;
 
-			DataSend((BYTE*)&pMsg, pMsg.header.size);
+			gProtocol.DataSend((BYTE*)&pMsg, pMsg.header.size);
 		}
 	}
 
@@ -89,13 +96,6 @@ _declspec(naked) void CChaosMix::ChaosMixRateSend()
 		Popad;
 		Jmp jmpBack;
 	}
-}
-
-void CChaosMix::GCChaosMixRateRecv(PMSG_CHAOS_MIX_RATE_RECV* lpMsg)
-{
-	this->m_ChaosMixRate = lpMsg->rate;
-
-	wsprintf(this->m_ChaosMixMoney, "%d", lpMsg->money);
 }
 
 _declspec(naked) void CChaosMix::CGChaosMixSend()
@@ -113,7 +113,7 @@ _declspec(naked) void CChaosMix::CGChaosMixSend()
 
 	pMsg.type = gChaosMix.m_LastChaosValue;
 
-	DataSend((BYTE*)&pMsg, pMsg.header.size);
+	gProtocol.DataSend((BYTE*)&pMsg, pMsg.header.size);
 
 	_asm
 	{

@@ -156,24 +156,20 @@ bool FileExists(char* name)
 	return true;
 };
 
-int GetTextPosX(char* buff, int PosX)
+int CenterTextPosX(char* buff, int PosX)
 {
-	HDC hdc = GetDC(g_hWnd);
-
 	SIZE sz;
 
-	GetTextExtentPoint(hdc, buff, strlen(buff), &sz);
+	GetTextExtentPoint(m_hFontDC, buff, strlen(buff), &sz);
 
 	return (PosX - (640 * sz.cx / WindowWidth >> 1));
 }
 
-int GetTextPosY(char* buff, int PosY)
+int CenterTextPosY(char* buff, int PosY)
 {
-	HDC hdc = GetDC(g_hWnd);
-
 	SIZE sz;
 
-	GetTextExtentPoint(hdc, buff, strlen(buff), &sz);
+	GetTextExtentPoint(m_hFontDC, buff, strlen(buff), &sz);
 
 	return (PosY - (480 * sz.cy / WindowHeight >> 1));
 }
@@ -228,4 +224,64 @@ void Encrypt(BYTE* OutBuff, BYTE* InBuff, int size)
 
 		wMapKey = wMapKey & 0xFF;
 	}
+}
+
+void MyRenderBitmapRotate(int Texture, float x, float y, float Width, float Height, float Rotate, float u, float v, float uWidth, float vHeight)
+{
+	x = ConvertX(x);
+
+	y = ConvertY(y);
+
+	Width = ConvertX(Width);
+
+	Height = ConvertY(Height);
+
+	BindTexture(Texture);
+
+	vec3_t p[4], p2[4];
+
+	y = WindowHeight - y;
+
+	Vector(-Width * 0.5f, Height * 0.5f, 0.0f, p[0]);
+
+	Vector(-Width * 0.5f, -Height * 0.5f, 0.0f, p[1]);
+
+	Vector(Width * 0.5f, -Height * 0.5f, 0.0f, p[2]);
+
+	Vector(Width * 0.5f, Height * 0.5f, 0.0f, p[3]);
+
+	vec3_t Angle;
+
+	Vector(0.0f, 0.0f, Rotate, Angle);
+
+	float Matrix[3][4];
+
+	AngleMatrix(Angle, Matrix);
+
+	float c[4][2];
+
+	c[0][0] = u;
+	c[0][1] = v;
+
+	c[3][0] = u + uWidth;
+	c[3][1] = v;
+
+	c[2][0] = u + uWidth;
+	c[2][1] = v + vHeight;
+
+	c[1][0] = u;
+	c[1][1] = v + vHeight;
+
+	glBegin(GL_TRIANGLE_FAN);
+
+	for (int i = 0; i < 4; i++)
+	{
+		glTexCoord2f(c[i][0], c[i][1]);
+
+		VectorRotate(p[i], Matrix, p2[i]);
+
+		glVertex2f(p2[i][0] + x, p2[i][1] + y);
+	}
+
+	glEnd();
 }

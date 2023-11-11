@@ -2,124 +2,126 @@
 #include "PrintPlayer.h"
 #include "Protect.h"
 
-DWORD ViewIndex = 0;
+CPrintPlayer gPrintPlayer;
 
-DWORD ViewReset = 0;
-
-DWORD ViewGrandReset = 0;
-
-DWORD ViewValue = 0;
-
-DWORD ViewPoint = 0;
-
-DWORD ViewCurHP = 0;
-
-DWORD ViewMaxHP = 0;
-
-DWORD ViewCurMP = 0;
-
-DWORD ViewMaxMP = 0;
-
-DWORD ViewCurBP = 0;
-
-DWORD ViewMaxBP = 0;
-
-DWORD ViewDamageHP = 0;
-
-DWORD ViewExperience = 0;
-
-DWORD ViewNextExperience = 0;
-
-DWORD ViewStrength = 0;
-
-DWORD ViewDexterity = 0;
-
-DWORD ViewVitality = 0;
-
-DWORD ViewEnergy = 0;
-
-DWORD ViewAddStrength = 0;
-
-DWORD ViewAddDexterity = 0;
-
-DWORD ViewAddVitality = 0;
-
-DWORD ViewAddEnergy = 0;
-
-DWORD ViewPhysiSpeed = 0;
-
-DWORD ViewMagicSpeed = 0;
-
-DWORD gLevelExperience[MAX_CHARACTER_LEVEL + 1];
-
-void InitPrintPlayer()
+CPrintPlayer::CPrintPlayer()
 {
-	SetCompleteHook(0xE8, 0x004BD98F, &PrintDrawCircleHPMP);
+	this->ViewIndex = 0;
 
-	SetCompleteHook(0xE8, 0x004BDA56, &PrintDrawCircleHPMP);
+	this->ViewReset = 0;
 
-	SetCompleteHook(0xE8, 0x004BCFF2, &PrintDrawCircleAG);
+	this->ViewGrandReset = 0;
 
-	SetCompleteHook(0xE8, 0x004BD9E7, &PrintPlayerViewHP1); //case 358: "Life: %d/%d"
+	this->ViewValue = 0;
 
-	SetCompleteHook(0xE8, 0x004EE8E9, &PrintPlayerViewHP1); //case 211: "HP: %d / %d"
+	this->ViewPoint = 0;
 
-	SetCompleteHook(0xE8, 0x004BE2C5, &PrintPlayerViewHP2);
+	this->ViewCurHP = 0;
 
-	SetCompleteHook(0xE8, 0x004BDAAE, &PrintPlayerViewMP1); //case 359: "Mana: %d/%d"
+	this->ViewMaxHP = 0;
 
-	SetCompleteHook(0xE8, 0x004EE9DC, &PrintPlayerViewMP1); //case 213: "Mana: %d / %d"
+	this->ViewCurMP = 0;
 
-	SetCompleteHook(0xE8, 0x004BE2EC, &PrintPlayerViewMP2);
+	this->ViewMaxMP = 0;
 
-	SetCompleteHook(0xE8, 0x004BD055, &PrintPlayerViewBP1); //case 214: "A G: %d / %d"
+	this->ViewCurBP = 0;
 
-	SetCompleteHook(0xE8, 0x004BD00C, &PrintPlayerViewBP2);
+	this->ViewMaxBP = 0;
 
-	SetCompleteHook(0xE8, 0x004ED48F, &PrintPlayerViewExperience); //case 201: "Exp: %u/%u"
+	this->ViewDamageHP = 0;
 
-	SetCompleteHook(0xE8, 0x004BFCD3, &PrintPlayerViewExperience); //case 357: "Exp: %u/%u"
+	this->ViewExperience = 0;
 
-	SetCompleteHook(0xE8, 0x004EEE67, &PrintPlayerViewLevelUpPoint); //case 217: "Point: %d"
+	this->ViewNextExperience = 0;
 
-	SetCompleteHook(0xE8, 0x004ED7E3, &PrintPlayerViewStrength); //case 202: "Strength: %d"
+	this->ViewStrength = 0;
 
-	SetCompleteHook(0xE8, 0x004EE452, &PrintPlayerViewDexterity); //case 205: "Agility: %d"
+	this->ViewDexterity = 0;
 
-	SetCompleteHook(0xE8, 0x004EE85B, &PrintPlayerViewVitality); //case 210: "Vitality: %d"
+	this->ViewVitality = 0;
 
-	SetCompleteHook(0xE8, 0x004EE95E, &PrintPlayerViewEnergy); //case 212: "Energy: %d"
+	this->ViewEnergy = 0;
 
-	SetCompleteHook(0xE9, 0x0047DD95, &PrintPlayerSetAttackSpeed);
+	this->ViewAddStrength = 0;
 
-	SetCompleteHook(0xE8, 0x0042AD92, &PrintDamageOnScreenHP);
+	this->ViewAddDexterity = 0;
 
-	SetCompleteHook(0xE8, 0x0042B38E, &PrintDamageOnScreenHP);
+	this->ViewAddVitality = 0;
 
-	SetCompleteHook(0xE8, 0x0042B402, &PrintDamageOnScreenHP);
+	this->ViewAddEnergy = 0;
 
-	SetCompleteHook(0xE8, 0x0042DA3D, &PrintDamageOnScreenHP);
+	this->ViewPhysiSpeed = 0;
 
-	SetCompleteHook(0xE8, 0x0042E2CA, &PrintDamageOnScreenHP);
-
-	SetCompleteHook(0xE8, 0x0042E2FE, &PrintDamageOnScreenHP);
-
-	SetCompleteHook(0xE8, 0x0042ED2C, &PrintDamageOnScreenHP);
-
-	SetCompleteHook(0xE8, 0x0042ED60, &PrintDamageOnScreenHP);
-
-	gObjSetExperienceTable();
-
-	SetCompleteHook(0xE8, 0x004BFC26, &PrintExperienceBar);
-
-	SetCompleteHook(0xE8, 0x004BFC5B, &PrintExperienceNumber);
+	this->ViewMagicSpeed = 0;
 }
 
-void PrintDrawCircleHPMP(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
+CPrintPlayer::~CPrintPlayer()
 {
-	float HP = (float)(ViewMaxHP - ViewCurHP) / (float)ViewMaxHP;
 
-	float MP = (float)(ViewMaxMP - ViewCurMP) / (float)ViewMaxMP;
+}
+
+void CPrintPlayer::Init()
+{
+	SetCompleteHook(0xE8, 0x004BD98F, &this->RenderCircleHPMP); // HP bottle
+
+	SetCompleteHook(0xE8, 0x004BDA56, &this->RenderCircleHPMP); // MP bottle
+
+	SetCompleteHook(0xE8, 0x004BCFF2, &this->RenderCircleAG); // BP bottle
+
+	SetCompleteHook(0xE8, 0x004BD9E7, &this->RenderTextHP); // text.bmd 358: "Life: %d/%d"
+
+	SetCompleteHook(0xE8, 0x004EE8E9, &this->RenderTextHP); // text.bmd 211: "HP: %d / %d"
+
+	SetCompleteHook(0xE8, 0x004BE2C5, &this->RenderNumberHP); // Render the number of HP
+
+	SetCompleteHook(0xE8, 0x004BDAAE, &this->RenderTextMP); // text.bmd 359: "Mana: %d/%d"
+
+	SetCompleteHook(0xE8, 0x004EE9DC, &this->RenderTextMP); // text.bmd 213: "Mana: %d / %d"
+
+	SetCompleteHook(0xE8, 0x004BE2EC, &this->RenderNumberMP); // Render the number of MP
+
+	SetCompleteHook(0xE8, 0x004BD055, &this->RenderTextBP); // text.bmd 214: "A G: %d / %d"
+
+	SetCompleteHook(0xE8, 0x004BD00C, &this->RenderNumberBP); // Render the number of BP
+
+	SetCompleteHook(0xE8, 0x004ED48F, &this->RenderTextExperience); // text.bmd 201: "Exp: %u/%u"
+
+	SetCompleteHook(0xE8, 0x004BC0F8, &this->RenderExperience); // Render the experience bar and number
+
+	SetCompleteHook(0xE8, 0x004EEE67, &this->RenderTextLevelUpPoints); // text.bmd 217: "Point: %d"
+
+	SetCompleteHook(0xE8, 0x004ED7E3, &this->RenderTextStrength); // text.bmd 202: "Strength: %d"
+
+	SetCompleteHook(0xE8, 0x004EE452, &this->RenderTextDexterity); // text.bmd 205: "Agility: %d"
+
+	SetCompleteHook(0xE8, 0x004EE85B, &this->RenderTextVitality); // text.bmd 210: "Vitality: %d"
+
+	SetCompleteHook(0xE8, 0x004EE95E, &this->RenderTextEnergy); // text.bmd 212: "Energy: %d"
+
+	SetCompleteHook(0xE9, 0x0047DD95, &this->PrintPlayerSetAttackSpeed); // Set the attack speed
+
+	SetCompleteHook(0xE8, 0x0042AD92, &this->RenderDamageHP); // Damage number on attack
+
+	SetCompleteHook(0xE8, 0x0042B38E, &this->RenderDamageHP); // Damage number on attack
+
+	SetCompleteHook(0xE8, 0x0042B402, &this->RenderDamageHP); // Damage number on attack
+
+	SetCompleteHook(0xE8, 0x0042DA3D, &this->RenderDamageHP); // Damage number on attack
+
+	SetCompleteHook(0xE8, 0x0042E2CA, &this->RenderDamageHP); // Damage number on attack
+
+	SetCompleteHook(0xE8, 0x0042E2FE, &this->RenderDamageHP); // Damage number on attack
+
+	SetCompleteHook(0xE8, 0x0042ED2C, &this->RenderDamageHP); // Damage number on attack
+
+	SetCompleteHook(0xE8, 0x0042ED60, &this->RenderDamageHP); // Damage number on attack
+}
+
+void CPrintPlayer::RenderCircleHPMP(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
+{
+	float HP = (float)(gPrintPlayer.ViewMaxHP - gPrintPlayer.ViewCurHP) / (float)gPrintPlayer.ViewMaxHP;
+
+	float MP = (float)(gPrintPlayer.ViewMaxMP - gPrintPlayer.ViewCurMP) / (float)gPrintPlayer.ViewMaxMP;
 
 	y = ((Texture == 0xEB) ? MP : HP) * 48.0f + 432.0f;
 
@@ -132,9 +134,9 @@ void PrintDrawCircleHPMP(int Texture, float x, float y, float Width, float Heigh
 	return RenderBitmap(Texture, x, y, Width, Height, u, v, uWidth, vHeight, Scale, StartScale);
 }
 
-void PrintDrawCircleAG(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
+void CPrintPlayer::RenderCircleAG(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
 {
-	float BP = (float)(ViewMaxBP - ViewCurBP) / (float)ViewMaxBP;
+	float BP = (float)(gPrintPlayer.ViewMaxBP - gPrintPlayer.ViewCurBP) / (float)gPrintPlayer.ViewMaxBP;
 
 	y = BP * 36.0f + 438.0f;
 
@@ -147,73 +149,157 @@ void PrintDrawCircleAG(int Texture, float x, float y, float Width, float Height,
 	return RenderBitmap(Texture, x, y, Width, Height, u, v, uWidth, vHeight, Scale, StartScale);
 }
 
-void PrintPlayerViewHP1(char* Dest, char* Format)
+void CPrintPlayer::RenderTextHP(char* Dest, char* Format)
 {
-	wsprintf(Dest, Format, ViewCurHP, ViewMaxHP);
+	wsprintf(Dest, Format, gPrintPlayer.ViewCurHP, gPrintPlayer.ViewMaxHP);
 }
 
-void PrintPlayerViewHP2(float x, float y, int Num, float Width, float Height)
+float CPrintPlayer::RenderNumberHP(float x, float y, int Num, float Width, float Height)
 {
-	RenderNumber2D(x, y, ViewCurHP, 9.0f, 10.0f);
+	return RenderNumber2D(x, y, gPrintPlayer.ViewCurHP, 9.0f, 10.0f);
 }
 
-void PrintPlayerViewMP1(char* Dest, char* Format)
+void CPrintPlayer::RenderTextMP(char* Dest, char* Format)
 {
-	wsprintf(Dest, Format, ViewCurMP, ViewMaxMP);
+	wsprintf(Dest, Format, gPrintPlayer.ViewCurMP, gPrintPlayer.ViewMaxMP);
 }
 
-void PrintPlayerViewMP2(float x, float y, int Num, float Width, float Height)
+float CPrintPlayer::RenderNumberMP(float x, float y, int Num, float Width, float Height)
 {
-	RenderNumber2D(x - 20, y, ViewCurMP, 9.0f, 10.0f);
+	return RenderNumber2D(x - 20, y, gPrintPlayer.ViewCurMP, 9.0f, 10.0f);
 }
 
-void PrintPlayerViewBP1(char* Dest, char* Format)
+void CPrintPlayer::RenderTextBP(char* Dest, char* Format)
 {
-	wsprintf(Dest, Format, ViewCurBP, ViewMaxBP);
+	wsprintf(Dest, Format, gPrintPlayer.ViewCurBP, gPrintPlayer.ViewMaxBP);
 }
 
-void PrintPlayerViewBP2(float x, float y, int Num, float Width, float Height)
+float CPrintPlayer::RenderNumberBP(float x, float y, int Num, float Width, float Height)
 {
-	RenderNumber2D(x, y, ViewCurBP, 9.0f, 10.0f);
+	return RenderNumber2D(x, y, gPrintPlayer.ViewCurBP, 9.0f, 10.0f);
 }
 
-void PrintPlayerViewExperience(char* Dest, char* Format)
+void CPrintPlayer::RenderTextExperience(char* Dest, char* Format)
 {
-	wsprintf(Dest, Format, ViewExperience, ViewNextExperience);
+	wsprintf(Dest, Format, gPrintPlayer.ViewExperience, gPrintPlayer.ViewNextExperience);
 }
 
-void PrintPlayerViewLevelUpPoint(char* Dest, char* Format)
+void CPrintPlayer::RenderExperience()
 {
-	wsprintf(Dest, Format, ViewPoint);
+	STRUCT_DECRYPT;
+
+	WORD wLevel = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E); // current level
+
+	STRUCT_ENCRYPT;
+
+	DWORD dwNexExperience = gPrintPlayer.ViewNextExperience; // next level up experience
+
+	DWORD dwExperience = gPrintPlayer.ViewExperience; // current experience
+
+	WORD wPriorLevel = wLevel - 1;
+
+	DWORD dwPriorExperience = 0;
+
+	if (wPriorLevel > 0)
+	{
+		dwPriorExperience = (((wPriorLevel + 9) * wPriorLevel) * wPriorLevel) * 10;
+
+		if (wPriorLevel > 255)
+		{
+			int iLevelOverN = wPriorLevel - 255;
+
+			dwPriorExperience += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 1000;
+		}
+	}
+
+	// level up experience
+	DWORD fNeedExp = dwNexExperience - dwPriorExperience;
+
+	// currently acquired experience
+	DWORD fExp = dwExperience - dwPriorExperience;
+
+	if (dwExperience < dwPriorExperience)
+	{
+		fExp = 0;
+	}
+
+	// Experience bar level (0 ~ 9)
+	DWORD fExpBarNum = 0;
+
+	if (fExp > 0 && fNeedExp > 0)
+	{
+		fExpBarNum = ((fExp * 100) / fNeedExp) / 10;
+	}
+
+	float fProgress = fExpBarNum / 10.0f;
+
+	float width = fProgress * 198.0f;
+
+	int height = 4;
+
+	int x = 221;
+
+	int y = 439;
+
+	glColor3f(0.92f, 0.8f, 0.34f);
+
+	RenderColor((float)x, (float)y, width, (float)height);
+
+	EnableAlphaTest(true);
+
+	glColor3f(0.91f, 0.81f, 0.6f);
+
+	// experience bar number
+	RenderNumber2D(425.0f, 434.0f, fExpBarNum, 9.0f, 10.0f);
+
+	DisableAlphaBlend();
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	width = 198.0f;
+
+	if (IsWorkZone(x, y, (int)width, height))
+	{
+		char strTipText[256];
+
+		wsprintf(strTipText, GetTextLine(201), dwExperience, dwNexExperience); // text.bmd 201: "Exp: %u/%u"
+
+		RenderTipText(x + 2, y - 15, strTipText);
+	}
 }
 
-void PrintPlayerViewStrength(char* Dest, char* Format)
+void CPrintPlayer::RenderTextLevelUpPoints(char* Dest, char* Format)
 {
-	wsprintf(Dest, Format, ViewStrength);
+	wsprintf(Dest, Format, gPrintPlayer.ViewPoint);
 }
 
-void PrintPlayerViewDexterity(char* Dest, char* Format)
+void CPrintPlayer::RenderTextStrength(char* Dest, char* Format)
 {
-	wsprintf(Dest, Format, ViewDexterity);
+	wsprintf(Dest, Format, gPrintPlayer.ViewStrength);
 }
 
-void PrintPlayerViewVitality(char* Dest, char* Format)
+void CPrintPlayer::RenderTextDexterity(char* Dest, char* Format)
 {
-	wsprintf(Dest, Format, ViewVitality);
+	wsprintf(Dest, Format, gPrintPlayer.ViewDexterity);
 }
 
-void PrintPlayerViewEnergy(char* Dest, char* Format)
+void CPrintPlayer::RenderTextVitality(char* Dest, char* Format)
 {
-	wsprintf(Dest, Format, ViewEnergy);
+	wsprintf(Dest, Format, gPrintPlayer.ViewVitality);
 }
 
-__declspec(naked) void PrintPlayerSetAttackSpeed()
+void CPrintPlayer::RenderTextEnergy(char* Dest, char* Format)
+{
+	wsprintf(Dest, Format, gPrintPlayer.ViewEnergy);
+}
+
+__declspec(naked) void CPrintPlayer::PrintPlayerSetAttackSpeed()
 {
 	static DWORD PrintPlayerSetAttackSpeedAddress1 = 0x0047DE20;
 
 	_asm
 	{
-		Mov Edx, ViewPhysiSpeed;
+		Mov Edx, gPrintPlayer.ViewPhysiSpeed;
 		Movzx Eax, Al;
 		Mov Ecx, Dword Ptr Ds : [gProtect.m_MainInfo.DWMaxAttackSpeed + Eax * 4] ;
 		And Ecx, 0xFFFF;
@@ -223,7 +309,7 @@ __declspec(naked) void PrintPlayerSetAttackSpeed()
 	NEXT1:
 		Lea Esi, [Ebx + 0x38];
 		Mov Word Ptr Ds : [Esi] , Dx;
-		Mov Edx, ViewMagicSpeed;
+		Mov Edx, gPrintPlayer.ViewMagicSpeed;
 		Mov Ecx, Dword Ptr Ds : [gProtect.m_MainInfo.DWMaxAttackSpeed + Eax * 4] ;
 		And Ecx, 0xFFFF;
 		Cmp Edx, Ecx;
@@ -235,83 +321,12 @@ __declspec(naked) void PrintPlayerSetAttackSpeed()
 	}
 }
 
-void PrintDamageOnScreenHP(float Position[3], int Value, float Color[3], float scale, bool bMove)
+void CPrintPlayer::RenderDamageHP(float Position[3], int Value, float Color[3], float scale, bool bMove)
 {
 	if (Value > 0)
 	{
-		Value = ViewDamageHP;
+		Value = gPrintPlayer.ViewDamageHP;
 	}
 
 	CreatePoint(Position, Value, Color, scale, bMove);
-}
-
-void gObjSetExperienceTable()
-{
-	gLevelExperience[0] = 0;
-
-	DWORD over = 1;
-
-	for (int n = 1; n <= MAX_CHARACTER_LEVEL; n++)
-	{
-		gLevelExperience[n] = (((n + 9) * n) * n) * 10;
-
-		if (n > 255)
-		{
-			gLevelExperience[n] += (((over + 9) * over) * over) * 1000;
-
-			over++;
-		}
-	}
-}
-
-void PrintExperienceBar(float x, float y, float width, float height)
-{
-	DWORD RequiredExp = gLevelExperience[*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E)] - gLevelExperience[*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E) - 1];
-
-	DWORD ActualExp = gLevelExperience[*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E)] - ViewExperience;
-
-	float TotalBarRate = (float)ActualExp / (float)RequiredExp;
-
-	float TotalBarNumber = 1782.0f * TotalBarRate;
-
-	float Number = TotalBarNumber / 198.0f;
-
-	float parteDecimal, parteEntera;
-
-	parteDecimal = modf(Number, &parteEntera);
-
-	float size = (parteDecimal == 0) ? 0 : (198.0f - (parteDecimal * 198.0f));
-
-	if (*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E) == MAX_CHARACTER_LEVEL)
-	{
-		size = 198.0f;
-	}
-
-	RenderColor(x, y, size, height);
-}
-
-void PrintExperienceNumber(float x, float y, int Num, float Width, float Height)
-{
-	DWORD RequiredExp = gLevelExperience[*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E)] - gLevelExperience[*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E) - 1];
-
-	DWORD ActualExp = gLevelExperience[*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E)] - ViewExperience;
-
-	float TotalBarRate = (float)ActualExp / (float)RequiredExp;
-
-	float TotalBarNumber = 1782.0f * TotalBarRate;
-
-	float Number = TotalBarNumber / 198.0f;
-
-	float parteDecimal, parteEntera;
-
-	parteDecimal = modf(Number, &parteEntera);
-
-	parteEntera = 9 - parteEntera;
-
-	if (*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E) == MAX_CHARACTER_LEVEL)
-	{
-		parteEntera = 9;
-	}
-
-	RenderNumber2D(x, y, (DWORD)parteEntera, Width, Height);
 }

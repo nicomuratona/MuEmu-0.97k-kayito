@@ -116,17 +116,17 @@ int CItemManager::GetTargetSlotEquiped(short itemIndex, int slot)
 {
 	STRUCT_DECRYPT;
 
-	WORD index = *(WORD*)(*(DWORD*)(MAIN_STRUCT_SERIAL)+(536 + (68 * slot)));
+	WORD index = *(WORD*)(*(DWORD*)(CharacterMachine)+(536 + (68 * slot)));
 
-	if (slot == 0 && index != 0xFFFF && *(WORD*)(*(DWORD*)(MAIN_STRUCT_SERIAL)+(536 + (68 * 1))) == 0xFFFF)
+	if (slot == 0 && index != 0xFFFF && *(WORD*)(*(DWORD*)(CharacterMachine)+(536 + (68 * 1))) == 0xFFFF)
 	{
-		if (!(itemIndex >= GET_ITEM(2, 8) && itemIndex <= GET_ITEM(2, 18) && itemIndex != GET_ITEM(2, 16)) // Scepters
+		if (!((itemIndex >= GET_ITEM(4, 8) && itemIndex <= GET_ITEM(4, 16)) || itemIndex == GET_ITEM(4, 18)) // Crossbows, Arrows
 		    && !(itemIndex >= GET_ITEM(5, 0) && itemIndex < GET_ITEM(6, 0))) // Staffs
 		{
 			slot = 1;
 		}
 	}
-	else if (slot == 10 && index != 0xFFFF && *(WORD*)(*(DWORD*)(MAIN_STRUCT_SERIAL)+(536 + (68 * 11))) == 0xFFFF)
+	else if (slot == 10 && index != 0xFFFF && *(WORD*)(*(DWORD*)(CharacterMachine)+(536 + (68 * 11))) == 0xFFFF)
 	{
 		slot = 11;
 	}

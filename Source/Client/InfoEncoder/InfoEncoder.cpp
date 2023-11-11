@@ -7,6 +7,7 @@
 
 struct MAIN_FILE_INFO
 {
+	BYTE MultiInstance;
 	BYTE LauncherType;
 	char LauncherName[32];
 	char CustomerName[32];
@@ -35,11 +36,17 @@ struct MAIN_FILE_INFO
 	ITEM_OPTION_INFO ItemOptionInfo[MAX_ITEM_OPTION_INFO];
 };
 
-int main()
+int _tmain(int argc, _TCHAR* argv[])
 {
 	MAIN_FILE_INFO info;
 
 	memset(&info, 0, sizeof(info));
+
+	/*****************************************************************/
+	/********************* Read .ini file values *********************/
+	/*****************************************************************/
+
+	info.MultiInstance = GetPrivateProfileInt("MainInfo", "BlockMultiInstance", 0, ".\\MainInfo.ini");
 
 	info.LauncherType = GetPrivateProfileInt("MainInfo", "LauncherType", 0, ".\\MainInfo.ini");
 
@@ -73,9 +80,7 @@ int main()
 
 	info.ReconnectTime = GetPrivateProfileInt("ReconnectInfo", "ReconnectTime", 0, ".\\MainInfo.ini");
 
-	/*=================================================================
-				CUSTOM
-	==================================================================*/
+	/*================================================================*/
 
 	info.HealthBarType = GetPrivateProfileInt("Systems", "HealthBarType", 0, ".\\MainInfo.ini");
 
@@ -85,6 +90,10 @@ int main()
 
 	info.EnableMoveList = GetPrivateProfileInt("Systems", "EnableMoveList", 0, ".\\MainInfo.ini");
 
+	/*****************************************************************/
+	/************************ Read .txt files ************************/
+	/*****************************************************************/
+
 	gMapManager.Load("MapManager.txt");
 
 	gCustomGlow.Load("CustomGlow.txt");
@@ -93,7 +102,9 @@ int main()
 
 	gItemOption.Load("ItemOption.txt");
 
-	/*================================================================*/
+	/*****************************************************************/
+	/*********************** Load struct files ***********************/
+	/*****************************************************************/
 
 	memcpy(info.MapManager, gMapManager.m_MapManager, sizeof(info.MapManager));
 
@@ -105,14 +116,20 @@ int main()
 
 	/*=================================================================*/
 
+	char _path_[MAX_PATH] = { 0 };
+
 	CCRC32 CRC32;
 
-	if (CRC32.FileCRC(info.ClientName, &info.ClientCRC32, 1024) == 0)
+	wsprintf(_path_, ".\\Client\\%s", info.ClientName);
+
+	if (CRC32.FileCRC(_path_, &info.ClientCRC32, 1024) == 0)
 	{
 		info.ClientCRC32 = 0;
 	}
 
-	if (CRC32.FileCRC(info.PluginName, &info.PluginCRC32, 1024) == 0)
+	wsprintf(_path_, ".\\Client\\%s", info.PluginName);
+
+	if (CRC32.FileCRC(_path_, &info.PluginCRC32, 1024) == 0)
 	{
 		info.PluginCRC32 = 0;
 	}
@@ -128,7 +145,7 @@ int main()
 		((BYTE*)&info)[n] += (BYTE)(XorKey[n % 20] ^ HIBYTE(n));
 	}
 
-	HANDLE file = CreateFile(".\\Data\\Local\\ClientInfo.bmd", GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_ARCHIVE, 0);
+	HANDLE file = CreateFile(".\\Client\\Data\\Local\\ClientInfo.bmd", GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_ARCHIVE, 0);
 
 	if (file == INVALID_HANDLE_VALUE)
 	{
@@ -149,7 +166,7 @@ int main()
 
 		system("pause");
 
-		return 1;
+		return 2;
 	}
 
 	CloseHandle(file);

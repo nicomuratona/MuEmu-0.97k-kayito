@@ -10,11 +10,19 @@ public:
 
 	void Init();
 
-	static void WeaponViewCheck();
+private:
 
-	static void SecondWeaponViewCheck();
+	static void CheckRenderBackItem();
+
+	BOOL RenderCharacterBackItem(DWORD c, DWORD o);
+
+	bool IsBackItem(int iType);
 
 	static void SecondWeaponViewFix();
+
+private:
+
+	BYTE SecondWeaponFixVal;
 };
 
 extern CWeaponView gWeaponView;

@@ -10,6 +10,8 @@ public:
 
 	void Init();
 
+private:
+
 	static void DrawGuildLogo(int x, int y, DWORD c);
 };
 

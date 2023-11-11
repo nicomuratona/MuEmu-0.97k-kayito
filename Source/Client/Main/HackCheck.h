@@ -6,14 +6,39 @@
 
 #define PORT_RANGE(x) (((x)<MIN_PORT)?0:((x)>MAX_PORT)?0:1)
 
-void DecryptData(BYTE* lpMsg, int size);
+class CHackCheck
+{
+private:
 
-void EncryptData(BYTE* lpMsg, int size);
+	typedef int(WINAPI* WSRECV)(SOCKET, BYTE*, int, int);
 
-bool CheckSocketPort(SOCKET s);
+	typedef int(WINAPI* WSSEND)(SOCKET, BYTE*, int, int);
 
-int WINAPI MyRecv(SOCKET s, BYTE* buf, int len, int flags);
+public:
 
-int WINAPI MySend(SOCKET s, BYTE* buf, int len, int flags);
+	void Init();
 
-void InitHackCheck();
+	static int WINAPI MySend(SOCKET s, BYTE* buf, int len, int flags);
+
+	bool CheckSocketPort(SOCKET s);
+
+private:
+
+	static int WINAPI MyRecv(SOCKET s, BYTE* buf, int len, int flags);
+
+	void DecryptData(BYTE* lpMsg, int size);
+
+	void EncryptData(BYTE* lpMsg, int size);
+
+private:
+
+	BYTE EncDecKey1;
+
+	BYTE EncDecKey2;
+
+	WSRECV HookRecv;
+
+	WSSEND HookSend;
+};
+
+extern CHackCheck gHackCheck;

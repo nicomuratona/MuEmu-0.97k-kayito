@@ -25,17 +25,23 @@ public:
 
 	virtual ~CPacketManager();
 
-	void Init();
-
 	bool LoadEncryptionKey(char* name);
 
 	bool LoadDecryptionKey(char* name);
 
-	bool LoadKey(char* name, WORD header, bool type);
-
 	int Encrypt(BYTE* lpTarget, BYTE* lpSource, int size);
 
 	int Decrypt(BYTE* lpTarget, BYTE* lpSource, int size);
+
+	bool AddData(BYTE* lpBuff, int size);
+
+	bool ExtractPacket(BYTE* lpBuff);
+
+private:
+
+	void Init();
+
+	bool LoadKey(char* name, WORD header, bool type);
 
 	int EncryptBlock(BYTE* lpTarget, BYTE* lpSource, int size);
 
@@ -46,10 +52,6 @@ public:
 	int GetByteOfBit(int value);
 
 	void Shift(BYTE* lpBuff, int size, int ShiftSize);
-
-	bool AddData(BYTE* lpBuff, int size);
-
-	bool ExtractPacket(BYTE* lpBuff);
 
 	void XorData(int start, int end);
 

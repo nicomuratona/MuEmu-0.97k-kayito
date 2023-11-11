@@ -16,38 +16,79 @@ enum eReconnectProgress
 	RECONNECT_PROGRESS_CHAR_INFO = 4,
 };
 
-void InitReconnect();
+class CReconnect
+{
+public:
 
-void ReconnectMainProc();
+	CReconnect();
 
-void ReconnectDrawInterface();
+	virtual ~CReconnect();
 
-void ReconnectSetInfo(DWORD status, DWORD progress, DWORD CurWait, DWORD MaxWait);
+	void Init();
 
-void ReconnectToGameServer();
+private:
 
-void ReconnectIntoAccount();
+	static void ReconnectDrawInterface();
 
-void ReconnectOnCloseSocket();
+	static void ReconnectMainProc();
 
-void ReconnectOnConnectAccount(BYTE result);
+	void ReconnectToGameServer();
 
-void ReconnectOnCloseClient(BYTE result);
+	void ReconnectIntoAccount();
 
-void ReconnectOnCharacterList();
+	static void ReconnectGetAccountInfo();
 
-void ReconnectOnCharacterInfo();
+	static void ReconnectCheckConnection();
 
-void ReconnectViewportDestroy();
+	static BOOL ReconnectCloseSocket(DWORD This);
 
-BOOL ReconnectCreateConnection(char* address, WORD port);
+	void ReconnectOnCloseSocket();
 
-void ReconnectGetAccountInfo();
+	void ReconnectSetInfo(eReconnectStatus status, eReconnectProgress progress, DWORD CurWait, DWORD MaxWait);
 
-void ReconnectCheckConnection();
+	void ReconnectViewportDestroy();
 
-void ReconnectCloseSocket();
+	static void ReconnectMenuExitGame();
 
-void ReconnectMenuExitGame();
+	static void ReconnectServerConnect();
 
-void ReconnectServerConnect();
+	static BOOL ReconnectCreateConnection(char* IpAddr, unsigned short Port);
+
+public:
+
+	void ReconnectOnConnectAccount(BYTE result);
+
+	void ReconnectOnCloseClient(BYTE result);
+
+	void ReconnectOnCharacterList();
+
+	void ReconnectOnCharacterInfo();
+
+private:
+
+	char GameServerAddress[16];
+
+	WORD GameServerPort;
+
+	char ReconnectAccount[11];
+
+	char ReconnectPassword[11];
+
+	char ReconnectName[11];
+
+	eReconnectStatus ReconnectStatus;
+
+	eReconnectProgress ReconnectProgress;
+
+	DWORD ReconnectCurTime;
+
+	DWORD ReconnectMaxTime;
+
+	DWORD ReconnectCurWait;
+
+	DWORD ReconnectMaxWait;
+
+	BYTE ReconnectAuthSend;
+};
+
+extern CReconnect gReconnect;

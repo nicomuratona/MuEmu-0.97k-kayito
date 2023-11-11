@@ -163,5 +163,5 @@ void CItemStack::CGItemStackUnstackSend(BYTE Type, int Slot, int Count)
 
 	pMsg.Count = Count;
 
-	DataSend((BYTE*)&pMsg, pMsg.header.size);
+	gProtocol.DataSend((BYTE*)&pMsg, pMsg.header.size);
 }

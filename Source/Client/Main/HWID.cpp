@@ -73,5 +73,5 @@ void cHwid::SendHwid()
 
 	memcpy(pMsg.HardwareId, this->m_ComputerHardwareId, sizeof(pMsg.HardwareId));
 
-	DataSend((BYTE*)&pMsg, pMsg.header.size);
+	gProtocol.DataSend((BYTE*)&pMsg, pMsg.header.size);
 }

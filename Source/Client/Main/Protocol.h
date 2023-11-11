@@ -334,54 +334,69 @@ struct PMSG_CHARACTER_INFO_SEND
 //**********************************************//
 //**********************************************//
 
-void InitProtocol();
+class CProtocol
+{
+public:
 
-static void HookProtocol();
+	CProtocol();
 
-void _stdcall ProtocolCompiler(BYTE* lpMsg);
+	virtual ~CProtocol();
 
-void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size);
+	void Init();
 
-void GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg);
+private:
 
-void GCDamageRecv(PMSG_DAMAGE_RECV* lpMsg);
+	static void HookProtocol();
 
-void GCUserDieRecv(PMSG_USER_DIE_RECV* lpMsg);
+	void ProtocolCompiler(BYTE* lpMsg);
 
-void GCLifeRecv(PMSG_LIFE_RECV* lpMsg);
+	void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size);
 
-void GCManaRecv(PMSG_MANA_RECV* lpMsg);
+	void GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg);
 
-void GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg);
+	void GCDamageRecv(PMSG_DAMAGE_RECV* lpMsg);
 
-void GCRewardExperienceRecv(PMSG_REWARD_EXPERIENCE_RECV* lpMsg);
+	void GCUserDieRecv(PMSG_USER_DIE_RECV* lpMsg);
 
-void GCQuestRewardRecv(PMSG_QUEST_REWARD_RECV* lpMsg);
+	void GCLifeRecv(PMSG_LIFE_RECV* lpMsg);
 
-void GCCharacterCreationEnableRecv(PMSG_CHARACTER_CREATION_ENABLE_RECV* lpMsg);
+	void GCManaRecv(PMSG_MANA_RECV* lpMsg);
 
-void GCConnectClientRecv(PMSG_CONNECT_CLIENT_RECV* lpMsg);
+	void GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg);
 
-void GCConnectAccountRecv(PMSG_CONNECT_ACCOUNT_RECV* lpMsg);
+	void GCRewardExperienceRecv(PMSG_REWARD_EXPERIENCE_RECV* lpMsg);
 
-void GCCloseClientRecv(PMSG_CLOSE_CLIENT_RECV* lpMsg);
+	void GCQuestRewardRecv(PMSG_QUEST_REWARD_RECV* lpMsg);
 
-void GCCharacterListRecv(PMSG_CHARACTER_LIST_RECV* lpMsg);
+	void GCCharacterCreationEnableRecv(PMSG_CHARACTER_CREATION_ENABLE_RECV* lpMsg);
 
-void GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg);
+	void GCConnectClientRecv(PMSG_CONNECT_CLIENT_RECV* lpMsg);
 
-void GCCharacterRegenRecv(PMSG_CHARACTER_REGEN_RECV* lpMsg);
+	void GCConnectAccountRecv(PMSG_CONNECT_ACCOUNT_RECV* lpMsg);
 
-void GCLevelUpRecv(PMSG_LEVEL_UP_RECV* lpMsg);
+	void GCCloseClientRecv(PMSG_CLOSE_CLIENT_RECV* lpMsg);
 
-void GCLevelUpPointRecv(PMSG_LEVEL_UP_POINT_RECV* lpMsg);
+	void GCCharacterListRecv(PMSG_CHARACTER_LIST_RECV* lpMsg);
 
-void GCMonsterDamageRecv(PMSG_MONSTER_DAMAGE_RECV* lpMsg);
+	void GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg);
 
-void GCNewCharacterInfoRecv(PMSG_NEW_CHARACTER_INFO_RECV* lpMsg);
+	void GCCharacterRegenRecv(PMSG_CHARACTER_REGEN_RECV* lpMsg);
 
-void GCNewCharacterCalcRecv(PMSG_NEW_CHARACTER_CALC_RECV* lpMsg);
+	void GCLevelUpRecv(PMSG_LEVEL_UP_RECV* lpMsg);
 
-void GCHealthBarRecv(PMSG_HEALTH_BAR_RECV* lpMsg);
+	void GCLevelUpPointRecv(PMSG_LEVEL_UP_POINT_RECV* lpMsg);
 
-void DataSend(BYTE* lpMsg, DWORD size);
+	void GCMonsterDamageRecv(PMSG_MONSTER_DAMAGE_RECV* lpMsg);
+
+	void GCNewCharacterInfoRecv(PMSG_NEW_CHARACTER_INFO_RECV* lpMsg);
+
+	void GCNewCharacterCalcRecv(PMSG_NEW_CHARACTER_CALC_RECV* lpMsg);
+
+	void GCHealthBarRecv(PMSG_HEALTH_BAR_RECV* lpMsg);
+
+public:
+
+	void DataSend(BYTE* lpMsg, DWORD size);
+};
+
+extern CProtocol gProtocol;

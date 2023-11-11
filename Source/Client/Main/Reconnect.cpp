@@ -4,275 +4,86 @@
 #include "Protect.h"
 #include "Protocol.h"
 
-char GameServerAddress[16];
+CReconnect gReconnect;
 
-WORD GameServerPort;
+CReconnect::CReconnect()
+{
+	memset(this->GameServerAddress, 0, sizeof(GameServerAddress));
 
-char ReconnectAccount[11];
+	this->GameServerPort = 0;
 
-char ReconnectPassword[11];
+	memset(this->ReconnectAccount, 0, sizeof(ReconnectAccount));
 
-char ReconnectName[11];
+	memset(this->ReconnectPassword, 0, sizeof(ReconnectPassword));
 
-DWORD ReconnectStatus = RECONNECT_STATUS_NONE;
+	memset(this->ReconnectName, 0, sizeof(ReconnectName));
 
-DWORD ReconnectProgress = RECONNECT_PROGRESS_NONE;
+	this->ReconnectStatus = RECONNECT_STATUS_NONE;
 
-DWORD ReconnectCurTime = 0;
+	this->ReconnectProgress = RECONNECT_PROGRESS_NONE;
 
-DWORD ReconnectMaxTime = 0;
+	this->ReconnectCurTime = 0;
 
-DWORD ReconnectCurWait = 0;
+	this->ReconnectMaxTime = 0;
 
-DWORD ReconnectMaxWait = 0;
+	this->ReconnectCurWait = 0;
 
-DWORD ReconnectAuthSend = 0;
+	this->ReconnectMaxWait = 0;
 
-void InitReconnect()
+	this->ReconnectAuthSend = 0;
+}
+
+CReconnect::~CReconnect()
+{
+
+}
+
+void CReconnect::Init()
 {
 	if (gProtect.m_MainInfo.ReconnectTime == 0)
 	{
 		return;
 	}
 
-	SetCompleteHook(0xE9, 0x00520428, &ReconnectGetAccountInfo);
+	SetCompleteHook(0xE8, 0x00525995, &this->ReconnectMainProc);
 
-	SetCompleteHook(0xE9, 0x00526A9E, &ReconnectCheckConnection);
+	SetCompleteHook(0xE8, 0x00525CC1, &this->ReconnectDrawInterface);
 
-	SetCompleteHook(0xE9, 0x0043DC93, &ReconnectCloseSocket);
+	SetCompleteHook(0xE9, 0x00520428, &this->ReconnectGetAccountInfo);
 
-	SetCompleteHook(0xE9, 0x005144DC, &ReconnectMenuExitGame);
+	SetCompleteHook(0xE9, 0x00526A9E, &this->ReconnectCheckConnection);
+
+	SetCompleteHook(0xE9, 0x0043DC90, &this->ReconnectCloseSocket);
+
+	SetCompleteHook(0xE9, 0x005144DC, &this->ReconnectMenuExitGame);
 
 	MemorySet(0x0042398E, 0x90, 0x0A); // Fix Reconnect Exit Message
 
-	SetCompleteHook(0xE9, 0x0042395B, &ReconnectServerConnect);
+	SetCompleteHook(0xE9, 0x0042395B, &this->ReconnectServerConnect);
 
-	SetCompleteHook(0xE8, 0x00423FB5, &ReconnectCreateConnection);
+	SetCompleteHook(0xE8, 0x00423FB5, &this->ReconnectCreateConnection);
 
-	SetCompleteHook(0xE8, 0x00439BED, &ReconnectCreateConnection);
+	SetCompleteHook(0xE8, 0x00439BED, &this->ReconnectCreateConnection);
 
-	SetCompleteHook(0xE8, 0x0051F953, &ReconnectCreateConnection);
+	SetCompleteHook(0xE8, 0x0051F953, &this->ReconnectCreateConnection);
 
-	SetCompleteHook(0xE8, 0x00520212, &ReconnectCreateConnection);
-
-	//SetCompleteHook(0xE8, 0x004BC0EE, &ReconnectMainProc); // Interface::Work()
+	SetCompleteHook(0xE8, 0x00520212, &this->ReconnectCreateConnection);
 }
 
-__declspec(naked) void ReconnectGetAccountInfo()
+void CReconnect::ReconnectDrawInterface()
 {
-	static DWORD ReconnectGetAccountInfoAddress1 = 0x00405540;
-	static DWORD ReconnectGetAccountInfoAddress2 = 0x00520447;
+	((void(_cdecl*)())0x0051AF50)();
 
-	_asm
-	{
-		Push 0x07DB8710;
-		Push 0x005619C0;
-		Push 0x055C9BF0;
-		Mov Dword Ptr Ds : [0x083A7AC8] , Eax;
-		Mov Dword Ptr DS : [0x083A4320] , Ebx;
-		Call[ReconnectGetAccountInfoAddress1];
-		Push 0x0A;
-		Lea Eax, Dword Ptr Ss : [0x07DB8710] ;
-		Push Eax;
-		Lea Ecx, ReconnectAccount;
-		Push Ecx;
-		Call[MemoryCpy];
-		Add Esp, 0x0C;
-		Push 0x0A;
-		Lea Edx, Dword Ptr Ss : [0x07DB8810] ;
-		Push Edx;
-		Lea Eax, ReconnectPassword;
-		Push Eax;
-		Call[MemoryCpy];
-		Add Esp, 0x0C;
-		Jmp[ReconnectGetAccountInfoAddress2];
-	}
-}
-
-__declspec(naked) void ReconnectCheckConnection()
-{
-	static DWORD ReconnectCheckConnectionAddress1 = 0x00526AA3;
-	static DWORD ReconnectCheckConnectionAddress2 = 0x00526ADE;
-
-	_asm
-	{
-		Cmp Eax, -1;
-		Jnz EXIT;
-		Mov Ecx, ReconnectStatus;
-		Cmp Ecx, RECONNECT_STATUS_RECONNECT;
-		Je EXIT;
-		Jmp[ReconnectCheckConnectionAddress1];
-	EXIT:
-		Jmp[ReconnectCheckConnectionAddress2];
-	}
-}
-
-__declspec(naked) void ReconnectCloseSocket()
-{
-	static DWORD ReconnectCloseSocketAddress1 = 0x0043DC9D;
-
-	_asm
-	{
-		Mov Eax, Dword Ptr Ds : [MAIN_CONNECTION_STATUS] ;
-		Cmp Eax, 0x00;
-		Je EXIT;
-		Call[CheckSocketPort];
-		Test Eax, Eax;
-		Je EXIT;
-		Call[ReconnectOnCloseSocket];
-	EXIT:
-		Mov Dword Ptr Ds : [MAIN_CONNECTION_STATUS] , 0x00;
-		Jmp[ReconnectCloseSocketAddress1];
-	}
-}
-
-void ReconnectOnCloseSocket()
-{
-	if (SceneFlag == 5 && ReconnectStatus != RECONNECT_STATUS_DISCONNECT)
-	{
-		ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_NONE, 30000, gProtect.m_MainInfo.ReconnectTime);
-
-		ReconnectAuthSend = 0;
-
-		ReconnectViewportDestroy();
-
-		PartyNumber = 0;
-
-		memcpy(ReconnectName, (char*)(Hero + 0x1C1), sizeof(ReconnectName));
-	}
-}
-
-void ReconnectViewportDestroy()
-{
-	DWORD ViewportAddress = 0;
-
-	for (DWORD count = 0; count < MAX_MAIN_VIEWPORT; count++)
-	{
-		if ((ViewportAddress = (*(DWORD*)(0x07ABF5D0) + (count * 916))) == 0)
-		{
-			continue;
-		}
-
-		if (*(BYTE*)ViewportAddress == 0)
-		{
-			continue;
-		}
-
-		((int(__cdecl*)(int key)) 0x0045AC20)(*(WORD*)(ViewportAddress + 0x1DC));
-	}
-}
-
-__declspec(naked) void ReconnectMenuExitGame()
-{
-	static DWORD ReconnectMenuExitGameAddress1 = 0x005144E1;
-
-	_asm
-	{
-		Mov Eax, ReconnectStatus;
-		Cmp Eax, RECONNECT_STATUS_RECONNECT;
-		Jnz EXIT;
-		Push 0;
-		Call[ExitProcess];
-	EXIT:
-		Mov ReconnectStatus, RECONNECT_STATUS_DISCONNECT;
-		Push 0x005617BC;
-		Jmp[ReconnectMenuExitGameAddress1];
-	}
-}
-
-__declspec(naked) void ReconnectServerConnect()
-{
-	static DWORD ReconnectServerConnectAddress1 = 0x00423962;
-
-	_asm
-	{
-		Mov GameServerPort, Cx;
-		Lea Ecx, GameServerAddress;
-		Push 0x10;
-		Push Edx;
-		Push Ecx;
-		Call[MemoryCpy];
-		Add Esp, 0x0C;
-		Movzx Ecx, GameServerPort;
-		Lea Edx, GameServerAddress;
-		Push 0x400;
-		Push Ecx;
-		Push Edx;
-		Jmp[ReconnectServerConnectAddress1];
-	}
-}
-
-BOOL ReconnectCreateConnection(char* address, WORD port)
-{
-	if (PORT_RANGE(port) != 0 && GameServerAddress != address)
-	{
-		wsprintf(GameServerAddress, "%s", address);
-
-		GameServerPort = port;
-	}
-
-	return ((BOOL(*)(char*, WORD))0x00423920)(address, port);
-}
-
-void ReconnectMainProc()
-{
-	// ((void(*)())0x004BD2B0)(); // Interface::Work()
-
-	if (SceneFlag != 5)
+	if (gReconnect.ReconnectStatus != RECONNECT_STATUS_RECONNECT)
 	{
 		return;
 	}
-
-	if (ReconnectStatus != RECONNECT_STATUS_RECONNECT)
-	{
-		return;
-	}
-
-	ReconnectDrawInterface();
-
-	if ((GetTickCount() - ReconnectMaxTime) > ReconnectMaxWait)
-	{
-		ReconnectSetInfo(RECONNECT_STATUS_DISCONNECT, RECONNECT_PROGRESS_NONE, 0, 0);
-
-		((void(__thiscall*)(void*))0x0043DC90)((void*)0x055CA160);
-
-		return;
-	}
-
-	if ((GetTickCount() - ReconnectCurTime) < ReconnectCurWait)
-	{
-		return;
-	}
-
-	switch (ReconnectProgress)
-	{
-		case RECONNECT_PROGRESS_NONE:
-		{
-			ReconnectToGameServer();
-
-			break;
-		}
-
-		case RECONNECT_PROGRESS_CONNECTED:
-		{
-			ReconnectIntoAccount();
-
-			break;
-		}
-	}
-
-	ReconnectCurTime = GetTickCount();
-}
-
-void ReconnectDrawInterface()
-{
-	ErrorMessage = 0x1B;
 
 	float MaxWidth = 150.0f;
 
 	float MaxHeight = 18.0f;
 
-	float progress = ((ReconnectMaxWait == 0) ? 0 : (((GetTickCount() - ReconnectMaxTime) * MaxWidth) / (float)ReconnectMaxWait));
+	float progress = ((gReconnect.ReconnectMaxWait == 0) ? 0 : (((GetTickCount() - gReconnect.ReconnectMaxTime) * MaxWidth) / (float)gReconnect.ReconnectMaxWait));
 
 	progress = ((progress > MaxWidth) ? MaxWidth : progress);
 
@@ -298,7 +109,7 @@ void ReconnectDrawInterface()
 
 	char buff[256];
 
-	switch (ReconnectProgress)
+	switch (gReconnect.ReconnectProgress)
 	{
 		case RECONNECT_PROGRESS_NONE:
 		{
@@ -342,36 +153,64 @@ void ReconnectDrawInterface()
 	DisableAlphaBlend();
 }
 
-void ReconnectSetInfo(DWORD status, DWORD progress, DWORD CurWait, DWORD MaxWait)
+void CReconnect::ReconnectMainProc()
 {
-	ReconnectStatus = status;
+	((void(_cdecl*)())0x004794A0)();
 
-	ReconnectProgress = progress;
+	if (gReconnect.ReconnectStatus != RECONNECT_STATUS_RECONNECT)
+	{
+		return;
+	}
 
-	ReconnectCurTime = GetTickCount();
+	ErrorMessage = 0x1B;
 
-	ReconnectMaxTime = GetTickCount();
+	if ((GetTickCount() - gReconnect.ReconnectMaxTime) > gReconnect.ReconnectMaxWait)
+	{
+		gReconnect.ReconnectSetInfo(RECONNECT_STATUS_DISCONNECT, RECONNECT_PROGRESS_NONE, 0, 0);
 
-	ReconnectCurWait = CurWait;
+		gReconnect.ReconnectCloseSocket(SocketClient);
 
-	ReconnectMaxWait = MaxWait;
+		return;
+	}
 
-	ReconnectAuthSend = ((status == RECONNECT_STATUS_NONE) ? 0 : ReconnectAuthSend);
+	if ((GetTickCount() - gReconnect.ReconnectCurTime) < gReconnect.ReconnectCurWait)
+	{
+		return;
+	}
+
+	switch (gReconnect.ReconnectProgress)
+	{
+		case RECONNECT_PROGRESS_NONE:
+		{
+			gReconnect.ReconnectToGameServer();
+
+			break;
+		}
+
+		case RECONNECT_PROGRESS_CONNECTED:
+		{
+			gReconnect.ReconnectIntoAccount();
+
+			break;
+		}
+	}
+
+	gReconnect.ReconnectCurTime = GetTickCount();
 }
 
-void ReconnectToGameServer()
+void CReconnect::ReconnectToGameServer()
 {
-	if (ReconnectCreateConnection(GameServerAddress, GameServerPort) != 0)
+	if (this->ReconnectCreateConnection(this->GameServerAddress, this->GameServerPort) != FALSE)
 	{
-		*(DWORD*)(MAIN_CONNECTION_STATUS) = 1;
+		*(DWORD*)(g_bGameServerConnected) = TRUE;
 
-		ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_CONNECTED, 10000, 30000);
+		this->ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_CONNECTED, 10000, 30000);
 	}
 }
 
-void ReconnectIntoAccount()
+void CReconnect::ReconnectIntoAccount()
 {
-	if (((ReconnectAuthSend == 0) ? (ReconnectAuthSend++) : ReconnectAuthSend) != 0)
+	if (((this->ReconnectAuthSend == 0) ? (this->ReconnectAuthSend++) : this->ReconnectAuthSend) != 0)
 	{
 		return;
 	}
@@ -380,9 +219,9 @@ void ReconnectIntoAccount()
 
 	pMsg.header.setE(0xF1, 0x01, sizeof(pMsg));
 
-	PacketArgumentEncrypt((BYTE*)pMsg.account, (BYTE*)ReconnectAccount, (sizeof(ReconnectAccount) - 1));
+	PacketArgumentEncrypt((BYTE*)pMsg.account, (BYTE*)this->ReconnectAccount, (sizeof(this->ReconnectAccount) - 1));
 
-	PacketArgumentEncrypt((BYTE*)pMsg.password, (BYTE*)ReconnectPassword, (sizeof(ReconnectPassword) - 1));
+	PacketArgumentEncrypt((BYTE*)pMsg.password, (BYTE*)this->ReconnectPassword, (sizeof(this->ReconnectPassword) - 1));
 
 	pMsg.TickCount = GetTickCount();
 
@@ -398,14 +237,181 @@ void ReconnectIntoAccount()
 
 	memcpy(pMsg.ClientSerial, (void*)0x00559624, sizeof(pMsg.ClientSerial));
 
-	DataSend((BYTE*)&pMsg, pMsg.header.size);
+	gProtocol.DataSend((BYTE*)&pMsg, pMsg.header.size);
 }
 
-void ReconnectOnConnectAccount(BYTE result)
+__declspec(naked) void CReconnect::ReconnectGetAccountInfo()
 {
-	if (ReconnectProgress == RECONNECT_PROGRESS_CONNECTED)
+	static DWORD jmpBack = 0x00520442;
+
+	_asm
 	{
-		if (ReconnectAuthSend != 0)
+		Pushad;
+	}
+
+	memcpy(gReconnect.ReconnectAccount, (char*)0x07DB8710, sizeof(gReconnect.ReconnectAccount));
+
+	memcpy(gReconnect.ReconnectPassword, (char*)0x07DB8810, sizeof(gReconnect.ReconnectPassword));
+
+	_asm
+	{
+		Popad;
+		Push 0x07DB8710;
+		Push 0x005619C0;
+		Push 0x055C9BF0;
+		Mov Dword Ptr Ds : [0x083A7AC8] , Eax;
+		Mov Dword Ptr DS : [0x083A4320] , Ebx;
+		Jmp[jmpBack];
+	}
+}
+
+__declspec(naked) void CReconnect::ReconnectCheckConnection()
+{
+	static DWORD jmpToSocketInvalid = 0x00526AA3;
+	static DWORD jmpToSocketValid = 0x00526ADE;
+
+	_asm
+	{
+		Cmp Eax, -1;
+		Jnz EXIT;
+		Mov Ecx, gReconnect.ReconnectStatus;
+		Cmp Ecx, RECONNECT_STATUS_RECONNECT;
+		Je EXIT;
+		Jmp[jmpToSocketInvalid];
+	EXIT:
+		Jmp[jmpToSocketValid];
+	}
+}
+
+BOOL CReconnect::ReconnectCloseSocket(DWORD This)
+{
+	if (*(BOOL*)g_bGameServerConnected != FALSE)
+	{
+		if (gHackCheck.CheckSocketPort(pSocket))
+		{
+			gReconnect.ReconnectOnCloseSocket();
+		}
+
+		*(BOOL*)g_bGameServerConnected = FALSE;
+	}
+
+	closesocket(pSocket);
+
+	pSocket = -1;
+
+	return TRUE;
+}
+
+void CReconnect::ReconnectOnCloseSocket()
+{
+	if (SceneFlag == 5 && this->ReconnectStatus != RECONNECT_STATUS_DISCONNECT)
+	{
+		this->ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_NONE, 30000, gProtect.m_MainInfo.ReconnectTime);
+
+		this->ReconnectAuthSend = 0;
+
+		this->ReconnectViewportDestroy();
+
+		PartyNumber = 0;
+
+		memcpy(this->ReconnectName, (char*)(Hero + 0x1C1), sizeof(this->ReconnectName));
+	}
+}
+
+void CReconnect::ReconnectSetInfo(eReconnectStatus status, eReconnectProgress progress, DWORD CurWait, DWORD MaxWait)
+{
+	this->ReconnectStatus = status;
+
+	this->ReconnectProgress = progress;
+
+	this->ReconnectCurTime = GetTickCount();
+
+	this->ReconnectMaxTime = GetTickCount();
+
+	this->ReconnectCurWait = CurWait;
+
+	this->ReconnectMaxWait = MaxWait;
+
+	this->ReconnectAuthSend = ((status == RECONNECT_STATUS_NONE) ? 0 : ReconnectAuthSend);
+}
+
+void CReconnect::ReconnectViewportDestroy()
+{
+	DWORD ViewportAddress = 0;
+
+	for (DWORD count = 0; count < MAX_MAIN_VIEWPORT; count++)
+	{
+		if ((ViewportAddress = (CharactersClient + (count * 916))) == 0)
+		{
+			continue;
+		}
+
+		if (*(BYTE*)ViewportAddress == 0)
+		{
+			continue;
+		}
+
+		DeleteCharacter(*(WORD*)(ViewportAddress + 0x1DC));
+	}
+}
+
+__declspec(naked) void CReconnect::ReconnectMenuExitGame()
+{
+	static DWORD jmpBack = 0x005144E1;
+
+	_asm
+	{
+		Mov Eax, gReconnect.ReconnectStatus;
+		Cmp Eax, RECONNECT_STATUS_RECONNECT;
+		Jnz EXIT;
+		Push 0;
+		Call[ExitProcess];
+	EXIT:
+		Mov gReconnect.ReconnectStatus, RECONNECT_STATUS_DISCONNECT;
+		Push 0x005617BC;
+		Jmp[jmpBack];
+	}
+}
+
+__declspec(naked) void CReconnect::ReconnectServerConnect()
+{
+	static DWORD jmpBack = 0x00423962;
+
+	_asm
+	{
+		Mov gReconnect.GameServerPort, Cx;
+		Lea Ecx, gReconnect.GameServerAddress;
+		Push 0x10;
+		Push Edx;
+		Push Ecx;
+		Call[MemoryCpy];
+		Add Esp, 0x0C;
+		Movzx Ecx, gReconnect.GameServerPort;
+		Lea Edx, gReconnect.GameServerAddress;
+		Push 0x400;
+		Push Ecx;
+		Push Edx;
+		Jmp[jmpBack];
+	}
+}
+
+BOOL CReconnect::ReconnectCreateConnection(char* IpAddr, unsigned short Port)
+{
+	if (PORT_RANGE(Port) != 0 && gReconnect.GameServerAddress != IpAddr)
+	{
+		wsprintf(gReconnect.GameServerAddress, "%s", IpAddr);
+
+		gReconnect.GameServerPort = Port;
+	}
+
+	return CreateSocket(IpAddr, Port);
+}
+
+void CReconnect::ReconnectOnConnectAccount(BYTE result)
+{
+	if (this->ReconnectProgress == RECONNECT_PROGRESS_CONNECTED)
+	{
+		if (this->ReconnectAuthSend != 0)
 		{
 			if (result == 1)
 			{
@@ -413,59 +419,59 @@ void ReconnectOnConnectAccount(BYTE result)
 
 				pMsg.header.set(0xF3, 0x00, sizeof(pMsg));
 
-				DataSend((BYTE*)&pMsg, pMsg.header.size);
+				gProtocol.DataSend((BYTE*)&pMsg, pMsg.header.size);
 
-				ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_JOINED, 30000, 30000);
+				this->ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_JOINED, 30000, 30000);
 			}
 			else
 			{
 				if (result == 3)
 				{
-					ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_CONNECTED, 10000, 30000);
+					this->ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_CONNECTED, 10000, 30000);
 
-					ReconnectAuthSend = 0;
+					this->ReconnectAuthSend = 0;
 				}
 				else
 				{
-					ReconnectSetInfo(RECONNECT_STATUS_DISCONNECT, RECONNECT_PROGRESS_NONE, 0, 0);
+					this->ReconnectSetInfo(RECONNECT_STATUS_DISCONNECT, RECONNECT_PROGRESS_NONE, 0, 0);
 
-					((void(__thiscall*)(void*))0x0043DC90)((void*)0x055CA160);
+					this->ReconnectCloseSocket(SocketClient);
 				}
 			}
 		}
 	}
 }
 
-void ReconnectOnCloseClient(BYTE result)
+void CReconnect::ReconnectOnCloseClient(BYTE result)
 {
-	if (ReconnectStatus != RECONNECT_STATUS_RECONNECT)
+	if (this->ReconnectStatus != RECONNECT_STATUS_RECONNECT)
 	{
 		if (result == 0 || result == 2)
 		{
-			ReconnectSetInfo(RECONNECT_STATUS_DISCONNECT, RECONNECT_PROGRESS_NONE, 0, 0);
+			this->ReconnectSetInfo(RECONNECT_STATUS_DISCONNECT, RECONNECT_PROGRESS_NONE, 0, 0);
 		}
 	}
 }
 
-void ReconnectOnCharacterList()
+void CReconnect::ReconnectOnCharacterList()
 {
-	if (ReconnectProgress == RECONNECT_PROGRESS_JOINED)
+	if (this->ReconnectProgress == RECONNECT_PROGRESS_JOINED)
 	{
 		PMSG_CHARACTER_INFO_SEND pMsg;
 
 		pMsg.header.set(0xF3, 0x03, sizeof(pMsg));
 
-		memcpy(pMsg.name, ReconnectName, sizeof(pMsg.name));
+		memcpy(pMsg.name, this->ReconnectName, sizeof(pMsg.name));
 
-		DataSend((BYTE*)&pMsg, pMsg.header.size);
+		gProtocol.DataSend((BYTE*)&pMsg, pMsg.header.size);
 
-		ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_CHAR_LIST, 30000, 30000);
+		this->ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_CHAR_LIST, 30000, 30000);
 	}
 }
 
-void ReconnectOnCharacterInfo()
+void CReconnect::ReconnectOnCharacterInfo()
 {
-	ReconnectSetInfo(RECONNECT_STATUS_NONE, RECONNECT_PROGRESS_NONE, 0, 0);
+	this->ReconnectSetInfo(RECONNECT_STATUS_NONE, RECONNECT_PROGRESS_NONE, 0, 0);
 
 	ErrorMessage = 0;
 }

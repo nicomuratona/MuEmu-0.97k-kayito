@@ -2,6 +2,7 @@
 #include "Buff.h"
 #include "ChaosMix.h"
 #include "Controller.h"
+#include "Font.h"
 #include "GuildLogo.h"
 #include "HackCheck.h"
 #include "HealthBar.h"
@@ -11,7 +12,7 @@
 #include "ItemValue.h"
 #include "Language.h"
 #include "LoadModels.h"
-#include "MiniMap.h"
+#include "FullMap.h"
 #include "MoveList.h"
 #include "OptionsMenu.h"
 #include "PacketManager.h"
@@ -49,25 +50,28 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 
 	gProtect.CheckInstance();
 
-	gProtect.CheckClientFile();
+	if (!gPacketManager.LoadEncryptionKey("Data\\Enc1.dat") || !gPacketManager.LoadDecryptionKey("Data\\Dec2.dat"))
+	{
+		MessageBoxA(NULL, "Failed reading encoder and decoder files.", "Error", MB_OK);
 
-	gPacketManager.LoadEncryptionKey("Data\\Enc1.dat");
+		ExitProcess(0);
+	}
 
-	gPacketManager.LoadDecryptionKey("Data\\Dec2.dat");
+	gHackCheck.Init();
 
-	InitHackCheck();
-
-	InitPatchs();
+	gPatchs.Init();
 
 	gBuff.Init();
 
-	InitProtocol();
+	gProtocol.Init();
 
 	gLanguage.Init();
 
-	InitPrintPlayer();
+	gFont.Init();
 
-	InitReconnect();
+	gPrintPlayer.Init();
+
+	gReconnect.Init();
 
 	gSound.Init();
 
@@ -81,7 +85,7 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 
 	gSkyDome.Init();
 
-	gMiniMap.Init();
+	gFullMap.Init();
 
 	gMoveList.Init();
 
@@ -106,6 +110,8 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 	gCustomGlow.Load(gProtect.m_MainInfo.CustomGlowInfo);
 
 	gCustomItem.Load(gProtect.m_MainInfo.CustomItemInfo);
+
+	gProtect.CheckClientFile();
 
 	gProtect.CheckPluginFile();
 }

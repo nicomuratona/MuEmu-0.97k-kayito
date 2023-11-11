@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{99FEE110-4599-4DF9-A022-7CD4A72F9649}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GetMainInfo</RootNamespace>
+    <RootNamespace>InfoEncoder</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -90,10 +90,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="maininfo.ico" />
+    <None Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CCRC32.H" />
+    <ClInclude Include="CCRC32.h" />
     <ClInclude Include="CustomGlow.h" />
     <ClInclude Include="CustomItem.h" />
     <ClInclude Include="Defines.h" />
@@ -104,10 +104,10 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CCRC32.Cpp" />
+    <ClCompile Include="CCRC32.cpp" />
     <ClCompile Include="CustomGlow.cpp" />
     <ClCompile Include="CustomItem.cpp" />
-    <ClCompile Include="GetMainInfo.cpp" />
+    <ClCompile Include="InfoEncoder.cpp" />
     <ClCompile Include="ItemOption.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="MemScript.cpp" />
@@ -117,7 +117,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GetMainInfo.rc" />
+    <ResourceCompile Include="InfoEncoder.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

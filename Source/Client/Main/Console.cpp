@@ -23,7 +23,7 @@ void Console::StartConsole()
 
 	AllocConsole();
 
-	SetConsoleTitleA("Console Debugger");
+	SetConsoleTitle("Console Debugger");
 
 	this->Write("Console Started!");
 }

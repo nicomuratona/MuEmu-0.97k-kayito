@@ -14,12 +14,24 @@
 #include "Reconnect.h"
 #include "ServerList.h"
 
-void InitProtocol()
+CProtocol gProtocol;
+
+CProtocol::CProtocol()
 {
-	SetCompleteHook(0xE9, 0x004389D7, &HookProtocol);
+
 }
 
-_declspec(naked) void HookProtocol()
+CProtocol::~CProtocol()
+{
+
+}
+
+void CProtocol::Init()
+{
+	SetCompleteHook(0xE9, 0x004389D7, &this->HookProtocol);
+}
+
+_declspec(naked) void CProtocol::HookProtocol()
 {
 	static DWORD jmpBack = 0x004389DC;
 
@@ -27,7 +39,8 @@ _declspec(naked) void HookProtocol()
 	{
 		Pushad;
 		Push Ebp;
-		Call ProtocolCompiler;
+		Mov Ecx, gProtocol;
+		Call [CProtocol::ProtocolCompiler];
 		Popad;
 		Mov Al, [Ebp + 0];
 		Xor Ebx, Ebx;
@@ -35,13 +48,13 @@ _declspec(naked) void HookProtocol()
 	}
 }
 
-void _stdcall ProtocolCompiler(BYTE* lpMsg)
+void CProtocol::ProtocolCompiler(BYTE* lpMsg)
 {
 	int count = 0, size = 0, DecSize = 0;
 
 	BYTE header, head;
 
-	BYTE DecBuff[MAX_MAIN_PACKET_SIZE];
+	BYTE DecBuff[MAX_MAIN_PACKET_SIZE] = { 0 };
 
 	if (lpMsg[count] == 0xC1 || lpMsg[count] == 0xC3)
 	{
@@ -106,10 +119,10 @@ void _stdcall ProtocolCompiler(BYTE* lpMsg)
 		DecSize = size;
 	}
 
-	TranslateProtocol(head, DecBuff, DecSize);
+	this->TranslateProtocol(head, DecBuff, DecSize);
 }
 
-void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
+void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 {
 	//gConsole.Write("RECV 0: %02X, 1: %02X, 2: %02X, 3: %02X, 4: %02X, 5: %02X", (Size > 0) ? lpMsg[0] : 0, (Size > 1) ? lpMsg[1] : 0, (Size > 2) ? lpMsg[2] : 0, (Size > 3) ? lpMsg[3] : 0, (Size > 4) ? lpMsg[4] : 0, (Size > 5) ? lpMsg[5] : 0);
 
@@ -117,21 +130,21 @@ void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 	{
 		case 0xD:
 		{
-			GCNoticeRecv((PMSG_NOTICE_RECV*)lpMsg);
+			this->GCNoticeRecv((PMSG_NOTICE_RECV*)lpMsg);
 
 			break;
 		}
 
 		case 0x15:
 		{
-			GCDamageRecv((PMSG_DAMAGE_RECV*)lpMsg);
+			this->GCDamageRecv((PMSG_DAMAGE_RECV*)lpMsg);
 
 			break;
 		}
 
 		case 0x17:
 		{
-			GCUserDieRecv((PMSG_USER_DIE_RECV*)lpMsg);
+			this->GCUserDieRecv((PMSG_USER_DIE_RECV*)lpMsg);
 
 			break;
 		}
@@ -145,21 +158,21 @@ void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 
 		case 0x26:
 		{
-			GCLifeRecv((PMSG_LIFE_RECV*)lpMsg);
+			this->GCLifeRecv((PMSG_LIFE_RECV*)lpMsg);
 
 			break;
 		}
 
 		case 0x27:
 		{
-			GCManaRecv((PMSG_MANA_RECV*)lpMsg);
+			this->GCManaRecv((PMSG_MANA_RECV*)lpMsg);
 
 			break;
 		}
 
 		case 0x2C:
 		{
-			GCFruitResultRecv((PMSG_FRUIT_RESULT_RECV*)lpMsg);
+			this->GCFruitResultRecv((PMSG_FRUIT_RESULT_RECV*)lpMsg);
 
 			break;
 		}
@@ -180,21 +193,21 @@ void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 
 		case 0x9C:
 		{
-			GCRewardExperienceRecv((PMSG_REWARD_EXPERIENCE_RECV*)lpMsg);
+			this->GCRewardExperienceRecv((PMSG_REWARD_EXPERIENCE_RECV*)lpMsg);
 
 			break;
 		}
 
 		case 0xA3:
 		{
-			GCQuestRewardRecv((PMSG_QUEST_REWARD_RECV*)lpMsg);
+			this->GCQuestRewardRecv((PMSG_QUEST_REWARD_RECV*)lpMsg);
 
 			break;
 		}
 
 		case 0xDE:
 		{
-			GCCharacterCreationEnableRecv((PMSG_CHARACTER_CREATION_ENABLE_RECV*)lpMsg);
+			this->GCCharacterCreationEnableRecv((PMSG_CHARACTER_CREATION_ENABLE_RECV*)lpMsg);
 
 			break;
 		}
@@ -205,21 +218,21 @@ void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 			{
 				case 0x00:
 				{
-					GCConnectClientRecv((PMSG_CONNECT_CLIENT_RECV*)lpMsg);
+					this->GCConnectClientRecv((PMSG_CONNECT_CLIENT_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0x01:
 				{
-					GCConnectAccountRecv((PMSG_CONNECT_ACCOUNT_RECV*)lpMsg);
+					this->GCConnectAccountRecv((PMSG_CONNECT_ACCOUNT_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0x02:
 				{
-					GCCloseClientRecv((PMSG_CLOSE_CLIENT_RECV*)lpMsg);
+					this->GCCloseClientRecv((PMSG_CLOSE_CLIENT_RECV*)lpMsg);
 
 					break;
 				}
@@ -234,63 +247,63 @@ void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 			{
 				case 0x00:
 				{
-					GCCharacterListRecv((PMSG_CHARACTER_LIST_RECV*)lpMsg);
+					this->GCCharacterListRecv((PMSG_CHARACTER_LIST_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0x03:
 				{
-					GCCharacterInfoRecv((PMSG_CHARACTER_INFO_RECV*)lpMsg);
+					this->GCCharacterInfoRecv((PMSG_CHARACTER_INFO_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0x04:
 				{
-					GCCharacterRegenRecv((PMSG_CHARACTER_REGEN_RECV*)lpMsg);
+					this->GCCharacterRegenRecv((PMSG_CHARACTER_REGEN_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0x05:
 				{
-					GCLevelUpRecv((PMSG_LEVEL_UP_RECV*)lpMsg);
+					this->GCLevelUpRecv((PMSG_LEVEL_UP_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0x06:
 				{
-					GCLevelUpPointRecv((PMSG_LEVEL_UP_POINT_RECV*)lpMsg);
+					this->GCLevelUpPointRecv((PMSG_LEVEL_UP_POINT_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0x07:
 				{
-					GCMonsterDamageRecv((PMSG_MONSTER_DAMAGE_RECV*)lpMsg);
+					this->GCMonsterDamageRecv((PMSG_MONSTER_DAMAGE_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0xE0:
 				{
-					GCNewCharacterInfoRecv((PMSG_NEW_CHARACTER_INFO_RECV*)lpMsg);
+					this->GCNewCharacterInfoRecv((PMSG_NEW_CHARACTER_INFO_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0xE1:
 				{
-					GCNewCharacterCalcRecv((PMSG_NEW_CHARACTER_CALC_RECV*)lpMsg);
+					this->GCNewCharacterCalcRecv((PMSG_NEW_CHARACTER_CALC_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0xE2:
 				{
-					GCHealthBarRecv((PMSG_HEALTH_BAR_RECV*)lpMsg);
+					this->GCHealthBarRecv((PMSG_HEALTH_BAR_RECV*)lpMsg);
 
 					break;
 				}
@@ -337,7 +350,7 @@ void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 	}
 }
 
-void GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg)
+void CProtocol::GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg)
 {
 	if (lpMsg->type == 3)
 	{
@@ -349,175 +362,175 @@ void GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg)
 	}
 }
 
-void GCDamageRecv(PMSG_DAMAGE_RECV* lpMsg)
+void CProtocol::GCDamageRecv(PMSG_DAMAGE_RECV* lpMsg)
 {
 	int aIndex = MAKE_NUMBERW(lpMsg->index[0], lpMsg->index[1]) & 0x7FFF;
 
-	if (ViewIndex == aIndex)
+	if (gPrintPlayer.ViewIndex == aIndex)
 	{
-		ViewCurHP = lpMsg->ViewCurHP;
+		gPrintPlayer.ViewCurHP = lpMsg->ViewCurHP;
 	}
 
-	ViewDamageHP = lpMsg->ViewDamageHP;
+	gPrintPlayer.ViewDamageHP = lpMsg->ViewDamageHP;
 }
 
-void GCUserDieRecv(PMSG_USER_DIE_RECV* lpMsg)
+void CProtocol::GCUserDieRecv(PMSG_USER_DIE_RECV* lpMsg)
 {
 	int aIndex = MAKE_NUMBERW(lpMsg->index[0], lpMsg->index[1]) & 0x7FFF;
 
-	if (ViewIndex == aIndex)
+	if (gPrintPlayer.ViewIndex == aIndex)
 	{
-		ViewCurHP = 0;
+		gPrintPlayer.ViewCurHP = 0;
 	}
 }
 
-void GCLifeRecv(PMSG_LIFE_RECV* lpMsg)
+void CProtocol::GCLifeRecv(PMSG_LIFE_RECV* lpMsg)
 {
 	if (lpMsg->type == 0xFE)
 	{
-		ViewMaxHP = lpMsg->ViewHP;
+		gPrintPlayer.ViewMaxHP = lpMsg->ViewHP;
 	}
 
 	if (lpMsg->type == 0xFF)
 	{
-		ViewCurHP = ((ViewCurHP == 0) ? ViewCurHP : lpMsg->ViewHP);
+		gPrintPlayer.ViewCurHP = ((gPrintPlayer.ViewCurHP == 0) ? gPrintPlayer.ViewCurHP : lpMsg->ViewHP);
 	}
 }
 
-void GCManaRecv(PMSG_MANA_RECV* lpMsg)
+void CProtocol::GCManaRecv(PMSG_MANA_RECV* lpMsg)
 {
 	if (lpMsg->type == 0xFE)
 	{
-		ViewMaxMP = lpMsg->ViewMP;
+		gPrintPlayer.ViewMaxMP = lpMsg->ViewMP;
 
-		ViewMaxBP = lpMsg->ViewBP;
+		gPrintPlayer.ViewMaxBP = lpMsg->ViewBP;
 	}
 
 	if (lpMsg->type == 0xFF)
 	{
-		ViewCurMP = lpMsg->ViewMP;
+		gPrintPlayer.ViewCurMP = lpMsg->ViewMP;
 
-		ViewCurBP = lpMsg->ViewBP;
+		gPrintPlayer.ViewCurBP = lpMsg->ViewBP;
 	}
 }
 
-void GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg)
+void CProtocol::GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg)
 {
 	if ((lpMsg->result >> 6) == 0)
 	{
 		STRUCT_DECRYPT;
 
-		*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x14) = GET_MAX_WORD_VALUE(lpMsg->ViewStrength);
+		*(WORD*)(*(DWORD*)(CharacterAttribute)+0x14) = GET_MAX_WORD_VALUE(lpMsg->ViewStrength);
 
-		*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x16) = GET_MAX_WORD_VALUE(lpMsg->ViewDexterity);
+		*(WORD*)(*(DWORD*)(CharacterAttribute)+0x16) = GET_MAX_WORD_VALUE(lpMsg->ViewDexterity);
 
-		*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x18) = GET_MAX_WORD_VALUE(lpMsg->ViewVitality);
+		*(WORD*)(*(DWORD*)(CharacterAttribute)+0x18) = GET_MAX_WORD_VALUE(lpMsg->ViewVitality);
 
-		*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x1A) = GET_MAX_WORD_VALUE(lpMsg->ViewEnergy);
+		*(WORD*)(*(DWORD*)(CharacterAttribute)+0x1A) = GET_MAX_WORD_VALUE(lpMsg->ViewEnergy);
 
 		STRUCT_ENCRYPT;
 
-		ViewValue = lpMsg->ViewValue;
+		gPrintPlayer.ViewValue = lpMsg->ViewValue;
 
-		ViewPoint = lpMsg->ViewPoint;
+		gPrintPlayer.ViewPoint = lpMsg->ViewPoint;
 
-		ViewStrength = lpMsg->ViewStrength;
+		gPrintPlayer.ViewStrength = lpMsg->ViewStrength;
 
-		ViewDexterity = lpMsg->ViewDexterity;
+		gPrintPlayer.ViewDexterity = lpMsg->ViewDexterity;
 
-		ViewVitality = lpMsg->ViewVitality;
+		gPrintPlayer.ViewVitality = lpMsg->ViewVitality;
 
-		ViewEnergy = lpMsg->ViewEnergy;
+		gPrintPlayer.ViewEnergy = lpMsg->ViewEnergy;
 	}
 }
 
-void GCRewardExperienceRecv(PMSG_REWARD_EXPERIENCE_RECV* lpMsg)
+void CProtocol::GCRewardExperienceRecv(PMSG_REWARD_EXPERIENCE_RECV* lpMsg)
 {
-	ViewDamageHP = lpMsg->ViewDamageHP;
+	gPrintPlayer.ViewDamageHP = lpMsg->ViewDamageHP;
 
-	ViewExperience = lpMsg->ViewExperience;
+	gPrintPlayer.ViewExperience = lpMsg->ViewExperience;
 
-	ViewNextExperience = lpMsg->ViewNextExperience;
+	gPrintPlayer.ViewNextExperience = lpMsg->ViewNextExperience;
 }
 
-void GCQuestRewardRecv(PMSG_QUEST_REWARD_RECV* lpMsg)
+void CProtocol::GCQuestRewardRecv(PMSG_QUEST_REWARD_RECV* lpMsg)
 {
 	int aIndex = MAKE_NUMBERW(lpMsg->index[0], lpMsg->index[1]) & 0x7FFF;
 
-	if (ViewIndex == aIndex)
+	if (gPrintPlayer.ViewIndex == aIndex)
 	{
-		ViewPoint = lpMsg->ViewPoint;
+		gPrintPlayer.ViewPoint = lpMsg->ViewPoint;
 	}
 }
 
-void GCCharacterCreationEnableRecv(PMSG_CHARACTER_CREATION_ENABLE_RECV* lpMsg)
+void CProtocol::GCCharacterCreationEnableRecv(PMSG_CHARACTER_CREATION_ENABLE_RECV* lpMsg)
 {
 	SetDword(0x00522929 + 1, lpMsg->result); // Allow Create MG
 
 	SetDword(0x0052428E + 1, lpMsg->result); // Allow Create MG
 }
 
-void GCConnectClientRecv(PMSG_CONNECT_CLIENT_RECV* lpMsg)
+void CProtocol::GCConnectClientRecv(PMSG_CONNECT_CLIENT_RECV* lpMsg)
 {
-	ViewIndex = MAKE_NUMBERW(lpMsg->index[0], lpMsg->index[1]);
+	gPrintPlayer.ViewIndex = MAKE_NUMBERW(lpMsg->index[0], lpMsg->index[1]);
 
 	gLanguage.SendLanguage();
 
 	gHwid.SendHwid();
 }
 
-void GCConnectAccountRecv(PMSG_CONNECT_ACCOUNT_RECV* lpMsg)
+void CProtocol::GCConnectAccountRecv(PMSG_CONNECT_ACCOUNT_RECV* lpMsg)
 {
-	ReconnectOnConnectAccount(lpMsg->result);
+	gReconnect.ReconnectOnConnectAccount(lpMsg->result);
 }
 
-void GCCloseClientRecv(PMSG_CLOSE_CLIENT_RECV* lpMsg)
+void CProtocol::GCCloseClientRecv(PMSG_CLOSE_CLIENT_RECV* lpMsg)
 {
-	ReconnectOnCloseClient(lpMsg->result);
+	gReconnect.ReconnectOnCloseClient(lpMsg->result);
 }
 
-void GCCharacterListRecv(PMSG_CHARACTER_LIST_RECV* lpMsg)
+void CProtocol::GCCharacterListRecv(PMSG_CHARACTER_LIST_RECV* lpMsg)
 {
-	ReconnectOnCharacterList();
+	gReconnect.ReconnectOnCharacterList();
 }
 
-void GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg)
+void CProtocol::GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg)
 {
-	ReconnectOnCharacterInfo();
+	gReconnect.ReconnectOnCharacterInfo();
 
-	ViewExperience = lpMsg->Experience;
+	gPrintPlayer.ViewExperience = lpMsg->Experience;
 
-	ViewNextExperience = lpMsg->NextExperience;
+	gPrintPlayer.ViewNextExperience = lpMsg->NextExperience;
 
-	ViewReset = lpMsg->ViewReset;
+	gPrintPlayer.ViewReset = lpMsg->ViewReset;
 
-	ViewGrandReset = lpMsg->ViewGrandReset;
+	gPrintPlayer.ViewGrandReset = lpMsg->ViewGrandReset;
 
-	ViewPoint = lpMsg->ViewPoint;
+	gPrintPlayer.ViewPoint = lpMsg->ViewPoint;
 
-	ViewCurHP = lpMsg->ViewCurHP;
+	gPrintPlayer.ViewCurHP = lpMsg->ViewCurHP;
 
-	ViewMaxHP = lpMsg->ViewMaxHP;
+	gPrintPlayer.ViewMaxHP = lpMsg->ViewMaxHP;
 
-	ViewCurMP = lpMsg->ViewCurMP;
+	gPrintPlayer.ViewCurMP = lpMsg->ViewCurMP;
 
-	ViewMaxMP = lpMsg->ViewMaxMP;
+	gPrintPlayer.ViewMaxMP = lpMsg->ViewMaxMP;
 
-	ViewCurBP = lpMsg->ViewCurBP;
+	gPrintPlayer.ViewCurBP = lpMsg->ViewCurBP;
 
-	ViewMaxBP = lpMsg->ViewMaxBP;
+	gPrintPlayer.ViewMaxBP = lpMsg->ViewMaxBP;
 
-	ViewStrength = lpMsg->ViewStrength;
+	gPrintPlayer.ViewStrength = lpMsg->ViewStrength;
 
-	ViewDexterity = lpMsg->ViewDexterity;
+	gPrintPlayer.ViewDexterity = lpMsg->ViewDexterity;
 
-	ViewVitality = lpMsg->ViewVitality;
+	gPrintPlayer.ViewVitality = lpMsg->ViewVitality;
 
-	ViewEnergy = lpMsg->ViewEnergy;
+	gPrintPlayer.ViewEnergy = lpMsg->ViewEnergy;
 
-	ViewExperience = lpMsg->Experience;
+	gPrintPlayer.ViewExperience = lpMsg->Experience;
 
-	ViewNextExperience = lpMsg->NextExperience;
+	gPrintPlayer.ViewNextExperience = lpMsg->NextExperience;
 
 	*(WORD*)(Hero + 0x1DC) = 0;
 
@@ -525,7 +538,7 @@ void GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg)
 
 	STRUCT_DECRYPT;
 
-	switch (*(BYTE*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0B) & 7)
+	switch (*(BYTE*)(*(DWORD*)(CharacterAttribute)+0x0B) & 7)
 	{
 		case 0:
 		{
@@ -559,150 +572,150 @@ void GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg)
 	STRUCT_ENCRYPT;
 }
 
-void GCCharacterRegenRecv(PMSG_CHARACTER_REGEN_RECV* lpMsg)
+void CProtocol::GCCharacterRegenRecv(PMSG_CHARACTER_REGEN_RECV* lpMsg)
 {
-	ViewCurHP = lpMsg->ViewCurHP;
+	gPrintPlayer.ViewCurHP = lpMsg->ViewCurHP;
 
-	ViewCurMP = lpMsg->ViewCurMP;
+	gPrintPlayer.ViewCurMP = lpMsg->ViewCurMP;
 
-	ViewCurBP = lpMsg->ViewCurBP;
+	gPrintPlayer.ViewCurBP = lpMsg->ViewCurBP;
 }
 
-void GCLevelUpRecv(PMSG_LEVEL_UP_RECV* lpMsg)
+void CProtocol::GCLevelUpRecv(PMSG_LEVEL_UP_RECV* lpMsg)
 {
-	ViewPoint = lpMsg->ViewPoint;
+	gPrintPlayer.ViewPoint = lpMsg->ViewPoint;
 
-	ViewMaxHP = lpMsg->ViewMaxHP;
+	gPrintPlayer.ViewMaxHP = lpMsg->ViewMaxHP;
 
-	ViewMaxMP = lpMsg->ViewMaxMP;
+	gPrintPlayer.ViewMaxMP = lpMsg->ViewMaxMP;
 
-	ViewMaxBP = lpMsg->ViewMaxBP;
+	gPrintPlayer.ViewMaxBP = lpMsg->ViewMaxBP;
 
-	ViewExperience = lpMsg->ViewExperience;
+	gPrintPlayer.ViewExperience = lpMsg->ViewExperience;
 
-	ViewNextExperience = lpMsg->ViewNextExperience;
+	gPrintPlayer.ViewNextExperience = lpMsg->ViewNextExperience;
 }
 
-void GCLevelUpPointRecv(PMSG_LEVEL_UP_POINT_RECV* lpMsg)
+void CProtocol::GCLevelUpPointRecv(PMSG_LEVEL_UP_POINT_RECV* lpMsg)
 {
 	if (lpMsg->result >= 16 && lpMsg->result <= 20)
 	{
-		ViewPoint = lpMsg->ViewPoint;
+		gPrintPlayer.ViewPoint = lpMsg->ViewPoint;
 
-		ViewMaxHP = lpMsg->ViewMaxHP;
+		gPrintPlayer.ViewMaxHP = lpMsg->ViewMaxHP;
 
-		ViewMaxMP = lpMsg->ViewMaxMP;
+		gPrintPlayer.ViewMaxMP = lpMsg->ViewMaxMP;
 
-		ViewMaxBP = lpMsg->ViewMaxBP;
+		gPrintPlayer.ViewMaxBP = lpMsg->ViewMaxBP;
 
-		ViewStrength = lpMsg->ViewStrength;
+		gPrintPlayer.ViewStrength = lpMsg->ViewStrength;
 
-		ViewDexterity = lpMsg->ViewDexterity;
+		gPrintPlayer.ViewDexterity = lpMsg->ViewDexterity;
 
-		ViewVitality = lpMsg->ViewVitality;
+		gPrintPlayer.ViewVitality = lpMsg->ViewVitality;
 
-		ViewEnergy = lpMsg->ViewEnergy;
+		gPrintPlayer.ViewEnergy = lpMsg->ViewEnergy;
 	}
 }
 
-void GCMonsterDamageRecv(PMSG_MONSTER_DAMAGE_RECV* lpMsg)
+void CProtocol::GCMonsterDamageRecv(PMSG_MONSTER_DAMAGE_RECV* lpMsg)
 {
-	ViewCurHP = lpMsg->ViewCurHP;
+	gPrintPlayer.ViewCurHP = lpMsg->ViewCurHP;
 
-	ViewDamageHP = lpMsg->ViewDamageHP;
+	gPrintPlayer.ViewDamageHP = lpMsg->ViewDamageHP;
 }
 
-void GCNewCharacterInfoRecv(PMSG_NEW_CHARACTER_INFO_RECV* lpMsg)
-{
-	STRUCT_DECRYPT;
-
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x54) = GET_MAX_WORD_VALUE(lpMsg->LevelUpPoint + 1);
-
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x14) = GET_MAX_WORD_VALUE(lpMsg->Strength);
-
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x16) = GET_MAX_WORD_VALUE(lpMsg->Dexterity);
-
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x18) = GET_MAX_WORD_VALUE(lpMsg->Vitality);
-
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x1A) = GET_MAX_WORD_VALUE(lpMsg->Energy);
-
-	STRUCT_ENCRYPT;
-
-	ViewPoint = lpMsg->LevelUpPoint;
-
-	ViewExperience = lpMsg->Experience;
-
-	ViewNextExperience = lpMsg->NextExperience;
-
-	ViewStrength = lpMsg->Strength;
-
-	ViewDexterity = lpMsg->Dexterity;
-
-	ViewVitality = lpMsg->Vitality;
-
-	ViewEnergy = lpMsg->Energy;
-
-	ViewCurHP = lpMsg->Life;
-
-	ViewMaxHP = lpMsg->MaxLife;
-
-	ViewCurMP = lpMsg->Mana;
-
-	ViewMaxMP = lpMsg->MaxMana;
-
-	ViewCurBP = lpMsg->BP;
-
-	ViewMaxBP = lpMsg->MaxBP;
-
-	ViewReset = lpMsg->ViewReset;
-
-	ViewGrandReset = lpMsg->ViewGrandReset;
-}
-
-void GCNewCharacterCalcRecv(PMSG_NEW_CHARACTER_CALC_RECV* lpMsg)
+void CProtocol::GCNewCharacterInfoRecv(PMSG_NEW_CHARACTER_INFO_RECV* lpMsg)
 {
 	STRUCT_DECRYPT;
 
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x1C) = GET_MAX_WORD_VALUE(lpMsg->ViewCurHP);
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x54) = GET_MAX_WORD_VALUE(lpMsg->LevelUpPoint + 1);
 
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x20) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxHP);
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x14) = GET_MAX_WORD_VALUE(lpMsg->Strength);
 
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x1E) = GET_MAX_WORD_VALUE(lpMsg->ViewCurMP);
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x16) = GET_MAX_WORD_VALUE(lpMsg->Dexterity);
 
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x22) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxMP);
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x18) = GET_MAX_WORD_VALUE(lpMsg->Vitality);
 
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x24) = GET_MAX_WORD_VALUE(lpMsg->ViewCurBP);
-
-	*(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x26) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxBP);
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x1A) = GET_MAX_WORD_VALUE(lpMsg->Energy);
 
 	STRUCT_ENCRYPT;
 
-	ViewCurHP = lpMsg->ViewCurHP;
+	gPrintPlayer.ViewPoint = lpMsg->LevelUpPoint;
 
-	ViewMaxHP = lpMsg->ViewMaxHP;
+	gPrintPlayer.ViewExperience = lpMsg->Experience;
 
-	ViewCurMP = lpMsg->ViewCurMP;
+	gPrintPlayer.ViewNextExperience = lpMsg->NextExperience;
 
-	ViewMaxMP = lpMsg->ViewMaxMP;
+	gPrintPlayer.ViewStrength = lpMsg->Strength;
 
-	ViewCurBP = lpMsg->ViewCurBP;
+	gPrintPlayer.ViewDexterity = lpMsg->Dexterity;
 
-	ViewMaxBP = lpMsg->ViewMaxBP;
+	gPrintPlayer.ViewVitality = lpMsg->Vitality;
 
-	ViewAddStrength = lpMsg->ViewAddStrength;
+	gPrintPlayer.ViewEnergy = lpMsg->Energy;
 
-	ViewAddDexterity = lpMsg->ViewAddDexterity;
+	gPrintPlayer.ViewCurHP = lpMsg->Life;
 
-	ViewAddVitality = lpMsg->ViewAddVitality;
+	gPrintPlayer.ViewMaxHP = lpMsg->MaxLife;
 
-	ViewAddEnergy = lpMsg->ViewAddEnergy;
+	gPrintPlayer.ViewCurMP = lpMsg->Mana;
 
-	ViewPhysiSpeed = lpMsg->ViewPhysiSpeed;
+	gPrintPlayer.ViewMaxMP = lpMsg->MaxMana;
 
-	ViewMagicSpeed = lpMsg->ViewMagicSpeed;
+	gPrintPlayer.ViewCurBP = lpMsg->BP;
+
+	gPrintPlayer.ViewMaxBP = lpMsg->MaxBP;
+
+	gPrintPlayer.ViewReset = lpMsg->ViewReset;
+
+	gPrintPlayer.ViewGrandReset = lpMsg->ViewGrandReset;
 }
 
-void GCHealthBarRecv(PMSG_HEALTH_BAR_RECV* lpMsg)
+void CProtocol::GCNewCharacterCalcRecv(PMSG_NEW_CHARACTER_CALC_RECV* lpMsg)
+{
+	STRUCT_DECRYPT;
+
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x1C) = GET_MAX_WORD_VALUE(lpMsg->ViewCurHP);
+
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x20) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxHP);
+
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x1E) = GET_MAX_WORD_VALUE(lpMsg->ViewCurMP);
+
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x22) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxMP);
+
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x24) = GET_MAX_WORD_VALUE(lpMsg->ViewCurBP);
+
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x26) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxBP);
+
+	STRUCT_ENCRYPT;
+
+	gPrintPlayer.ViewCurHP = lpMsg->ViewCurHP;
+
+	gPrintPlayer.ViewMaxHP = lpMsg->ViewMaxHP;
+
+	gPrintPlayer.ViewCurMP = lpMsg->ViewCurMP;
+
+	gPrintPlayer.ViewMaxMP = lpMsg->ViewMaxMP;
+
+	gPrintPlayer.ViewCurBP = lpMsg->ViewCurBP;
+
+	gPrintPlayer.ViewMaxBP = lpMsg->ViewMaxBP;
+
+	gPrintPlayer.ViewAddStrength = lpMsg->ViewAddStrength;
+
+	gPrintPlayer.ViewAddDexterity = lpMsg->ViewAddDexterity;
+
+	gPrintPlayer.ViewAddVitality = lpMsg->ViewAddVitality;
+
+	gPrintPlayer.ViewAddEnergy = lpMsg->ViewAddEnergy;
+
+	gPrintPlayer.ViewPhysiSpeed = lpMsg->ViewPhysiSpeed;
+
+	gPrintPlayer.ViewMagicSpeed = lpMsg->ViewMagicSpeed;
+}
+
+void CProtocol::GCHealthBarRecv(PMSG_HEALTH_BAR_RECV* lpMsg)
 {
 	gHealthBar.ClearHealthBar();
 
@@ -714,7 +727,7 @@ void GCHealthBarRecv(PMSG_HEALTH_BAR_RECV* lpMsg)
 	}
 }
 
-void DataSend(BYTE* lpMsg, DWORD size)
+void CProtocol::DataSend(BYTE* lpMsg, DWORD size)
 {
 	BYTE EncBuff[2048];
 
@@ -732,7 +745,7 @@ void DataSend(BYTE* lpMsg, DWORD size)
 
 				PACKET_DECRYPT;
 
-				EncBuff[1] = (*(BYTE*)(MAIN_PACKET_SERIAL))++;
+				EncBuff[1] = (*(BYTE*)(g_byPacketSerialSend))++;
 
 				PACKET_ENCRYPT;
 
@@ -750,7 +763,7 @@ void DataSend(BYTE* lpMsg, DWORD size)
 
 				PACKET_DECRYPT;
 
-				EncBuff[2] = (*(BYTE*)(MAIN_PACKET_SERIAL))++;
+				EncBuff[2] = (*(BYTE*)(g_byPacketSerialSend))++;
 
 				PACKET_ENCRYPT;
 
@@ -766,6 +779,6 @@ void DataSend(BYTE* lpMsg, DWORD size)
 			}
 		}
 
-		MySend(pSocket, send, size, 0);
+		gHackCheck.MySend(pSocket, send, size, 0);
 	}
 }

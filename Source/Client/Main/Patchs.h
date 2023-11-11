@@ -1,21 +1,34 @@
 #pragma once
 
-void InitPatchs();
+class CPatchs
+{
+public:
 
-void ReduceCPU();
+	CPatchs();
 
-void ReduceRam(LPVOID lpThreadParameter);
+	virtual ~CPatchs();
 
-void FixShopNpcClose();
+	void Init();
 
-void IgnoreRandomStuck(DWORD c, DWORD Damage);
+private:
 
-void FixChasingAttackMovement();
+	static void ReduceCPU();
 
-void DecBMD();
+	static void ReduceRam(LPVOID lpThreadParameter);
 
-int OpenTerrainMapping(char* FileName);
+	static void FixShopNpcClose();
 
-int OpenTerrainAttribute(char* FileName);
+	static void IgnoreRandomStuck(DWORD c, DWORD Damage);
 
-int OpenObjectsEnc(char* FileName);
+	static void FixChasingAttackMovement();
+
+	static void DecBMD();
+
+	static int OpenTerrainMapping(char* FileName);
+
+	static int OpenTerrainAttribute(char* FileName);
+
+	static int OpenObjectsEnc(char* FileName);
+};
+
+extern CPatchs gPatchs;

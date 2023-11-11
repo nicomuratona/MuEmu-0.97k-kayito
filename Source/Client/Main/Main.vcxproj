@@ -106,6 +106,8 @@
     <ClInclude Include="CustomItem.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="FullMap.h" />
     <ClInclude Include="GuildLogo.h" />
     <ClInclude Include="HackCheck.h" />
     <ClInclude Include="HealthBar.h" />
@@ -120,7 +122,6 @@
     <ClInclude Include="LoadModels.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="MathLib.h" />
-    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="MoveList.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="OptionsMenu.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="ProtocolDefines.h" />
     <ClInclude Include="Reconnect.h" />
     <ClInclude Include="Resolution.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RightClickMove.h" />
     <ClInclude Include="ServerList.h" />
     <ClInclude Include="SkyDome.h" />
@@ -153,6 +155,8 @@
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="CustomGlow.cpp" />
     <ClCompile Include="CustomItem.cpp" />
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="FullMap.cpp" />
     <ClCompile Include="GuildLogo.cpp" />
     <ClCompile Include="HackCheck.cpp" />
     <ClCompile Include="HealthBar.cpp" />
@@ -168,7 +172,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="MathLib.cpp" />
-    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="MoveList.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="PacketManager.cpp" />
@@ -199,7 +202,7 @@
     <ResourceCompile Include="Main.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Client.ico" />
+    <None Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

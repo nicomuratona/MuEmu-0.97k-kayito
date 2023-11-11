@@ -201,42 +201,6 @@ int CPacketManager::Encrypt(BYTE* lpTarget, BYTE* lpSource, int size)
 	return size;
 }
 
-int CPacketManager::Decrypt(BYTE* lpTarget, BYTE* lpSource, int size)
-{
-	int result = (size * 8) / 11;
-
-	int DecSize = 0;
-
-	BYTE* lpTempSource = lpSource;
-
-	BYTE* lpTempTarget = lpTarget;
-
-	if (lpTarget != 0 && size > 0)
-	{
-		result = 0;
-
-		while (DecSize < size)
-		{
-			int TempResult = this->DecryptBlock(lpTempTarget, lpTempSource);
-
-			if (result < 0)
-			{
-				return result;
-			}
-
-			result += TempResult;
-
-			DecSize += 11;
-
-			lpTempSource += 11;
-
-			lpTempTarget += 8;
-		}
-	}
-
-	return result;
-}
-
 int CPacketManager::EncryptBlock(BYTE* lpTarget, BYTE* lpSource, int size)
 {
 	DWORD EncBuffer[4] = { 0 };
@@ -282,6 +246,42 @@ int CPacketManager::EncryptBlock(BYTE* lpTarget, BYTE* lpSource, int size)
 	((BYTE*)&EncValue)[1] = CheckSum;
 
 	return this->AddBits(lpTempTarget, BitPos, (BYTE*)&EncValue, 0, 16);
+}
+
+int CPacketManager::Decrypt(BYTE* lpTarget, BYTE* lpSource, int size)
+{
+	int result = (size * 8) / 11;
+
+	int DecSize = 0;
+
+	BYTE* lpTempSource = lpSource;
+
+	BYTE* lpTempTarget = lpTarget;
+
+	if (lpTarget != 0 && size > 0)
+	{
+		result = 0;
+
+		while (DecSize < size)
+		{
+			int TempResult = this->DecryptBlock(lpTempTarget, lpTempSource);
+
+			if (result < 0)
+			{
+				return result;
+			}
+
+			result += TempResult;
+
+			DecSize += 11;
+
+			lpTempSource += 11;
+
+			lpTempTarget += 8;
+		}
+	}
+
+	return result;
 }
 
 int CPacketManager::DecryptBlock(BYTE* lpTarget, BYTE* lpSource)

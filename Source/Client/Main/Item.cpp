@@ -18,20 +18,6 @@ CItem::~CItem()
 
 void CItem::Init()
 {
-	SetByte(0x0055A4DC + 1, 0x75); // %d
-
-	SetByte(0x0055A4D4 + 1, 0x75); // %d,%03d
-	SetByte(0x0055A4D4 + 6, 0x75); // %d,%03d
-
-	SetByte(0x0055A4C4 + 1, 0x75); // %d,%03d,%03d
-	SetByte(0x0055A4C4 + 6, 0x75); // %d,%03d,%03d
-	SetByte(0x0055A4C4 + 11, 0x75); // %d,%03d,%03d
-
-	SetByte(0x0055A4B0 + 1, 0x75); // %d,%03d,%03d,%03d
-	SetByte(0x0055A4B0 + 6, 0x75); // %d,%03d,%03d,%03d
-	SetByte(0x0055A4B0 + 11, 0x75); // %d,%03d,%03d,%03d
-	SetByte(0x0055A4B0 + 16, 0x75); // %d,%03d,%03d,%03d
-
 	SetCompleteHook(0xE9, 0x0047B910, &this->ItemConvert);
 
 	SetCompleteHook(0xE9, 0x004C45C0, &this->calcMaxDurability);
@@ -905,7 +891,7 @@ void CItem::ConvertGold(double dGold, char* szText, int iDecimals)
 
 		wsprintf(szTemp, ",%03d", dwValueTemp);
 
-		strcat_s(szText, sizeof(szTemp), szTemp);
+		strcat(szText, szTemp);
 
 		iCipherCnt = iCipherCnt - 3;
 	}
@@ -917,6 +903,6 @@ void CItem::ConvertGold(double dGold, char* szText, int iDecimals)
 
 		wsprintf(szTemp, ".%d", dwValueTemp);
 
-		strcat_s(szText, sizeof(szTemp), szTemp);
+		strcat(szText, szTemp);
 	}
 }

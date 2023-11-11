@@ -56,15 +56,17 @@ public:
 
 	void Init();
 
+	void Clear();
+
+	void GCChaosMixRateRecv(PMSG_CHAOS_MIX_RATE_RECV* lpMsg);
+
+private:
+
 	static void ChangeChaosRate(char* Dest, char* Format);
 
 	static void ChangeChaosMoney(char* Dest, char* Format);
 
-	void Clear();
-
 	static void ChaosMixRateSend();
-
-	void GCChaosMixRateRecv(PMSG_CHAOS_MIX_RATE_RECV* lpMsg);
 
 	static void CGChaosMixSend();
 

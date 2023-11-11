@@ -22,7 +22,7 @@ public:
 
 	CMemScript();
 
-	~CMemScript();
+	virtual ~CMemScript();
 
 	bool SetBuffer(char* path);
 

@@ -59,7 +59,7 @@ bool CMemScript::SetBuffer(char* path)
 
 	DWORD OutSize = 0;
 
-	if (ReadFile(file, this->m_buff, this->m_size, &OutSize, 0) == 0)
+	if (ReadFile(file, this->m_buff, this->m_size, &OutSize, 0) == FALSE)
 	{
 		this->SetLastError(2);
 

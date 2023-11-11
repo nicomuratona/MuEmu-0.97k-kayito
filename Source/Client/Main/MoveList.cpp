@@ -39,7 +39,7 @@ void CMoveList::Init()
 		return;
 	}
 
-	SetCompleteHook(0xE8, 0x004BD300, &this->DrawMoveList);
+	SetCompleteHook(0xE8, 0x00525CEC, &this->MainProc);
 }
 
 void CMoveList::Toggle()
@@ -59,9 +59,9 @@ void CMoveList::Toggle()
 	}
 }
 
-void CMoveList::DrawMoveList(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
+void CMoveList::MainProc()
 {
-	RenderBitmap(Texture, x, y, Width, Height, u, v, uWidth, vHeight, Scale, StartScale);
+	((void(__cdecl*)()) 0x004C3530)();
 
 	if (gMoveList.m_MoveListSwitch)
 	{
@@ -94,7 +94,7 @@ void CMoveList::RenderMoveListBack()
 	SelectObject(m_hFontDC, g_hFontBold);
 
 	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + 5, "Teleport Window", (int)(this->MainWidth - 10) * WindowWidth / 640, 1, 0);
-	
+
 	SetBackgroundTextColor = Color4f(0, 0, 0, 0);
 
 	SetTextColor = Color4f(127, 178, 255, 255);
@@ -130,7 +130,7 @@ void CMoveList::RenderMoveListMaps()
 
 	STRUCT_DECRYPT;
 
-	BYTE Class = *(BYTE*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0B) & 7;
+	BYTE Class = *(BYTE*)(*(DWORD*)(CharacterAttribute)+0x0B) & 7;
 
 	int RealMinLevel = 0;
 
@@ -147,12 +147,12 @@ void CMoveList::RenderMoveListMaps()
 			RealMinLevel = it->LevelMin;
 		}
 
-		if (RealMinLevel > *(WORD*)(*(DWORD*)(MAIN_CHARACTER_STRUCT)+0x0E))
+		if (RealMinLevel > *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E))
 		{
 			it->CanMove = false;
 		}
 
-		if (it->Money > *(DWORD*)(*(DWORD*)(MAIN_STRUCT_SERIAL)+0x548))
+		if (it->Money > *(DWORD*)(*(DWORD*)(CharacterMachine)+0x548))
 		{
 			it->CanMove = false;
 		}
@@ -213,19 +213,31 @@ void CMoveList::CheckMoveListMouse()
 		return;
 	}
 
-	if (this->CheckClickOnMap())
+	if (MouseX >= this->MainPosX
+	    && MouseX <= (this->MainPosX + this->MainWidth)
+	    && MouseY >= this->MainPosY
+	    && MouseY <= (this->MainPosY + this->MainHeight))
 	{
-		return;
-	}
+		MouseOnWindow = true;
 
-	if (this->CheckClickOnClose())
-	{
-		return;
-	}
+		if (this->CheckClickOnMap())
+		{
+			return;
+		}
 
-	if (this->CheckClickOnPanel())
-	{
-		return;
+		if (this->CheckClickOnClose())
+		{
+			return;
+		}
+
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+		}
 	}
 }
 
@@ -284,10 +296,9 @@ bool CMoveList::CheckClickOnClose()
 	if (MouseX >= (this->MainPosX + 5)
 	    && MouseX <= (this->MainPosX + this->MainWidth - 10.0f)
 	    && MouseY >= ((int)this->MainPosY + (int)this->MainHeight - 15)
-	    && MouseY <= ((int)this->MainPosY + (int)this->MainHeight - 5)
-	    && MouseLButton)
+	    && MouseY <= ((int)this->MainPosY + (int)this->MainHeight - 5))
 	{
-		if (MouseLButtonPush)
+		if (MouseLButton && MouseLButtonPush)
 		{
 			MouseLButtonPush = false;
 
@@ -296,29 +307,6 @@ bool CMoveList::CheckClickOnClose()
 			MouseUpdateTimeMax = 6;
 
 			this->Toggle();
-		}
-
-		return true;
-	}
-
-	return false;
-}
-
-bool CMoveList::CheckClickOnPanel()
-{
-	if (MouseX >= this->MainPosX
-	    && MouseX <= (this->MainPosX + this->MainWidth)
-	    && MouseY >= this->MainPosY
-	    && MouseY <= (this->MainPosY + this->MainHeight)
-	    && MouseLButton)
-	{
-		if (MouseLButtonPush)
-		{
-			MouseLButtonPush = false;
-
-			MouseUpdateTime = 0;
-
-			MouseUpdateTimeMax = 6;
 		}
 
 		return true;

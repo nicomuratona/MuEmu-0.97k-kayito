@@ -7,6 +7,7 @@
 
 struct MAIN_FILE_INFO
 {
+	BYTE MultiInstance;
 	BYTE LauncherType;
 	char LauncherName[32];
 	char CustomerName[32];

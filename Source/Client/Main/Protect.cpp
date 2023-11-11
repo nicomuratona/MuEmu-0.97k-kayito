@@ -18,7 +18,7 @@ bool CProtect::ReadMainFile(char* name)
 {
 	CCRC32 CRC32;
 
-	if (CRC32.FileCRC(name, &this->m_ClientFileCRC, 1024) == false)
+	if (!CRC32.FileCRC(name, &this->m_ClientFileCRC, 1024))
 	{
 		return false;
 	}
@@ -64,42 +64,56 @@ bool CProtect::ReadMainFile(char* name)
 
 void CProtect::CheckLauncher()
 {
-	if ((this->m_MainInfo.LauncherType & 1) == 0)
+	if (this->m_MainInfo.LauncherType == 0)
 	{
 		return;
 	}
 
-	HANDLE H = OpenMutex(MUTEX_ALL_ACCESS, 0, this->m_MainInfo.LauncherName);
-
-	if (H == 0)
+	if (this->m_MainInfo.LauncherType == 1)
 	{
-		MessageBox(0, "Open Game with launcher!", "Error", MB_OK | MB_ICONERROR);
+		HANDLE H = OpenMutex(MUTEX_ALL_ACCESS, 0, this->m_MainInfo.LauncherName);
 
-		ExitProcess(0);
+		if (H == NULL)
+		{
+			MessageBox(NULL, "Open Game with launcher!", "Error", MB_OK | MB_ICONERROR);
+
+			ExitProcess(0);
+		}
+
+		ReleaseMutex(H);
+
+		CloseHandle(H);
 	}
+	else if (this->m_MainInfo.LauncherType == 2)
+	{
+		if (FindWindow(NULL, this->m_MainInfo.LauncherName) == NULL)
+		{
+			MessageBox(NULL, "Open Game with launcher!", "Error", MB_OK | MB_ICONERROR);
 
-	ReleaseMutex(H);
-
-	CloseHandle(H);
+			ExitProcess(0);
+		}
+	}
 }
 
 void CProtect::CheckInstance()
 {
-	if ((this->m_MainInfo.LauncherType & 2) == 0)
+	if ((this->m_MainInfo.MultiInstance & 1) == 0)
 	{
 		return;
 	}
 
 	char buff[256];
 
-	wsprintf(buff, "XTEAM_MAIN_10405_%s", this->m_MainInfo.IpAddress);
+	wsprintf(buff, "KAYITO_MAIN_09711_%s", this->m_MainInfo.IpAddress);
 
-	if (OpenMutex(MUTEX_ALL_ACCESS, 0, buff) == 0)
+	if (OpenMutex(MUTEX_ALL_ACCESS, 0, buff) == NULL)
 	{
 		CreateMutex(0, 0, buff);
 	}
 	else
 	{
+		MessageBox(NULL, "You can only run 1 game at the same time!", "Error", MB_OK | MB_ICONERROR);
+
 		ExitProcess(0);
 	}
 }
@@ -115,11 +129,15 @@ void CProtect::CheckClientFile()
 
 	if (GetModuleFileName(0, name, sizeof(name)) == 0)
 	{
+		MessageBox(NULL, "Failed on get module file name!", "Error", MB_OK | MB_ICONERROR);
+
 		ExitProcess(0);
 	}
 
 	if (_stricmp(ConvertModuleFileName(name), this->m_MainInfo.ClientName) != 0)
 	{
+		MessageBox(NULL, "Failed on convert module file name!", "Error", MB_OK | MB_ICONERROR);
+
 		ExitProcess(0);
 	}
 
@@ -127,13 +145,17 @@ void CProtect::CheckClientFile()
 
 	DWORD ClientCRC32;
 
-	if (CRC32.FileCRC(this->m_MainInfo.ClientName, &ClientCRC32, 1024) == false)
+	if (!CRC32.FileCRC(this->m_MainInfo.ClientName, &ClientCRC32, 1024))
 	{
+		MessageBox(NULL, "Failed on reading the client name crc!", "Error", MB_OK | MB_ICONERROR);
+
 		ExitProcess(0);
 	}
 
 	if (this->m_MainInfo.ClientCRC32 != ClientCRC32)
 	{
+		MessageBox(NULL, "Client file CRC doesn't match!", "Error", MB_OK | MB_ICONERROR);
+
 		ExitProcess(0);
 	}
 }
@@ -149,20 +171,26 @@ void CProtect::CheckPluginFile()
 
 	DWORD PluginCRC32;
 
-	if (CRC32.FileCRC(this->m_MainInfo.PluginName, &PluginCRC32, 1024) == false)
+	if (!CRC32.FileCRC(this->m_MainInfo.PluginName, &PluginCRC32, 1024))
 	{
+		MessageBox(NULL, "Failed on reading the plugin name crc!", "Error", MB_OK | MB_ICONERROR);
+
 		ExitProcess(0);
 	}
 
 	if (this->m_MainInfo.PluginCRC32 != PluginCRC32)
 	{
+		MessageBox(NULL, "Plugin file CRC doesn't match!", "Error", MB_OK | MB_ICONERROR);
+
 		ExitProcess(0);
 	}
 
 	HMODULE module = LoadLibrary(this->m_MainInfo.PluginName);
 
-	if (module == 0)
+	if (module == NULL)
 	{
+		MessageBox(NULL, "Failed loading the plugin!", "Error", MB_OK | MB_ICONERROR);
+
 		ExitProcess(0);
 	}
 

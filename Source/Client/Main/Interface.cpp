@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "Interface.h"
 #include "Camera.h"
-#include "MiniMap.h"
+#include "FullMap.h"
 #include "MoveList.h"
 #include "Protect.h"
-#include "Reconnect.h"
 #include "Window.h"
 
 Interface gInterface;
@@ -17,6 +16,61 @@ Interface::Interface()
 Interface::~Interface()
 {
 
+}
+
+void Interface::Init()
+{
+	SetCompleteHook(0xE8, 0x0052698A, &this->RenderLogInScene);
+
+	SetCompleteHook(0xE8, 0x005269A2, &this->RenderCharacterScene);
+
+	SetCompleteHook(0xE8, 0x005269B6, &this->RenderMainScene);
+
+	SetCompleteHook(0xE8, 0x00510DEA, &this->LoadImages);
+
+	SetCompleteHook(0xE8, 0x005254B2, &this->MyUpdateWindowsMouse);
+
+	SetCompleteHook(0xE8, 0x004BC0DE, &this->MyRenderWindows);
+}
+
+void Interface::RenderLogInScene(HDC Hdc)
+{
+	SetWindowText(g_hWnd, gProtect.m_MainInfo.WindowName);
+
+	((void(__cdecl*)(HDC Hdc)) 0x00521630)(Hdc);
+}
+
+void Interface::RenderCharacterScene(HDC Hdc)
+{
+	SetWindowText(g_hWnd, gProtect.m_MainInfo.WindowName);
+
+	((void(__cdecl*)(HDC Hdc)) 0x00523B30)(Hdc);
+}
+
+void Interface::RenderMainScene()
+{
+	gWindow.ChangeWindowText();
+
+	((void(__cdecl*)()) 0x00525A00)();
+}
+
+void Interface::LoadImages()
+{
+	((void(__cdecl*)()) 0x0050EB80)(); // OpenImages
+}
+
+void Interface::MyUpdateWindowsMouse()
+{
+	UpdateWindowsMouse();
+
+	gFullMap.CheckZoomButton();
+
+	gMoveList.CheckMoveListMouse();
+}
+
+void Interface::MyRenderWindows()
+{
+	RenderWindows();
 }
 
 void Interface::BindObject(short MonsterID, DWORD ModelID, float Width, float Height, float X, float Y)
@@ -84,58 +138,4 @@ bool Interface::IsWorkZone(short ObjectID)
 	}
 
 	return true;
-}
-
-void Interface::Init()
-{
-	SetCompleteHook(0xE8, 0x00510DEA, &this->LoadImages);
-
-	SetCompleteHook(0xE8, 0x00526266, &this->Work);
-
-	SetCompleteHook(0xE8, 0x0052698A, &this->RenderLogInScene);
-
-	SetCompleteHook(0xE8, 0x005269A2, &this->RenderCharacterScene);
-
-	SetCompleteHook(0xE8, 0x005269B6, &this->RenderMainScene);
-}
-
-void Interface::LoadImages()
-{
-	((void(__cdecl*)()) 0x0050EB80)(); // OpenImages
-
-	gMiniMap.LoadImages();
-}
-
-void Interface::Work()
-{
-	// Check Click Buttons
-	gMiniMap.CheckZoomButton();
-
-	gMoveList.CheckMoveListMouse();
-	// Check Click Buttons
-
-	((void(_cdecl*)())0x00524E30)(); // MoveMainScene
-}
-
-void Interface::RenderLogInScene(HDC Hdc)
-{
-	SetWindowText(g_hWnd, gProtect.m_MainInfo.WindowName);
-
-	((void(__cdecl*)(HDC Hdc)) 0x00521630)(Hdc);
-}
-
-void Interface::RenderCharacterScene(HDC Hdc)
-{
-	SetWindowText(g_hWnd, gProtect.m_MainInfo.WindowName);
-
-	((void(__cdecl*)(HDC Hdc)) 0x00523B30)(Hdc);
-}
-
-void Interface::RenderMainScene()
-{
-	ReconnectMainProc();
-
-	gWindow.ChangeWindowText();
-
-	((void(__cdecl*)()) 0x00525A00)();
 }
