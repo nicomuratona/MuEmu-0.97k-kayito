@@ -67,10 +67,6 @@ int main()
 		LogAdd(LOG_RED, "WSAStartup() failed with error: %d", WSAGetLastError());
 	}
 
-	gServerDisplayer.PaintAllInfo();
-
-	SetTimer(hWnd, TIMER_2000, 2000, 0);
-
 	MSG msg;
 
 	while (GetMessage(&msg, 0, 0, 0) != FALSE)
@@ -241,13 +237,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					break;
 				}
 
-				case TIMER_2000:
-				{
-					gServerDisplayer.Run();
-
-					break;
-				}
-
 				case TIMER_5000:
 				{
 					ConnectServerTimeoutProc();
@@ -255,6 +244,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					break;
 				}
 			}
+
+			break;
+		}
+
+		case WM_SIZE:
+		{
+			gServerDisplayer.Run();
+
+			break;
+		}
+
+		case WM_ACTIVATE:
+		{
+			gServerDisplayer.Run();
 
 			break;
 		}

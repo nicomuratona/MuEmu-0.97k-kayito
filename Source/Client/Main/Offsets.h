@@ -48,6 +48,7 @@
 #define CharacterOpened *(BYTE*)0x07EAA116
 #define PartyOpened *(BYTE*)0x07EAA115
 #define GoldenArcherOpened *(DWORD*)0x07EAA128
+#define GuildCreatorOpened *(BYTE*)0x07EAA124
 #define ErrorMessage *(BYTE*)0x083A7C24
 #define UpdateWindowsMouse ((void(_cdecl*)())0x004ECB00)
 #define RenderWindows ((void(__cdecl*)()) 0x004F5820)

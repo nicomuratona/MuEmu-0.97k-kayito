@@ -21,12 +21,15 @@
 
 #define INVENTORY_WEAR_SIZE 12
 
+#define INVENTORY_WEAR_RANGE(x) (((x) < 0) ? 0 : ((x) >= INVENTORY_WEAR_SIZE) ? 0 : 1)
+
 /* WNDPROC */
 #define WM_AUTOCLICKTIMER 0x01
 
 /* CHARACTER */
 #define MAX_CLASS 4
 #define MAX_RESISTANCE 4
+#define MAX_CHARACTER_LEVEL 400
 
 /* BUFFS */
 #define FindEffect(x,y) ((((x) & (y)) == (y)) ? 1 : 0)

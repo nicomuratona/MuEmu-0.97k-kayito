@@ -68,50 +68,58 @@ void ConnectServerInfoSend()
 
 bool JoinServerConnect(DWORD wMsg)
 {
-	if (gJoinServerConnection.Connect(gServerInfo.m_JoinServerAddress, (WORD)gServerInfo.m_JoinServerPort, wMsg) == 0)
+	if (!gJoinServerConnection.Connect(gServerInfo.m_JoinServerAddress, (WORD)gServerInfo.m_JoinServerPort, wMsg))
 	{
-		return 0;
+		LogAdd(LOG_RED, "JoinServer Connect Failed");
+
+		return false;
 	}
+
+	LogAdd(LOG_GREEN, "JoinServer Connected");
 
 	GJServerInfoSend();
 
-	return 1;
+	return true;
 }
 
 bool DataServerConnect(DWORD wMsg)
 {
-	if (gDataServerConnection.Connect(gServerInfo.m_DataServerAddress, (WORD)gServerInfo.m_DataServerPort, wMsg) == 0)
+	if (!gDataServerConnection.Connect(gServerInfo.m_DataServerAddress, (WORD)gServerInfo.m_DataServerPort, wMsg))
 	{
-		return 0;
+		LogAdd(LOG_RED, "DataServer Connect Failed");
+
+		return false;
 	}
+
+	LogAdd(LOG_GREEN, "DataServer Connected");
 
 	GDServerInfoSend();
 
-	return 1;
+	return true;
 }
 
 bool JoinServerReconnect(HWND hwnd, DWORD wMsg)
 {
-	if (gJoinServerConnection.CheckState() == 0)
+	if (!gJoinServerConnection.CheckState())
 	{
 		gJoinServerConnection.Init(hwnd, JoinServerProtocolCore);
 
 		return JoinServerConnect(wMsg);
 	}
 
-	return 1;
+	return true;
 }
 
 bool DataServerReconnect(HWND hwnd, DWORD wMsg)
 {
-	if (gDataServerConnection.CheckState() == 0)
+	if (!gDataServerConnection.CheckState())
 	{
 		gDataServerConnection.Init(hwnd, DataServerProtocolCore);
 
 		return DataServerConnect(wMsg);
 	}
 
-	return 1;
+	return true;
 }
 
 void JoinServerMsgProc(WPARAM wParam, LPARAM lParam)
@@ -134,6 +142,8 @@ void JoinServerMsgProc(WPARAM wParam, LPARAM lParam)
 
 		case FD_CLOSE:
 		{
+			LogAdd(LOG_RED, "JoinServer Disconnected");
+
 			gJoinServerConnection.Disconnect();
 
 			gObjAllDisconnect();
@@ -163,6 +173,8 @@ void DataServerMsgProc(WPARAM wParam, LPARAM lParam)
 
 		case FD_CLOSE:
 		{
+			LogAdd(LOG_RED, "DataServer Disconnected");
+
 			gDataServerConnection.Disconnect();
 
 			gObjAllDisconnect();

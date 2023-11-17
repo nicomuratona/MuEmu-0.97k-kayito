@@ -742,7 +742,7 @@ void DGCharacterInfoRecv(SDHP_CHARACTER_INFO_RECV* lpMsg)
 
 	gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(40, lpObj->Lang), lpObj->Reset, lpObj->GrandReset);
 
-	LogAdd(LOG_USER, "[ObjectManager][%d] AddCharacterInfo (%s)", lpObj->Index, lpObj->Name);
+	//LogAdd(LOG_USER, "[ObjectManager][%d] AddCharacterInfo (%s)", lpObj->Index, lpObj->Name);
 
 	gLog.Output(LOG_CONNECT, "[ObjectManager][%d] AddCharacterInfo (%s)", lpObj->Index, lpObj->Name);
 }

@@ -305,6 +305,10 @@ void CFullMap::RenderCharacters()
 
 	float PlayerPosY;
 
+	DWORD backupBgTextColor = SetBackgroundTextColor;
+
+	DWORD backupTextColor = SetTextColor;
+
 	for (int i = 0; i < MAX_MAIN_VIEWPORT; i++)
 	{
 		if ((ViewportAddress = (*(DWORD*)(0x07ABF5D0) + (i * 916))) == 0)
@@ -419,6 +423,10 @@ void CFullMap::RenderCharacters()
 	DisableAlphaBlend();
 
 	glColor3f(1.0f, 1.0f, 1.0f);
+
+	SetBackgroundTextColor = backupBgTextColor;
+
+	SetTextColor = backupTextColor;
 }
 
 void CFullMap::RenderZoom(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
@@ -450,19 +458,19 @@ void CFullMap::RenderZoom(int Texture, float x, float y, float Width, float Heig
 
 		wsprintf(Text, "Zoom Level: %d", gFullMap.ZoomLevel);
 
-		DWORD bkBgColor = SetBackgroundTextColor;
+		DWORD backupBgTextColor = SetBackgroundTextColor;
 
 		SetBackgroundTextColor = Color4f(0, 0, 0, 255);
 
-		DWORD bkTextColor = SetTextColor;
+		DWORD backupTextColor = SetTextColor;
 
 		SetTextColor = Color4f(255, 0, 0, 255);
 
 		RenderText(5, 417, Text, 0, 0, NULL);
 
-		SetBackgroundTextColor = bkBgColor;
+		SetBackgroundTextColor = backupBgTextColor;
 
-		SetTextColor = bkTextColor;
+		SetTextColor = backupTextColor;
 
 		SelectObject(m_hFontDC, g_hFont);
 	}
@@ -474,7 +482,7 @@ void CFullMap::RenderZoom(int Texture, float x, float y, float Width, float Heig
 
 bool CFullMap::CheckInterfaces()
 {
-	if (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpened)
+	if (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpened || GuildCreatorOpened)
 	{
 		return false;
 	}

@@ -41,44 +41,44 @@ bool CSocketManager::Start(WORD port)
 {
 	this->m_port = port;
 
-	if (this->CreateListenSocket() == 0)
+	if (!this->CreateListenSocket())
 	{
 		this->Clean();
 
-		return 0;
+		return false;
 	}
 
-	if (this->CreateCompletionPort() == 0)
+	if (!this->CreateCompletionPort())
 	{
 		this->Clean();
 
-		return 0;
+		return false;
 	}
 
-	if (this->CreateAcceptThread() == 0)
+	if (!this->CreateAcceptThread())
 	{
 		this->Clean();
 
-		return 0;
+		return false;
 	}
 
-	if (this->CreateWorkerThread() == 0)
+	if (!this->CreateWorkerThread())
 	{
 		this->Clean();
 
-		return 0;
+		return false;
 	}
 
-	if (this->CreateServerQueue() == 0)
+	if (!this->CreateServerQueue())
 	{
 		this->Clean();
 
-		return 0;
+		return false;
 	}
 
 	gLog.Output(LOG_CONNECT, "[SocketManager] Server started at port [%d]", this->m_port);
 
-	return 1;
+	return true;
 }
 
 void CSocketManager::Clean()
@@ -143,7 +143,7 @@ bool CSocketManager::CreateListenSocket()
 	{
 		gLog.Output(LOG_CONNECT, "[SocketManager] WSASocket() failed with error: %d", WSAGetLastError());
 
-		return 0;
+		return false;
 	}
 
 	SOCKADDR_IN SocketAddr;
@@ -158,17 +158,17 @@ bool CSocketManager::CreateListenSocket()
 	{
 		gLog.Output(LOG_CONNECT, "[SocketManager] bind() failed with error: %d", WSAGetLastError());
 
-		return 0;
+		return false;
 	}
 
 	if (listen(this->m_listen, 5) == SOCKET_ERROR)
 	{
 		gLog.Output(LOG_CONNECT, "[SocketManager] listen() failed with error: %d", WSAGetLastError());
 
-		return 0;
+		return false;
 	}
 
-	return 1;
+	return true;
 }
 
 bool CSocketManager::CreateCompletionPort()
@@ -179,7 +179,7 @@ bool CSocketManager::CreateCompletionPort()
 	{
 		gLog.Output(LOG_CONNECT, "[SocketManager] socket() failed with error: %d", WSAGetLastError());
 
-		return 0;
+		return false;
 	}
 
 	if ((this->m_CompletionPort = CreateIoCompletionPort((HANDLE)socket, 0, 0, 0)) == 0)
@@ -188,12 +188,12 @@ bool CSocketManager::CreateCompletionPort()
 
 		closesocket(socket);
 
-		return 0;
+		return false;
 	}
 
 	closesocket(socket);
 
-	return 1;
+	return true;
 }
 
 bool CSocketManager::CreateAcceptThread()
@@ -202,17 +202,17 @@ bool CSocketManager::CreateAcceptThread()
 	{
 		gLog.Output(LOG_CONNECT, "[SocketManager] CreateThread() failed with error: %d", GetLastError());
 
-		return 0;
+		return false;
 	}
 
 	if (SetThreadPriority(this->m_ServerAcceptThread, THREAD_PRIORITY_HIGHEST) == 0)
 	{
 		gLog.Output(LOG_CONNECT, "[SocketManager] SetThreadPriority() failed with error: %d", GetLastError());
 
-		return 0;
+		return false;
 	}
 
-	return 1;
+	return true;
 }
 
 bool CSocketManager::CreateWorkerThread()
@@ -229,18 +229,18 @@ bool CSocketManager::CreateWorkerThread()
 		{
 			gLog.Output(LOG_CONNECT, "[SocketManager] CreateThread() failed with error: %d", GetLastError());
 
-			return 0;
+			return false;
 		}
 
 		if (SetThreadPriority(this->m_ServerWorkerThread[n], THREAD_PRIORITY_HIGHEST) == 0)
 		{
 			gLog.Output(LOG_CONNECT, "[SocketManager] SetThreadPriority() failed with error: %d", GetLastError());
 
-			return 0;
+			return false;
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 bool CSocketManager::CreateServerQueue()
@@ -249,31 +249,31 @@ bool CSocketManager::CreateServerQueue()
 	{
 		gLog.Output(LOG_CONNECT, "[SocketManager] CreateSemaphore() failed with error: %d", GetLastError());
 
-		return 0;
+		return false;
 	}
 
 	if ((this->m_ServerQueueThread = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)this->ServerQueueThread, this, 0, 0)) == 0)
 	{
 		gLog.Output(LOG_CONNECT, "[SocketManager] CreateThread() failed with error: %d", GetLastError());
 
-		return 0;
+		return false;
 	}
 
 	if (SetThreadPriority(this->m_ServerQueueThread, THREAD_PRIORITY_HIGHEST) == 0)
 	{
 		gLog.Output(LOG_CONNECT, "[SocketManager] SetThreadPriority() failed with error: %d", GetLastError());
 
-		return 0;
+		return false;
 	}
 
-	return 1;
+	return true;
 }
 
 bool CSocketManager::DataRecv(int index, IO_MAIN_BUFFER* lpIoBuffer)
 {
 	if (lpIoBuffer->size < 3)
 	{
-		return 1;
+		return true;
 	}
 
 	BYTE* lpMsg = lpIoBuffer->buff;
@@ -308,14 +308,14 @@ bool CSocketManager::DataRecv(int index, IO_MAIN_BUFFER* lpIoBuffer)
 		{
 			gLog.Output(LOG_CONNECT, "[SocketManager] Protocol header error (Index: %d, Header: %x)", index, lpMsg[count]);
 
-			return 0;
+			return false;
 		}
 
 		if (size < 3 || size > MAX_MAIN_PACKET_SIZE)
 		{
 			gLog.Output(LOG_CONNECT, "[SocketManager] Protocol size error (Index: %d, Header: %x, Size: %d, Head: %x)", index, header, size, head);
 
-			return 0;
+			return false;
 		}
 
 		if (size <= lpIoBuffer->size)
@@ -336,9 +336,9 @@ bool CSocketManager::DataRecv(int index, IO_MAIN_BUFFER* lpIoBuffer)
 
 					DecBuff[1] = DecSize;
 
-					if (gPacketManager.AddData(&DecBuff[0], DecSize) == 0 || gPacketManager.ExtractPacket(DecBuff) == 0)
+					if (!gPacketManager.AddData(&DecBuff[0], DecSize) || !gPacketManager.ExtractPacket(DecBuff))
 					{
-						return 0;
+						return false;
 					}
 
 					QueueInfo.index = index;
@@ -374,9 +374,9 @@ bool CSocketManager::DataRecv(int index, IO_MAIN_BUFFER* lpIoBuffer)
 
 					DecBuff[2] = LOBYTE(DecSize);
 
-					if (gPacketManager.AddData(DecBuff, DecSize) == 0 || gPacketManager.ExtractPacket(DecBuff) == 0)
+					if (!gPacketManager.AddData(DecBuff, DecSize) || !gPacketManager.ExtractPacket(DecBuff))
 					{
-						return 0;
+						return false;
 					}
 
 					QueueInfo.index = index;
@@ -399,9 +399,9 @@ bool CSocketManager::DataRecv(int index, IO_MAIN_BUFFER* lpIoBuffer)
 			}
 			else
 			{
-				if (gPacketManager.AddData(&lpMsg[count], size) == 0 || gPacketManager.ExtractPacket(DecBuff) == 0)
+				if (!gPacketManager.AddData(&lpMsg[count], size) || !gPacketManager.ExtractPacket(DecBuff))
 				{
-					return 0;
+					return false;
 				}
 
 				QueueInfo.index = index;

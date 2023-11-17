@@ -237,7 +237,7 @@ void CMove::CGTeleportRecv(PMSG_TELEPORT_RECV* lpMsg, int aIndex)
 
 		if (lpSkill != 0)
 		{
-			if (gSkillManager.CheckSkillMana(lpObj, lpSkill->m_index) == 0 || gSkillManager.CheckSkillBP(lpObj, lpSkill->m_index) == 0)
+			if (!gSkillManager.CheckSkillMana(lpObj, lpSkill->m_index) || !gSkillManager.CheckSkillBP(lpObj, lpSkill->m_index))
 			{
 				return;
 			}

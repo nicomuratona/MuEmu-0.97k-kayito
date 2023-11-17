@@ -27,7 +27,7 @@ bool CConnection::Connect(char* IpAddress, WORD port, DWORD WinMsg)
 {
 	if (this->m_socket == INVALID_SOCKET)
 	{
-		return 0;
+		return false;
 	}
 
 	SOCKADDR_IN target;
@@ -56,7 +56,7 @@ bool CConnection::Connect(char* IpAddress, WORD port, DWORD WinMsg)
 
 			this->Disconnect();
 
-			return 0;
+			return false;
 		}
 	}
 
@@ -66,7 +66,7 @@ bool CConnection::Connect(char* IpAddress, WORD port, DWORD WinMsg)
 
 		this->Disconnect();
 
-		return 0;
+		return false;
 	}
 
 	memset(this->m_RecvBuff, 0, sizeof(this->m_RecvBuff));
@@ -77,7 +77,7 @@ bool CConnection::Connect(char* IpAddress, WORD port, DWORD WinMsg)
 
 	this->m_SendSize = 0;
 
-	return 1;
+	return true;
 }
 
 void CConnection::Disconnect()
@@ -92,7 +92,7 @@ void CConnection::Disconnect()
 
 bool CConnection::CheckState()
 {
-	return ((this->m_socket == INVALID_SOCKET) ? 0 : 1);
+	return ((this->m_socket == INVALID_SOCKET) ? false : true);
 }
 
 bool CConnection::DataRecv()
@@ -103,7 +103,7 @@ bool CConnection::DataRecv()
 	{
 		if (WSAGetLastError() == WSAEWOULDBLOCK)
 		{
-			return 1;
+			return true;
 		}
 		else
 		{
@@ -111,7 +111,7 @@ bool CConnection::DataRecv()
 
 			this->Disconnect();
 
-			return 0;
+			return false;
 		}
 	}
 
@@ -119,7 +119,7 @@ bool CConnection::DataRecv()
 
 	if (this->m_RecvSize < 3)
 	{
-		return 1;
+		return true;
 	}
 
 	BYTE header, head;
@@ -148,7 +148,7 @@ bool CConnection::DataRecv()
 
 			this->Disconnect();
 
-			return 0;
+			return false;
 		}
 
 		if (size < 3 || size > MAX_BUFF_SIZE)
@@ -157,7 +157,7 @@ bool CConnection::DataRecv()
 
 			this->Disconnect();
 
-			return 0;
+			return false;
 		}
 
 		if (size <= this->m_RecvSize)
@@ -184,7 +184,7 @@ bool CConnection::DataRecv()
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 bool CConnection::DataSend(BYTE* lpMsg, int size)
@@ -195,7 +195,7 @@ bool CConnection::DataSend(BYTE* lpMsg, int size)
 	{
 		this->m_critical.unlock();
 
-		return 0;
+		return false;
 	}
 
 	if (this->m_SendSize > 0)
@@ -208,7 +208,7 @@ bool CConnection::DataSend(BYTE* lpMsg, int size)
 
 			this->m_critical.unlock();
 
-			return 0;
+			return false;
 		}
 		else
 		{
@@ -218,7 +218,7 @@ bool CConnection::DataSend(BYTE* lpMsg, int size)
 
 			this->m_critical.unlock();
 
-			return 1;
+			return true;
 		}
 	}
 
@@ -238,7 +238,7 @@ bool CConnection::DataSend(BYTE* lpMsg, int size)
 
 					this->m_critical.unlock();
 
-					return 0;
+					return false;
 				}
 				else
 				{
@@ -248,7 +248,7 @@ bool CConnection::DataSend(BYTE* lpMsg, int size)
 
 					this->m_critical.unlock();
 
-					return 1;
+					return true;
 				}
 			}
 			else
@@ -259,7 +259,7 @@ bool CConnection::DataSend(BYTE* lpMsg, int size)
 
 				this->m_critical.unlock();
 
-				return 0;
+				return false;
 			}
 		}
 		else
@@ -272,7 +272,7 @@ bool CConnection::DataSend(BYTE* lpMsg, int size)
 
 	this->m_critical.unlock();
 
-	return 1;
+	return true;
 }
 
 bool CConnection::DataSendEx()
@@ -291,7 +291,7 @@ bool CConnection::DataSendEx()
 
 				this->m_critical.unlock();
 
-				return 1;
+				return true;
 			}
 			else
 			{
@@ -301,7 +301,7 @@ bool CConnection::DataSendEx()
 
 				this->m_critical.unlock();
 
-				return 0;
+				return false;
 			}
 		}
 		else
@@ -314,5 +314,5 @@ bool CConnection::DataSendEx()
 
 	this->m_critical.unlock();
 
-	return 1;
+	return true;
 }

@@ -116,13 +116,13 @@ bool CSkillManager::GetInfo(int index, SKILL_INFO* lpInfo)
 
 	if (it == this->m_SkillInfo.end())
 	{
-		return 0;
+		return false;
 	}
 	else
 	{
 		(*lpInfo) = it->second;
 
-		return 1;
+		return true;
 	}
 }
 
@@ -320,18 +320,18 @@ bool CSkillManager::CheckSkillMana(LPOBJ lpObj, int index)
 {
 	SKILL_INFO SkillInfo;
 
-	if (this->GetInfo(index, &SkillInfo) == 0)
+	if (!this->GetInfo(index, &SkillInfo))
 	{
-		return 0;
+		return false;
 	}
 
 	if (lpObj->Mana < ((SkillInfo.Mana * lpObj->MPConsumptionRate) / 100))
 	{
-		return 0;
+		return false;
 	}
 	else
 	{
-		return 1;
+		return true;
 	}
 }
 
@@ -339,18 +339,18 @@ bool CSkillManager::CheckSkillBP(LPOBJ lpObj, int index)
 {
 	SKILL_INFO SkillInfo;
 
-	if (this->GetInfo(index, &SkillInfo) == 0)
+	if (!this->GetInfo(index, &SkillInfo))
 	{
-		return 0;
+		return false;
 	}
 
 	if (lpObj->BP < ((SkillInfo.BP * lpObj->BPConsumptionRate) / 100))
 	{
-		return 0;
+		return false;
 	}
 	else
 	{
-		return 1;
+		return true;
 	}
 }
 
@@ -358,23 +358,23 @@ bool CSkillManager::CheckSkillRange(int index, int x, int y, int tx, int ty)
 {
 	SKILL_INFO SkillInfo;
 
-	if (this->GetInfo(index, &SkillInfo) == 0)
+	if (!this->GetInfo(index, &SkillInfo))
 	{
-		return 0;
+		return false;
 	}
 
 	if (SkillInfo.Range == 0)
 	{
-		return 0;
+		return false;
 	}
 
-	if (sqrt(pow(((float)x - (float)tx), 2) + pow(((float)y - (float)ty), 2)) <= SkillInfo.Range)
+	if ((int)sqrt(pow((float)(x - tx), 2) + pow((float)(y - ty), 2)) <= SkillInfo.Range)
 	{
-		return 1;
+		return true;
 	}
 	else
 	{
-		return 0;
+		return false;
 	}
 }
 
@@ -382,23 +382,23 @@ bool CSkillManager::CheckSkillRadio(int index, int x, int y, int tx, int ty)
 {
 	SKILL_INFO SkillInfo;
 
-	if (this->GetInfo(index, &SkillInfo) == 0)
+	if (!this->GetInfo(index, &SkillInfo))
 	{
-		return 0;
+		return false;
 	}
 
 	if (SkillInfo.Radio == 0)
 	{
-		return 0;
+		return false;
 	}
 
-	if (sqrt(pow(((float)x - (float)tx), 2) + pow(((float)y - (float)ty), 2)) <= SkillInfo.Radio)
+	if ((int)sqrt(pow((float)(x - tx), 2) + pow((float)(y - ty), 2)) <= SkillInfo.Radio)
 	{
-		return 1;
+		return true;
 	}
 	else
 	{
-		return 0;
+		return false;
 	}
 }
 
@@ -408,57 +408,57 @@ bool CSkillManager::CheckSkillFrustrum(int* SkillFrustrumX, int* SkillFrustrumY,
 	{
 		if ((((SkillFrustrumX[n] - x) * (SkillFrustrumY[i] - y)) - ((SkillFrustrumX[i] - x) * (SkillFrustrumY[n] - y))) < 0)
 		{
-			return 0;
+			return false;
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 bool CSkillManager::CheckSkillDelay(LPOBJ lpObj, int index)
 {
 	SKILL_INFO SkillInfo;
 
-	if (this->GetInfo(index, &SkillInfo) == 0)
+	if (!this->GetInfo(index, &SkillInfo))
 	{
-		return 0;
+		return false;
 	}
 
 	if ((GetTickCount() - lpObj->SkillDelay[index]) < ((DWORD)SkillInfo.Delay))
 	{
-		return 0;
+		return false;
 	}
 
 	lpObj->SkillDelay[index] = GetTickCount();
 
-	return 1;
+	return true;
 }
 
 bool CSkillManager::CheckSkillTarget(LPOBJ lpObj, int aIndex, int bIndex, int type)
 {
-	if (OBJECT_RANGE(aIndex) == false)
+	if (OBJECT_RANGE(aIndex) == 0)
 	{
-		return 0;
+		return false;
 	}
 
 	if (type == OBJECT_NPC)
 	{
-		return 0;
+		return false;
 	}
 
 	if (gObj[aIndex].Live == 0 || gObj[aIndex].State != OBJECT_PLAYING || gObj[aIndex].Teleport != 0)
 	{
-		return 0;
+		return false;
 	}
 
 	if (lpObj->Type == OBJECT_MONSTER && type == OBJECT_USER)
 	{
-		return 1;
+		return true;
 	}
 
 	if (aIndex == bIndex)
 	{
-		return 1;
+		return true;
 	}
 
 	int SummonIndex = aIndex;
@@ -467,12 +467,12 @@ bool CSkillManager::CheckSkillTarget(LPOBJ lpObj, int aIndex, int bIndex, int ty
 	{
 		if ((gObj[aIndex].Class >= 100 && gObj[aIndex].Class <= 110)) // Trap
 		{
-			return 0;
+			return false;
 		}
 
 		if (OBJECT_RANGE(gObj[aIndex].SummonIndex) == false)
 		{
-			return 1;
+			return true;
 		}
 		else
 		{
@@ -482,28 +482,28 @@ bool CSkillManager::CheckSkillTarget(LPOBJ lpObj, int aIndex, int bIndex, int ty
 
 	if (gGuild.GuildWarStateCheck(lpObj, &gObj[SummonIndex]) != false)
 	{
-		return 1;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
 bool CSkillManager::CheckSkillRequireLevel(LPOBJ lpObj, int index)
 {
 	SKILL_INFO SkillInfo;
 
-	if (this->GetInfo(index, &SkillInfo) == 0)
+	if (!this->GetInfo(index, &SkillInfo))
 	{
-		return 0;
+		return false;
 	}
 
 	if (lpObj->Level >= SkillInfo.RequireLevel)
 	{
-		return 1;
+		return true;
 	}
 	else
 	{
-		return 0;
+		return false;
 	}
 }
 
@@ -511,18 +511,18 @@ bool CSkillManager::CheckSkillRequireEnergy(LPOBJ lpObj, int index)
 {
 	SKILL_INFO SkillInfo;
 
-	if (this->GetInfo(index, &SkillInfo) == 0)
+	if (!this->GetInfo(index, &SkillInfo))
 	{
-		return 0;
+		return false;
 	}
 
 	if ((lpObj->Energy + lpObj->AddEnergy) >= SkillInfo.RequireEnergy)
 	{
-		return 1;
+		return true;
 	}
 	else
 	{
-		return 0;
+		return false;
 	}
 }
 
@@ -530,28 +530,28 @@ bool CSkillManager::CheckSkillRequireClass(LPOBJ lpObj, int index)
 {
 	SKILL_INFO SkillInfo;
 
-	if (this->GetInfo(index, &SkillInfo) == 0)
+	if (!this->GetInfo(index, &SkillInfo))
 	{
-		return 0;
+		return false;
 	}
 
-	if (CHECK_RANGE(lpObj->Class, MAX_CLASS) == false)
+	if (CHECK_RANGE(lpObj->Class, MAX_CLASS) == 0)
 	{
-		return 0;
+		return false;
 	}
 
 	if (SkillInfo.RequireClass[lpObj->Class] == 0)
 	{
-		return 0;
+		return false;
 	}
 
 	if ((lpObj->ChangeUp + 1) >= SkillInfo.RequireClass[lpObj->Class])
 	{
-		return 1;
+		return true;
 	}
 	else
 	{
-		return 0;
+		return false;
 	}
 }
 
@@ -559,7 +559,7 @@ bool CSkillManager::CheckSkillRequireWeapon(LPOBJ lpObj, int index)
 {
 	if (index != SKILL_DEFENSE && index != SKILL_FALLING_SLASH && index != SKILL_LUNGE && index != SKILL_UPPERCUT && index != SKILL_CYCLONE && index != SKILL_SLASH && index != SKILL_TRIPLE_SHOT && index != SKILL_FIRE_BREATH && index != SKILL_POWER_SLASH)
 	{
-		return 1;
+		return true;
 	}
 
 	for (int n = 0; n < INVENTORY_WEAR_SIZE; n++)
@@ -570,13 +570,13 @@ bool CSkillManager::CheckSkillRequireWeapon(LPOBJ lpObj, int index)
 			{
 				if (lpObj->Inventory[n].GetItemSkill() == index)
 				{
-					return 1;
+					return true;
 				}
 			}
 		}
 	}
 
-	return 0;
+	return false;
 }
 
 int CSkillManager::AddSkillWeapon(LPOBJ lpObj, int index, int level)
@@ -623,7 +623,7 @@ int CSkillManager::DelSkillWeapon(LPOBJ lpObj, int index, int level)
 
 int CSkillManager::AddSkill(LPOBJ lpObj, int index, int level)
 {
-	if (lpObj->Type == OBJECT_USER && (this->CheckSkillRequireLevel(lpObj, index) == 0 || this->CheckSkillRequireEnergy(lpObj, index) == 0 || this->CheckSkillRequireClass(lpObj, index) == 0))
+	if (lpObj->Type == OBJECT_USER && (!this->CheckSkillRequireLevel(lpObj, index) || !this->CheckSkillRequireEnergy(lpObj, index) || !this->CheckSkillRequireClass(lpObj, index)))
 	{
 		return -1;
 	}
@@ -709,7 +709,7 @@ void CSkillManager::UseAttackSkill(int aIndex, int bIndex, CSkill* lpSkill)
 {
 	LPOBJ lpObj = &gObj[aIndex];
 
-	if (lpObj->Type == OBJECT_USER && this->CheckSkillRequireWeapon(lpObj, lpSkill->m_skill) == 0)
+	if (lpObj->Type == OBJECT_USER && !this->CheckSkillRequireWeapon(lpObj, lpSkill->m_skill))
 	{
 		return;
 	}
@@ -719,9 +719,9 @@ void CSkillManager::UseAttackSkill(int aIndex, int bIndex, CSkill* lpSkill)
 		return;
 	}
 
-	if (lpObj->Type != OBJECT_USER || (this->CheckSkillMana(lpObj, lpSkill->m_index) != 0 && this->CheckSkillBP(lpObj, lpSkill->m_index) != 0))
+	if (lpObj->Type != OBJECT_USER || (this->CheckSkillMana(lpObj, lpSkill->m_index) && this->CheckSkillBP(lpObj, lpSkill->m_index)))
 	{
-		if (this->RunningSkill(aIndex, bIndex, lpSkill, (BYTE)lpObj->X, (BYTE)lpObj->Y, 0) != 0 && lpObj->Type == OBJECT_USER)
+		if (this->RunningSkill(aIndex, bIndex, lpSkill, (BYTE)lpObj->X, (BYTE)lpObj->Y, 0) && lpObj->Type == OBJECT_USER)
 		{
 			lpObj->Mana -= ((this->GetSkillMana(lpSkill->m_index) * lpObj->MPConsumptionRate) / 100);
 
@@ -736,7 +736,7 @@ void CSkillManager::UseDurationSkillAttack(int aIndex, CSkill* lpSkill, BYTE x, 
 {
 	LPOBJ lpObj = &gObj[aIndex];
 
-	if (lpObj->Type == OBJECT_USER && this->CheckSkillRequireWeapon(lpObj, lpSkill->m_skill) == 0)
+	if (lpObj->Type == OBJECT_USER && !this->CheckSkillRequireWeapon(lpObj, lpSkill->m_skill))
 	{
 		return;
 	}
@@ -748,9 +748,9 @@ void CSkillManager::UseDurationSkillAttack(int aIndex, CSkill* lpSkill, BYTE x, 
 
 	this->GCDurationSkillAttackSend(lpObj, lpSkill->m_index, x, y, dir);
 
-	if (lpObj->Type != OBJECT_USER || (this->CheckSkillMana(lpObj, lpSkill->m_index) != 0 && this->CheckSkillBP(lpObj, lpSkill->m_index) != 0))
+	if (lpObj->Type != OBJECT_USER || (this->CheckSkillMana(lpObj, lpSkill->m_index) && this->CheckSkillBP(lpObj, lpSkill->m_index)))
 	{
-		if (this->RunningSkill(aIndex, 0, lpSkill, x, y, angle) != 0 && lpObj->Type == OBJECT_USER)
+		if (this->RunningSkill(aIndex, 0, lpSkill, x, y, angle) && lpObj->Type == OBJECT_USER)
 		{
 			lpObj->Mana -= ((this->GetSkillMana(lpSkill->m_index) * lpObj->MPConsumptionRate) / 100);
 
@@ -872,12 +872,11 @@ bool CSkillManager::RunningSkill(int aIndex, int bIndex, CSkill* lpSkill, BYTE x
 		case SKILL_TWISTING_SLASH:
 		{
 			return this->MultiSkillAttack(aIndex, bIndex, lpSkill);
-			return this->SkillTwistingSlash(aIndex, bIndex, lpSkill);
 		}
 
 		case SKILL_RAGEFUL_BLOW:
 		{
-			return this->SkillRagefulBlow(aIndex, bIndex, lpSkill);
+			return this->MultiSkillAttack(aIndex, bIndex, lpSkill);
 		}
 
 		case SKILL_DEATH_STAB:
@@ -897,7 +896,7 @@ bool CSkillManager::RunningSkill(int aIndex, int bIndex, CSkill* lpSkill, BYTE x
 
 		case SKILL_MONSTER_AREA_ATTACK:
 		{
-			return this->SkillMonsterAreaAttack(aIndex, bIndex, lpSkill);
+			return this->MultiSkillAttack(aIndex, bIndex, lpSkill);
 		}
 
 		case SKILL_PENETRATION:
@@ -921,21 +920,21 @@ bool CSkillManager::RunningSkill(int aIndex, int bIndex, CSkill* lpSkill, BYTE x
 		}
 	}
 
-	return 0;
+	return false;
 }
 
 bool CSkillManager::BasicSkillAttack(int aIndex, int bIndex, CSkill* lpSkill)
 {
 	LPOBJ lpObj = &gObj[aIndex];
 
-	if (OBJECT_RANGE(bIndex) == false)
+	if (OBJECT_RANGE(bIndex) == 0)
 	{
-		return 1;
+		return true;
 	}
 
-	if (lpObj->Type == OBJECT_USER && this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[bIndex].X, gObj[bIndex].Y) == 0)
+	if (lpObj->Type == OBJECT_USER && !this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[bIndex].X, gObj[bIndex].Y))
 	{
-		return 0;
+		return false;
 	}
 
 	gAttack.Attack(lpObj, &gObj[bIndex], lpSkill, 1, 0, 0);
@@ -949,18 +948,18 @@ bool CSkillManager::BasicSkillAttack(int aIndex, int bIndex, CSkill* lpSkill)
 
 		int index = lpObj->VpPlayer2[n].index;
 
-		if (this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type) == 0)
+		if (!this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type))
 		{
 			continue;
 		}
 
-		if (lpObj->Type == OBJECT_USER && this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[bIndex].X, gObj[bIndex].Y) == 0)
+		if (lpObj->Type == OBJECT_USER && !this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[bIndex].X, gObj[bIndex].Y))
 		{
 			continue;
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 bool CSkillManager::MultiSkillAttack(int aIndex, int bIndex, CSkill* lpSkill)
@@ -1017,7 +1016,7 @@ bool CSkillManager::MultiSkillAttack(int aIndex, int bIndex, CSkill* lpSkill)
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 bool CSkillManager::SkillChangeUse(int aIndex)
@@ -1118,12 +1117,12 @@ bool CSkillManager::SkillEvilSpirit(int aIndex, int bIndex, CSkill* lpSkill)
 
 		int index = lpObj->VpPlayer2[n].index;
 
-		if (this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type) == 0)
+		if (!this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type))
 		{
 			continue;
 		}
 
-		if (this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y) == 0)
+		if (!this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y))
 		{
 			continue;
 		}
@@ -1136,7 +1135,7 @@ bool CSkillManager::SkillEvilSpirit(int aIndex, int bIndex, CSkill* lpSkill)
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 bool CSkillManager::SkillManaShield(int aIndex, int bIndex, CSkill* lpSkill)
@@ -1145,19 +1144,19 @@ bool CSkillManager::SkillManaShield(int aIndex, int bIndex, CSkill* lpSkill)
 
 	if (lpTarget->Type != OBJECT_USER && OBJECT_RANGE(lpTarget->SummonIndex) == false)
 	{
-		return 0;
+		return false;
 	}
 
 	LPOBJ lpObj = &gObj[aIndex];
 
 	if (lpObj->PartyNumber != lpTarget->PartyNumber)
 	{
-		return 0;
+		return false;
 	}
 
-	if (this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y) == 0)
+	if (!this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y))
 	{
-		return 0;
+		return false;
 	}
 
 	int value1 = gServerInfo.m_ManaShieldConstA + ((lpObj->Dexterity + lpObj->AddDexterity) / gServerInfo.m_ManaShieldConstB) + ((lpObj->Energy + lpObj->AddEnergy) / gServerInfo.m_ManaShieldConstC);
@@ -1174,7 +1173,7 @@ bool CSkillManager::SkillManaShield(int aIndex, int bIndex, CSkill* lpSkill)
 
 	this->GCSkillAttackSend(lpObj, lpSkill->m_index, bIndex, 1);
 
-	return 1;
+	return true;
 }
 
 bool CSkillManager::SkillDefense(int aIndex, int bIndex, CSkill* lpSkill)
@@ -1191,12 +1190,12 @@ bool CSkillManager::SkillDefense(int aIndex, int bIndex, CSkill* lpSkill)
 
 				GCActionSend(lpObj, SKILL_DEFENSE, lpObj->Index, bIndex);
 
-				return 1;
+				return true;
 			}
 		}
 	}
 
-	return 0;
+	return false;
 }
 
 bool CSkillManager::SkillHeal(int aIndex, int bIndex, CSkill* lpSkill)
@@ -1205,14 +1204,14 @@ bool CSkillManager::SkillHeal(int aIndex, int bIndex, CSkill* lpSkill)
 
 	if (lpTarget->Type != OBJECT_USER && OBJECT_RANGE(lpTarget->SummonIndex) == false)
 	{
-		return 0;
+		return false;
 	}
 
 	LPOBJ lpObj = &gObj[aIndex];
 
-	if (this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y) == 0)
+	if (!this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y))
 	{
-		return 0;
+		return false;
 	}
 
 	int value = gServerInfo.m_HealConstA + ((lpObj->Energy + lpObj->AddEnergy) / gServerInfo.m_HealConstB);
@@ -1246,7 +1245,7 @@ bool CSkillManager::SkillHeal(int aIndex, int bIndex, CSkill* lpSkill)
 
 	this->GCSkillAttackSend(lpObj, lpSkill->m_index, bIndex, 1);
 
-	return 1;
+	return true;
 }
 
 bool CSkillManager::SkillGreaterDefense(int aIndex, int bIndex, CSkill* lpSkill)
@@ -1255,14 +1254,14 @@ bool CSkillManager::SkillGreaterDefense(int aIndex, int bIndex, CSkill* lpSkill)
 
 	if (lpTarget->Type != OBJECT_USER && OBJECT_RANGE(lpTarget->SummonIndex) == false)
 	{
-		return 0;
+		return false;
 	}
 
 	LPOBJ lpObj = &gObj[aIndex];
 
-	if (this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y) == 0)
+	if (!this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y))
 	{
-		return 0;
+		return false;
 	}
 
 	int value = gServerInfo.m_GreaterDefenseConstA + ((lpObj->Energy + lpObj->AddEnergy) / gServerInfo.m_GreaterDefenseConstB);
@@ -1283,7 +1282,7 @@ bool CSkillManager::SkillGreaterDefense(int aIndex, int bIndex, CSkill* lpSkill)
 
 	this->GCSkillAttackSend(lpObj, lpSkill->m_index, bIndex, 1);
 
-	return 1;
+	return true;
 }
 
 bool CSkillManager::SkillGreaterDamage(int aIndex, int bIndex, CSkill* lpSkill)
@@ -1292,14 +1291,14 @@ bool CSkillManager::SkillGreaterDamage(int aIndex, int bIndex, CSkill* lpSkill)
 
 	if (lpTarget->Type != OBJECT_USER && OBJECT_RANGE(lpTarget->SummonIndex) == false)
 	{
-		return 0;
+		return false;
 	}
 
 	LPOBJ lpObj = &gObj[aIndex];
 
-	if (this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y) == 0)
+	if (!this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y))
 	{
-		return 0;
+		return false;
 	}
 
 	int value = gServerInfo.m_GreaterDamageConstA + ((lpObj->Energy + lpObj->AddEnergy) / gServerInfo.m_GreaterDamageConstB);
@@ -1320,7 +1319,7 @@ bool CSkillManager::SkillGreaterDamage(int aIndex, int bIndex, CSkill* lpSkill)
 
 	this->GCSkillAttackSend(lpObj, lpSkill->m_index, bIndex, 1);
 
-	return 1;
+	return true;
 }
 
 bool CSkillManager::SkillSummon(int aIndex, int bIndex, CSkill* lpSkill)
@@ -1329,7 +1328,7 @@ bool CSkillManager::SkillSummon(int aIndex, int bIndex, CSkill* lpSkill)
 
 	if (lpObj->Map == MAP_ICARUS)
 	{
-		return 0;
+		return false;
 	}
 
 	int monster = 0;
@@ -1387,24 +1386,24 @@ bool CSkillManager::SkillSummon(int aIndex, int bIndex, CSkill* lpSkill)
 
 		default:
 		{
-			return 0;
+			return false;
 		}
 	}
 
-	if (OBJECT_RANGE(lpObj->SummonIndex) != false)
+	if (OBJECT_RANGE(lpObj->SummonIndex) != 0)
 	{
 		gObjSummonKill(aIndex);
 
 		GCSummonLifeSend(aIndex, 0, 1);
 
-		return 0;
+		return false;
 	}
 
 	int index = gObjAddSummon();
 
-	if (OBJECT_RANGE(index) == false)
+	if (OBJECT_RANGE(index) == 0)
 	{
-		return 0;
+		return false;
 	}
 
 	lpObj->SummonIndex = index;
@@ -1443,79 +1442,7 @@ bool CSkillManager::SkillSummon(int aIndex, int bIndex, CSkill* lpSkill)
 
 	GCSummonLifeSend(lpSummon->SummonIndex, (int)lpSummon->Life, (int)lpSummon->MaxLife);
 
-	return 1;
-}
-
-bool CSkillManager::SkillTwistingSlash(int aIndex, int bIndex, CSkill* lpSkill)
-{
-	LPOBJ lpObj = &gObj[aIndex];
-
-	int count = 0;
-
-	for (int n = 0; n < MAX_VIEWPORT; n++)
-	{
-		if (lpObj->VpPlayer2[n].state == VIEWPORT_NONE)
-		{
-			continue;
-		}
-
-		int index = lpObj->VpPlayer2[n].index;
-
-		if (this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type) == 0)
-		{
-			continue;
-		}
-
-		if (this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y) == 0)
-		{
-			continue;
-		}
-
-		gAttack.Attack(lpObj, &gObj[index], lpSkill, 0, 0, 0);
-
-		if (CHECK_SKILL_ATTACK_COUNT(count) == false)
-		{
-			break;
-		}
-	}
-
-	return 1;
-}
-
-bool CSkillManager::SkillRagefulBlow(int aIndex, int bIndex, CSkill* lpSkill)
-{
-	LPOBJ lpObj = &gObj[aIndex];
-
-	int count = 0;
-
-	for (int n = 0; n < MAX_VIEWPORT; n++)
-	{
-		if (lpObj->VpPlayer2[n].state == VIEWPORT_NONE)
-		{
-			continue;
-		}
-
-		int index = lpObj->VpPlayer2[n].index;
-
-		if (this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type) == 0)
-		{
-			continue;
-		}
-
-		if (this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y) == 0)
-		{
-			continue;
-		}
-
-		gObjAddAttackProcMsgSendDelay(lpObj, 50, index, 500, lpSkill->m_index, 0);
-
-		if (CHECK_SKILL_ATTACK_COUNT(count) == false)
-		{
-			break;
-		}
-	}
-
-	return 1;
+	return true;
 }
 
 bool CSkillManager::SkillGreaterLife(int aIndex, int bIndex, CSkill* lpSkill)
@@ -1524,7 +1451,7 @@ bool CSkillManager::SkillGreaterLife(int aIndex, int bIndex, CSkill* lpSkill)
 
 	if (lpObj->Type != OBJECT_USER)
 	{
-		return 0;
+		return false;
 	}
 
 	int value1 = gServerInfo.m_GreaterLifeConstA + ((lpObj->Vitality + lpObj->AddVitality) / gServerInfo.m_GreaterLifeConstB) + ((lpObj->Energy + lpObj->AddEnergy) / gServerInfo.m_GreaterLifeConstC);
@@ -1558,7 +1485,7 @@ bool CSkillManager::SkillGreaterLife(int aIndex, int bIndex, CSkill* lpSkill)
 				continue;
 			}
 
-			if (this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y) == 0)
+			if (!this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y))
 			{
 				continue;
 			}
@@ -1571,43 +1498,7 @@ bool CSkillManager::SkillGreaterLife(int aIndex, int bIndex, CSkill* lpSkill)
 		}
 	}
 
-	return 1;
-}
-
-bool CSkillManager::SkillMonsterAreaAttack(int aIndex, int bIndex, CSkill* lpSkill)
-{
-	LPOBJ lpObj = &gObj[aIndex];
-
-	int count = 0;
-
-	for (int n = 0; n < MAX_VIEWPORT; n++)
-	{
-		if (lpObj->VpPlayer2[n].state == VIEWPORT_NONE)
-		{
-			continue;
-		}
-
-		int index = lpObj->VpPlayer2[n].index;
-
-		if (this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type) == 0)
-		{
-			continue;
-		}
-
-		if (this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y) == 0)
-		{
-			continue;
-		}
-
-		gAttack.Attack(lpObj, &gObj[index], lpSkill, 0, 0, 0);
-
-		if (CHECK_SKILL_ATTACK_EXTENDED_COUNT(count) == false)
-		{
-			break;
-		}
-	}
-
-	return 1;
+	return true;
 }
 
 bool CSkillManager::SkillPowerSlash(int aIndex, int bIndex, CSkill* lpSkill, BYTE angle)
@@ -1629,17 +1520,17 @@ bool CSkillManager::SkillPowerSlash(int aIndex, int bIndex, CSkill* lpSkill, BYT
 
 		int index = lpObj->VpPlayer2[n].index;
 
-		if (this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type) == 0)
+		if (!this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type))
 		{
 			continue;
 		}
 
-		if (this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y) == 0)
+		if (!this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y))
 		{
 			continue;
 		}
 
-		if (this->CheckSkillFrustrum(SkillFrustrumX, SkillFrustrumY, gObj[index].X, gObj[index].Y) == 0)
+		if (!this->CheckSkillFrustrum(SkillFrustrumX, SkillFrustrumY, gObj[index].X, gObj[index].Y))
 		{
 			continue;
 		}
@@ -1652,7 +1543,7 @@ bool CSkillManager::SkillPowerSlash(int aIndex, int bIndex, CSkill* lpSkill, BYT
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 void CSkillManager::ApplyFireSlashEffect(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int damage)
@@ -1698,12 +1589,12 @@ void CSkillManager::CGMultiSkillAttackRecv(PMSG_MULTI_SKILL_ATTACK_RECV* lpMsg, 
 			return;
 		}
 
-		if (this->CheckSkillDelay(lpObj, lpSkill->m_index) == 0)
+		if (!this->CheckSkillDelay(lpObj, lpSkill->m_index))
 		{
 			return;
 		}
 
-		if (this->CheckSkillRequireClass(lpObj, lpSkill->m_index) == 0)
+		if (!this->CheckSkillRequireClass(lpObj, lpSkill->m_index))
 		{
 			return;
 		}
@@ -1718,7 +1609,7 @@ void CSkillManager::CGMultiSkillAttackRecv(PMSG_MULTI_SKILL_ATTACK_RECV* lpMsg, 
 		}
 	}
 
-	if (lpSkill->m_skill != SKILL_FLAME && lpSkill->m_skill != SKILL_TWISTER && lpSkill->m_skill != SKILL_EVIL_SPIRIT && lpSkill->m_skill != SKILL_HELL_FIRE && lpSkill->m_skill != SKILL_AQUA_BEAM && lpSkill->m_skill != SKILL_BLAST && lpSkill->m_skill != SKILL_INFERNO && lpSkill->m_skill != SKILL_TRIPLE_SHOT && lpSkill->m_skill != SKILL_TWISTING_SLASH && lpSkill->m_skill != SKILL_DEATH_STAB && lpSkill->m_skill != SKILL_IMPALE && lpSkill->m_skill != SKILL_MONSTER_AREA_ATTACK && lpSkill->m_skill != SKILL_PENETRATION && lpSkill->m_skill != SKILL_FIRE_SLASH)
+	if (lpSkill->m_skill != SKILL_FLAME && lpSkill->m_skill != SKILL_TWISTER && lpSkill->m_skill != SKILL_EVIL_SPIRIT && lpSkill->m_skill != SKILL_HELL_FIRE && lpSkill->m_skill != SKILL_AQUA_BEAM && lpSkill->m_skill != SKILL_BLAST && lpSkill->m_skill != SKILL_INFERNO && lpSkill->m_skill != SKILL_TRIPLE_SHOT && lpSkill->m_skill != SKILL_TWISTING_SLASH && lpSkill->m_skill != SKILL_RAGEFUL_BLOW && lpSkill->m_skill != SKILL_DEATH_STAB && lpSkill->m_skill != SKILL_IMPALE && lpSkill->m_skill != SKILL_MONSTER_AREA_ATTACK && lpSkill->m_skill != SKILL_PENETRATION && lpSkill->m_skill != SKILL_FIRE_SLASH)
 	{
 		return;
 	}
@@ -1746,7 +1637,7 @@ void CSkillManager::CGMultiSkillAttackRecv(PMSG_MULTI_SKILL_ATTACK_RECV* lpMsg, 
 		}
 	}
 
-	lpMsg->count = ((lpMsg->count > 8) ? 8 : lpMsg->count);
+	lpMsg->count = ((lpMsg->count > 5) ? 5 : lpMsg->count);
 
 	for (int n = 0; n < lpMsg->count; n++)
 	{
@@ -1754,14 +1645,14 @@ void CSkillManager::CGMultiSkillAttackRecv(PMSG_MULTI_SKILL_ATTACK_RECV* lpMsg, 
 
 		int bIndex = MAKE_NUMBERW(lpInfo->index[0], lpInfo->index[1]);
 
-		if (OBJECT_RANGE(bIndex) == false)
+		if (OBJECT_RANGE(bIndex) == 0)
 		{
 			continue;
 		}
 
 		LPOBJ lpTarget = &gObj[bIndex];
 
-		if (lpObj->Type == OBJECT_USER && this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y) == 0)
+		if (lpObj->Type == OBJECT_USER && !this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, lpTarget->X, lpTarget->Y))
 		{
 			continue;
 		}
@@ -1832,12 +1723,12 @@ void CSkillManager::CGSkillAttackRecv(PMSG_SKILL_ATTACK_RECV* lpMsg, int aIndex)
 			return;
 		}
 
-		if (this->CheckSkillDelay(lpObj, lpSkill->m_index) == 0)
+		if (!this->CheckSkillDelay(lpObj, lpSkill->m_index))
 		{
 			return;
 		}
 
-		if (this->CheckSkillRequireClass(lpObj, lpSkill->m_index) == 0)
+		if (!this->CheckSkillRequireClass(lpObj, lpSkill->m_index))
 		{
 			return;
 		}
@@ -1891,12 +1782,12 @@ void CSkillManager::CGDurationSkillAttackRecv(PMSG_DURATION_SKILL_ATTACK_RECV* l
 			return;
 		}
 
-		if (this->CheckSkillDelay(lpObj, lpSkill->m_index) == 0)
+		if (!this->CheckSkillDelay(lpObj, lpSkill->m_index))
 		{
 			return;
 		}
 
-		if (this->CheckSkillRequireClass(lpObj, lpSkill->m_index) == 0)
+		if (!this->CheckSkillRequireClass(lpObj, lpSkill->m_index))
 		{
 			return;
 		}
@@ -1975,7 +1866,7 @@ void CSkillManager::CGSkillTeleportAllyRecv(PMSG_SKILL_TELEPORT_ALLY_RECV* lpMsg
 
 	if (lpSkill != 0)
 	{
-		if (gSkillManager.CheckSkillMana(lpObj, lpSkill->m_index) == 0 || gSkillManager.CheckSkillBP(lpObj, lpSkill->m_index) == 0)
+		if (!gSkillManager.CheckSkillMana(lpObj, lpSkill->m_index) || !gSkillManager.CheckSkillBP(lpObj, lpSkill->m_index))
 		{
 			return;
 		}

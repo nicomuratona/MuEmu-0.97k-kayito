@@ -98,6 +98,8 @@ void CSocketManager::Clean()
 
 	this->m_ServerQueue.ClearQueue();
 
+	gServerDisplayer.SetWindowName();
+
 	for (DWORD n = 0; n < MAX_SERVER_WORKER_THREAD; n++)
 	{
 		if (this->m_ServerWorkerThread[n] != 0)
@@ -326,6 +328,8 @@ bool CSocketManager::DataRecv(int index, IO_MAIN_BUFFER* lpIoBuffer)
 			if (this->m_ServerQueue.AddToQueue(&QueueInfo) != false)
 			{
 				ReleaseSemaphore(this->m_ServerQueueSemaphore, 1, 0);
+
+				gServerDisplayer.SetWindowName();
 			}
 
 			count += size;
@@ -791,6 +795,8 @@ DWORD WINAPI CSocketManager::ServerQueueThread(CSocketManager* lpSocketManager)
 			{
 				DataServerProtocolCore(QueueInfo.index, QueueInfo.head, QueueInfo.buff, QueueInfo.size);
 			}
+
+			gServerDisplayer.SetWindowName();
 		}
 	}
 

@@ -192,79 +192,65 @@ void CPrintPlayer::RenderExperience()
 
 	STRUCT_ENCRYPT;
 
-	DWORD dwNexExperience = gPrintPlayer.ViewNextExperience; // next level up experience
-
-	DWORD dwExperience = gPrintPlayer.ViewExperience; // current experience
-
 	WORD wPriorLevel = wLevel - 1;
 
-	DWORD dwPriorExperience = 0;
+	DWORD Experiences[2] = { 0, 0 };
 
-	if (wPriorLevel > 0)
+	for (int n = wPriorLevel; n <= wLevel; n++)
 	{
-		dwPriorExperience = (((wPriorLevel + 9) * wPriorLevel) * wPriorLevel) * 10;
-
-		if (wPriorLevel > 255)
+		if (n > 0)
 		{
-			int iLevelOverN = wPriorLevel - 255;
+			Experiences[n - wPriorLevel] = (((n + 9) * n) * n) * 10;
 
-			dwPriorExperience += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 1000;
+			if (n > 255)
+			{
+				int iLevelOverN = n - 255;
+
+				Experiences[n - wPriorLevel] += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 1000;
+			}
 		}
 	}
 
-	// level up experience
-	DWORD fNeedExp = dwNexExperience - dwPriorExperience;
+	DWORD RequiredExp = Experiences[1] - Experiences[0];
 
-	// currently acquired experience
-	DWORD fExp = dwExperience - dwPriorExperience;
+	DWORD ActualExp = gPrintPlayer.ViewExperience - Experiences[0];
 
-	if (dwExperience < dwPriorExperience)
-	{
-		fExp = 0;
-	}
+	float TotalBarRate = (float)ActualExp / (float)RequiredExp;
 
-	// Experience bar level (0 ~ 9)
-	DWORD fExpBarNum = 0;
+	float Width = TotalBarRate * 198.0f;
 
-	if (fExp > 0 && fNeedExp > 0)
-	{
-		fExpBarNum = ((fExp * 100) / fNeedExp) / 10;
-	}
+	int Number = (int)((TotalBarRate * 100.0f) / 10.0f);
 
-	float fProgress = fExpBarNum / 10.0f;
+	int Height = 4;
 
-	float width = fProgress * 198.0f;
+	int X = 221;
 
-	int height = 4;
-
-	int x = 221;
-
-	int y = 439;
+	int Y = 439;
 
 	glColor3f(0.92f, 0.8f, 0.34f);
 
-	RenderColor((float)x, (float)y, width, (float)height);
+	RenderColor((float)X, (float)Y, Width, (float)Height);
 
 	EnableAlphaTest(true);
 
 	glColor3f(0.91f, 0.81f, 0.6f);
 
 	// experience bar number
-	RenderNumber2D(425.0f, 434.0f, fExpBarNum, 9.0f, 10.0f);
+	RenderNumber2D(425.0f, 434.0f, Number, 9.0f, 10.0f);
 
 	DisableAlphaBlend();
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	width = 198.0f;
+	Width = 198.0f;
 
-	if (IsWorkZone(x, y, (int)width, height))
+	if (IsWorkZone(X, Y, (int)Width, Height))
 	{
 		char strTipText[256];
 
-		wsprintf(strTipText, GetTextLine(201), dwExperience, dwNexExperience); // text.bmd 201: "Exp: %u/%u"
+		wsprintf(strTipText, GetTextLine(201), gPrintPlayer.ViewExperience, gPrintPlayer.ViewNextExperience); // text.bmd 201: "Exp: %u/%u"
 
-		RenderTipText(x + 2, y - 15, strTipText);
+		RenderTipText(X + 2, Y - 15, strTipText);
 	}
 }
 

@@ -42,8 +42,6 @@ void CServerDisplayer::Init(HWND hWnd)
 
 void CServerDisplayer::Run()
 {
-	this->SetWindowName();
-
 	this->LogTextPaint();
 
 	this->PaintAllInfo();
@@ -200,4 +198,6 @@ void CServerDisplayer::LogAddText(eLogColor color, char* text, int size)
 	this->m_count = (((++this->m_count) >= MAX_LOG_TEXT_LINE) ? 0 : this->m_count);
 
 	gLog.Output(LOG_GENERAL, "%s", &text[11]);
+
+	this->Run();
 }

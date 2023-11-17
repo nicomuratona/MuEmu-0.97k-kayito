@@ -163,32 +163,6 @@ void gObjCloseProc()
 	}
 }
 
-void gObjCountProc()
-{
-	int TotalUser = 0;
-
-	int TotalMonster = 0;
-
-	for (int n = 0; n < MAX_OBJECT; n++)
-	{
-		if (gObj[n].Connected != OBJECT_OFFLINE)
-		{
-			if (gObj[n].Type == OBJECT_USER)
-			{
-				TotalUser++;
-			}
-			else
-			{
-				TotalMonster++;
-			}
-		}
-	}
-
-	gObjTotalUser = TotalUser;
-
-	gObjTotalMonster = TotalMonster;
-}
-
 void gObjAccountLevelProc()
 {
 	for (int n = OBJECT_START_USER; n < MAX_OBJECT; n++)
@@ -206,6 +180,12 @@ void gObjAccountLevelProc()
 
 void gObjInit()
 {
+	gObjTotalUser = 0;
+
+	gObjTotalMonster = 0;
+
+	gServerDisplayer.SetWindowName();
+
 	gObjCount = OBJECT_START_USER;
 
 	gObjMonCount = OBJECT_START_MONSTER;
@@ -940,6 +920,10 @@ short gObjAdd(SOCKET socket, char* IpAddress, int aIndex)
 
 	lpObj->Type = OBJECT_USER;
 
+	gObjTotalUser++;
+
+	gServerDisplayer.SetWindowName();
+
 	memset(lpObj->Account, 0, sizeof(lpObj->Account));
 
 	memset(lpObj->HardwareID, 0, sizeof(lpObj->HardwareID));
@@ -948,7 +932,7 @@ short gObjAdd(SOCKET socket, char* IpAddress, int aIndex)
 
 	gIpManager.InsertIpAddress(lpObj->IpAddr);
 
-	LogAdd(LOG_USER, "[ObjectManager][%d] AddClient (%s)", aIndex, lpObj->IpAddr);
+	//LogAdd(LOG_USER, "[ObjectManager][%d] AddClient (%s)", aIndex, lpObj->IpAddr);
 
 	gLog.Output(LOG_CONNECT, "[ObjectManager][%d] AddClient (%s)", aIndex, lpObj->IpAddr);
 
@@ -984,12 +968,12 @@ short gObjDel(int aIndex)
 
 		if (lpObj->Account[0] != 0)
 		{
-			LogAdd(LOG_USER, "[ObjectManager][%d] DelAccountInfo (%s)(%s)", aIndex, lpObj->Account, lpObj->HardwareID);
+			//LogAdd(LOG_USER, "[ObjectManager][%d] DelAccountInfo (%s)(%s)", aIndex, lpObj->Account, lpObj->HardwareID);
 
 			gLog.Output(LOG_CONNECT, "[ObjectManager][%d] DelAccountInfo (%s)(%s)", aIndex, lpObj->Account, lpObj->HardwareID);
 		}
 
-		LogAdd(LOG_USER, "[ObjectManager][%d] DelClient (%s)", aIndex, lpObj->IpAddr);
+		//LogAdd(LOG_USER, "[ObjectManager][%d] DelClient (%s)", aIndex, lpObj->IpAddr);
 
 		gLog.Output(LOG_CONNECT, "[ObjectManager][%d] DelClient (%s)", aIndex, lpObj->IpAddr);
 
@@ -998,6 +982,17 @@ short gObjDel(int aIndex)
 		memset(lpObj->PersonalCode, 0, sizeof(lpObj->PersonalCode));
 
 		gIpManager.RemoveIpAddress(lpObj->IpAddr);
+
+		gObjTotalUser--;
+
+		gServerDisplayer.SetWindowName();
+	}
+
+	if (lpObj->Type == OBJECT_MONSTER || lpObj->Type == OBJECT_NPC)
+	{
+		gObjTotalMonster--;
+
+		gServerDisplayer.SetWindowName();
 	}
 
 	lpObj->Connected = OBJECT_OFFLINE;

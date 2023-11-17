@@ -8,7 +8,7 @@
 #define MAX_DS_MONSTER 200
 #define MAX_DS_RANK 10
 
-#define DS_LEVEL_RANGE(x) (((x)<0)?0:((x)>=MAX_DS_LEVEL)?0:1)
+#define DS_LEVEL_RANGE(x) (((x) < 0) ? 0 : ((x) >= MAX_DS_LEVEL) ? 0 : 1)
 
 enum eDevilSquareState
 {

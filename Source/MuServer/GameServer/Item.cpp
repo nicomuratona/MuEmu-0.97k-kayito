@@ -70,7 +70,7 @@ void CItem::Clear()
 
 bool CItem::IsItem()
 {
-	if (CHECK_RANGE(this->m_Index, MAX_ITEM) == false)
+	if (CHECK_RANGE(this->m_Index, MAX_ITEM) == 0)
 	{
 		return 0;
 	}
@@ -99,7 +99,7 @@ bool CItem::IsExcItem()
 
 bool CItem::IsClass(int Class, int ChangeUp)
 {
-	if (CHECK_RANGE(Class, MAX_CLASS) == false)
+	if (CHECK_RANGE(Class, MAX_CLASS) == 0)
 	{
 		return 0;
 	}

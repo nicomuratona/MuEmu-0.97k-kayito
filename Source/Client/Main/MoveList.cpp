@@ -87,7 +87,11 @@ void CMoveList::RenderMoveListBack()
 
 	EnableAlphaTest(true);
 
+	DWORD backupBgTextColor = SetBackgroundTextColor;
+
 	SetBackgroundTextColor = Color4f(0, 0, 0, 0);
+
+	DWORD backupTextColor = SetTextColor;
 
 	SetTextColor = Color4f(255, 204, 26, 255);
 
@@ -114,11 +118,19 @@ void CMoveList::RenderMoveListBack()
 	SelectObject(m_hFontDC, g_hFont);
 
 	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + (int)this->MainHeight - 15, "Close", (int)(this->MainWidth - 10) * WindowWidth / 640, 1, 0);
+
+	SetBackgroundTextColor = backupBgTextColor;
+
+	SetTextColor = backupTextColor;
 }
 
 void CMoveList::RenderMoveListMaps()
 {
 	EnableAlphaTest(true);
+
+	DWORD backupBgTextColor = SetBackgroundTextColor;
+
+	DWORD backupTextColor = SetTextColor;
 
 	SetBackgroundTextColor = Color4f(0, 0, 0, 0);
 
@@ -147,22 +159,23 @@ void CMoveList::RenderMoveListMaps()
 			RealMinLevel = it->LevelMin;
 		}
 
-		if (RealMinLevel > *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E))
+		if (*(BYTE*)(Hero + 0x2EA) >= 5) // PK
 		{
 			it->CanMove = false;
 		}
-
-		if (it->Money > *(DWORD*)(*(DWORD*)(CharacterMachine)+0x548))
+		else if (RealMinLevel > *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E))
 		{
 			it->CanMove = false;
 		}
-
-		if (it->MapNumber == MAP_ATLANS && (*(short*)(Hero + 0x2B8) == 0x332 || *(short*)(Hero + 0x2B8) == 0x333))
+		else if (it->Money > *(DWORD*)(*(DWORD*)(CharacterMachine)+0x548))
 		{
 			it->CanMove = false;
 		}
-
-		if (it->MapNumber == MAP_ICARUS && ((*(short*)(Hero + 0x2A0) == -1 && *(short*)(Hero + 0x2B8) != 0x333) || *(short*)(Hero + 0x2B8) == 0x332))
+		else if (it->MapNumber == MAP_ATLANS && (*(short*)(Hero + 0x2B8) == 0x332 || *(short*)(Hero + 0x2B8) == 0x333))
+		{
+			it->CanMove = false;
+		}
+		else if (it->MapNumber == MAP_ICARUS && ((*(short*)(Hero + 0x2A0) == -1 && *(short*)(Hero + 0x2B8) != 0x333) || *(short*)(Hero + 0x2B8) == 0x332))
 		{
 			it->CanMove = false;
 		}
@@ -199,6 +212,10 @@ void CMoveList::RenderMoveListMaps()
 	}
 
 	STRUCT_ENCRYPT;
+
+	SetBackgroundTextColor = backupBgTextColor;
+
+	SetTextColor = backupTextColor;
 }
 
 void CMoveList::CheckMoveListMouse()

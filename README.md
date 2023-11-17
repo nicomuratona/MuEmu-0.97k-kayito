@@ -148,3 +148,16 @@
 - Se mejoró el sistema de cola de paquetes, reduciendo el consumo y aumentando la eficiencia (Créditos SetecSoft) [ConnectServer.exe][JoinServer.exe][DataServer.exe][GameServer.exe]
 - Se corrigió el Weapon View en la zona safe. Ahora ambas armas se muestran como corresponde [Main.dll]
 - Se implementó un nuevo MiniMapa llamado FullMap, que es generado por código automáticamente evitando así utilizar texturas (funcional para todos los mapas) [Main.dll]
+
+### Update 20:
+- Se corrigió un error en el MoveList que hacía que los colores de los nombres de los items dropeados se vean rojos [Main.dll]
+- Se corrigió la posición del Skull Shield en la espalda [Main.dll]
+- Se corrigió la interacción con click derecho en las entradas al Devil Square y Blood Castle en todos sus niveles [GameServer.exe]
+- Se corrigió que al estar PK e intentar ingresar al Devil Square o al Blood Castle, no mostraba ningún mensaje [GameServer.exe]
+- Se reconstruyeron los chequeos para equiparse items con click derecho [Main.dll][GameServer.exe]
+- Se corrigió el MoveList que no se bloqueaba cuando el personaje es PK [Main.dll]
+- Se optimizó el dibujado de la interface de los ejecutables. Ahora se recargan sólo cuando hay un log nuevo, reduciendo el consumo [ConnectServer][JoinServer][DataServer][GameServer]
+- Se movieron las configuraciones de inicio que estaban en
+"MuServer/GameServer/DATA/GameServerInfo - Common.dat"  
+hacia otro archivo separado en  
+"MuServer/GameServer/DATA/GameServerInfo - StartUp.dat"

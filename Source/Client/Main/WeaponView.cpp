@@ -234,8 +234,8 @@ BOOL CWeaponView::RenderCharacterBackItem(DWORD c, DWORD o)
 
 			TransformPosition
 			(
-				*(DWORD*)(Models + (0xBC * *(short*)(o + 2))),
-				&*(float*)(o + 0x114) + (0x30 * *(BYTE*)(c + 0x2BC)),
+				(Models + (0xBC * *(short*)(o + 2))),
+				&*(float*)(*(DWORD*)(o + 0x114) + (0x30 * *(BYTE*)(c + 0x2BC))),
 				vRelativePos,
 				vPos,
 				true

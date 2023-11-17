@@ -46,7 +46,7 @@ int main()
 
 	SetLargeRand();
 
-	gServerInfo.ReadStartupInfo("GameServerInfo", ".\\Data\\GameServerInfo - Common.dat");
+	gServerInfo.ReadStartupInfo("GameServerInfo", ".\\Data\\GameServerInfo - StartUp.dat");
 
 	gServerDisplayer.Init(hWnd);
 
@@ -95,10 +95,6 @@ int main()
 	{
 		LogAdd(LOG_RED, "WSAStartup() failed with error: %d", WSAGetLastError());
 	}
-
-	gServerDisplayer.PaintAllInfo();
-
-	SetTimer(hWnd, TIMER_2000, 2000, 0);
 
 	MSG msg;
 
@@ -452,15 +448,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					break;
 				}
 
-				case TIMER_2000:
-				{
-					gServerDisplayer.Run();
-
-					gObjCountProc();
-
-					break;
-				}
-
 				case TIMER_10000:
 				{
 					JoinServerReconnect(hWnd, WM_JOIN_SERVER_MSG_PROC);
@@ -484,6 +471,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case WM_DATA_SERVER_MSG_PROC:
 		{
 			DataServerMsgProc(wParam, lParam);
+
+			break;
+		}
+
+		case WM_SIZE:
+		{
+			gServerDisplayer.Run();
+
+			break;
+		}
+
+		case WM_ACTIVATE:
+		{
+			gServerDisplayer.Run();
 
 			break;
 		}

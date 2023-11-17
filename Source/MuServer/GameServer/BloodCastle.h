@@ -8,9 +8,9 @@
 #define MAX_BC_USER 50
 #define MAX_BC_MONSTER 200
 
-#define GET_BC_LEVEL(x) (((x)<MAP_BLOOD_CASTLE1)?-1:((x)>MAP_BLOOD_CASTLE6)?-1:((x)-MAP_BLOOD_CASTLE1))
+#define GET_BC_LEVEL(x) (((x) < MAP_BLOOD_CASTLE1) ? -1 : ((x) > MAP_BLOOD_CASTLE6) ? -1 : ((x) - MAP_BLOOD_CASTLE1))
 
-#define BC_LEVEL_RANGE(x) (((x)<0)?0:((x)>=MAX_BC_LEVEL)?0:1)
+#define BC_LEVEL_RANGE(x) (((x) < 0) ? 0 : ((x) >= MAX_BC_LEVEL) ? 0 : 1)
 
 enum eBloodCastleState
 {

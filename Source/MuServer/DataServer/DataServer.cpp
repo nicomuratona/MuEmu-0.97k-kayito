@@ -85,10 +85,6 @@ int main()
 		LogAdd(LOG_RED, "WSAStartup() failed with error: %d", WSAGetLastError());
 	}
 
-	gServerDisplayer.PaintAllInfo();
-
-	SetTimer(hWnd, TIMER_2000, 2000, 0);
-
 	MSG msg;
 
 	while (GetMessage(&msg, 0, 0, 0) != FALSE)
@@ -245,13 +241,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			switch (LOWORD(wParam))
 			{
-				case TIMER_2000:
+				default:
 				{
-					gServerDisplayer.Run();
-
 					break;
 				}
 			}
+
+			break;
+		}
+
+		case WM_SIZE:
+		{
+			gServerDisplayer.Run();
+
+			break;
+		}
+
+		case WM_ACTIVATE:
+		{
+			gServerDisplayer.Run();
 
 			break;
 		}

@@ -1,37 +1,4 @@
 [GameServerInfo]
-CustomerName = "Nico"
-;==================================================
-; Server Settings
-;==================================================
-ServerName = "SV1"
-WindowName = "Server 1"
-ServerCode = 0
-ServerLock = 0
-ServerPort = 55901
-ServerVersion = "0.97.11"
-ServerSerial = "TbYehR2hFUPBKgZj"
-ServerMaxUserNumber = 1000
-
-;==================================================
-; Connection Settings
-;==================================================
-DataServerAddress = "127.0.0.1"
-DataServerPort = 55980
-JoinServerAddress = "127.0.0.1"
-JoinServerPort = 55990
-ConnectServerAddress = "127.0.0.1"
-ConnectServerPort = 55601
-
-;==================================================
-; Log Settings
-;==================================================
-WriteChatLog = 1
-WriteCommandLog = 1
-WriteTradeLog = 1
-WriteConnectLog = 1
-WriteHackLog = 1
-WriteChaosMixLog = 1
-
 ;==================================================
 ; Hack Settings
 ;==================================================

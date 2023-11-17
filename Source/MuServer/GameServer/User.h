@@ -722,8 +722,6 @@ void gObjFirstProc();
 
 void gObjCloseProc();
 
-void gObjCountProc();
-
 void gObjAccountLevelProc();
 
 //**************************************************************************//

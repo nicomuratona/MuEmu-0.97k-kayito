@@ -611,6 +611,43 @@ bool CItemManager::CheckItemMoveToInventory(LPOBJ lpObj, CItem* lpItem, int slot
 		return 0;
 	}
 
+	if (lpObj->Class == CLASS_DW) // DW
+	{
+		if (slot == 1 && !(lpItem->m_Index >= GET_ITEM(6, 0) && lpItem->m_Index < GET_ITEM(7, 0)))
+		{
+			return 0;
+		}
+	}
+
+	if (lpObj->Class == CLASS_FE) // FE
+	{
+		if (slot == 0 && ((lpItem->m_Index >= GET_ITEM(4, 0) && lpItem->m_Index < GET_ITEM(4, 8)) || lpItem->m_Index == GET_ITEM(4, 17))) // BOWS
+		{
+			return 0;
+		}
+
+		if (slot == 1 && ((lpItem->m_Index >= GET_ITEM(4, 8) && lpItem->m_Index < GET_ITEM(4, 17)) || lpItem->m_Index == GET_ITEM(4, 18))) // CROSSBOWS
+		{
+			return 0;
+		}
+
+		if (lpItem->m_Index == GET_ITEM(4, 7) && lpObj->Inventory[1].IsItem() != 0) // Bolts when using Arrows
+		{
+			if (lpObj->Inventory[1].m_Index == GET_ITEM(4, 15))
+			{
+				return 0;
+			}
+		}
+
+		if (lpItem->m_Index == GET_ITEM(4, 15) && lpObj->Inventory[0].IsItem() != 0) // Arrows when using Bolts
+		{
+			if (lpObj->Inventory[0].m_Index == GET_ITEM(4, 7))
+			{
+				return 0;
+			}
+		}
+	}
+
 	if (slot == 0 && lpObj->Inventory[1].IsItem() != 0)
 	{
 		if ((lpItem->m_TwoHand != 0 && lpObj->Inventory[1].m_Index != GET_ITEM(4, 7)) || (lpObj->Inventory[1].m_TwoHand != 0 && lpItem->m_Index != GET_ITEM(4, 15)))
@@ -1597,7 +1634,7 @@ void CItemManager::UpdateInventoryViewport(int aIndex, int slot)
 
 	if (slot == 10 || slot == 11)
 	{
-		if (gSkillManager.SkillChangeUse(aIndex) != 0)
+		if (gSkillManager.SkillChangeUse(aIndex))
 		{
 			gObjViewportListProtocolCreate(&gObj[aIndex]);
 

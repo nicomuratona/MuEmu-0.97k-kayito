@@ -1691,7 +1691,7 @@ void CBloodCastle::NpcAngelMessenger(LPOBJ lpNpc, LPOBJ lpObj)
 		return;
 	}
 
-	if (gItemManager.GetInventoryItemCount(lpObj, GET_ITEM(13, 18), (level + 1)) == 0 && gItemManager.GetInventoryItemCount(lpObj, GET_ITEM(13, 47), 0) == 0)
+	if (gItemManager.GetInventoryItemCount(lpObj, GET_ITEM(13, 18), -1) == 0)
 	{
 		GCServerCommandSend(lpObj->Index, 1, 21, 0);
 
@@ -2175,9 +2175,11 @@ void CBloodCastle::CGBloodCastleEnterRecv(PMSG_BLOOD_CASTLE_ENTER_RECV* lpMsg, i
 		return;
 	}
 
-	if (gServerInfo.m_PKLimitFree == 0 && lpObj->PKLevel >= PKLVL_WARNING)
+	if (gServerInfo.m_PKLimitFree == 0 && lpObj->PKLevel >= PKLVL_OUTLAW)
 	{
-		pMsg.result = 7;
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(66, lpObj->Lang), gServerInfo.m_GuildCreateMinReset);
+
+		pMsg.result = 6;
 
 		DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 
@@ -2194,14 +2196,6 @@ void CBloodCastle::CGBloodCastleEnterRecv(PMSG_BLOOD_CASTLE_ENTER_RECV* lpMsg, i
 	}
 
 	gItemManager.DecreaseItemDur(lpObj, lpMsg->slot, 1);
-
-	//fix bc invite
-	if (lpObj->Inventory[lpMsg->slot].m_Index == GET_ITEM(13, 18))
-	{
-		gItemManager.InventoryDelItem(lpObj->Index, lpMsg->slot);
-
-		gItemManager.GCItemDeleteSend(lpObj->Index, lpMsg->slot, 1);
-	}
 
 	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 

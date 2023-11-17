@@ -143,7 +143,7 @@ void JGConnectAccountRecv(SDHP_CONNECT_ACCOUNT_RECV* lpMsg)
 
 	GCConnectAccountSend(lpMsg->index, 1);
 
-	LogAdd(LOG_USER, "[ObjectManager][%d] AddAccountInfo (%s)(%s)", lpMsg->index, gObj[lpMsg->index].Account, gObj[lpMsg->index].HardwareID);
+	//LogAdd(LOG_USER, "[ObjectManager][%d] AddAccountInfo (%s)(%s)", lpMsg->index, gObj[lpMsg->index].Account, gObj[lpMsg->index].HardwareID);
 
 	gLog.Output(LOG_CONNECT, "[ObjectManager][%d] AddAccountInfo (%s)(%s)", lpMsg->index, gObj[lpMsg->index].Account, gObj[lpMsg->index].HardwareID);
 }

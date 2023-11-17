@@ -277,13 +277,7 @@ public:
 
 	bool SkillSummon(int aIndex, int bIndex, CSkill* lpSkill);
 
-	bool SkillTwistingSlash(int aIndex, int bIndex, CSkill* lpSkill);
-
-	bool SkillRagefulBlow(int aIndex, int bIndex, CSkill* lpSkill);
-
 	bool SkillGreaterLife(int aIndex, int bIndex, CSkill* lpSkill);
-
-	bool SkillMonsterAreaAttack(int aIndex, int bIndex, CSkill* lpSkill);
 
 	bool SkillPowerSlash(int aIndex, int bIndex, CSkill* lpSkill, BYTE angle);
 

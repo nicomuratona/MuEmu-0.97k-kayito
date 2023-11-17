@@ -114,7 +114,7 @@ bool CPacketManager::LoadKey(char* name, WORD header, bool type)
 
 	if (file == INVALID_HANDLE_VALUE)
 	{
-		return 0;
+		return false;
 	}
 
 	DWORD size;
@@ -125,7 +125,7 @@ bool CPacketManager::LoadKey(char* name, WORD header, bool type)
 	{
 		CloseHandle(file);
 
-		return 0;
+		return false;
 	}
 
 	ENCDEC_DATA* lpData;
@@ -164,7 +164,7 @@ bool CPacketManager::LoadKey(char* name, WORD header, bool type)
 
 	CloseHandle(file);
 
-	return 1;
+	return true;
 }
 
 int CPacketManager::Encrypt(BYTE* lpTarget, BYTE* lpSource, int size)
@@ -425,14 +425,14 @@ bool CPacketManager::AddData(BYTE* lpBuff, int size)
 {
 	if (size <= 0 || size >= 2048)
 	{
-		return 0;
+		return false;
 	}
 
 	memcpy(this->m_buff, lpBuff, size);
 
 	this->m_size = size;
 
-	return 1;
+	return true;
 }
 
 bool CPacketManager::ExtractPacket(BYTE* lpBuff)
@@ -461,20 +461,20 @@ bool CPacketManager::ExtractPacket(BYTE* lpBuff)
 
 		default:
 		{
-			return 0;
+			return false;
 		}
 	}
 
 	if (this->m_size < ((DWORD)size))
 	{
-		return 0;
+		return false;
 	}
 
 	this->XorData((size - 1), end);
 
 	memcpy(lpBuff, this->m_buff, size);
 
-	return 1;
+	return true;
 }
 
 void CPacketManager::XorData(int start, int end)

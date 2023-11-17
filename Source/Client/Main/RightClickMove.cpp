@@ -80,7 +80,7 @@ _declspec(naked) void CRightClickMove::CheckEquipItem()
 		{
 			ItemSlot = pPickedItem->x + pPickedItem->y * 8 + INVENTORY_WEAR_SIZE;
 
-			target = gItemManager.GetTargetSlotEquiped(pPickedItem->Type, pPickedItem->Part);
+			target = gItemManager.GetTargetSlotEquiped(pPickedItem, pPickedItem->Part);
 
 			if (target != -1)
 			{

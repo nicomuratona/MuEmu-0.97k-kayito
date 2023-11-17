@@ -112,24 +112,173 @@ BYTE CItemManager::InterfaceRectCheck(int x, int y, int width, int height, DWORD
 	return ((y * InterfaceWidth) + x);
 }
 
-int CItemManager::GetTargetSlotEquiped(short itemIndex, int slot)
+int CItemManager::GetTargetSlotEquiped(ITEM* lpItem, int slot)
 {
+	if (!lpItem)
+	{
+		return -1;
+	}
+
+	if (lpItem->Type == -1)
+	{
+		return -1;
+	}
+
+	if (INVENTORY_WEAR_RANGE(slot) == 0)
+	{
+		return -1;
+	}
+
 	STRUCT_DECRYPT;
 
-	WORD index = *(WORD*)(*(DWORD*)(CharacterMachine)+(536 + (68 * slot)));
+	ITEM* PlayerRightHand = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_WEAPON_RIGHT)));
 
-	if (slot == 0 && index != 0xFFFF && *(WORD*)(*(DWORD*)(CharacterMachine)+(536 + (68 * 1))) == 0xFFFF)
+	ITEM* PlayerLeftHand = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_WEAPON_LEFT)));
+
+	ITEM* PlayerRightRing = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_RING_RIGHT)));
+
+	ITEM* PlayerLeftRing = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_RING_LEFT)));
+
+	BYTE PlayerClass = *(BYTE*)(*(DWORD*)(CharacterAttribute)+0x0B) & 7;
+
+	BYTE PlayerEvo = ((*(BYTE*)(Hero + 0x1BC) >> 3) & 0x1);
+
+	WORD PlayerLevel = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E);
+
+	WORD PlayerStrength = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x14);
+
+	WORD PlayerDexterity = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x16);
+
+	WORD PlayerEnergy = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x1A);
+
+	if (slot == EQUIPMENT_WEAPON_RIGHT && PlayerRightHand->Type != -1 && PlayerLeftHand->Type == -1)
 	{
-		if (!((itemIndex >= GET_ITEM(4, 8) && itemIndex <= GET_ITEM(4, 16)) || itemIndex == GET_ITEM(4, 18)) // Crossbows, Arrows
-		    && !(itemIndex >= GET_ITEM(5, 0) && itemIndex < GET_ITEM(6, 0))) // Staffs
+		slot = EQUIPMENT_WEAPON_LEFT;
+	}
+	else if (slot == EQUIPMENT_RING_RIGHT && PlayerRightRing->Type != -1 && PlayerLeftRing->Type == -1)
+	{
+		slot = EQUIPMENT_RING_LEFT;
+	}
+
+	ITEM* TargetSlotItem = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * slot)));
+
+	if (TargetSlotItem->Type != -1)
+	{
+		slot = -1;
+
+		goto EXIT;
+	}
+
+	ITEM_ATTRIBUTE* ItemInfo = (ITEM_ATTRIBUTE*)(ItemAttribute + lpItem->Type * sizeof(ITEM_ATTRIBUTE));
+
+	if (lpItem->RequireLevel > PlayerLevel)
+	{
+		slot = -1;
+
+		goto EXIT;
+	}
+
+	if (lpItem->RequireStrength > PlayerStrength)
+	{
+		slot = -1;
+
+		goto EXIT;
+	}
+
+	if (lpItem->RequireDexterity > PlayerDexterity)
+	{
+		slot = -1;
+
+		goto EXIT;
+	}
+
+	if (lpItem->RequireEnergy > PlayerEnergy)
+	{
+		slot = -1;
+
+		goto EXIT;
+	}
+
+	if (ItemInfo->RequireClass[PlayerClass] == 0 || (ItemInfo->RequireClass[PlayerClass] - 1) > PlayerEvo)
+	{
+		slot = -1;
+
+		goto EXIT;
+	}
+
+	if (lpItem->Part != slot && slot != EQUIPMENT_WEAPON_RIGHT && slot != EQUIPMENT_WEAPON_LEFT && slot != EQUIPMENT_RING_RIGHT && slot != EQUIPMENT_RING_LEFT)
+	{
+		slot = -1;
+
+		goto EXIT;
+	}
+
+	if (lpItem->Part != slot && ((slot == EQUIPMENT_WEAPON_RIGHT || slot == EQUIPMENT_WEAPON_LEFT) && lpItem->Part != EQUIPMENT_WEAPON_RIGHT && lpItem->Part != EQUIPMENT_WEAPON_LEFT))
+	{
+		slot = -1;
+
+		goto EXIT;
+	}
+
+	if (lpItem->Part != slot && ((slot == EQUIPMENT_RING_RIGHT || slot == EQUIPMENT_RING_LEFT) && lpItem->Part != EQUIPMENT_RING_RIGHT && lpItem->Part != EQUIPMENT_RING_LEFT))
+	{
+		slot = -1;
+
+		goto EXIT;
+	}
+
+	if (PlayerClass == 0) // DW
+	{
+		if (slot == EQUIPMENT_WEAPON_LEFT && !(lpItem->Type >= GET_ITEM(6, 0) && lpItem->Type < GET_ITEM(7, 0)))
 		{
-			slot = 1;
+			slot = -1;
+
+			goto EXIT;
 		}
 	}
-	else if (slot == 10 && index != 0xFFFF && *(WORD*)(*(DWORD*)(CharacterMachine)+(536 + (68 * 11))) == 0xFFFF)
+
+	if (PlayerClass == 2) // FE
 	{
-		slot = 11;
+		if (slot == EQUIPMENT_WEAPON_RIGHT && ((lpItem->Type >= GET_ITEM(4, 0) && lpItem->Type < GET_ITEM(4, 8)) || lpItem->Type == GET_ITEM(4, 17))) // BOWS
+		{
+			slot = -1;
+
+			goto EXIT;
+		}
+
+		if (slot == EQUIPMENT_WEAPON_LEFT && ((lpItem->Type >= GET_ITEM(4, 8) && lpItem->Type < GET_ITEM(4, 17)) || lpItem->Type == GET_ITEM(4, 18))) // CROSSBOWS
+		{
+			slot = -1;
+
+			goto EXIT;
+		}
+
+		if (lpItem->Type == GET_ITEM(4, 7) && PlayerRightHand->Type == GET_ITEM(4, 15)) // Bolts when using Arrows
+		{
+			slot = -1;
+
+			goto EXIT;
+		}
+
+		if (lpItem->Type == GET_ITEM(4, 15) && PlayerLeftHand->Type == GET_ITEM(4, 7)) // Arrows when using Bolts
+		{
+			slot = -1;
+
+			goto EXIT;
+		}
 	}
+
+	if (World == MAP_ATLANS)
+	{
+		if (lpItem->Type == GET_ITEM(13, 2) || lpItem->Type == GET_ITEM(13, 3)) // Uniria,Dinorant
+		{
+			slot = -1;
+
+			goto EXIT;
+		}
+	}
+
+EXIT:
 
 	STRUCT_ENCRYPT;
 

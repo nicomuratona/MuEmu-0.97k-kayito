@@ -686,7 +686,7 @@ bool CObjectManager::CharacterGameClose(int aIndex)
 
 	GCEventStateSend(lpObj->Index, 0, 3);
 
-	LogAdd(LOG_USER, "[ObjectManager][%d] DelCharacterInfo (%s)", lpObj->Index, lpObj->Name);
+	//LogAdd(LOG_USER, "[ObjectManager][%d] DelCharacterInfo (%s)", lpObj->Index, lpObj->Name);
 
 	gLog.Output(LOG_CONNECT, "[ObjectManager][%d] DelCharacterInfo (%s)", lpObj->Index, lpObj->Name);
 
@@ -1877,7 +1877,7 @@ void CObjectManager::CharacterItemDurationDown(LPOBJ lpObj)
 	{
 		if (lpObj->Inventory[n].IsItem() != 0)
 		{
-			bool result = 0;
+			bool result = false;
 
 			switch (lpObj->Inventory[n].m_Index)
 			{
@@ -1896,11 +1896,11 @@ void CObjectManager::CharacterItemDurationDown(LPOBJ lpObj)
 				}
 			}
 
-			if (result != 0)
+			if (result)
 			{
 				gItemManager.GCItemDurSend(lpObj->Index, n, (BYTE)lpObj->Inventory[n].m_Durability, 0);
 
-				if (gSkillManager.SkillChangeUse(lpObj->Index) != 0)
+				if (gSkillManager.SkillChangeUse(lpObj->Index))
 				{
 					gObjViewportListProtocolCreate(lpObj);
 
@@ -2850,7 +2850,7 @@ bool CObjectManager::CharacterInfoSet(BYTE* aRecv, int aIndex)
 	{
 		if (lpObj->Skill[n].IsSkill() != 0)
 		{
-			if (gSkillManager.CheckSkillRequireWeapon(lpObj, lpObj->Skill[n].m_skill) == 0)
+			if (!gSkillManager.CheckSkillRequireWeapon(lpObj, lpObj->Skill[n].m_skill))
 			{
 				gSkillManager.DelSkill(lpObj, lpObj->Skill[n].m_index);
 			}

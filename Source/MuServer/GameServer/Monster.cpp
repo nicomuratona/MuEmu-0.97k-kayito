@@ -737,6 +737,10 @@ int gObjAddMonster(int map)
 
 		gObj[index].Connected = OBJECT_CONNECTED;
 
+		gObjTotalMonster++;
+
+		gServerDisplayer.SetWindowName();
+
 		critical.unlock();
 
 		return index;
@@ -756,6 +760,10 @@ int gObjAddMonster(int map)
 			gObj[count].Index = count;
 
 			gObj[count].Connected = OBJECT_CONNECTED;
+
+			gObjTotalMonster++;
+
+			gServerDisplayer.SetWindowName();
 
 			critical.unlock();
 

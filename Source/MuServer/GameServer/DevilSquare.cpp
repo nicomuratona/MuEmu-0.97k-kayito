@@ -837,21 +837,43 @@ int CDevilSquare::GetUserAbleLevel(LPOBJ lpObj)
 {
 	int level = -1;
 
-	if (lpObj->Level >= 10 && lpObj->Level <= 99)
+	if (lpObj->Class == CLASS_MG)
 	{
-		level = 0;
+		if (lpObj->Level >= 10 && lpObj->Level <= 66)
+		{
+			level = 0;
+		}
+		else if (lpObj->Level >= 67 && lpObj->Level <= 118)
+		{
+			level = 1;
+		}
+		else if (lpObj->Level >= 119 && lpObj->Level <= 166)
+		{
+			level = 2;
+		}
+		else if (lpObj->Level >= 167 && lpObj->Level <= MAX_CHARACTER_LEVEL)
+		{
+			level = 3;
+		}
 	}
-	else if (lpObj->Level >= 100 && lpObj->Level <= 179)
+	else
 	{
-		level = 1;
-	}
-	else if (lpObj->Level >= 180 && lpObj->Level <= 249)
-	{
-		level = 2;
-	}
-	else if (lpObj->Level >= 250 && lpObj->Level <= MAX_CHARACTER_LEVEL)
-	{
-		level = 3;
+		if (lpObj->Level >= 10 && lpObj->Level <= 99)
+		{
+			level = 0;
+		}
+		else if (lpObj->Level >= 100 && lpObj->Level <= 179)
+		{
+			level = 1;
+		}
+		else if (lpObj->Level >= 180 && lpObj->Level <= 249)
+		{
+			level = 2;
+		}
+		else if (lpObj->Level >= 250 && lpObj->Level <= MAX_CHARACTER_LEVEL)
+		{
+			level = 3;
+		}
 	}
 
 	return level;
@@ -1133,7 +1155,7 @@ void CDevilSquare::NpcCharon(LPOBJ lpNpc, LPOBJ lpObj)
 		return;
 	}
 
-	if (gItemManager.GetInventoryItemCount(lpObj, GET_ITEM(14, 19), (level + 1)) == 0 && gItemManager.GetInventoryItemCount(lpObj, GET_ITEM(13, 46), 0) == 0)
+	if (gItemManager.GetInventoryItemCount(lpObj, GET_ITEM(14, 19), -1) == 0)
 	{
 		GCServerCommandSend(lpObj->Index, 1, 2, 0);
 
@@ -1347,8 +1369,10 @@ void CDevilSquare::CGDevilSquareEnterRecv(PMSG_DEVIL_SQUARE_ENTER_RECV* lpMsg, i
 		return;
 	}
 
-	if (gServerInfo.m_PKLimitFree == 0 && lpObj->PKLevel >= PKLVL_WARNING)
+	if (gServerInfo.m_PKLimitFree == 0 && lpObj->PKLevel >= PKLVL_OUTLAW)
 	{
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(66, lpObj->Lang), gServerInfo.m_GuildCreateMinReset);
+
 		pMsg.result = 6;
 
 		DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);

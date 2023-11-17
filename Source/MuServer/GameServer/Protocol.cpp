@@ -894,24 +894,22 @@ void CGEventRemainTimeRecv(PMSG_EVENT_REMAIN_TIME_RECV* lpMsg, int aIndex)
 
 	pMsg.RemainTime = 0;
 
-	lpMsg->ItemLevel = ((lpMsg->EventType == 2) ? lpMsg->ItemLevel : (lpMsg->ItemLevel - 1));
-
 	switch (lpMsg->EventType)
 	{
 		case 1:
 		{
-			if (DS_LEVEL_RANGE(lpMsg->ItemLevel) != false)
+			if (DS_LEVEL_RANGE(lpMsg->ItemLevel - 1) != 0)
 			{
-				if (gDevilSquare.GetState(lpMsg->ItemLevel) == DS_STATE_EMPTY)
+				if (gDevilSquare.GetState(lpMsg->ItemLevel - 1) == DS_STATE_EMPTY)
 				{
-					if (gDevilSquare.GetEnterEnabled(lpMsg->ItemLevel) == 0)
+					if (gDevilSquare.GetEnterEnabled(lpMsg->ItemLevel - 1) == 0)
 					{
-						pMsg.RemainTime = gDevilSquare.GetRemainTime(lpMsg->ItemLevel);
+						pMsg.RemainTime = gDevilSquare.GetRemainTime(lpMsg->ItemLevel - 1);
 					}
 				}
 				else
 				{
-					pMsg.RemainTime = gDevilSquare.GetRemainTime(lpMsg->ItemLevel);
+					pMsg.RemainTime = gDevilSquare.GetRemainTime(lpMsg->ItemLevel - 1);
 				}
 			}
 			else
@@ -924,24 +922,31 @@ void CGEventRemainTimeRecv(PMSG_EVENT_REMAIN_TIME_RECV* lpMsg, int aIndex)
 
 		case 2:
 		{
-			if (BC_LEVEL_RANGE(lpMsg->ItemLevel) != false)
+			if (BC_LEVEL_RANGE(lpMsg->ItemLevel - 1) != 0)
 			{
-				if (gBloodCastle.GetState(lpMsg->ItemLevel) == BC_STATE_EMPTY)
+				if (gBloodCastle.GetState(lpMsg->ItemLevel - 1) == BC_STATE_EMPTY)
 				{
-					if (gBloodCastle.GetEnterEnabled(lpMsg->ItemLevel) == 0)
+					if (gBloodCastle.GetEnterEnabled(lpMsg->ItemLevel - 1) == 0)
 					{
-						pMsg.RemainTime = gBloodCastle.GetRemainTime(lpMsg->ItemLevel);
+						pMsg.RemainTime = gBloodCastle.GetRemainTime(lpMsg->ItemLevel - 1);
 					}
 				}
 				else
 				{
-					pMsg.RemainTime = gBloodCastle.GetRemainTime(lpMsg->ItemLevel);
+					pMsg.RemainTime = gBloodCastle.GetRemainTime(lpMsg->ItemLevel - 1);
 				}
 			}
 			else
 			{
 				pMsg.EventType = 0;
 			}
+
+			break;
+		}
+
+		default:
+		{
+			pMsg.EventType = 0;
 
 			break;
 		}

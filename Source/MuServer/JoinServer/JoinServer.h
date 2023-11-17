@@ -3,7 +3,6 @@
 #define MAX_LOADSTRING 100
 
 #define TIMER_1000 100
-#define TIMER_2000 101
 
 ATOM MyRegisterClass(HINSTANCE hInstance);
 
