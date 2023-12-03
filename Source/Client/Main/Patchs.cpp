@@ -19,7 +19,7 @@ void CPatchs::Init()
 {
 	SetByte(0x00558EA8, 0xA0); // Accent
 
-	SetByte(0x00406F36, 0xEB); // Crack return
+	SetByte(0x00406F36, 0xEB); // Crack npGameGuard::init
 
 	SetByte(0x00406F5F, 0xEB); // Crack error messagebox
 
@@ -27,7 +27,7 @@ void CPatchs::Init()
 
 	SetByte(0x0041ECB5, 0xEB); // Crack mu.exe
 
-	SetByte(0x0041ED25, 0xEB); // Crack config.ini
+	SetByte(0x0041ED25, 0xEB); // Crack OpenMainExe
 
 	SetByte(0x0041ED5E, 0xEB); // Crack config.ini
 
@@ -54,6 +54,10 @@ void CPatchs::Init()
 	MemoryCpy(0x00559624, gProtect.m_MainInfo.ClientSerial, sizeof(gProtect.m_MainInfo.ClientSerial)); // ClientSerial
 
 	MemorySet(0x004127B0, 0x90, 5); // Remove MuError.log
+
+	SetDword(0x0047FB96, 0x190); // Expand global message size before newline jump
+
+	SetByte(0x00526AE5, 0xEB); // Skip Select Server Music
 
 	SetCompleteHook(0xE9, 0x00524146, 0x00524231); // Remove Select Character Texts
 
@@ -97,12 +101,12 @@ void CPatchs::Init()
 
 	// EncTerrain%d.map
 	SetByte(0x0050E5F9, 0xEB);
-	SetDword(0x0050E623 + 1, (DWORD)"Data\\%s\\EncTerrain%d.map");
+	SetDword(0x0050E624, (DWORD)"Data\\%s\\EncTerrain%d.map");
 	// EncTerrain%d.att
-	SetDword(0x0050E648 + 1, (DWORD)"Data\\%s\\EncTerrain%d.att");
+	SetDword(0x0050E649, (DWORD)"Data\\%s\\EncTerrain%d.att");
 	// EncTerrain%d.obj
 	SetByte(0x0050E663, 0xEB);
-	SetDword(0x0050E68D + 1, (DWORD)"Data\\%s\\EncTerrain%d.obj");
+	SetDword(0x0050E68E, (DWORD)"Data\\%s\\EncTerrain%d.obj");
 
 	// Decrypt MAP
 	SetCompleteHook(0xE8, 0x0050E636, &this->OpenTerrainMapping);
@@ -112,6 +116,14 @@ void CPatchs::Init()
 
 	// Decrypt OBJ
 	SetCompleteHook(0xE8, 0x0050E6A0, &this->OpenObjectsEnc);
+
+	SetCompleteHook(0xE8, 0x0041ED4C, &this->ReadMainVersion);
+
+	SetCompleteHook(0xE8, 0x004BC0B3, &this->RenderNumArrow);
+
+	SetCompleteHook(0xE8, 0x004BC0C1, &this->RenderEquipedHelperLife);
+
+	SetCompleteHook(0xE8, 0x004BC0C7, &this->RenderBrokenItem);
 }
 
 __declspec(naked) void CPatchs::ReduceCPU()
@@ -207,12 +219,10 @@ _declspec(naked) void CPatchs::FixChasingAttackMovement()
 _declspec(naked) void CPatchs::DecBMD()
 {
 	static DWORD jmpBack = 0x004424BA;
-	static int DataSize;
 	static BYTE* Data;
 
 	_asm
 	{
-		Mov DataSize, Edi;
 		Mov Data, Ebx;
 		Pushad;
 	}
@@ -525,4 +535,457 @@ int CPatchs::OpenObjectsEnc(char* FileName)
 	fclose(fp);
 
 	return iMapNumber;
+}
+
+bool MyGetFileNameOfFilePath(char* lpszFile, char* lpszPath)
+{
+	int iFind = (int)'\\';
+
+	char* lpFound = lpszPath;
+
+	char* lpOld = lpFound;
+
+	while (lpFound)
+	{
+		lpOld = lpFound;
+
+		lpFound = strchr(lpFound + 1, iFind);
+	}
+
+	// copy name
+	if (strchr(lpszPath, iFind))
+	{
+		strcpy(lpszFile, lpOld + 1);
+	}
+	else
+	{
+		strcpy(lpszFile, lpOld);
+	}
+
+	// get rid of options appended
+	bool bCheck = true;
+
+	for (char* lpTemp = lpszFile; bCheck; ++lpTemp)
+	{
+		switch (*lpTemp)
+		{
+			case '\"':
+			case '\\':
+			case '/':
+			case ' ':
+			{
+				*lpTemp = '\0';
+			}
+
+			case '\0':
+			{
+				bCheck = false;
+
+				break;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool MyGetFileVersion(char* lpszFileName, WORD* pwVersion)
+{
+	DWORD dwHandle;
+
+	DWORD dwLen = GetFileVersionInfoSize(lpszFileName, &dwHandle); // get size
+
+	if (dwLen <= 0)
+	{
+		return false;
+	}
+
+	BYTE* pbyData = new BYTE[dwLen];
+
+	if (!GetFileVersionInfo(lpszFileName, dwHandle, dwLen, pbyData)) // get actual information
+	{
+		delete[] pbyData;
+
+		return false;
+	}
+
+	VS_FIXEDFILEINFO* pffi;
+
+	UINT uLen;
+
+	if (!VerQueryValue(pbyData, "\\", (LPVOID*)&pffi, &uLen)) // get version value
+	{
+		delete[] pbyData;
+
+		return false;
+	}
+
+	pwVersion[0] = HIWORD(pffi->dwFileVersionMS);
+
+	pwVersion[1] = LOWORD(pffi->dwFileVersionMS);
+
+	pwVersion[2] = HIWORD(pffi->dwFileVersionLS);
+
+	pwVersion[3] = LOWORD(pffi->dwFileVersionLS);
+
+	delete[] pbyData;
+
+	return true;
+}
+
+BOOL CPatchs::ReadMainVersion()
+{
+	memcpy(m_Version, "0.97.11", 11);
+
+	char* lpszCommandLine = GetCommandLine();
+
+	char lpszFile[MAX_PATH];
+
+	if (MyGetFileNameOfFilePath(lpszFile, lpszCommandLine))
+	{
+		WORD wVersion[4];
+
+		if (MyGetFileVersion(lpszFile, wVersion))
+		{
+			sprintf(m_ExeVersion, "%d.%02d", wVersion[0], wVersion[1]);
+
+			if (wVersion[2] > 0)
+			{
+				char lpszMinorVersion[3] = "a";
+
+				if (wVersion[2] > 26)
+				{
+					lpszMinorVersion[0] = 'A';
+
+					lpszMinorVersion[0] += (wVersion[2] - 27);
+
+					lpszMinorVersion[1] = '+';
+				}
+				else
+				{
+					lpszMinorVersion[0] += (wVersion[2] - 1);
+				}
+
+				strcat(m_ExeVersion, lpszMinorVersion);
+			}
+		}
+		else
+		{
+			strcpy(m_ExeVersion, m_Version);
+		}
+	}
+	else
+	{
+		strcpy(m_ExeVersion, m_Version);
+	}
+
+	return TRUE;
+}
+
+bool CPatchs::RenderNumArrow()
+{
+	STRUCT_DECRYPT;
+
+	ITEM* PlayerRightHand = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_WEAPON_RIGHT)));
+
+	ITEM* PlayerLeftHand = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_WEAPON_LEFT)));
+
+	if (PlayerRightHand->Type == GET_ITEM(4, 15)) // Arrows
+	{
+		int screenWidth = GetScreenWidth();
+
+		int MaxQuant = ((int(__cdecl*)()) 0x00482850)();
+
+		char text[128] = { '\0' };
+
+		sprintf_s(text, GetTextLine(351), PlayerRightHand->Durability, MaxQuant);
+
+		SelectObject(m_hFontDC, g_hFont);
+
+		int PosX = screenWidth - GetTextWidth(text) - 10;
+
+		if (PartyNumber > 0)
+		{
+			PosX -= 60;
+		}
+
+		EnableAlphaTest(true);
+
+		DWORD backupBgTextColor = SetBackgroundTextColor;
+
+		DWORD backupTextColor = SetTextColor;
+
+		SetBackgroundTextColor = Color4b(0, 0, 0, 128);
+
+		SetTextColor = Color4b(255, 255, 255, 255);
+
+		RenderText(PosX, 4, text, 0, RT3_SORT_LEFT, NULL);
+
+		SetBackgroundTextColor = backupBgTextColor;
+
+		SetTextColor = backupTextColor;
+
+		STRUCT_ENCRYPT;
+
+		return true;
+	}
+
+	if (PlayerLeftHand->Type == GET_ITEM(4, 7)) // Bolts
+	{
+		int screenWidth = GetScreenWidth();
+
+		int MaxQuant = ((int(__cdecl*)()) 0x00482850)();
+
+		char text[128] = { '\0' };
+
+		sprintf_s(text, GetTextLine(352), PlayerLeftHand->Durability, MaxQuant);
+
+		SelectObject(m_hFontDC, g_hFont);
+
+		int PosX = screenWidth - GetTextWidth(text) - 6;
+
+		if (PartyNumber > 0)
+		{
+			PosX -= 60;
+		}
+
+		EnableAlphaTest(true);
+
+		DWORD backupBgTextColor = SetBackgroundTextColor;
+
+		DWORD backupTextColor = SetTextColor;
+
+		SetBackgroundTextColor = Color4b(0, 0, 0, 128);
+
+		SetTextColor = Color4b(255, 255, 255, 255);
+
+		RenderText(PosX, 4, text, 0, RT3_SORT_LEFT, NULL);
+
+		SetBackgroundTextColor = backupBgTextColor;
+
+		SetTextColor = backupTextColor;
+
+		STRUCT_ENCRYPT;
+
+		return true;
+	}
+
+	STRUCT_ENCRYPT;
+
+	return false;
+}
+
+int CPatchs::RenderEquipedHelperLife(bool RenderedArrow)
+{
+	int PosY = 4;
+
+	if (RenderedArrow)
+	{
+		PosY += 12;
+	}
+
+	int screenWidth = GetScreenWidth();
+
+	DWORD backupBgTextColor = SetBackgroundTextColor;
+
+	DWORD backupTextColor = SetTextColor;
+
+	STRUCT_DECRYPT;
+
+	ITEM* PlayerHelper = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_HELPER)));
+
+	if (PlayerHelper->Type >= GET_ITEM(13, 0) && PlayerHelper->Type <= GET_ITEM(13, 3))
+	{
+		ITEM_ATTRIBUTE* ItemInfo = (ITEM_ATTRIBUTE*)(ItemAttribute + PlayerHelper->Type * sizeof(ITEM_ATTRIBUTE));
+
+		char text[128] = { '\0' };
+
+		sprintf_s(text, "%s", ItemInfo->Name);
+
+		SelectObject(m_hFontDC, g_hFont);
+
+		int PosX = screenWidth - GetTextWidth(text) - 6;
+
+		if (PartyNumber > 0)
+		{
+			PosX -= 60;
+		}
+
+		EnableAlphaTest(true);
+
+		SetBackgroundTextColor = Color4b(0, 0, 0, 128);
+
+		SetTextColor = Color4b(255, 255, 255, 255);
+
+		RenderText(PosX, PosY, text, 0, RT3_SORT_LEFT, NULL);
+
+		PosY += 12;
+
+		float fDur = PlayerHelper->Durability / 255.0f * 50.0f;
+
+		PosX = screenWidth - 60;
+
+		if (PartyNumber > 0)
+		{
+			PosX -= 60;
+		}
+
+		RenderBar((float)PosX, (float)PosY, 50.0f, 2.0f, fDur, false, true);
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+
+		PosY += 12;
+	}
+
+	STRUCT_ENCRYPT;
+
+	if (SummonLife)
+	{
+		char text[128] = { '\0' };
+
+		sprintf_s(text, "%s", GetTextLine(356));
+
+		SelectObject(m_hFontDC, g_hFont);
+
+		int PosX = screenWidth - GetTextWidth(text) - 6;
+
+		if (PartyNumber > 0)
+		{
+			PosX -= 60;
+		}
+
+		EnableAlphaTest(true);
+
+		SetBackgroundTextColor = Color4b(0, 0, 0, 128);
+
+		SetTextColor = Color4b(255, 255, 255, 255);
+
+		RenderText(PosX, PosY, text, 0, RT3_SORT_LEFT, NULL);
+
+		PosY += 12;
+
+		float fDur = SummonLife * 0.5f;
+
+		PosX = screenWidth - 60;
+
+		if (PartyNumber > 0)
+		{
+			PosX -= 60;
+		}
+
+		RenderBar((float)PosX, (float)PosY, 50.0f, 2.0f, fDur, false, true);
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+
+		PosY += 12;
+	}
+
+	SetBackgroundTextColor = backupBgTextColor;
+
+	SetTextColor = backupTextColor;
+
+	return PosY;
+}
+
+void CPatchs::RenderBrokenItem(int PosY)
+{
+	int screenWidth = GetScreenWidth();
+
+	DWORD backupBgTextColor = SetBackgroundTextColor;
+
+	DWORD backupTextColor = SetTextColor;
+
+	ITEM* PlayerItem;
+
+	ITEM_ATTRIBUTE* ItemInfo;
+
+	int PosX;
+
+	WORD MaxDur;
+
+	char text[128] = { '\0' };
+
+	STRUCT_DECRYPT;
+
+	for (int i = EQUIPMENT_WEAPON_RIGHT; i <= EQUIPMENT_RING_LEFT; i++)
+	{
+		PlayerItem = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * i)));
+
+		if (PlayerItem->Type == -1)
+		{
+			continue;
+		}
+
+		if (PlayerItem->Type == GET_ITEM(4, 7)
+		    || PlayerItem->Type == GET_ITEM(4, 15)
+		    || (PlayerItem->Type >= GET_ITEM(13, 0) && PlayerItem->Type <= GET_ITEM(13, 3)))
+		{
+			continue;
+		}
+
+		ItemInfo = (ITEM_ATTRIBUTE*)(ItemAttribute + PlayerItem->Type * sizeof(ITEM_ATTRIBUTE));
+
+		MaxDur = CalcMaxDurability(PlayerItem, ItemInfo, (PlayerItem->Level >> 3) & 0xF);
+
+		if (PlayerItem->Durability > (MaxDur * 0.5f))
+		{
+			continue;
+		}
+
+		if (PlayerItem->Durability == 0)
+		{
+			SetTextColor = Color4b(255, 255, 255, 255);
+
+			SetBackgroundTextColor = Color4b(255, 10, 10, 128);
+
+			PlayerItem->Number = 8;
+		}
+		else if (PlayerItem->Durability <= (MaxDur * 0.2f))
+		{
+			SetTextColor = Color4b(255, 10, 10, 255);
+
+			SetBackgroundTextColor = Color4b(0, 0, 0, 128);
+
+			PlayerItem->Number = 7;
+		}
+		else if (PlayerItem->Durability <= (MaxDur * 0.3f))
+		{
+			SetTextColor = Color4b(255, 156, 0, 255);
+
+			SetBackgroundTextColor = Color4b(0, 0, 0, 128);
+
+			PlayerItem->Number = 6;
+		}
+		else if (PlayerItem->Durability <= (MaxDur * 0.5f))
+		{
+			SetTextColor = Color4b(255, 228, 0, 255);
+
+			SetBackgroundTextColor = Color4b(0, 0, 0, 128);
+
+			PlayerItem->Number = 5;
+		}
+
+		sprintf_s(text, "%s (%d/%d)", ItemInfo->Name, PlayerItem->Durability, MaxDur);
+
+		SelectObject(m_hFontDC, g_hFont);
+
+		PosX = screenWidth - GetTextWidth(text) - 6;
+
+		if (PartyNumber > 0)
+		{
+			PosX -= 60;
+		}
+
+		EnableAlphaTest(true);
+
+		RenderText(PosX, PosY, text, 0, RT3_SORT_LEFT, NULL);
+
+		PosY += 12;
+	}
+
+	STRUCT_ENCRYPT;
+
+	SetBackgroundTextColor = backupBgTextColor;
+
+	SetTextColor = backupTextColor;
 }

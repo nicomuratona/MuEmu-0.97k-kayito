@@ -11,6 +11,8 @@ bool GetCharacterSlot(char CharacterName[5][11], char* name, BYTE* slot);
 
 bool CheckTextSyntax(char* text, int size);
 
+bool CheckSpecialText(char* Text);
+
 int GetFreeServerIndex();
 
 int SearchFreeServerIndex(int* index, int MinIndex, int MaxIndex, DWORD MinTime);

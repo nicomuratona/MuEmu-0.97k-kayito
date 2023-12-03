@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "Window.h"
+#include "Camera.h"
 #include "Controller.h"
+#include "Font.h"
 #include "PrintPlayer.h"
 #include "Protect.h"
 #include "resource.h"
@@ -9,40 +11,169 @@ cWindow	gWindow;
 
 cWindow::cWindow()
 {
-	HKEY Key;
+	this->iResolutionValues[R640x480] = std::make_pair<WORD, WORD>(640, 480);
+	this->iResolutionValues[R800x600] = std::make_pair<WORD, WORD>(800, 600);
+	this->iResolutionValues[R1024x768] = std::make_pair<WORD, WORD>(1024, 768);
+	this->iResolutionValues[R1280x960] = std::make_pair<WORD, WORD>(1280, 960);
+	this->iResolutionValues[R1280x720] = std::make_pair<WORD, WORD>(1280, 720);
+	this->iResolutionValues[R1366x768] = std::make_pair<WORD, WORD>(1360, 768);
+	this->iResolutionValues[R1600x900] = std::make_pair<WORD, WORD>(1600, 900);
+	this->iResolutionValues[R1920x1080] = std::make_pair<WORD, WORD>(1920, 1080);
 
-	if (RegOpenKey(HKEY_CURRENT_USER, "Software\\Webzen\\MU\\Config", &Key) == ERROR_SUCCESS)
-	{
-		DWORD Size = sizeof(int);
+	this->iWindowValues[FULL_SCREEN] = "Full Screen";
+	this->iWindowValues[WINDOW_MODE] = "Window Mode";
+	this->iWindowValues[BORDERLESS] = "Borderless";
 
-		if (RegQueryValueEx(Key, "WindowMode", nullptr, nullptr, (LPBYTE)(&this->m_WindowMode), &Size) != ERROR_SUCCESS)
-		{
-			this->m_WindowMode = 0;
-		}
+	this->m_WindowMode = WINDOW_MODE;
 
-		RegCloseKey(Key);
-	}
+	m_Resolution = R1024x768;
+
+	WindowWidth = this->iResolutionValues[R1024x768].first;
+
+	WindowHeight = this->iResolutionValues[R1024x768].second;
+
+	g_fScreenRate_x = (float)WindowWidth / 640.0f;
+
+	g_fScreenRate_y = (float)WindowHeight / 480.0f;
 }
 
 cWindow::~cWindow()
 {
+	char Text[33] = { 0 };
 
+	wsprintf(Text, "%d", this->m_WindowMode);
+
+	WritePrivateProfileString("Window", "WindowMode", Text, ".\\Config.ini");
+
+	wsprintf(Text, "%d", m_Resolution);
+
+	WritePrivateProfileString("Window", "Resolution", Text, ".\\Config.ini");
 }
 
 void cWindow::WindowModeLoad(HINSTANCE hins)
 {
 	this->Instance = hins;
 
-	SetDword(0x0055237C, (DWORD)&this->ChangeDisplaySettingsHook);
+	this->SetWindowMode(GetPrivateProfileInt("Window", "WindowMode", WINDOW_MODE, ".\\Config.ini"));
+
+	this->SetResolution(GetPrivateProfileInt("Window", "Resolution", R1024x768, ".\\Config.ini"));
 
 	SetCompleteHook(0xE9, 0x0041ED79, 0x0041EEC6);
 
 	SetCompleteHook(0xE9, 0x0041DFF0, &this->StartWindow);
 
-	if (this->m_WindowMode != 0)
+	SetCompleteHook(0xE9, 0x0041F617, 0x00421B0B);
+}
+
+HWND cWindow::StartWindow(HINSTANCE hCurrentInst, int nCmdShow)
+{
+	char* windowName = "MU ONLINE";
+
+	WNDCLASS wndClass = { 0 };
+
+	wndClass.style = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
+
+	wndClass.lpfnWndProc = gWindow.MyWndProc;
+
+	wndClass.cbClsExtra = 0;
+
+	wndClass.cbWndExtra = 0;
+
+	wndClass.hInstance = gWindow.Instance;
+
+	wndClass.hIcon = LoadIcon(gWindow.Instance, MAKEINTRESOURCE(IDI_ICON));
+
+	wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+
+	wndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+
+	wndClass.lpszMenuName = NULL;
+
+	wndClass.lpszClassName = windowName;
+
+	RegisterClass(&wndClass);
+
+	HWND hWnd;
+
+	if (gWindow.m_WindowMode)
 	{
-		SetCompleteHook(0xE9, 0x0041F617, 0x00421B0B);
+		RECT rc = { 0, 0, WindowWidth, WindowHeight };
+
+		LONG STYLE = (gWindow.m_WindowMode == 2) // Borderless
+			? WS_POPUP | WS_VISIBLE
+			: WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_VISIBLE;
+
+		AdjustWindowRect(&rc, STYLE, NULL);
+
+		hWnd = CreateWindowEx(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, windowName, gProtect.m_MainInfo.WindowName, STYLE, (GetSystemMetrics(SM_CXSCREEN) - rc.right) / 2, (GetSystemMetrics(SM_CYSCREEN) - rc.bottom) / 2, rc.right, rc.bottom + 26, NULL, NULL, gWindow.Instance, NULL);
 	}
+	else
+	{
+		hWnd = CreateWindowEx(WS_EX_APPWINDOW, windowName, gProtect.m_MainInfo.WindowName, WS_POPUP | WS_VISIBLE, 0, 0, WindowWidth, WindowHeight, NULL, NULL, gWindow.Instance, NULL);
+
+		gWindow.ChangeDisplaySettingsFunction();
+	}
+
+	return hWnd;
+}
+
+void cWindow::ChangeDisplaySettingsFunction()
+{
+	DEVMODE devMode = { 0 };
+
+	devMode.dmSize = sizeof(DEVMODE);
+
+	devMode.dmDriverExtra = 0;
+
+	devMode.dmPelsWidth = WindowWidth;
+
+	devMode.dmPelsHeight = WindowHeight;
+
+	devMode.dmBitsPerPel = 32;
+
+	devMode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
+
+	ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);
+}
+
+LRESULT WINAPI cWindow::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (msg)
+	{
+		case WM_NPROTECT_EXIT_TWO: // Fix disconnect when minimize
+		{
+			return 0;
+		}
+
+		case WM_SIZE: // Fix disconnect when minimize
+		{
+			return 0;
+		}
+
+		case WM_TIMER:
+		{
+			switch (wParam)
+			{
+				case WM_AUTOCLICKTIMER:
+				{
+					SendMessage(g_hWnd, (gController.AutoClickState) ? WM_RBUTTONUP : WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(MouseX, MouseY));
+
+					gController.AutoClickState ^= 1;
+
+					return 0;
+				}
+
+				case WINDOWMINIMIZED_TIMER:
+				{
+					return 0;
+				}
+			}
+
+			break;
+		}
+	}
+
+	return CallWindowProc(WndProc, hwnd, msg, wParam, lParam);
 }
 
 void cWindow::ChangeWindowText()
@@ -63,145 +194,81 @@ void cWindow::ChangeWindowText()
 	SetWindowText(g_hWnd, text);
 }
 
-LONG WINAPI cWindow::ChangeDisplaySettingsHook(DEVMODEA* lpDevMode, DWORD dwFlags)
+void cWindow::SetWindowMode(int mode)
 {
-	if (gWindow.m_WindowMode == 0)
+	if (mode < FULL_SCREEN || mode > BORDERLESS)
 	{
-		return ChangeDisplaySettingsA(lpDevMode, dwFlags);
+		mode = FULL_SCREEN;
 	}
 
-	return DISP_CHANGE_SUCCESSFUL;
+	this->m_WindowMode = mode;
 }
 
-void cWindow::ChangeDisplaySettingsFunction()
+void cWindow::SetResolution(int res)
 {
-	DEVMODE DevMode;
-
-	int nModes = 0;
-
-	while (EnumDisplaySettings(NULL, nModes, &DevMode))
+	if (res >= R640x480 && res < MAX_RESOLUTION_VALUE)
 	{
-		nModes++;
+		m_Resolution = res;
+
+		WindowWidth = this->iResolutionValues[res].first;
+
+		WindowHeight = this->iResolutionValues[res].second;
+
+		g_fScreenRate_x = (float)WindowWidth / 640.0f;
+
+		g_fScreenRate_y = (float)WindowHeight / 480.0f;
 	}
-
-	DEVMODE* pDevmodes = new DEVMODE[nModes + 1];
-
-	nModes = 0;
-
-	while (EnumDisplaySettings(NULL, nModes, &pDevmodes[nModes]))
-	{
-		nModes++;
-	}
-
-	DWORD dwBitsPerPel = 32;
-
-	for (int n1 = 0; n1 < nModes; n1++)
-	{
-		if (pDevmodes[n1].dmBitsPerPel == 24 || pDevmodes[n1].dmBitsPerPel == 32)
-		{
-			dwBitsPerPel = pDevmodes[n1].dmBitsPerPel;
-
-			break;
-		}
-	}
-
-	for (int n2 = 0; n2 < nModes; n2++)
-	{
-		if (pDevmodes[n2].dmPelsWidth == WindowWidth && pDevmodes[n2].dmPelsHeight == WindowHeight && pDevmodes[n2].dmBitsPerPel == dwBitsPerPel)
-		{
-			ChangeDisplaySettings(&pDevmodes[n2], 0);
-
-			break;
-		}
-	}
-
-	delete[] pDevmodes;
 }
 
-HWND cWindow::StartWindow(HINSTANCE hCurrentInst, int nCmdShow)
+void cWindow::ChangeWindowState()
 {
-	char* windowName = "MU ONLINE";
+	RECT rc = { 0, 0, WindowWidth, WindowHeight };
 
-	WNDCLASS wndClass;
-
-	wndClass.style = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
-
-	wndClass.lpfnWndProc = gWindow.MyWndProc;
-
-	wndClass.cbClsExtra = 0;
-
-	wndClass.cbWndExtra = 0;
-
-	wndClass.hInstance = hCurrentInst;
-
-	wndClass.hIcon = LoadIcon(gWindow.Instance, MAKEINTRESOURCE(IDI_ICON));
-
-	wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-
-	wndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-
-	wndClass.lpszMenuName = NULL;
-
-	wndClass.lpszClassName = windowName;
-
-	RegisterClass(&wndClass);
-
-	HWND hWnd;
-
-	if (gWindow.m_WindowMode == 0)
+	if (this->m_WindowMode)
 	{
-		hWnd = CreateWindowExA(WS_EX_APPWINDOW | WS_EX_TOPMOST, windowName, gProtect.m_MainInfo.WindowName, WS_POPUP, 0, 0, WindowWidth, WindowHeight, NULL, NULL, hCurrentInst, NULL);
-
-		gWindow.ChangeDisplaySettingsFunction();
+		ChangeDisplaySettings(NULL, 0);
 	}
 	else
 	{
-		RECT rc = { 0, 0, WindowWidth, WindowHeight };
-
-		AdjustWindowRect(&rc, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_BORDER | WS_CLIPCHILDREN, NULL);
-
-		hWnd = CreateWindowA(windowName, gProtect.m_MainInfo.WindowName, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_BORDER | WS_CLIPCHILDREN, (GetSystemMetrics(SM_CXSCREEN) - rc.right) / 2, (GetSystemMetrics(SM_CYSCREEN) - rc.bottom) / 2, rc.right, rc.bottom + 26, NULL, NULL, hCurrentInst, NULL);
+		this->ChangeDisplaySettingsFunction();
 	}
 
-	return hWnd;
-}
+	LONG PosX = ((GetSystemMetrics(SM_CXSCREEN)) / 2) - (WindowWidth / 2);
 
-LRESULT WINAPI cWindow::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	switch (msg)
+	LONG PosY = ((GetSystemMetrics(SM_CYSCREEN)) / 2) - (WindowHeight / 2);
+
+	if (this->m_WindowMode)
 	{
-		case WM_NCACTIVATE:
-		{
-			return 0;
-		}
+		LONG STYLE = (gWindow.m_WindowMode == 2) // Borderless
+			? WS_POPUP | WS_VISIBLE
+			: WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
 
-		case 0x2B11u: // Fix disconnect when minimize
-		{
-			return 0;
-		}
+		LONG EXSTYLE = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 
-		case WM_SIZE: // Fix disconnect when minimize
-		{
-			return 0;
-		}
+		SetWindowLongPtr(g_hWnd, GWL_STYLE, STYLE); // Set the Window Style
 
-		case WM_TIMER:
-		{
-			switch (wParam)
-			{
-				case WM_AUTOCLICKTIMER:
-				{
-					SendMessage(g_hWnd, (gController.AutoClickState) ? WM_RBUTTONUP : WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(MouseX, MouseY));
+		SetWindowLongPtr(g_hWnd, GWL_EXSTYLE, EXSTYLE); // Set the Window Extra Style
 
-					gController.AutoClickState ^= 1;
+		AdjustWindowRect(&rc, STYLE, FALSE); // Adjust the rectangle inside
+	}
+	else
+	{
+		LONG STYLE = WS_POPUP | WS_VISIBLE;
 
-					return NULL;
-				}
-			}
+		LONG EXSTYLE = WS_EX_APPWINDOW;
 
-			break;
-		}
+		SetWindowLongPtr(g_hWnd, GWL_STYLE, STYLE); // Set the Window Style
+
+		SetWindowLongPtr(g_hWnd, GWL_EXSTYLE, EXSTYLE); // Set the Window Extra Style
+
+		AdjustWindowRect(&rc, STYLE, FALSE); // Adjust the rectangle inside
 	}
 
-	return CallWindowProc(WndProc, hwnd, msg, wParam, lParam);
+	SetWindowPos(g_hWnd, NULL, PosX, PosY, rc.right - rc.left, rc.bottom - rc.top, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_FRAMECHANGED);
+
+	MoveWindow(g_hWnd, PosX, PosY, rc.right - rc.left, rc.bottom - rc.top, TRUE); // Change the size
+
+	gCamera.SetCurrentValue(); // Fix the 3d camera position
+
+	gFont.ReloadFont();
 }

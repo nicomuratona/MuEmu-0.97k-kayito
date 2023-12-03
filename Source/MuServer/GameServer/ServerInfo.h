@@ -175,9 +175,11 @@ public:
 	// Event
 	int m_BloodCastleEvent;
 	int m_BloodCastleMaxUser;
+	int m_BloodCastleAllowPK;
 	int m_BonusManagerSwitch;
 	int m_DevilSquareEvent;
 	int m_DevilSquareMaxUser;
+	int m_DevilSquareAllowPK;
 	int m_InvasionManagerSwitch;
 	int m_FlyingDragonsSwitch;
 	int m_FlyingDragonsOnlyBossMapSpawn;

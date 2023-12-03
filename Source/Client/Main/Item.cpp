@@ -20,7 +20,7 @@ void CItem::Init()
 {
 	SetCompleteHook(0xE9, 0x0047B910, &this->ItemConvert);
 
-	SetCompleteHook(0xE9, 0x004C45C0, &this->calcMaxDurability);
+	SetCompleteHook(0xE9, 0x004C45C0, &this->myCalcMaxDurability);
 
 	SetCompleteHook(0xE9, 0x0047C690, &this->ItemValue);
 
@@ -550,7 +550,7 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 	ip->SpecialNum = (ip->SpecialNum > MAX_SPECIAL_OPTION) ? MAX_SPECIAL_OPTION : ip->SpecialNum;
 }
 
-WORD CItem::calcMaxDurability(ITEM* ip, ITEM_ATTRIBUTE* p, int Level)
+WORD CItem::myCalcMaxDurability(ITEM* ip, ITEM_ATTRIBUTE* p, int Level)
 {
 	if (ip->Type == GET_ITEM(14, 21)) // Rena
 	{
@@ -818,7 +818,7 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 
 	m_BuyMoney = ((m_BuyMoney >= 1000) ? ((m_BuyMoney / 100) * 100) : m_BuyMoney);
 
-	float m_BaseDurability = (float)gItem.calcMaxDurability(ip, ItemInfo, m_ItemLevel);
+	float m_BaseDurability = (float)gItem.myCalcMaxDurability(ip, ItemInfo, m_ItemLevel);
 
 	m_SellMoney = (DWORD)(price / 3);
 

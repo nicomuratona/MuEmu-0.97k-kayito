@@ -402,9 +402,9 @@ void CFullMap::RenderCharacters()
 
 			SelectObject(m_hFontDC, this->FullMapFont);
 
-			SetBackgroundTextColor = Color4f(0, 0, 0, 255);
+			SetBackgroundTextColor = Color4b(0, 0, 0, 255);
 
-			SetTextColor = Color4f(255, 255, 255, 255);
+			SetTextColor = Color4b(255, 255, 255, 255);
 
 			RenderText
 			(
@@ -433,9 +433,16 @@ void CFullMap::RenderZoom(int Texture, float x, float y, float Width, float Heig
 {
 	if (gFullMap.FullMapSwitch)
 	{
+		float alpha = 0.3f;
+
+		if (IsWorkZone(0, 411, 96, 21))
+		{
+			alpha = 1.0f;
+		}
+
 		EnableAlphaTest(true);
 
-		glColor3f(1.0f, 1.0f, 1.0f);
+		glColor4f(1.0f, 1.0f, 1.0f, alpha);
 
 		RenderBitmap(0xF5, 0.0f, 411.0f, 75.0f, 21.0f, (0.0f / 128.0f), (0.0f / 32.0f), (75.0f / 128.0f), (21.0f / 32.0f), true, true);
 
@@ -454,25 +461,29 @@ void CFullMap::RenderZoom(int Texture, float x, float y, float Width, float Heig
 
 		SelectObject(m_hFontDC, g_hFontBold);
 
+		EnableAlphaTest(true);
+
 		char Text[128] = { 0 };
 
 		wsprintf(Text, "Zoom Level: %d", gFullMap.ZoomLevel);
 
 		DWORD backupBgTextColor = SetBackgroundTextColor;
 
-		SetBackgroundTextColor = Color4f(0, 0, 0, 255);
+		SetBackgroundTextColor = Color4b(0, 0, 0, (int)(alpha * 255));
 
 		DWORD backupTextColor = SetTextColor;
 
-		SetTextColor = Color4f(255, 0, 0, 255);
+		SetTextColor = Color4b(255, 0, 0, (int)(alpha * 255));
 
-		RenderText(5, 417, Text, 0, 0, NULL);
+		RenderText(5, CenterTextPosY(Text, 421), Text, 0, RT3_SORT_LEFT, NULL);
 
 		SetBackgroundTextColor = backupBgTextColor;
 
 		SetTextColor = backupTextColor;
 
 		SelectObject(m_hFontDC, g_hFont);
+
+		DisableAlphaBlend();
 	}
 	else
 	{

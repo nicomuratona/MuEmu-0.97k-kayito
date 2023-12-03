@@ -403,21 +403,6 @@ struct PMSG_CHARACTER_INFO_SEND
 	BYTE CtlCode;
 	WORD FruitAddPoint;
 	WORD MaxFruitAddPoint;
-#if(GAMESERVER_EXTRA==1)
-	DWORD ViewReset;
-	DWORD ViewGrandReset;
-	DWORD ViewPoint;
-	DWORD ViewCurHP;
-	DWORD ViewMaxHP;
-	DWORD ViewCurMP;
-	DWORD ViewMaxMP;
-	DWORD ViewCurBP;
-	DWORD ViewMaxBP;
-	DWORD ViewStrength;
-	DWORD ViewDexterity;
-	DWORD ViewVitality;
-	DWORD ViewEnergy;
-#endif
 };
 
 struct PMSG_CHARACTER_REGEN_SEND

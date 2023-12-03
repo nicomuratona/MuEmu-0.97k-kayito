@@ -14,7 +14,7 @@ private:
 
 	static void ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2);
 
-	static WORD calcMaxDurability(ITEM* ip, ITEM_ATTRIBUTE* p, int Level);
+	static WORD myCalcMaxDurability(ITEM* ip, ITEM_ATTRIBUTE* p, int Level);
 
 	static DWORD ItemValue(ITEM* ip, int goldType);
 

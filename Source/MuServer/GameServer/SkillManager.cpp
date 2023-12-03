@@ -939,26 +939,6 @@ bool CSkillManager::BasicSkillAttack(int aIndex, int bIndex, CSkill* lpSkill)
 
 	gAttack.Attack(lpObj, &gObj[bIndex], lpSkill, 1, 0, 0);
 
-	for (int n = 0; n < MAX_VIEWPORT; n++)
-	{
-		if (lpObj->VpPlayer2[n].state == VIEWPORT_NONE)
-		{
-			continue;
-		}
-
-		int index = lpObj->VpPlayer2[n].index;
-
-		if (!this->CheckSkillTarget(lpObj, index, bIndex, lpObj->VpPlayer2[n].type))
-		{
-			continue;
-		}
-
-		if (lpObj->Type == OBJECT_USER && !this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[bIndex].X, gObj[bIndex].Y))
-		{
-			continue;
-		}
-	}
-
 	return true;
 }
 
@@ -1684,7 +1664,7 @@ void CSkillManager::CGSkillAttackRecv(PMSG_SKILL_ATTACK_RECV* lpMsg, int aIndex)
 
 	int bIndex = MAKE_NUMBERW(lpMsg->index[0], lpMsg->index[1]);
 
-	if (OBJECT_RANGE(bIndex) == false)
+	if (OBJECT_RANGE(bIndex) == 0)
 	{
 		return;
 	}
@@ -1701,7 +1681,7 @@ void CSkillManager::CGSkillAttackRecv(PMSG_SKILL_ATTACK_RECV* lpMsg, int aIndex)
 		return;
 	}
 
-	if (BC_MAP_RANGE(lpObj->Map) != false || DS_MAP_RANGE(lpObj->Map) != false)
+	if (BC_MAP_RANGE(lpObj->Map) != 0 || DS_MAP_RANGE(lpObj->Map) != 0)
 	{
 		//Enable buff skills in event maps
 	}

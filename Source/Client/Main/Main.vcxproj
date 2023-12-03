@@ -62,6 +62,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;MAIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -69,8 +71,9 @@
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <MapFileName>$(TargetDir)$(TargetName).map</MapFileName>
-      <AdditionalDependencies>User32.lib;Shell32.lib;Advapi32.lib;Gdi32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>User32.lib;Shell32.lib;Advapi32.lib;Gdi32.lib;Ole32.lib;</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
+      <AdditionalLibraryDirectories>C:\Program Files\Microsoft Visual Studio 10.0\VC\lib\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,6 +85,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;MAIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -90,8 +95,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
-      <AdditionalDependencies>User32.lib;Shell32.lib;Advapi32.lib;Gdi32.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\Microsoft Visual Studio 10.0\VC\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>User32.lib;Shell32.lib;Advapi32.lib;Gdi32.lib;Ole32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\Microsoft Visual Studio 10.0\VC\lib\;</AdditionalLibraryDirectories>
       <MapFileName>$(TargetDir)$(TargetName).map</MapFileName>
     </Link>
   </ItemDefinitionGroup>
@@ -123,6 +128,7 @@
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="MathLib.h" />
     <ClInclude Include="MoveList.h" />
+    <ClInclude Include="MP3.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="OptionsMenu.h" />
     <ClInclude Include="PacketManager.h" />
@@ -132,7 +138,6 @@
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="ProtocolDefines.h" />
     <ClInclude Include="Reconnect.h" />
-    <ClInclude Include="Resolution.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RightClickMove.h" />
     <ClInclude Include="ServerList.h" />
@@ -173,6 +178,7 @@
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="MathLib.cpp" />
     <ClCompile Include="MoveList.cpp" />
+    <ClCompile Include="MP3.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="Patchs.cpp" />
@@ -180,7 +186,6 @@
     <ClCompile Include="Protect.cpp" />
     <ClCompile Include="Protocol.cpp" />
     <ClCompile Include="Reconnect.cpp" />
-    <ClCompile Include="Resolution.cpp" />
     <ClCompile Include="RightClickMove.cpp" />
     <ClCompile Include="ServerList.cpp" />
     <ClCompile Include="SkyDome.cpp" />

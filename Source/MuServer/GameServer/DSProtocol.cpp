@@ -676,41 +676,13 @@ void DGCharacterInfoRecv(SDHP_CHARACTER_INFO_RECV* lpMsg)
 
 	pMsg.MaxFruitAddPoint = gFruit.GetMaxFruitPoint(lpObj);
 
-#if(GAMESERVER_EXTRA==1)
-
-	pMsg.ViewReset = (DWORD)(lpObj->Reset);
-
-	pMsg.ViewGrandReset = (DWORD)(lpObj->GrandReset);
-
-	pMsg.ViewPoint = (DWORD)(lpObj->LevelUpPoint);
-
-	pMsg.ViewCurHP = (DWORD)(lpObj->Life);
-
-	pMsg.ViewMaxHP = (DWORD)(lpObj->MaxLife + lpObj->AddLife);
-
-	pMsg.ViewCurMP = (DWORD)(lpObj->Mana);
-
-	pMsg.ViewMaxMP = (DWORD)(lpObj->MaxMana + lpObj->AddMana);
-
-	pMsg.ViewCurBP = (DWORD)(lpObj->BP);
-
-	pMsg.ViewMaxBP = (DWORD)(lpObj->MaxBP + lpObj->AddBP);
-
-	pMsg.ViewStrength = lpObj->Strength;
-
-	pMsg.ViewDexterity = lpObj->Dexterity;
-
-	pMsg.ViewVitality = lpObj->Vitality;
-
-	pMsg.ViewEnergy = lpObj->Energy;
-
-#endif
-
 	DataSend(lpObj->Index, (BYTE*)&pMsg, pMsg.header.size);
 
 	GDConnectCharacterSend(lpObj->Index);
 
 	GDOptionDataSend(lpObj->Index);
+
+	GCNewCharacterInfoSend(lpObj);
 
 	gMove.GCMoveListSend(lpObj);
 

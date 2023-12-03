@@ -194,26 +194,23 @@ void CPrintPlayer::RenderExperience()
 
 	WORD wPriorLevel = wLevel - 1;
 
-	DWORD Experiences[2] = { 0, 0 };
+	DWORD dwPriorExperience = 0;
 
-	for (int n = wPriorLevel; n <= wLevel; n++)
+	if (wPriorLevel > 0)
 	{
-		if (n > 0)
+		dwPriorExperience = (((wPriorLevel + 9) * wPriorLevel) * wPriorLevel) * 10;
+
+		if (wPriorLevel > 255)
 		{
-			Experiences[n - wPriorLevel] = (((n + 9) * n) * n) * 10;
+			int iLevelOverN = wPriorLevel - 255;
 
-			if (n > 255)
-			{
-				int iLevelOverN = n - 255;
-
-				Experiences[n - wPriorLevel] += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 1000;
-			}
+			dwPriorExperience += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 1000;
 		}
 	}
 
-	DWORD RequiredExp = Experiences[1] - Experiences[0];
+	DWORD RequiredExp = gPrintPlayer.ViewNextExperience - dwPriorExperience;
 
-	DWORD ActualExp = gPrintPlayer.ViewExperience - Experiences[0];
+	DWORD ActualExp = gPrintPlayer.ViewExperience - dwPriorExperience;
 
 	float TotalBarRate = (float)ActualExp / (float)RequiredExp;
 

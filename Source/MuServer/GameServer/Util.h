@@ -11,6 +11,10 @@ BYTE GetExceOptionCount(BYTE ExceOption);
 
 int LevelSmallConvert(int level);
 
+bool CheckSpecialText(char* Text);
+
+bool CheckSpaceCharacter(char* Text);
+
 BYTE GetPathPacketDirPos(int px, int py);
 
 void PacketArgumentDecrypt(char* out_buff, char* in_buff, int size);

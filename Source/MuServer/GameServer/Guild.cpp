@@ -102,6 +102,14 @@ void CGuild::CGGuildCreateRecv(PMSG_GUILD_CREATE_RECV* lpMsg, int aIndex)
 	{
 		this->GCGuildCreateResultSend(aIndex, 2);
 	}
+	else if (CheckSpaceCharacter(GuildName) == false)
+	{
+		this->GCGuildCreateResultSend(aIndex, 4);
+	}
+	else if (CheckSpecialText(GuildName) == false)
+	{
+		this->GCGuildCreateResultSend(aIndex, 5);
+	}
 	else
 	{
 		SDHP_GUILD_CREATE_SEND pMsg;

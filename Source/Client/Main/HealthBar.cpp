@@ -122,7 +122,7 @@ void CHealthBar::DrawHealthBar()
 
 		PosX -= (int)floor((double)LifeBarWidth / 2.0);
 
-		if ((MouseX >= PosX) && (MouseX <= PosX + (int)LifeBarWidth) && (MouseY >= PosY - 2) && (MouseY < PosY + 6))
+		if (IsWorkZone(PosX, PosY, (int)LifeBarWidth, 6))
 		{
 			EnableAlphaTest(true);
 
@@ -132,11 +132,11 @@ void CHealthBar::DrawHealthBar()
 
 			SelectObject(m_hFontDC, g_hFont);
 
-			SetBackgroundTextColor = Color4f(0, 0, 0, 128);
+			SetBackgroundTextColor = Color4b(0, 0, 0, 128);
 
-			SetTextColor = Color4f(255, 255, 255, 255);
+			SetTextColor = Color4b(255, 255, 255, 255);
 
-			RenderText(PosX, PosY - 8, LifeDisplay, (int)LifeBarWidth * WindowWidth / 640, 1, 0);
+			RenderText(CenterTextPosX(LifeDisplay, PosX + ((int)LifeBarWidth / 2)), PosY - 8, LifeDisplay, 0, RT3_SORT_LEFT, NULL);
 		}
 
 		EnableAlphaTest(true);
@@ -221,11 +221,11 @@ __declspec(naked) void CHealthBar::DrawPointingHealthBar()
 
 	SelectObject(m_hFontDC, g_hFont);
 
-	SetBackgroundTextColor = Color4f(0, 0, 0, 0);
+	SetBackgroundTextColor = Color4b(0, 0, 0, 0);
 
-	SetTextColor = Color4f(255, 255, 255, 255);
+	SetTextColor = Color4b(255, 255, 255, 255);
 
-	RenderText((int)PosX, (int)PosY, LifeDisplay, (int)LifeBarWidth * WindowWidth / 640, 1, 0);
+	RenderText((int)PosX, (int)PosY, LifeDisplay, (int)LifeBarWidth * WindowWidth / 640, RT3_SORT_CENTER, NULL);
 
 	DisableAlphaBlend();
 

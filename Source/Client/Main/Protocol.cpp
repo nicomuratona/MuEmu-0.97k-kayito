@@ -498,40 +498,6 @@ void CProtocol::GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg)
 {
 	gReconnect.ReconnectOnCharacterInfo();
 
-	gPrintPlayer.ViewExperience = lpMsg->Experience;
-
-	gPrintPlayer.ViewNextExperience = lpMsg->NextExperience;
-
-	gPrintPlayer.ViewReset = lpMsg->ViewReset;
-
-	gPrintPlayer.ViewGrandReset = lpMsg->ViewGrandReset;
-
-	gPrintPlayer.ViewPoint = lpMsg->ViewPoint;
-
-	gPrintPlayer.ViewCurHP = lpMsg->ViewCurHP;
-
-	gPrintPlayer.ViewMaxHP = lpMsg->ViewMaxHP;
-
-	gPrintPlayer.ViewCurMP = lpMsg->ViewCurMP;
-
-	gPrintPlayer.ViewMaxMP = lpMsg->ViewMaxMP;
-
-	gPrintPlayer.ViewCurBP = lpMsg->ViewCurBP;
-
-	gPrintPlayer.ViewMaxBP = lpMsg->ViewMaxBP;
-
-	gPrintPlayer.ViewStrength = lpMsg->ViewStrength;
-
-	gPrintPlayer.ViewDexterity = lpMsg->ViewDexterity;
-
-	gPrintPlayer.ViewVitality = lpMsg->ViewVitality;
-
-	gPrintPlayer.ViewEnergy = lpMsg->ViewEnergy;
-
-	gPrintPlayer.ViewExperience = lpMsg->Experience;
-
-	gPrintPlayer.ViewNextExperience = lpMsg->NextExperience;
-
 	*(WORD*)(Hero + 0x1DC) = 0;
 
 	*(BYTE*)(Hero + 0x00) = 0;
@@ -628,6 +594,8 @@ void CProtocol::GCMonsterDamageRecv(PMSG_MONSTER_DAMAGE_RECV* lpMsg)
 void CProtocol::GCNewCharacterInfoRecv(PMSG_NEW_CHARACTER_INFO_RECV* lpMsg)
 {
 	STRUCT_DECRYPT;
+
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E) = GET_MAX_WORD_VALUE(lpMsg->Level);
 
 	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x54) = GET_MAX_WORD_VALUE(lpMsg->LevelUpPoint + 1);
 

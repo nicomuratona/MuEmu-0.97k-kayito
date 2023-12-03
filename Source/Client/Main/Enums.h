@@ -100,3 +100,46 @@ enum eEquipment
 	EQUIPMENT_RING_RIGHT = 10,
 	EQUIPMENT_RING_LEFT = 11,
 };
+
+/* Text aligns enum */
+enum eTextAligns
+{
+	RT3_SORT_LEFT = 0,		// Left align
+	RT3_SORT_CENTER = 1,		// Center align
+};
+
+/* Resolutions */
+enum eResolutionValues
+{
+	// 4:3
+	R640x480 = 0,
+	R800x600,
+	R1024x768,
+	R1280x960,
+	// 16:9
+	R1280x720,
+	R1366x768,
+	R1600x900,
+	R1920x1080,
+	MAX_RESOLUTION_VALUE
+};
+
+/* Window Mode */
+enum eWindowModes
+{
+	FULL_SCREEN = 0,
+	WINDOW_MODE,
+	BORDERLESS,
+	MAX_WINDOW_MODE
+};
+
+/* Scene Flags */
+enum eSceneFlags
+{
+	NON_SCENE = 0,
+	WEBZEN_SCENE,
+	LOG_IN_SCENE,
+	LOADING_SCENE,
+	CHARACTER_SCENE, 
+	MAIN_SCENE
+};

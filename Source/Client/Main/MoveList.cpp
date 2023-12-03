@@ -89,35 +89,35 @@ void CMoveList::RenderMoveListBack()
 
 	DWORD backupBgTextColor = SetBackgroundTextColor;
 
-	SetBackgroundTextColor = Color4f(0, 0, 0, 0);
+	SetBackgroundTextColor = Color4b(0, 0, 0, 0);
 
 	DWORD backupTextColor = SetTextColor;
 
-	SetTextColor = Color4f(255, 204, 26, 255);
+	SetTextColor = Color4b(255, 204, 26, 255);
 
 	SelectObject(m_hFontDC, g_hFontBold);
 
-	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + 5, "Teleport Window", (int)(this->MainWidth - 10) * WindowWidth / 640, 1, 0);
+	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + 5, "Teleport Window", (int)(this->MainWidth - 10) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
 
-	SetBackgroundTextColor = Color4f(0, 0, 0, 0);
+	SetBackgroundTextColor = Color4b(0, 0, 0, 0);
 
-	SetTextColor = Color4f(127, 178, 255, 255);
-
-	SelectObject(m_hFontDC, g_hFont);
-
-	RenderText((int)this->MapNamePosX, (int)this->MainPosY + 20, "Map", (int)(this->SectionWidth) * WindowWidth / 640, 1, 0);
-
-	RenderText((int)this->ReqLevelPosX, (int)this->MainPosY + 20, "Min. Level", (int)(this->SectionWidth) * WindowWidth / 640, 1, 0);
-
-	RenderText((int)this->ReqMoneyPosX, (int)this->MainPosY + 20, "Cost", (int)(this->SectionWidth) * WindowWidth / 640, 1, 0);
-
-	SetBackgroundTextColor = Color4f(255, 0, 0, 255);
-
-	SetTextColor = Color4f(255, 255, 255, 255);
+	SetTextColor = Color4b(127, 178, 255, 255);
 
 	SelectObject(m_hFontDC, g_hFont);
 
-	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + (int)this->MainHeight - 15, "Close", (int)(this->MainWidth - 10) * WindowWidth / 640, 1, 0);
+	RenderText((int)this->MapNamePosX, (int)this->MainPosY + 20, "Map", (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+
+	RenderText((int)this->ReqLevelPosX, (int)this->MainPosY + 20, "Min. Level", (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+
+	RenderText((int)this->ReqMoneyPosX, (int)this->MainPosY + 20, "Cost", (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+
+	SetBackgroundTextColor = Color4b(255, 0, 0, 255);
+
+	SetTextColor = Color4b(255, 255, 255, 255);
+
+	SelectObject(m_hFontDC, g_hFont);
+
+	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + (int)this->MainHeight - 15, "Close", (int)(this->MainWidth - 10) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
 
 	SetBackgroundTextColor = backupBgTextColor;
 
@@ -132,7 +132,7 @@ void CMoveList::RenderMoveListMaps()
 
 	DWORD backupTextColor = SetTextColor;
 
-	SetBackgroundTextColor = Color4f(0, 0, 0, 0);
+	SetBackgroundTextColor = Color4b(0, 0, 0, 0);
 
 	SelectObject(m_hFontDC, g_hFont);
 
@@ -182,11 +182,11 @@ void CMoveList::RenderMoveListMaps()
 
 		if (it->CanMove)
 		{
-			SetTextColor = Color4f(255, 255, 255, 255);
+			SetTextColor = Color4b(255, 255, 255, 255);
 		}
 		else
 		{
-			SetTextColor = Color4f(164, 39, 17, 255);
+			SetTextColor = Color4b(164, 39, 17, 255);
 		}
 
 		if (it->Selected && it->CanMove)
@@ -200,13 +200,13 @@ void CMoveList::RenderMoveListMaps()
 			EnableAlphaTest(true);
 		}
 
-		RenderText((int)this->MapNamePosX, (int)this->MainPosY + 35 + (PosY * 12), it->MapName, (int)(this->SectionWidth) * WindowWidth / 640, 1, 0);
+		RenderText((int)this->MapNamePosX, (int)this->MainPosY + 35 + (PosY * 12), it->MapName, (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
 
 		wsprintf(text, "%d", RealMinLevel);
-		RenderText((int)this->ReqLevelPosX, (int)this->MainPosY + 35 + (PosY * 12), text, (int)(this->SectionWidth) * WindowWidth / 640, 1, 0);
+		RenderText((int)this->ReqLevelPosX, (int)this->MainPosY + 35 + (PosY * 12), text, (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
 
 		wsprintf(text, "%d", it->Money);
-		RenderText((int)this->ReqMoneyPosX, (int)this->MainPosY + 35 + (PosY * 12), text, (int)(this->SectionWidth) * WindowWidth / 640, 1, 0);
+		RenderText((int)this->ReqMoneyPosX, (int)this->MainPosY + 35 + (PosY * 12), text, (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
 
 		PosY++;
 	}

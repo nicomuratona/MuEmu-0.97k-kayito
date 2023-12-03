@@ -21,7 +21,6 @@
 #include "Protect.h"
 #include "Protocol.h"
 #include "Reconnect.h"
-#include "Resolution.h"
 #include "RightClickMove.h"
 #include "SkyDome.h"
 #include "Sound.h"
@@ -76,8 +75,6 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 	gSound.Init();
 
 	gOptionsMenu.Init();
-
-	gResolution.Init();
 
 	gInterface.Init();
 

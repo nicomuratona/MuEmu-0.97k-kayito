@@ -305,15 +305,25 @@ public:
 
 	void Init();
 
-	void UpdateVolume(int volumeLevel);
+	void UpdateSoundVolumeLevel(int volumeLevel);
+
+	void UpdateMusicVolumeLevel(int volumeLevel);
+
+	void ButtonStopMusic();
+
+	void ButtonPlayMusic();
 
 private:
 
 	void InitSoundConvertion();
 
+	static void ReceiveLevelUpHook(BYTE* ReceiveBuffer);
+
 	static void MyLoadWaveFile(int Buffer, TCHAR* strFileName, int MaxChannel, bool Enable);
 
-	static void ReceiveLevelUpHook(BYTE* ReceiveBuffer);
+	static void MyPlayMP3(char* Name, BOOL bEnforce);
+
+	static void MyStopMP3(char* Name, BOOL bEnforce);
 
 	void SetMasterVolume(long vol);
 
@@ -321,11 +331,17 @@ private:
 
 public:
 
-	BYTE VolumeLevel;
+	int SoundVolumeLevel;
+
+	int MusicVolumeLevel;
+
+	bool MusicPlaying;
 
 private:
 
 	long g_MasterVolume;
+
+	std::wstring MusicFileName;
 };
 
 extern CSound gSound;

@@ -164,20 +164,6 @@ struct PMSG_CHARACTER_INFO_RECV
 	BYTE CtlCode;
 	WORD FruitAddPoint;
 	WORD MaxFruitAddPoint;
-	// Extra
-	DWORD ViewReset;
-	DWORD ViewGrandReset;
-	DWORD ViewPoint;
-	DWORD ViewCurHP;
-	DWORD ViewMaxHP;
-	DWORD ViewCurMP;
-	DWORD ViewMaxMP;
-	DWORD ViewCurBP;
-	DWORD ViewMaxBP;
-	DWORD ViewStrength;
-	DWORD ViewDexterity;
-	DWORD ViewVitality;
-	DWORD ViewEnergy;
 };
 
 struct PMSG_CHARACTER_REGEN_RECV

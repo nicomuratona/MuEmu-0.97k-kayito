@@ -24,6 +24,10 @@ char* ConvertModuleFileName(char* name);
 
 bool FileExists(char* name);
 
+int GetTextWidth(char* buff);
+
+int GetTextHeight(char* buff);
+
 int CenterTextPosX(char* buff, int PosX);
 
 int CenterTextPosY(char* buff, int PosY);
@@ -39,3 +43,5 @@ void Decrypt(BYTE* OutBuff, BYTE* InBuff, int size);
 void Encrypt(BYTE* OutBuff, BYTE* InBuff, int size);
 
 void MyRenderBitmapRotate(int Texture, float x, float y, float Width, float Height, float Rotate, float u, float v, float uWidth, float vHeight);
+
+void RenderTriangleColor(float x, float y, float Width, float Height);

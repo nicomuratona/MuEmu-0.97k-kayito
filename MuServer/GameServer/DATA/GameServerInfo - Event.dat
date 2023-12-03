@@ -4,6 +4,7 @@
 ;==================================================
 BloodCastleEvent = 1
 BloodCastleMaxUser = 10
+BloodCastleAllowPK = 1
 
 ;==================================================
 ; Bonus Manager Settings
@@ -15,6 +16,7 @@ BonusManagerSwitch = 1
 ;==================================================
 DevilSquareEvent = 1
 DevilSquareMaxUser = 15
+DevilSquareAllowPK = 1
 
 ;==================================================
 ; Invasion Manager Settings

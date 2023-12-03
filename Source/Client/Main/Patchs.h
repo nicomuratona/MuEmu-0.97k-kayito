@@ -29,6 +29,14 @@ private:
 	static int OpenTerrainAttribute(char* FileName);
 
 	static int OpenObjectsEnc(char* FileName);
+
+	static BOOL ReadMainVersion();
+
+	static bool RenderNumArrow();
+
+	static int RenderEquipedHelperLife(bool RenderedArrow);
+
+	static void RenderBrokenItem(int PosY);
 };
 
 extern CPatchs gPatchs;

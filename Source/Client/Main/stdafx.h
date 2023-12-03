@@ -18,6 +18,9 @@
 #include <Rpc.h>
 #include <gl\GL.h>
 #include <dsound.h>
+#include <uuids.h>
+#include <strmif.h>
+#include <control.h>
 
 // General Includes
 #include "Console.h"
@@ -31,5 +34,7 @@
 
 // Libraries
 #pragma comment(lib,"ws2_32.lib")
+#pragma comment(lib,"version.lib")
 #pragma comment(lib,"Rpcrt4.lib")
 #pragma comment(lib,"Opengl32.lib")
+#pragma comment(lib, "strmiids.lib")

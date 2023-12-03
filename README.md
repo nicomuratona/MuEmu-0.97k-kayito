@@ -161,3 +161,19 @@
 "MuServer/GameServer/DATA/GameServerInfo - Common.dat"  
 hacia otro archivo separado en  
 "MuServer/GameServer/DATA/GameServerInfo - StartUp.dat"
+
+### Update 21:
+- Se corrigió el sistema de texturas que se continuaban perjudicando a medida que se agregaban más y más items (créditos: Zeus) [Main.dll]
+- Se corrigieron los nombres en el HealthBar que se recortaban cuando el texto superaba el tamaño de la barra [Main.dll]
+- Se añadió un sistema de reproductor musical para quitar definitivamente el MuPlayer.exe y que no haga falta integrar wzAudio.dll ni ogg.dll ni vorbisfile.dll [Main.dll]
+- Se expandió el máximo de caracteres de los mensajes globales antes de que realice un salto de línea [Main.dll]
+- Se migraron todas las lecturas de configuraciones al archivo Config.ini dentro del cliente (ya no se utiliza el registro de windows) [Main.dll]
+- Se implementó un menu de opciones avanzadas que permite  
+    - Cambiar el lenguaje (Eng, Spn, Por) sin salir del juego
+    - Regular el volumen de los sonidos y la música por separado, y pausar/reproducir la música
+    - Cambiar entre modo ventana y fullscreen y también cambiar la resolución del juego
+    - Cambiar el tipo de fuente, el tamaño, la negrita y la cursiva
+- Se corrigió que luego de reconectar, la barra de experiencia y el número mostraban datos erróneos
+- Se corrigieron los textos de Bolts/Arrows que se muestran en la esquina superior derecha
+- Se corrigieron los textos y las barras de HP de los pets que se muestran en la esquina superior derecha
+- Se corrigieron los textos de los items que hacen falta reparar que se muestran en la esquina superior derecha

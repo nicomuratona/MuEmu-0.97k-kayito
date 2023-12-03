@@ -1369,9 +1369,9 @@ void CDevilSquare::CGDevilSquareEnterRecv(PMSG_DEVIL_SQUARE_ENTER_RECV* lpMsg, i
 		return;
 	}
 
-	if (gServerInfo.m_PKLimitFree == 0 && lpObj->PKLevel >= PKLVL_OUTLAW)
+	if (lpObj->PKLevel >= PKLVL_OUTLAW && gServerInfo.m_DevilSquareAllowPK == 0)
 	{
-		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(66, lpObj->Lang), gServerInfo.m_GuildCreateMinReset);
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(66, lpObj->Lang));
 
 		pMsg.result = 6;
 

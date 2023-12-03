@@ -1217,7 +1217,7 @@ void CGCloseClientRecv(PMSG_CLOSE_CLIENT_RECV* lpMsg, int aIndex)
 
 void CGSetLangRecv(PMSG_SET_LANG_RECV* lpMsg, int aIndex)
 {
-	if (gObj[aIndex].Connected != OBJECT_CONNECTED)
+	if (gObj[aIndex].Connected < OBJECT_CONNECTED)
 	{
 		return;
 	}
@@ -1227,7 +1227,7 @@ void CGSetLangRecv(PMSG_SET_LANG_RECV* lpMsg, int aIndex)
 
 void CGSetHwidRecv(PMSG_SET_HWID_RECV* lpMsg, int aIndex)
 {
-	if (gObj[aIndex].Connected != OBJECT_CONNECTED)
+	if (gObj[aIndex].Connected < OBJECT_CONNECTED)
 	{
 		return;
 	}

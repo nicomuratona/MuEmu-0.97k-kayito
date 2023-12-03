@@ -103,8 +103,6 @@ LRESULT Controller::Mouse(int nCode, WPARAM wParam, LPARAM lParam)
 	return CallNextHookEx(gController.MouseHook, nCode, wParam, lParam);
 }
 
-int SoundLevel = 9;
-
 LRESULT Controller::Keyboard(int nCode, WPARAM wParam, LPARAM lParam)
 {
 	if (nCode == HC_ACTION)

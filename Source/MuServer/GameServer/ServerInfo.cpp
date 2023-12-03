@@ -1572,11 +1572,15 @@ void CServerInfo::ReadEventInfo(char* section, char* path)
 
 	this->m_BloodCastleMaxUser = GetPrivateProfileInt(section, "BloodCastleMaxUser", 0, path);
 
+	this->m_BloodCastleAllowPK = GetPrivateProfileInt(section, "BloodCastleAllowPK", 1, path);
+
 	this->m_BonusManagerSwitch = GetPrivateProfileInt(section, "BonusManagerSwitch", 0, path);
 
 	this->m_DevilSquareEvent = GetPrivateProfileInt(section, "DevilSquareEvent", 0, path);
 
 	this->m_DevilSquareMaxUser = GetPrivateProfileInt(section, "DevilSquareMaxUser", 0, path);
+
+	this->m_DevilSquareAllowPK = GetPrivateProfileInt(section, "DevilSquareAllowPK", 1, path);
 
 	this->m_InvasionManagerSwitch = GetPrivateProfileInt(section, "InvasionManagerSwitch", 0, path);
 

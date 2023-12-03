@@ -154,7 +154,25 @@ bool FileExists(char* name)
 	}
 
 	return true;
-};
+}
+
+int GetTextWidth(char* buff)
+{
+	SIZE sz;
+
+	GetTextExtentPoint(m_hFontDC, buff, strlen(buff), &sz);
+
+	return (640 * sz.cx / WindowWidth);
+}
+
+int GetTextHeight(char* buff)
+{
+	SIZE sz;
+
+	GetTextExtentPoint(m_hFontDC, buff, strlen(buff), &sz);
+
+	return (480 * sz.cy / WindowHeight);
+}
 
 int CenterTextPosX(char* buff, int PosX)
 {
@@ -281,6 +299,44 @@ void MyRenderBitmapRotate(int Texture, float x, float y, float Width, float Heig
 		VectorRotate(p[i], Matrix, p2[i]);
 
 		glVertex2f(p2[i][0] + x, p2[i][1] + y);
+	}
+
+	glEnd();
+}
+
+void RenderTriangleColor(float x, float y, float Width, float Height)
+{
+	DisableTexture(false);
+
+	x = ConvertX(x);
+
+	y = ConvertY(y);
+
+	Width = ConvertX(Width);
+
+	Height = ConvertY(Height);
+
+	float p[3][2];
+
+	y = WindowHeight - y;
+
+	p[0][0] = x;
+
+	p[0][1] = y;
+
+	p[0][2] = x;
+
+	p[1][1] = y - Height;
+
+	p[2][0] = x + Width;
+
+	p[2][1] = y - (Height * 0.5f);
+
+	glBegin(GL_TRIANGLES);
+
+	for (int i = 0; i < 3; i++)
+	{
+		glVertex2f(p[i][0], p[i][1]);
 	}
 
 	glEnd();

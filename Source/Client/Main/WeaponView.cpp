@@ -305,8 +305,15 @@ _declspec(naked) void CWeaponView::SecondWeaponViewFix()
 		Jl RotateWeaponCheck;
 		Cmp Ebx, GET_ITEM_MODEL(7, 0);
 		Jge RotateWeaponCheck;
-		Cmp Ebx, GET_ITEM_MODEL(6, 13); // Dragon Shield
+		Cmp Ebx, GET_ITEM_MODEL(6, 6); // Skull Shield
 		Jnz NextShield1;
+		Mov Dword Ptr Ss : [Esp + 0x64 + 0x20] , 0xC20C0000; // matrix[0][3]
+		Mov Dword Ptr Ss : [Esp + 0x74 + 0x20] , 0x41200000; // matrix[1][3]
+		Mov Dword Ptr Ss : [Esp + 0x84 + 0x20] , 0; // matrix[2][3]
+		Jmp End;
+	NextShield1:
+		Cmp Ebx, GET_ITEM_MODEL(6, 13); // Dragon Shield
+		Jnz NextShield2;
 		Mov Dword Ptr Ss : [Esp + 0x28 + 0x20] , 0x41F00000; // Angle[0]
 		Mov Dword Ptr Ss : [Esp + 0x2C + 0x20] , 0xC1200000; // Angle[1]
 		Mov Dword Ptr Ss : [Esp + 0x30 + 0x20] , 0x43070000; // Angle[2]
@@ -320,9 +327,9 @@ _declspec(naked) void CWeaponView::SecondWeaponViewFix()
 		Mov Dword Ptr Ss : [Esp + 0x74 + 0x20] , 0x41200000; // matrix[1][3]
 		Mov Dword Ptr Ss : [Esp + 0x84 + 0x20] , 0; // matrix[2][3]
 		Jmp End;
-	NextShield1:
+	NextShield2:
 		Cmp Ebx, GET_ITEM_MODEL(6, 16); // Elemental Shield
-		Jnz NextShield2;
+		Jnz NextShield3;
 		Mov Dword Ptr Ss : [Esp + 0x28 + 0x20] , 0x41F00000; // Angle[0]
 		Mov Dword Ptr Ss : [Esp + 0x2C + 0x20] , 0; // Angle[1]
 		Mov Dword Ptr Ss : [Esp + 0x30 + 0x20] , 0x42B40000; // Angle[2]
@@ -336,16 +343,16 @@ _declspec(naked) void CWeaponView::SecondWeaponViewFix()
 		Mov Dword Ptr Ss : [Esp + 0x74 + 0x20] , 0; // matrix[1][3]
 		Mov Dword Ptr Ss : [Esp + 0x84 + 0x20] , 0xC1A00000; // matrix[2][3]
 		Jmp End;
-	NextShield2:
+	NextShield3:
 		Cmp Ebx, GET_ITEM_MODEL(6, 15); // Grand Soul Shield
-		Je NextShield3;
+		Je NextShield4;
 		Cmp Ebx, GET_ITEM_MODEL(6, 14); // Legendary Shield
-		Je NextShield3;
+		Je NextShield4;
 		Mov Dword Ptr Ss : [Esp + 0x64 + 0x20] , 0xC1200000; // matrix[0][3]
 		Mov Dword Ptr Ss : [Esp + 0x74 + 0x20] , 0x41200000; // matrix[1][3]
 		Mov Dword Ptr Ss : [Esp + 0x84 + 0x20] , 0; // matrix[2][3]
 		Jmp End;
-	NextShield3:
+	NextShield4:
 		Mov Dword Ptr Ss : [Esp + 0x28 + 0x20] , 0x42480000; // Angle[0]
 		Mov Dword Ptr Ss : [Esp + 0x2C + 0x20] , 0; // Angle[1]
 		Mov Dword Ptr Ss : [Esp + 0x30 + 0x20] , 0x42B40000; // Angle[2]

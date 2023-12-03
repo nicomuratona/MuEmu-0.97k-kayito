@@ -142,7 +142,7 @@ __declspec(naked) void CMapManager::LoadMapMusic()
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
-			((void(_cdecl*)(char* Name, BOOL bEnforce))0x00412890)(gMapManager.m_MapManager[World].SongName, FALSE);
+			PlayMp3(gMapManager.m_MapManager[World].SongName, FALSE);
 		}
 	}
 

@@ -480,7 +480,7 @@ void GDCharacterCreateRecv(SDHP_CHARACTER_CREATE_RECV* lpMsg, int index)
 
 	memcpy(pMsg.name, lpMsg->name, sizeof(pMsg.name));
 
-	if (CheckTextSyntax(lpMsg->name, sizeof(lpMsg->name)) == false || gBadSyntax.CheckSyntax(lpMsg->name) == false)
+	if (CheckTextSyntax(lpMsg->name, sizeof(lpMsg->name)) == false || gBadSyntax.CheckSyntax(lpMsg->name) == false || CheckSpecialText(lpMsg->name) == false)
 	{
 		pMsg.result = 0;
 	}

@@ -64,9 +64,6 @@
     <ClInclude Include="Window.h">
       <Filter>Window</Filter>
     </ClInclude>
-    <ClInclude Include="Resolution.h">
-      <Filter>Window</Filter>
-    </ClInclude>
     <ClInclude Include="TrayMode.h">
       <Filter>Window</Filter>
     </ClInclude>
@@ -202,6 +199,9 @@
     <ClInclude Include="FullMap.h">
       <Filter>Map</Filter>
     </ClInclude>
+    <ClInclude Include="MP3.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCRC32.Cpp">
@@ -211,9 +211,6 @@
       <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>Window</Filter>
-    </ClCompile>
-    <ClCompile Include="Resolution.cpp">
       <Filter>Window</Filter>
     </ClCompile>
     <ClCompile Include="TrayMode.cpp">
@@ -335,6 +332,9 @@
     </ClCompile>
     <ClCompile Include="FullMap.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MP3.cpp">
+      <Filter>Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

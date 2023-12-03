@@ -20,8 +20,8 @@
 #define MAP_RANGE(x) (((x)<0)?0:((x)>=MAX_MAP)?0:1)
 #define MAP_ITEM_RANGE(x) (((x)<0)?0:((x)>=MAX_MAP_ITEM)?0:1)
 
-#define DS_MAP_RANGE(x) (((x)==MAP_DEVIL_SQUARE1)?1:0)
-#define BC_MAP_RANGE(x) (((x)<MAP_BLOOD_CASTLE1)?0:((x)>MAP_BLOOD_CASTLE6)?0:1)
+#define DS_MAP_RANGE(x) (((x) == MAP_DEVIL_SQUARE1) ? 1 : 0)
+#define BC_MAP_RANGE(x) (((x) < MAP_BLOOD_CASTLE1) ? 0 : ((x) > MAP_BLOOD_CASTLE6) ? 0 : 1)
 
 enum eMapNumber
 {

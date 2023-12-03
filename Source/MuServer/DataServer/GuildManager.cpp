@@ -195,7 +195,7 @@ BYTE CGuildManager::AddGuild(int index, char* szGuildName, char* szMasterName, B
 		return 0;
 	}
 
-	if (CheckTextSyntax(szGuildName, strlen(szGuildName)) == 0)
+	if (CheckTextSyntax(szGuildName, strlen(szGuildName)) == 0 || CheckSpecialText(szGuildName) == false)
 	{
 		return 5;
 	}

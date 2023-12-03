@@ -2,10 +2,12 @@
 
 /* VIEWPORT */
 #define MAX_MAIN_VIEWPORT 400
+#define REAL_WIDTH(width) ((width) * WindowWidth / 640)
+#define REAL_HEIGHT(height) ((height) * WindowHeight / 480)
 
 /* OPENGL */
-#define Color3f(r, b, g)	((g << 16) + (b << 8) + r)
-#define Color4f(r, b, g, o)	((o << 24) + (g << 16) + (b << 8) + r)
+#define Color3b(r, b, g)	((g << 16) + (b << 8) + r)
+#define Color4b(r, b, g, o)	((o << 24) + (g << 16) + (b << 8) + r)
 
 /* ITEM */
 #define MAX_ITEM_TYPE 32
@@ -37,4 +39,14 @@
 #define DelBuff(x,y) (x &= ~y)
 
 /* SOUND */
-#define MAX_VOLUME_LEVEL 9
+#define MAX_SOUND_LEVEL 9
+#define MAX_MUSIC_LEVEL 9
+
+/* MODELS */
+#define MAX_TEXTURE 1450
+#define PLUS_TEXTURE 512
+#define TOTAL_TEXTURE (MAX_TEXTURE + PLUS_TEXTURE)
+
+/* WNDProc */
+#define WM_NPROTECT_EXIT_TWO (WM_USER + 0x2711)
+#define WINDOWMINIMIZED_TIMER 1001

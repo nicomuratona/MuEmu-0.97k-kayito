@@ -82,6 +82,72 @@ int LevelSmallConvert(int level)
 	}
 }
 
+bool CheckSpecialText(char* Text)
+{
+	for (unsigned char* lpszCheck = (unsigned char*)Text; *lpszCheck; ++lpszCheck)
+	{
+		if (_mbclen(lpszCheck) == 1) // One byte
+		{
+			//if ( *lpszCheck < 0x21 || *lpszCheck > 0x7E)
+			if (*lpszCheck < 48 || (58 <= *lpszCheck && *lpszCheck < 65) || (91 <= *lpszCheck && *lpszCheck < 97) || *lpszCheck > 122)
+			{
+				return false;
+			}
+		}
+		else // Two bytes
+		{
+			unsigned char* lpszTrail = lpszCheck + 1;
+
+			if (0x81 <= *lpszCheck && *lpszCheck <= 0xC8) // Korean
+			{
+				if ((0x41 <= *lpszTrail && *lpszTrail <= 0x5A)
+				    || (0x61 <= *lpszTrail && *lpszTrail <= 0x7A)
+				    || (0x81 <= *lpszTrail && *lpszTrail <= 0xFE))
+				{ // Excluding transparent characters
+					// Areas of special characters that are not allowed
+					if (0xA1 <= *lpszCheck && *lpszCheck <= 0xAF && 0xA1 <= *lpszTrail)
+					{
+						return false;
+					}
+					else if (*lpszCheck == 0xC6 && 0x53 <= *lpszTrail && *lpszTrail <= 0xA0)
+					{
+						return false;
+					}
+					else if (0xC7 <= *lpszCheck && *lpszCheck <= 0xC8 && *lpszTrail <= 0xA0)
+					{
+						return false;
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+
+			++lpszCheck;
+		}
+	}
+
+	return true;
+}
+
+bool CheckSpaceCharacter(char* Text)
+{
+	for (unsigned char* lpszCheck = (unsigned char*)Text; *lpszCheck; ++lpszCheck)
+	{
+		if (*lpszCheck == ' ')
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 BYTE GetPathPacketDirPos(int px, int py)
 {
 	if (px <= -1 && py <= -1)

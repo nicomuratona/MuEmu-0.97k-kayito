@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Protocol.h"
-
 enum eLanguages
 {
 	LANGUAGE_ENGLISH = 0,
@@ -20,13 +18,23 @@ public:
 
 	void Init();
 
+	void ReloadLanguage();
+
 	void SendLanguage();
+
+private:
+
+	void SetLanguage();
 
 public:
 
 	int LangNum;
 
 	char m_Language[4];
+
+	std::pair<std::string, std::string> iLanguageValues[MAX_LANGUAGE];
+
+private:
 
 	char m_TextBMD[100];
 

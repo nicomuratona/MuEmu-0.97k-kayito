@@ -2175,9 +2175,9 @@ void CBloodCastle::CGBloodCastleEnterRecv(PMSG_BLOOD_CASTLE_ENTER_RECV* lpMsg, i
 		return;
 	}
 
-	if (gServerInfo.m_PKLimitFree == 0 && lpObj->PKLevel >= PKLVL_OUTLAW)
+	if (lpObj->PKLevel >= PKLVL_OUTLAW && gServerInfo.m_BloodCastleAllowPK == 0)
 	{
-		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(66, lpObj->Lang), gServerInfo.m_GuildCreateMinReset);
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(66, lpObj->Lang));
 
 		pMsg.result = 6;
 
