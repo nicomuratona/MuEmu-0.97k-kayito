@@ -185,11 +185,38 @@ void CProtect::CheckPluginFile()
 		ExitProcess(0);
 	}
 
-	HMODULE module = LoadLibrary(this->m_MainInfo.PluginName);
+	HMODULE module = GetModuleHandle(this->m_MainInfo.PluginName);
+
+	if (module)
+	{
+		MessageBox(NULL, "Plugin file already loaded!", "Error", MB_OK | MB_ICONERROR);
+
+		ExitProcess(0);
+	}
+
+	module = LoadLibrary(this->m_MainInfo.PluginName);
 
 	if (module == NULL)
 	{
 		MessageBox(NULL, "Failed loading the plugin!", "Error", MB_OK | MB_ICONERROR);
+
+		ExitProcess(0);
+	}
+
+	char filename[MAX_PATH];
+
+	GetModuleFileName(module, filename, MAX_PATH);
+
+	if (!CRC32.FileCRC(filename, &PluginCRC32, 1024))
+	{
+		MessageBox(NULL, "Failed on reading the plugin name crc!", "Error", MB_OK | MB_ICONERROR);
+
+		ExitProcess(0);
+	}
+
+	if (this->m_MainInfo.PluginCRC32 != PluginCRC32)
+	{
+		MessageBox(NULL, "Plugin file CRC doesn't match!", "Error", MB_OK | MB_ICONERROR);
 
 		ExitProcess(0);
 	}

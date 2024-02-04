@@ -21,6 +21,7 @@
 #include <uuids.h>
 #include <strmif.h>
 #include <control.h>
+#include <mbstring.h>
 
 // General Includes
 #include "Console.h"

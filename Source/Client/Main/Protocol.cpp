@@ -13,6 +13,7 @@
 #include "Protect.h"
 #include "Reconnect.h"
 #include "ServerList.h"
+#include "Window.h"
 
 CProtocol gProtocol;
 
@@ -381,6 +382,8 @@ void CProtocol::GCUserDieRecv(PMSG_USER_DIE_RECV* lpMsg)
 	if (gPrintPlayer.ViewIndex == aIndex)
 	{
 		gPrintPlayer.ViewCurHP = 0;
+
+		gWindow.ShowTrayMessage((char*)(Hero + 0x1C1), "You Died");
 	}
 }
 
@@ -597,7 +600,7 @@ void CProtocol::GCNewCharacterInfoRecv(PMSG_NEW_CHARACTER_INFO_RECV* lpMsg)
 
 	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E) = GET_MAX_WORD_VALUE(lpMsg->Level);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x54) = GET_MAX_WORD_VALUE(lpMsg->LevelUpPoint + 1);
+	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x54) = GET_MAX_WORD_VALUE(lpMsg->LevelUpPoint);
 
 	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x14) = GET_MAX_WORD_VALUE(lpMsg->Strength);
 

@@ -8,6 +8,8 @@ CServerDisplayer gServerDisplayer;
 
 CServerDisplayer::CServerDisplayer()
 {
+	this->m_hwnd = NULL;
+
 	for (int n = 0; n < MAX_LOG_TEXT_LINE; n++)
 	{
 		memset(&this->m_log[n], 0, sizeof(this->m_log[n]));
@@ -42,6 +44,11 @@ void CServerDisplayer::Init(HWND hWnd)
 
 void CServerDisplayer::Run()
 {
+	if (this->m_hwnd == NULL)
+	{
+		return;
+	}
+
 	this->LogTextPaint();
 
 	this->PaintAllInfo();

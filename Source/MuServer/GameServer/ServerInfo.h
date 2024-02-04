@@ -10,7 +10,7 @@ public:
 
 	CServerInfo();
 
-	~CServerInfo();
+	virtual ~CServerInfo();
 
 	void ReadInit();
 

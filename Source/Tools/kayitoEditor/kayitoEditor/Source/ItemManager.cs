@@ -412,5 +412,17 @@ namespace kayito_Editor.Source
 
 			return ((dur > 255) ? 255 : dur);
 		}
+
+		public static int GetItemSkill(int index)
+		{
+			ITEM_TXT_INFO ItemInfo;
+
+			if (!m_ItemInfo.TryGetValue(index, out ItemInfo))
+			{
+				return 0;
+			}
+
+			return ItemInfo.Skill;
+		}
 	}
 }

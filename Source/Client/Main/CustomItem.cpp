@@ -63,5 +63,5 @@ BYTE CCustomItem::GetCustomItemSkill(int ItemIndex)
 		return lpInfo->SkillNumber;
 	}
 
-	return (BYTE)0xFF;
+	return 0;
 }

@@ -28,22 +28,22 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 	if (FindEffect(buff, STATE_POISON) != 0)
 	{
-		AddBuff(*(DWORD*)(o + 120), STATE_POISON);
+		AddEffect(*(DWORD*)(o + 120), STATE_POISON);
 	}
 
 	if (FindEffect(buff, STATE_FREEZE) != 0)
 	{
-		AddBuff(*(DWORD*)(o + 120), STATE_FREEZE);
+		AddEffect(*(DWORD*)(o + 120), STATE_FREEZE);
 	}
 
 	if (FindEffect(buff, STATE_ATTACK) != 0)
 	{
-		AddBuff(*(DWORD*)(o + 120), STATE_ATTACK);
+		AddEffect(*(DWORD*)(o + 120), STATE_ATTACK);
 	}
 
 	if (FindEffect(buff, STATE_DEFENSE) != 0)
 	{
-		AddBuff(*(DWORD*)(o + 120), STATE_DEFENSE);
+		AddEffect(*(DWORD*)(o + 120), STATE_DEFENSE);
 
 		DeleteJoint(266, o, 4);
 
@@ -68,7 +68,7 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 			CreateEffect(1150, Position, Angle, Light, 1, o, -1, 0, 0);
 		}
 
-		AddBuff(*(DWORD*)(o + 120), STATE_ADD_LIFE);
+		AddEffect(*(DWORD*)(o + 120), STATE_ADD_LIFE);
 	}
 
 	if (FindEffect(buff, STATE_HARDEN) != 0)
@@ -87,7 +87,7 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 		CreateEffect(190, Position, Angle, Light, 2, o, -1, 0, 0);
 
-		AddBuff(*(DWORD*)(o + 120), STATE_HARDEN);
+		AddEffect(*(DWORD*)(o + 120), STATE_HARDEN);
 	}
 
 	if (FindEffect(buff, STATE_REDUCE_DEFENSE) != 0)
@@ -104,7 +104,7 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 		PlayBuffer(104, o, 0);
 
-		AddBuff(*(DWORD*)(o + 120), STATE_REDUCE_DEFENSE);
+		AddEffect(*(DWORD*)(o + 120), STATE_REDUCE_DEFENSE);
 	}
 
 	if (FindEffect(buff, STATE_REDUCE_ATTACKDAMAGE) != 0)
@@ -119,7 +119,7 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 		CreateEffect(1274, Position, Angle, Light, 3, o, -1, 0, 0);
 
-		AddBuff(*(DWORD*)(o + 120), STATE_REDUCE_ATTACKDAMAGE);
+		AddEffect(*(DWORD*)(o + 120), STATE_REDUCE_ATTACKDAMAGE);
 	}
 
 	if (FindEffect(buff, STATE_REDUCE_MAGICDEFENSE) != 0)
@@ -142,12 +142,12 @@ void CBuff::InsertBuffPhysicalEffect(eEffectState buff, DWORD o)
 			}
 		}
 
-		AddBuff(*(DWORD*)(o + 120), STATE_REDUCE_MAGICDEFENSE);
+		AddEffect(*(DWORD*)(o + 120), STATE_REDUCE_MAGICDEFENSE);
 	}
 
 	if (FindEffect(buff, STATE_REDUCE_MAGICPOWER) != 0)
 	{
-		AddBuff(*(DWORD*)(o + 120), STATE_REDUCE_MAGICPOWER);
+		AddEffect(*(DWORD*)(o + 120), STATE_REDUCE_MAGICPOWER);
 	}
 }
 
@@ -157,29 +157,29 @@ void CBuff::ClearBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 	if (FindEffect(buff, STATE_POISON) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_POISON);
+		DelEffect(*(DWORD*)(o + 120), STATE_POISON);
 	}
 
 	if (FindEffect(buff, STATE_FREEZE) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_FREEZE);
+		DelEffect(*(DWORD*)(o + 120), STATE_FREEZE);
 	}
 
 	if (FindEffect(buff, STATE_ATTACK) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_ATTACK);
+		DelEffect(*(DWORD*)(o + 120), STATE_ATTACK);
 	}
 
 	if (FindEffect(buff, STATE_DEFENSE) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_DEFENSE);
+		DelEffect(*(DWORD*)(o + 120), STATE_DEFENSE);
 
 		DeleteJoint(266, o, 4);
 	}
 
 	if (FindEffect(buff, STATE_ADD_LIFE) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_ADD_LIFE);
+		DelEffect(*(DWORD*)(o + 120), STATE_ADD_LIFE);
 
 		if (Type == 390)
 		{
@@ -189,32 +189,32 @@ void CBuff::ClearBuffPhysicalEffect(eEffectState buff, DWORD o)
 
 	if (FindEffect(buff, STATE_HARDEN) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_HARDEN);
+		DelEffect(*(DWORD*)(o + 120), STATE_HARDEN);
 	}
 
 	if (FindEffect(buff, STATE_REDUCE_DEFENSE) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_REDUCE_DEFENSE);
+		DelEffect(*(DWORD*)(o + 120), STATE_REDUCE_DEFENSE);
 
 		DeleteEffect(1274, o, 0);
 	}
 
 	if (FindEffect(buff, STATE_REDUCE_ATTACKDAMAGE) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_REDUCE_ATTACKDAMAGE);
+		DelEffect(*(DWORD*)(o + 120), STATE_REDUCE_ATTACKDAMAGE);
 
 		DeleteEffect(1274, o, 3);
 	}
 
 	if (FindEffect(buff, STATE_REDUCE_MAGICDEFENSE) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_REDUCE_MAGICDEFENSE);
+		DelEffect(*(DWORD*)(o + 120), STATE_REDUCE_MAGICDEFENSE);
 
 		DeleteJoint(266, o, 0);
 	}
 
 	if (FindEffect(buff, STATE_REDUCE_MAGICPOWER) != 0)
 	{
-		DelBuff(*(DWORD*)(o + 120), STATE_REDUCE_MAGICPOWER);
+		DelEffect(*(DWORD*)(o + 120), STATE_REDUCE_MAGICPOWER);
 	}
 }

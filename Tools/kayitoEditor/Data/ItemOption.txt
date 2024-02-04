@@ -1,3 +1,46 @@
+//-------------------------------------------------------------
+// OPTIONS NUMBERS FOR OptionIndex COLUMN
+// +X = OptionValue
+//
+// **** SKILLS ****
+// 0 -> Can use skill (Set it in CustomItem.txt or Item.txt in Skill column) otherwise you can use one of the below listed
+// 18 -> "Defense skill" (Shield)
+// 19 -> "Falling slash skill" (Sword/Axe/Mace)
+// 20 -> "Lunge skill" (Sword/Axe/Mace)
+// 21 -> "Uppercut skill" (Sword/Axe/Mace)
+// 22 -> "Cyclone skill" (Sword/Axe/Mace)
+// 23 -> "Slash skill" (Sword/Axe/Mace)
+// 24 -> "Triple shot skill" (Bow / Crossbow)
+// 49 -> "Raid shoot skill" (Dinorant)
+// 56 -> "Power slash skill" (Magic Gladiator)
+// **** LUCK AND EXCELLENT ****
+// 60 -> "Additional Dmg +X"
+// 61 -> "Additional Wizardry Dmg +X"
+// 62 -> "Additional defense rate +X%"
+// 63 -> "Additional defense +X"
+// 64 -> "Luck (critical damage rate +5%)"
+// 65 -> "Automatic HP recovery X%"
+// 66 -> "Increase Max HP +4%"
+// 67 -> "Increase Max Mana +4%"
+// 68 -> "Damage Decrease +4%"
+// 69 -> "Reflect Damage +5%"
+// 70 -> "Defense success rate +10%"
+// 71 -> "Increases acquisition rate of Zen after hunting monsters +30%"
+// 72 -> "Excellent Damage rate +10%"
+// 73 -> "Increase Damage +level/20"
+// 74 -> "Increase Damage +X%"
+// 75 -> "Increase Wizardry Dmg +level/20"
+// 76 -> "Increase Wizardry Dmg +X%"
+// 77 -> "Increase Attacking(Wizardry) speed +X"
+// 78 -> "Increases life acquisition rate after hunt +life/8"
+// 79 -> "Increases mana acquisition rate after hunt +mana/8"
+// 80 -> "HP +X increased"
+// 81 -> "Mana +X increased"
+// 82 -> "Ignor opponent's defensive power by X%"
+// 83 -> "Max AG +X increased"
+// 84 -> "Absorb X% additional damage"
+//-------------------------------------------------------------
+
 //Index	OptionIndex	OptionValue	ItemMinIndex	ItemMaxIndex	ItemSkillOption	ItemLuckOption	ItemAddOption	ItemExceOption	Comment
 //***************** Skill Option *****************//
 0	0		0		00,000		00,002		1		*		*		*		// Swords With No Skill

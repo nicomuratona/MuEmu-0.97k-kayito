@@ -149,13 +149,16 @@ namespace kayito_Editor.Source
 
 					result = true;
 
-					if (index != 0)
+					if (index == 0)
+					{
+						if (itemInfo.OptionIndex == 0 && ItemManager.GetItemSkill(ItemIndex) == 0)
+						{
+							result = false;
+						}
+					}
+					else
 					{
 						value = m_ItemOptions[itemInfo.OptionIndex];
-					}
-					else if (itemInfo.OptionIndex == 0)
-					{
-						result = false;
 					}
 				}
 			}

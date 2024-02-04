@@ -27,6 +27,10 @@
 
 /* WNDPROC */
 #define WM_AUTOCLICKTIMER 0x01
+#define WM_NPROTECT_EXIT_TWO (WM_USER + 0x2711)
+#define WINDOWMINIMIZED_TIMER 1001
+#define WM_TRAY_MODE_ICON (WM_USER+100)
+#define WM_TRAY_MODE_MESSAGE (WM_USER+101)
 
 /* CHARACTER */
 #define MAX_CLASS 4
@@ -35,8 +39,8 @@
 
 /* BUFFS */
 #define FindEffect(x,y) ((((x) & (y)) == (y)) ? 1 : 0)
-#define AddBuff(x,y) (x |= y)
-#define DelBuff(x,y) (x &= ~y)
+#define AddEffect(x,y) (x |= y)
+#define DelEffect(x,y) (x &= ~y)
 
 /* SOUND */
 #define MAX_SOUND_LEVEL 9
@@ -46,7 +50,3 @@
 #define MAX_TEXTURE 1450
 #define PLUS_TEXTURE 512
 #define TOTAL_TEXTURE (MAX_TEXTURE + PLUS_TEXTURE)
-
-/* WNDProc */
-#define WM_NPROTECT_EXIT_TWO (WM_USER + 0x2711)
-#define WINDOWMINIMIZED_TIMER 1001

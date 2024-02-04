@@ -24,7 +24,6 @@
 #include "RightClickMove.h"
 #include "SkyDome.h"
 #include "Sound.h"
-#include "TrayMode.h"
 #include "WeaponView.h"
 #include "Window.h"
 
@@ -124,8 +123,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 			gWindow.WindowModeLoad(hins);
 
 			gController.Load(hins);
-
-			gTrayMode.Init(hins);
 
 			break;
 		}

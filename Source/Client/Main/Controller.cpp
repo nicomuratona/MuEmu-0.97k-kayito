@@ -4,7 +4,7 @@
 #include "FullMap.h"
 #include "MoveList.h"
 #include "resource.h"
-#include "TrayMode.h"
+#include "Window.h"
 
 Controller gController;
 
@@ -127,7 +127,9 @@ LRESULT Controller::Keyboard(int nCode, WPARAM wParam, LPARAM lParam)
 
 							gController.AutoClickState = false;
 
-							SendMessage(g_hWnd, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(MouseX, MouseY));
+							MouseRButtonPush = false;
+
+							MouseRButton = false;
 						}
 
 						CreateNotice(((gController.AutoClick) ? "Autoclick Enabled" : "Autoclick Disabled"), 1);
@@ -160,7 +162,7 @@ LRESULT Controller::Keyboard(int nCode, WPARAM wParam, LPARAM lParam)
 				{
 					if (GetForegroundWindow() == g_hWnd)
 					{
-						gTrayMode.Toggle();
+						gWindow.ToggleTrayMode();
 					}
 
 					break;

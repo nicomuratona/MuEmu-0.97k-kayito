@@ -31,6 +31,7 @@
 #define ExitProgram ((void(_cdecl*)()) 0x004F6CB0)
 #define m_Version (char*)0x055C9BB8
 #define m_ExeVersion (char*)0x055C9BAC
+#define m_ID (char*)0x055C9BA0
 #define Destroy *(bool*)0x055CA018
 
 // Interface
@@ -101,6 +102,7 @@
 #define Action ((void(_cdecl*)(DWORD c, DWORD o)) 0x0048D640)
 #define SetPlayerShock ((void(_cdecl*)(DWORD c, int Hit)) 0x00444B60)
 #define SummonLife *(int*)0x05826D24
+#define FindCharacterIndex ((int(_cdecl*)(int Key)) 0x0045AC80)
 
 // Item
 #define SendRequestEquipmentItem ((bool(_cdecl*)(int SrcFlag, int SrcIndex, int DstFlag, int DstIndex)) 0x0043C250)

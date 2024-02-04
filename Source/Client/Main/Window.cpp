@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "Window.h"
 #include "Camera.h"
 #include "Controller.h"
@@ -53,6 +53,8 @@ cWindow::~cWindow()
 void cWindow::WindowModeLoad(HINSTANCE hins)
 {
 	this->Instance = hins;
+
+	this->m_TrayIcon = (HICON)LoadImage(hins, MAKEINTRESOURCE(IDI_ICON), IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
 
 	this->SetWindowMode(GetPrivateProfileInt("Window", "WindowMode", WINDOW_MODE, ".\\Config.ini"));
 
@@ -136,6 +138,64 @@ void cWindow::ChangeDisplaySettingsFunction()
 	ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);
 }
 
+void cWindow::ShowTrayNotify(bool mode)
+{
+	NOTIFYICONDATA nid;
+
+	memset(&nid, 0, sizeof(nid));
+
+	nid.cbSize = sizeof(NOTIFYICONDATA);
+
+	nid.hWnd = g_hWnd;
+
+	nid.uID = WM_TRAY_MODE_ICON;
+
+	nid.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP | NIF_INFO;
+
+	nid.uCallbackMessage = WM_TRAY_MODE_MESSAGE;
+
+	nid.hIcon = this->m_TrayIcon;
+
+	nid.dwInfoFlags = NIIF_INFO;
+
+	nid.uTimeout = 5000;
+
+	strcpy_s(nid.szInfo, "I'm Here");
+
+	strcpy_s(nid.szInfoTitle, gProtect.m_MainInfo.WindowName);
+
+	strcpy_s(nid.szTip, gProtect.m_MainInfo.WindowName);
+
+	Shell_NotifyIcon(((mode == false) ? NIM_DELETE : NIM_ADD), &nid);
+}
+
+void cWindow::ShowTrayMessage(char* Title, char* Message)
+{
+	NOTIFYICONDATA Icon = { 0 };
+
+	Icon.cbSize = sizeof(NOTIFYICONDATA);
+
+	Icon.uID = WM_TRAY_MODE_ICON;
+
+	Icon.hWnd = g_hWnd;
+
+	Icon.uFlags = NIF_ICON | NIF_MESSAGE | NIF_INFO;
+
+	Icon.hIcon = this->m_TrayIcon;
+
+	Icon.uCallbackMessage = WM_TRAY_MODE_MESSAGE;
+
+	Icon.dwInfoFlags = NIIF_INFO;
+
+	Icon.uTimeout = 5000;
+
+	strcpy_s(Icon.szInfo, Message);
+
+	strcpy_s(Icon.szInfoTitle, Title);
+
+	Shell_NotifyIcon(NIM_MODIFY, &Icon);
+}
+
 LRESULT WINAPI cWindow::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -156,9 +216,11 @@ LRESULT WINAPI cWindow::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			{
 				case WM_AUTOCLICKTIMER:
 				{
-					SendMessage(g_hWnd, (gController.AutoClickState) ? WM_RBUTTONUP : WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(MouseX, MouseY));
-
 					gController.AutoClickState ^= 1;
+
+					MouseRButtonPush = gController.AutoClickState;
+
+					MouseRButton = gController.AutoClickState;
 
 					return 0;
 				}
@@ -166,6 +228,21 @@ LRESULT WINAPI cWindow::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 				case WINDOWMINIMIZED_TIMER:
 				{
 					return 0;
+				}
+			}
+
+			break;
+		}
+
+		case WM_TRAY_MODE_MESSAGE:
+		{
+			switch (lParam)
+			{
+				case WM_LBUTTONDOWN:
+				{
+					gWindow.ToggleTrayMode();
+
+					break;
 				}
 			}
 
@@ -271,4 +348,22 @@ void cWindow::ChangeWindowState()
 	gCamera.SetCurrentValue(); // Fix the 3d camera position
 
 	gFont.ReloadFont();
+}
+
+void cWindow::ToggleTrayMode()
+{
+	if (IsWindowVisible(g_hWnd) == FALSE)
+	{
+		ShowWindow(g_hWnd, SW_SHOW);
+
+		this->ShowTrayNotify(false);
+	}
+	else
+	{
+		ShowWindow(g_hWnd, SW_HIDE);
+
+		this->ShowTrayNotify(true);
+
+		//this->ShowTrayMessage(gProtect.m_MainInfo.WindowName, "Ha sido minimizado.");
+	}
 }

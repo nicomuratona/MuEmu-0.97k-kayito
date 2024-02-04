@@ -79,7 +79,7 @@ _declspec(naked) void CItemStack::RenderItemNumber()
 		goto Exit;
 	}
 
-	if (gItemStack.GetItemMaxStack(((ITEM*)item)->Type, ((ITEM*)item)->Level))
+	if (gItemStack.GetItemMaxStack(((ITEM*)item)->Type, (((ITEM*)item)->Level >> 3) & 15))
 	{
 		goto Exit;
 	}
@@ -119,7 +119,7 @@ bool CItemStack::CanInsertItem(int MousePosX, int MousePosY, DWORD InterfaceOffs
 
 		if (pPickedItem->Type == TargetItem->Type)
 		{
-			return (gItemStack.GetItemMaxStack(pPickedItem->Type, pPickedItem->Level) != 0);
+			return (gItemStack.GetItemMaxStack(pPickedItem->Type, (pPickedItem->Level >> 3) & 15) != 0);
 		}
 	}
 
@@ -128,7 +128,7 @@ bool CItemStack::CanInsertItem(int MousePosX, int MousePosY, DWORD InterfaceOffs
 
 void CItemStack::CheckItemStackClicked(ITEM* pointedItem)
 {
-	if (!gItemStack.GetItemMaxStack(pointedItem->Type, pointedItem->Level))
+	if (!gItemStack.GetItemMaxStack(pointedItem->Type, (pointedItem->Level >> 3) & 15))
 	{
 		return;
 	}

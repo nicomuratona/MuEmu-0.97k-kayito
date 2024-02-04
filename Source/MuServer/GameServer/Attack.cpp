@@ -651,6 +651,11 @@ void CAttack::DamageSprite(LPOBJ lpObj, int damage)
 
 	if (lpItem->m_Durability < 1)
 	{
+		if (lpObj->Map == MAP_ICARUS && lpObj->Inventory[7].IsItem() == 0 && lpItem->m_Index == GET_ITEM(13, 3))
+		{
+			gObjMoveGate(lpObj->Index, 22);
+		}
+
 		gItemManager.InventoryDelItem(lpObj->Index, 8);
 
 		gItemManager.GCItemDeleteSend(lpObj->Index, 8, 0);
@@ -658,11 +663,6 @@ void CAttack::DamageSprite(LPOBJ lpObj, int damage)
 		gObjectManager.CharacterMakePreviewCharSet(lpObj->Index);
 
 		gItemManager.GCItemChangeSend(lpObj->Index, 8);
-
-		if (lpObj->Map == MAP_ICARUS && lpObj->Inventory[7].IsItem() == 0 && lpItem->m_Index == GET_ITEM(13, 3))
-		{
-			gObjMoveGate(lpObj->Index, 22);
-		}
 	}
 }
 

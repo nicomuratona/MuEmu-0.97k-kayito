@@ -18,17 +18,25 @@ public:
 
 	void ChangeWindowState();
 
+	void ToggleTrayMode();
+
+	void ShowTrayMessage(char* Title, char* Message);
+
 private:
 
 	static HWND StartWindow(HINSTANCE hCurrentInst, int nCmdShow);
 
 	void ChangeDisplaySettingsFunction();
 
+	void ShowTrayNotify(bool mode);
+
 	static LONG WINAPI MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 private:
 
 	HINSTANCE Instance;
+
+	HICON m_TrayIcon;
 
 public:
 

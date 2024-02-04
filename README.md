@@ -177,3 +177,17 @@ hacia otro archivo separado en
 - Se corrigieron los textos de Bolts/Arrows que se muestran en la esquina superior derecha
 - Se corrigieron los textos y las barras de HP de los pets que se muestran en la esquina superior derecha
 - Se corrigieron los textos de los items que hacen falta reparar que se muestran en la esquina superior derecha
+
+### Update 22:
+- Se añadió el main.ida al repositorio de github
+- Se corrigió el renderizado de los ejecutables del servidor [ConnectServer][JoinServer][DataServer][GameServer]
+- Se corrigió que se mostaba el botón de subir puntos aún teniendo 0 puntos disponibles [Main.dll]
+- Se agregó que se pueda guardar el ID desde el Config.ini [Main.dll]
+- Se eliminó el límite de tamaño de texturas tanto JPG como TGA (usar a discresión) [Main.dll]
+- Se unificó el sistema de TrayMode con el sistema de Window para corregir el autoclick F9 que no funcionaba ni en TrayMode ni al sacar de foco al juego [Main.dll]
+- Se verificó nuevamente el ItemOption porque algunos items caían con skill cuando no correspondía [Main.dll][GameServer][kayito Editor]
+- Se corrigió el contador de monstruos en negativo del GameServer (El problema estaba al invocar un monstruo con la Elf) [GameServer]
+- Se corrigió el StoredProcedure WZ_DISCONNECT_MEMB que se encargaba de contar las horas online (Pueden revisar el archivo CreateDatabase y revisar la diferencia del procedure con el que está en su base de datos, modifican y le dan a Ejecutar) [Base de Datos]
+- Se corrigió el error al morir el Dinorant estando en Icarus y sin alas, no retornaba a Devias [GameServer]
+- Se añadió una opción para permitir crear personajes y guilds con caracteres especiales [Encoder][Main.dll][DataServer]
+- Se corrigió la velocidad de ataque de la animación Power Slash del MG [Player.bmd]

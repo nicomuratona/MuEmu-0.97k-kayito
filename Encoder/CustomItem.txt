@@ -8,7 +8,9 @@
 // 	Example: Custom Spear Brova Index 03,011 -> Client/Data/Item/Custom/107/Spear.bmd
 //	107 because -> 03 * 32 + 011 = 107
 //
-// Skill -> Use the Skill.bmd skill index or * to leave empty
+// Skill
+//	Use the Skill.bmd skill index
+//	Use 0 to NO SKILL
 //========================================================================================================
 //========================================================================================================
 //========================================================================================================
@@ -64,11 +66,11 @@
 //Index	|	Skill	|	ModelName	|	Comment
 //========================================================================================================
 
-07,021		*		"HelmMale22"		// Great Dragon Helm
-08,021		*		"ArmorMale22"		// Great Dragon Armor
-09,021		*		"PantMale22"		// Great Dragon Pant
-10,021		*		"GloveMale22"		// Great Dragon Glove
-11,021		*		"BootMale22"		// Great Dragon Boot
+07,021		0		"HelmMale22"		// Great Dragon Helm
+08,021		0		"ArmorMale22"		// Great Dragon Armor
+09,021		0		"PantMale22"		// Great Dragon Pant
+10,021		0		"GloveMale22"		// Great Dragon Glove
+11,021		0		"BootMale22"		// Great Dragon Boot
 
 //========================================================================================================
 // WINGS, RINGS AND PENDANTS REQUIRE THEIR OWN SYSTEM. DON'T ADD THEM HERE BECAUSE THEY WON'T WORK CORRECTLY

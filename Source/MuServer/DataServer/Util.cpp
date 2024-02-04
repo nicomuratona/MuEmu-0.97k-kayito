@@ -5,6 +5,8 @@
 
 int gServerCount = 0;
 
+int EnableSpecialCharacters = GetPrivateProfileInt("Syntax", "EnableSpecialCharacters", 0, ".\\DataServer.ini");
+
 void ErrorMessageBox(char* message, ...)
 {
 	char buff[256];
@@ -81,11 +83,15 @@ bool CheckTextSyntax(char* text, int size)
 
 bool CheckSpecialText(char* Text)
 {
+	if (EnableSpecialCharacters != 0)
+	{
+		return true;
+	}
+
 	for (unsigned char* lpszCheck = (unsigned char*)Text; *lpszCheck; ++lpszCheck)
 	{
 		if (_mbclen(lpszCheck) == 1) // One byte
 		{
-			//if ( *lpszCheck < 0x21 || *lpszCheck > 0x7E)
 			if (*lpszCheck < 48 || (58 <= *lpszCheck && *lpszCheck < 65) || (91 <= *lpszCheck && *lpszCheck < 97) || *lpszCheck > 122)
 			{
 				return false;

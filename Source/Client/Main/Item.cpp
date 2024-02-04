@@ -372,12 +372,12 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 	{
 		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
 		{
-			ip->Special[ip->SpecialNum] = ((pItemOption == 0) ? gCustomItem.GetCustomItemSkill(ip->Type) : pItemOption);
-
-			ip->SpecialValue[ip->SpecialNum] = pItemValue;
-
-			if (ip->Special[ip->SpecialNum] != (BYTE)0xFF)
+			if (pItemOption != SKILL_NONE || (pItemOption = gCustomItem.GetCustomItemSkill(ip->Type)) != SKILL_NONE)
 			{
+				ip->Special[ip->SpecialNum] = pItemOption;
+
+				ip->SpecialValue[ip->SpecialNum] = pItemValue;
+
 				ip->SpecialNum++;
 			}
 		}
@@ -566,7 +566,7 @@ WORD CItem::myCalcMaxDurability(ITEM* ip, ITEM_ATTRIBUTE* p, int Level)
 
 	if (ip->Type >= GET_ITEM(5, 0) && ip->Type < GET_ITEM(6, 0)) // Staffs
 	{
-		ItemDurability += p->MagicDurability;
+		ItemDurability = p->MagicDurability;
 	}
 
 	int dur = 0;
@@ -591,7 +591,7 @@ WORD CItem::myCalcMaxDurability(ITEM* ip, ITEM_ATTRIBUTE* p, int Level)
 		dur = ItemDurability + Level;
 	}
 
-	if (ip->Type != GET_ITEM(0, 19) && ip->Type != GET_ITEM(2, 13) && ip->Type != GET_ITEM(4, 18) && ip->Type != GET_ITEM(5, 10) && ip->Part != EQUIPMENT_WING) // Sword of Archangel,Scepter of Archangel,Crossbow of Archangel,Staff of Archangel
+	if (ip->Type != GET_ITEM(0, 19) && ip->Type != GET_ITEM(4, 18) && ip->Type != GET_ITEM(5, 10) && ip->Part != EQUIPMENT_WING) // Sword of Archangel, Crossbow of Archangel, Staff of Archangel & Wings
 	{
 		if ((ip->Option1 & 63) != 0)
 		{

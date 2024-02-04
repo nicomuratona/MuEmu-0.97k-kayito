@@ -30,6 +30,7 @@ struct MAIN_FILE_INFO
 	BYTE EnableSky;
 	BYTE EnableMinimap;
 	BYTE EnableMoveList;
+	BYTE EnableSpecialCharacters;
 	MAP_MANAGER_INFO MapManager[MAX_MAPS];
 	CUSTOM_GLOW_INFO CustomGlowInfo[MAX_ITEM];
 	CUSTOM_ITEM_INFO CustomItemInfo[MAX_ITEM];

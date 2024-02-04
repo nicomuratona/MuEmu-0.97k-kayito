@@ -37,6 +37,10 @@ private:
 	static int RenderEquipedHelperLife(bool RenderedArrow);
 
 	static void RenderBrokenItem(int PosY);
+
+	static bool CheckSpecialText(char* Text);
+
+	static void FixBloodCastleBackWeapon(float x, float y, float z, DWORD c, DWORD f, int Type, int Level, int Option1, bool Link, bool Translate, int RenderType);
 };
 
 extern CPatchs gPatchs;

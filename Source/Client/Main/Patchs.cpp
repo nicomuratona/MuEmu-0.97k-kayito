@@ -7,12 +7,12 @@ CPatchs gPatchs;
 
 CPatchs::CPatchs()
 {
-
+	GetPrivateProfileString("User", "Username", "", m_ID, 10, ".\\Config.ini");
 }
 
 CPatchs::~CPatchs()
 {
-
+	WritePrivateProfileString("User", "Username", m_ID, ".\\Config.ini");
 }
 
 void CPatchs::Init()
@@ -92,6 +92,16 @@ void CPatchs::Init()
 	// Fix Trade Zen Over 50000000
 	SetByte(0x00515BF7, 0xEB);
 
+	// Remove JPG size limit
+	MemorySet(0x005299E7, 0x90, 11);
+	MemorySet(0x005299F8, 0x90, 12);
+	SetByte(0x00529A18, 0xEB); // Width
+	SetByte(0x00529A31, 0xEB); // Height
+	// Remove TGA size limit
+	MemorySet(0x00529E37, 0x90, 22);
+	SetByte(0x00529E69, 0xEB); // Width
+	SetByte(0x00529E8B, 0xEB); // Height
+
 	SetCompleteHook(0xE8, 0x0042B33D, &this->IgnoreRandomStuck);
 
 	SetCompleteHook(0xE9, 0x00483AC5, &this->FixChasingAttackMovement);
@@ -124,6 +134,10 @@ void CPatchs::Init()
 	SetCompleteHook(0xE8, 0x004BC0C1, &this->RenderEquipedHelperLife);
 
 	SetCompleteHook(0xE8, 0x004BC0C7, &this->RenderBrokenItem);
+
+	SetCompleteHook(0xE9, 0x00406B30, &this->CheckSpecialText);
+
+	SetCompleteHook(0xE8, 0x00458541, &this->FixBloodCastleBackWeapon);
 }
 
 __declspec(naked) void CPatchs::ReduceCPU()
@@ -988,4 +1002,69 @@ void CPatchs::RenderBrokenItem(int PosY)
 	SetBackgroundTextColor = backupBgTextColor;
 
 	SetTextColor = backupTextColor;
+}
+
+bool CPatchs::CheckSpecialText(char* Text)
+{
+	if (gProtect.m_MainInfo.EnableSpecialCharacters != 0)
+	{
+		return false;
+	}
+
+	for (unsigned char* lpszCheck = (unsigned char*)Text; *lpszCheck; ++lpszCheck)
+	{
+		if (_mbclen(lpszCheck) == 1) // One byte
+		{
+			if (*lpszCheck < 48 || (58 <= *lpszCheck && *lpszCheck < 65) || (91 <= *lpszCheck && *lpszCheck < 97) || *lpszCheck > 122)
+			{
+				return true;
+			}
+		}
+		else // Two bytes
+		{
+			unsigned char* lpszTrail = lpszCheck + 1;
+
+			if (0x81 <= *lpszCheck && *lpszCheck <= 0xC8) // Korean
+			{
+				if ((0x41 <= *lpszTrail && *lpszTrail <= 0x5A)
+				    || (0x61 <= *lpszTrail && *lpszTrail <= 0x7A)
+				    || (0x81 <= *lpszTrail && *lpszTrail <= 0xFE))
+				{ // Excluding transparent characters
+					// Areas of special characters that are not allowed
+					if (0xA1 <= *lpszCheck && *lpszCheck <= 0xAF && 0xA1 <= *lpszTrail)
+					{
+						return true;
+					}
+					else if (*lpszCheck == 0xC6 && 0x53 <= *lpszTrail && *lpszTrail <= 0xA0)
+					{
+						return true;
+					}
+					else if (0xC7 <= *lpszCheck && *lpszCheck <= 0xC8 && *lpszTrail <= 0xA0)
+					{
+						return true;
+					}
+				}
+				else
+				{
+					return true;
+				}
+			}
+			else
+			{
+				return true;
+			}
+
+			++lpszCheck;
+		}
+	}
+
+	return false;
+}
+
+void CPatchs::FixBloodCastleBackWeapon(float x, float y, float z, DWORD c, DWORD f, int Type, int Level, int Option1, bool Link, bool Translate, int RenderType)
+{
+	if (Type == GET_ITEM_MODEL(0, 19) || Type == GET_ITEM_MODEL(4, 18) || Type == GET_ITEM_MODEL(5, 10))
+	{
+		RenderLinkObject(x, y, z, c, f, Type, Level, Option1, Link, Translate, RenderType);
+	}
 }

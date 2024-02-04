@@ -146,7 +146,6 @@
     <ClInclude Include="stb.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Structs.h" />
-    <ClInclude Include="TrayMode.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="WeaponView.h" />
     <ClInclude Include="Window.h" />
@@ -198,7 +197,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TrayMode.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="WeaponView.cpp" />
     <ClCompile Include="Window.cpp" />

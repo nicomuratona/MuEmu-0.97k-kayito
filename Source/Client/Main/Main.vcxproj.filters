@@ -64,9 +64,6 @@
     <ClInclude Include="Window.h">
       <Filter>Window</Filter>
     </ClInclude>
-    <ClInclude Include="TrayMode.h">
-      <Filter>Window</Filter>
-    </ClInclude>
     <ClInclude Include="Util.h">
       <Filter>Util Files</Filter>
     </ClInclude>
@@ -211,9 +208,6 @@
       <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>Window</Filter>
-    </ClCompile>
-    <ClCompile Include="TrayMode.cpp">
       <Filter>Window</Filter>
     </ClCompile>
     <ClCompile Include="Util.cpp">
