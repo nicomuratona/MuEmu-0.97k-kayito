@@ -169,7 +169,17 @@ int CItemDrop::DropItem(LPOBJ lpObj, LPOBJ lpTarget)
 
 		gItemOptionRate.GetItemExceOption(lpItemDropInfo->ExceOptionRate, &ItemExceOption);
 
+		ItemLevel = ((ItemIndex >= GET_ITEM(12, 0)) ? 0 : ItemLevel);
+
+		ItemSkillOption = ((ItemIndex >= GET_ITEM(12, 0)) ? 0 : ItemSkillOption);
+
+		ItemLuckOption = ((ItemIndex >= GET_ITEM(12, 0)) ? 0 : ItemLuckOption);
+
+		ItemExceOption = ((ItemIndex >= GET_ITEM(12, 0)) ? 0 : ItemExceOption);
+
 		gItemOptionRate.MakeExceOption(ItemIndex, ItemExceOption, &ItemExceOption);
+
+		
 
 		GDCreateItemSend(lpTarget->Index, lpObj->Map, (BYTE)lpObj->X, (BYTE)lpObj->Y, ItemIndex, ItemLevel, 0, ItemSkillOption, ItemLuckOption, ItemAddOption, lpTarget->Index, ((ItemExceOption == 0) ? lpItemDropInfo->Grade : ItemExceOption));
 
