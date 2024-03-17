@@ -61,14 +61,14 @@ void CBonusManager::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (lpMemScript->SetBuffer(path) == 0)
+	if (!lpMemScript->SetBuffer(path))
 	{
 		ErrorMessageBox(lpMemScript->GetLastError());
 
@@ -85,6 +85,10 @@ void CBonusManager::Load(char* path)
 
 		this->m_BonusInfo[n].BonusTime = 0;
 
+		this->m_BonusInfo[n].AlarmTime = 0;
+
+		this->m_BonusInfo[n].AlarmMsg = -1;
+
 		this->m_BonusInfo[n].StartTime.clear();
 
 		this->m_BonusInfo[n].ValueInfo.clear();
@@ -92,9 +96,13 @@ void CBonusManager::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
+			token = lpMemScript->GetToken();
+
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
@@ -103,13 +111,15 @@ void CBonusManager::Load(char* path)
 
 			while (true)
 			{
+				token = lpMemScript->GetToken();
+
+				if (token == TOKEN_END || token == TOKEN_END_SECTION)
+				{
+					break;
+				}
+
 				if (section == 0)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					BONUS_START_TIME info;
 
 					int index = lpMemScript->GetNumber();
@@ -132,11 +142,6 @@ void CBonusManager::Load(char* path)
 				}
 				else if (section == 1)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					int index = lpMemScript->GetNumber();
 
 					this->m_BonusInfo[index].StartMessage = lpMemScript->GetAsNumber();
@@ -144,14 +149,15 @@ void CBonusManager::Load(char* path)
 					this->m_BonusInfo[index].FinalMessage = lpMemScript->GetAsNumber();
 
 					this->m_BonusInfo[index].BonusTime = lpMemScript->GetAsNumber();
+
+					this->m_BonusInfo[index].AlarmTime = lpMemScript->GetAsNumber();
+
+					this->m_BonusInfo[index].AlarmMsg = lpMemScript->GetAsNumber();
+
+					strcpy_s(this->m_BonusInfo[index].BonusName, lpMemScript->GetAsString());
 				}
 				else if (section == 2)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					BONUS_VALUE_INFO info;
 
 					int index = lpMemScript->GetNumber();
@@ -184,10 +190,6 @@ void CBonusManager::Load(char* path)
 					info.MonsterLevelMax = lpMemScript->GetAsNumber();
 
 					this->m_BonusInfo[index].ValueInfo.push_back(info);
-				}
-				else
-				{
-					break;
 				}
 			}
 		}
@@ -248,6 +250,23 @@ void CBonusManager::ProcState_BLANK(BONUS_INFO* lpInfo)
 
 void CBonusManager::ProcState_EMPTY(BONUS_INFO* lpInfo)
 {
+	if (lpInfo->RemainTime > 0 && lpInfo->RemainTime <= (lpInfo->AlarmTime * 60))
+	{
+		int minutes = lpInfo->RemainTime / 60;
+
+		if ((lpInfo->RemainTime % 60) == 0)
+		{
+			minutes--;
+		}
+
+		if (lpInfo->AlarmMinLeft != minutes)
+		{
+			lpInfo->AlarmMinLeft = minutes;
+
+			gNotice.GCNoticeSendToAll(0, lpInfo->AlarmMsg, lpInfo->BonusName, (lpInfo->AlarmMinLeft + 1));
+		}
+	}
+
 	if (lpInfo->RemainTime <= 0)
 	{
 		if (lpInfo->StartMessage != -1)
@@ -356,6 +375,26 @@ int CBonusManager::GetState(int index)
 	{
 		return this->m_BonusInfo[index].State;
 	}
+}
+
+char* CBonusManager::GetBonusName(int index)
+{
+	if (CHECK_RANGE(index, MAX_BONUS) == 0)
+	{
+		return NULL;
+	}
+
+	return this->m_BonusInfo[index].BonusName;
+}
+
+int CBonusManager::GetCurrentRemainTime(int index)
+{
+	if (CHECK_RANGE(index, MAX_BONUS) == 0)
+	{
+		return 0;
+	}
+
+	return this->m_BonusInfo[index].RemainTime;
 }
 
 int CBonusManager::GetRemainTime(int index)

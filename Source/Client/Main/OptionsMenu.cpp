@@ -422,16 +422,16 @@ void COptionsMenu::RenderLanguage(float PosX, float PosY)
 		{
 			if (MouseLButtonPush)
 			{
-				MyRenderBitmapRotate(0x100, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				MyRenderBitmapRotate(0x100, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 			}
 			else
 			{
-				MyRenderBitmapRotate(0xFF, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				MyRenderBitmapRotate(0xFF, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 			}
 		}
 		else
 		{
-			MyRenderBitmapRotate(0xFE, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+			MyRenderBitmapRotate(0xFE, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 		}
 	}
 }
@@ -907,16 +907,16 @@ void COptionsMenu::RenderWindowMode(float PosX, float PosY)
 		{
 			if (MouseLButtonPush)
 			{
-				MyRenderBitmapRotate(0x100, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				MyRenderBitmapRotate(0x100, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 			}
 			else
 			{
-				MyRenderBitmapRotate(0xFF, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				MyRenderBitmapRotate(0xFF, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 			}
 		}
 		else
 		{
-			MyRenderBitmapRotate(0xFE, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+			MyRenderBitmapRotate(0xFE, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 		}
 	}
 }
@@ -1202,16 +1202,16 @@ void COptionsMenu::RenderFontStyle(float PosX, float& PosY)
 		{
 			if (MouseLButtonPush)
 			{
-				MyRenderBitmapRotate(0x100, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				MyRenderBitmapRotate(0x100, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 			}
 			else
 			{
-				MyRenderBitmapRotate(0xFF, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				MyRenderBitmapRotate(0xFF, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 			}
 		}
 		else
 		{
-			MyRenderBitmapRotate(0xFE, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+			MyRenderBitmapRotate(0xFE, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 		}
 	}
 }
@@ -1400,16 +1400,16 @@ void COptionsMenu::RenderFontButtons(float PosX, float& PosY)
 	{
 		if (MouseLButtonPush)
 		{
-			MyRenderBitmapRotate(0x100, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+			MyRenderBitmapRotate(0x100, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 		}
 		else
 		{
-			MyRenderBitmapRotate(0xFF, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+			MyRenderBitmapRotate(0xFF, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 		}
 	}
 	else
 	{
-		MyRenderBitmapRotate(0xFE, PosX + (float)(this->BoxWidth - this->BoxHeight) + 11.0f, PosY + 11.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+		MyRenderBitmapRotate(0xFE, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
 	}
 }
 

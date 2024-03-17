@@ -94,3 +94,26 @@ bool CItemOption::GetItemOption(int index, WORD ItemIndex, BYTE ItemSkill, BYTE 
 
 	return result;
 }
+
+int CItemOption::GetItemOptionValue(int index, int value, BYTE ItemLevel)
+{
+	switch (index)
+	{
+		case ITEM_OPTION_ADD_WING_HP:
+		{
+			return (50 + (value * ItemLevel));
+		}
+
+		case ITEM_OPTION_ADD_WING_MP:
+		{
+			return (50 + (value * ItemLevel));
+		}
+
+		default:
+		{
+			return value;
+		}
+	}
+
+	return value;
+}

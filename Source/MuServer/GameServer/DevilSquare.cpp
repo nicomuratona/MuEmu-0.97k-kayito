@@ -76,14 +76,14 @@ void CDevilSquare::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (lpMemScript->SetBuffer(path) == 0)
+	if (!lpMemScript->SetBuffer(path))
 	{
 		ErrorMessageBox(lpMemScript->GetLastError());
 
@@ -100,9 +100,13 @@ void CDevilSquare::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
+			token = lpMemScript->GetToken();
+
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
@@ -111,13 +115,15 @@ void CDevilSquare::Load(char* path)
 
 			while (true)
 			{
+				token = lpMemScript->GetToken();
+
+				if (token == TOKEN_END || token == TOKEN_END_SECTION)
+				{
+					break;
+				}
+
 				if (section == 0)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					this->m_WarningTime = lpMemScript->GetNumber();
 
 					this->m_NotifyTime = lpMemScript->GetAsNumber();
@@ -128,11 +134,6 @@ void CDevilSquare::Load(char* path)
 				}
 				else if (section == 1)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					DEVIL_SQUARE_START_TIME info;
 
 					info.Year = lpMemScript->GetNumber();
@@ -153,11 +154,6 @@ void CDevilSquare::Load(char* path)
 				}
 				else if (section == 2)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					int level = lpMemScript->GetNumber();
 
 					for (int n = 0; n < MAX_DS_RANK; n++)
@@ -167,21 +163,12 @@ void CDevilSquare::Load(char* path)
 				}
 				else if (section == 3)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					int level = lpMemScript->GetNumber();
 
 					for (int n = 0; n < MAX_DS_RANK; n++)
 					{
 						this->m_DevilSquareRewardMoney[level][n] = lpMemScript->GetAsNumber();
 					}
-				}
-				else
-				{
-					break;
 				}
 			}
 		}
@@ -587,6 +574,7 @@ void CDevilSquare::CheckSync(DEVIL_SQUARE_LEVEL* lpLevel)
 	if (this->m_DevilSquareStartTime.empty() != 0)
 	{
 		this->SetState(lpLevel, DS_STATE_BLANK);
+
 		return;
 	}
 
@@ -621,6 +609,18 @@ int CDevilSquare::GetState(int level)
 	}
 
 	return this->m_DevilSquareLevel[level].State;
+}
+
+int CDevilSquare::GetCurrentRemainTime(int level)
+{
+	if (DS_LEVEL_RANGE(level) == 0)
+	{
+		return 0;
+	}
+	
+	DEVIL_SQUARE_LEVEL* lpLevel = &this->m_DevilSquareLevel[level];
+
+	return lpLevel->RemainTime;
 }
 
 int CDevilSquare::GetRemainTime(int level)
@@ -851,7 +851,7 @@ int CDevilSquare::GetUserAbleLevel(LPOBJ lpObj)
 		{
 			level = 2;
 		}
-		else if (lpObj->Level >= 167 && lpObj->Level <= MAX_CHARACTER_LEVEL)
+		else if (lpObj->Level >= 167 && lpObj->Level <= gServerInfo.m_MaxCharacterLevel)
 		{
 			level = 3;
 		}
@@ -870,7 +870,7 @@ int CDevilSquare::GetUserAbleLevel(LPOBJ lpObj)
 		{
 			level = 2;
 		}
-		else if (lpObj->Level >= 250 && lpObj->Level <= MAX_CHARACTER_LEVEL)
+		else if (lpObj->Level >= 250 && lpObj->Level <= gServerInfo.m_MaxCharacterLevel)
 		{
 			level = 3;
 		}

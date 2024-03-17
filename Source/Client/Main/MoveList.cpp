@@ -24,22 +24,12 @@ CMoveList::CMoveList()
 
 	this->ReqMoneyPosX = this->ReqLevelPosX + this->SectionWidth + 10.0f;
 
-	this->m_MapList.clear();
+	this->m_MoveList.clear();
 }
 
 CMoveList::~CMoveList()
 {
 
-}
-
-void CMoveList::Init()
-{
-	if (gProtect.m_MainInfo.EnableMoveList == 0)
-	{
-		return;
-	}
-
-	SetCompleteHook(0xE8, 0x00525CEC, &this->MainProc);
 }
 
 void CMoveList::Toggle()
@@ -49,31 +39,97 @@ void CMoveList::Toggle()
 		return;
 	}
 
-	if (SceneFlag == 5
-	    && !*(BYTE*)0x00559C84 // Chat
-	    && !*(BYTE*)0x07EAA144) // Guild Creator
+	if (InputEnable || TabInputEnable || GoldInputEnable || GuildInputEnable)
 	{
-		this->m_MoveListSwitch ^= 1;
+		return;
+	}
 
-		PlayBuffer(25, 0, 0);
+	if (!this->CheckInterfaces())
+	{
+		this->m_MoveListSwitch = false;
+
+		return;
+	}
+
+	this->m_MoveListSwitch ^= 1;
+
+	PlayBuffer(25, 0, 0);
+}
+
+void CMoveList::Render()
+{
+	if (this->m_MoveListSwitch)
+	{
+		if (!this->CheckInterfaces())
+		{
+			this->m_MoveListSwitch ^= 1;
+		}
+		else
+		{
+			this->RenderFrame();
+
+			this->RenderMapsList();
+		}
 	}
 }
 
-void CMoveList::MainProc()
+void CMoveList::UpdateMouse()
 {
-	((void(__cdecl*)()) 0x004C3530)();
-
-	if (gMoveList.m_MoveListSwitch)
+	if (gProtect.m_MainInfo.EnableMoveList == 0)
 	{
-		gMoveList.RenderMoveListBack();
+		return;
+	}
 
-		gMoveList.RenderMoveListMaps();
+	if (!this->m_MoveListSwitch)
+	{
+		return;
+	}
+
+	if (!this->CheckInterfaces())
+	{
+		this->m_MoveListSwitch = false;
+
+		return;
+	}
+
+	if (IsWorkZone((int)this->MainPosX, (int)this->MainPosY, (int)this->MainWidth, (int)this->MainHeight))
+	{
+		MouseOnWindow = true;
+
+		if (this->CheckClickOnMap())
+		{
+			return;
+		}
+
+		if (this->CheckClickOnClose())
+		{
+			return;
+		}
+
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+		}
 	}
 }
 
-void CMoveList::RenderMoveListBack()
+bool CMoveList::CheckInterfaces()
 {
-	this->MainHeight = this->MainBaseHeight + (this->m_MapList.size() * 12.0f);
+	if (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpened || GuildCreatorOpened)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void CMoveList::RenderFrame()
+{
+	this->MainHeight = this->MainBaseHeight + (this->m_MoveList.size() * 12.0f);
 
 	this->MainHeight = (this->MainHeight > 430.0f) ? 430.0f : this->MainHeight;
 
@@ -124,153 +180,128 @@ void CMoveList::RenderMoveListBack()
 	SetTextColor = backupTextColor;
 }
 
-void CMoveList::RenderMoveListMaps()
+void CMoveList::RenderMapsList()
 {
-	EnableAlphaTest(true);
-
 	DWORD backupBgTextColor = SetBackgroundTextColor;
 
 	DWORD backupTextColor = SetTextColor;
 
-	SetBackgroundTextColor = Color4b(0, 0, 0, 0);
+	EnableAlphaTest(true);
 
-	SelectObject(m_hFontDC, g_hFont);
+	int PosY = (int)this->MainPosY + 35;
 
-	char text[32];
-
-	int PosY = 0;
-
-	STRUCT_DECRYPT;
-
-	BYTE Class = *(BYTE*)(*(DWORD*)(CharacterAttribute)+0x0B) & 7;
-
-	int RealMinLevel = 0;
-
-	for (std::vector<MAP_INFO>::iterator it = this->m_MapList.begin(); it != this->m_MapList.end(); it++)
+	if (this->m_MoveList.empty())
 	{
-		it->CanMove = true;
+		SetBackgroundTextColor = Color4b(255, 255, 255, 0);
 
-		if (Class == 3)
+		SetTextColor = Color4b(255, 255, 255, 255);
+
+		SelectObject(m_hFontDC, g_hFontBig);
+
+		RenderText((int)this->MainPosX + 5, PosY - 8, "NO MOVE INFO", (int)(this->MainWidth - 10.0f) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+	}
+	else
+	{
+		char text[32];
+
+		int RealMinLevel = 0;
+
+		STRUCT_DECRYPT;
+
+		BYTE Class = *(BYTE*)(CharacterAttribute + 0x0B) & 7;
+
+		for (std::vector<MOVE_LIST_INFO>::iterator it = this->m_MoveList.begin(); it != this->m_MoveList.end(); it++)
 		{
-			RealMinLevel = ((it->LevelMin * 2) / 3);
-		}
-		else
-		{
-			RealMinLevel = it->LevelMin;
+			if (IsWorkZone((int)this->MainPosX + 5, PosY, (int)(this->MainWidth - 10), 10))
+			{
+				SetBackgroundTextColor = Color4b(204, 204, 25, 153);
+			}
+			else
+			{
+				SetBackgroundTextColor = Color4b(255, 255, 255, 0);
+			}
+
+			it->CanMove = true;
+
+			if (Class == 3)
+			{
+				RealMinLevel = ((it->LevelMin * 2) / 3);
+			}
+			else
+			{
+				RealMinLevel = it->LevelMin;
+			}
+
+			if (*(BYTE*)(Hero + 0x2EA) >= 5) // PK
+			{
+				it->CanMove = false;
+			}
+			else if (RealMinLevel > *(WORD*)(CharacterAttribute + 0x0E))
+			{
+				it->CanMove = false;
+			}
+			else if (it->Money > *(DWORD*)(CharacterMachine + 0x548))
+			{
+				it->CanMove = false;
+			}
+			else if (it->MapNumber == MAP_ATLANS && (*(short*)(Hero + 0x2B8) == 0x332 || *(short*)(Hero + 0x2B8) == 0x333))
+			{
+				it->CanMove = false;
+			}
+			else if (it->MapNumber == MAP_ICARUS && ((*(short*)(Hero + 0x2A0) == -1 && *(short*)(Hero + 0x2B8) != 0x333) || *(short*)(Hero + 0x2B8) == 0x332))
+			{
+				it->CanMove = false;
+			}
+
+			if (it->CanMove)
+			{
+				SetTextColor = Color4b(255, 255, 255, 255);
+			}
+			else
+			{
+				SetTextColor = Color4b(164, 39, 17, 255);
+			}
+
+			if (it->CanMove && IsWorkZone((int)this->MainPosX + 5, PosY, (int)(this->MainWidth - 10.0f), 10))
+			{
+				SetBackgroundTextColor = Color4b(204, 204, 25, 153);
+			}
+			else
+			{
+				SetBackgroundTextColor = Color4b(255, 255, 255, 0);
+			}
+
+			wsprintf(text, "%d", RealMinLevel);
+			RenderText((int)this->MainPosX + 5, PosY, text, (int)(this->MainWidth - 10.0f) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+
+			SetBackgroundTextColor = Color4b(255, 255, 255, 0);
+
+			RenderText((int)this->MapNamePosX, PosY, it->MapName, (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+
+			ConvertGold(it->Money, text);
+			RenderText((int)this->ReqMoneyPosX, PosY, text, (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+
+			PosY += 12;
 		}
 
-		if (*(BYTE*)(Hero + 0x2EA) >= 5) // PK
-		{
-			it->CanMove = false;
-		}
-		else if (RealMinLevel > *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E))
-		{
-			it->CanMove = false;
-		}
-		else if (it->Money > *(DWORD*)(*(DWORD*)(CharacterMachine)+0x548))
-		{
-			it->CanMove = false;
-		}
-		else if (it->MapNumber == MAP_ATLANS && (*(short*)(Hero + 0x2B8) == 0x332 || *(short*)(Hero + 0x2B8) == 0x333))
-		{
-			it->CanMove = false;
-		}
-		else if (it->MapNumber == MAP_ICARUS && ((*(short*)(Hero + 0x2A0) == -1 && *(short*)(Hero + 0x2B8) != 0x333) || *(short*)(Hero + 0x2B8) == 0x332))
-		{
-			it->CanMove = false;
-		}
-
-		if (it->CanMove)
-		{
-			SetTextColor = Color4b(255, 255, 255, 255);
-		}
-		else
-		{
-			SetTextColor = Color4b(164, 39, 17, 255);
-		}
-
-		if (it->Selected && it->CanMove)
-		{
-			glColor4f(0.8f, 0.8f, 0.1f, 0.6f);
-
-			RenderColor(this->MapNamePosX, this->MainPosY + 34.0f + (PosY * 12.0f), this->MainWidth - 10.0f, 10.0f);
-
-			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-			EnableAlphaTest(true);
-		}
-
-		RenderText((int)this->MapNamePosX, (int)this->MainPosY + 35 + (PosY * 12), it->MapName, (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
-
-		wsprintf(text, "%d", RealMinLevel);
-		RenderText((int)this->ReqLevelPosX, (int)this->MainPosY + 35 + (PosY * 12), text, (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
-
-		wsprintf(text, "%d", it->Money);
-		RenderText((int)this->ReqMoneyPosX, (int)this->MainPosY + 35 + (PosY * 12), text, (int)(this->SectionWidth) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
-
-		PosY++;
+		STRUCT_ENCRYPT;
 	}
 
-	STRUCT_ENCRYPT;
+	SelectObject(m_hFontDC, g_hFont);
 
 	SetBackgroundTextColor = backupBgTextColor;
 
 	SetTextColor = backupTextColor;
 }
 
-void CMoveList::CheckMoveListMouse()
-{
-	if (gProtect.m_MainInfo.EnableMoveList == 0)
-	{
-		return;
-	}
-
-	if (!this->m_MoveListSwitch)
-	{
-		return;
-	}
-
-	if (MouseX >= this->MainPosX
-	    && MouseX <= (this->MainPosX + this->MainWidth)
-	    && MouseY >= this->MainPosY
-	    && MouseY <= (this->MainPosY + this->MainHeight))
-	{
-		MouseOnWindow = true;
-
-		if (this->CheckClickOnMap())
-		{
-			return;
-		}
-
-		if (this->CheckClickOnClose())
-		{
-			return;
-		}
-
-		if (MouseLButton && MouseLButtonPush)
-		{
-			MouseLButtonPush = false;
-
-			MouseUpdateTime = 0;
-
-			MouseUpdateTimeMax = 6;
-		}
-	}
-}
-
 bool CMoveList::CheckClickOnMap()
 {
-	int PosY = 0;
+	int PosY = (int)this->MainPosY + 35;
 
-	for (std::vector<MAP_INFO>::iterator it = this->m_MapList.begin(); it != this->m_MapList.end(); it++)
+	for (std::vector<MOVE_LIST_INFO>::iterator it = this->m_MoveList.begin(); it != this->m_MoveList.end(); it++)
 	{
-		if (MouseX >= this->MapNamePosX
-		    && MouseX <= (this->MapNamePosX + this->MainWidth - 10.0f)
-		    && MouseY >= this->MainPosY + 35 + (PosY * 12)
-		    && MouseY <= this->MainPosY + 45 + (PosY * 12))
+		if (IsWorkZone((int)(this->MapNamePosX), PosY, (int)(this->MainWidth - 10.0f), (int)(10.0f)))
 		{
-			it->Selected = true;
-
 			if (MouseLButtonPush)
 			{
 				MouseLButtonPush = false;
@@ -284,25 +315,19 @@ bool CMoveList::CheckClickOnMap()
 					return true;
 				}
 
-				it->Selected = false;
-
 				this->Toggle();
 
-				char cCommand[100];
+				char Text[100];
 
-				wsprintf(cCommand, "/move %s", it->MapName);
+				wsprintf(Text, "/move %s", it->MapName);
 
-				SendChat(cCommand);
+				SendChat(Text);
 
 				return true;
 			}
 		}
-		else
-		{
-			it->Selected = false;
-		}
 
-		PosY++;
+		PosY += 12;
 	}
 
 	return false;
@@ -310,10 +335,7 @@ bool CMoveList::CheckClickOnMap()
 
 bool CMoveList::CheckClickOnClose()
 {
-	if (MouseX >= (this->MainPosX + 5)
-	    && MouseX <= (this->MainPosX + this->MainWidth - 10.0f)
-	    && MouseY >= ((int)this->MainPosY + (int)this->MainHeight - 15)
-	    && MouseY <= ((int)this->MainPosY + (int)this->MainHeight - 5))
+	if (IsWorkZone((int)(this->MainPosX + 5.0f), (int)(this->MainPosY + this->MainHeight - 15.0f), (int)(this->MainWidth - 10.0f), (int)(10.0f)))
 	{
 		if (MouseLButton && MouseLButtonPush)
 		{
@@ -339,13 +361,13 @@ void CMoveList::GCMoveListRecv(PMSG_MOVE_LIST_RECV* lpMsg)
 		return;
 	}
 
-	this->m_MapList.clear();
+	this->m_MoveList.clear();
 
-	for (int n = 0; n < lpMsg->count; n++)
+	for (int i = 0; i < lpMsg->count; i++)
 	{
-		MOVE_LIST_INFO* lpInfo = (MOVE_LIST_INFO*)(((BYTE*)lpMsg) + sizeof(PMSG_MOVE_LIST_RECV) + (sizeof(MOVE_LIST_INFO) * n));
+		MOVE_LIST_INFO* lpInfo = (MOVE_LIST_INFO*)(((BYTE*)lpMsg) + sizeof(PMSG_MOVE_LIST_RECV) + (sizeof(MOVE_LIST_INFO) * i));
 
-		MAP_INFO info;
+		MOVE_LIST_INFO info;
 
 		info.MapNumber = lpInfo->MapNumber;
 
@@ -355,10 +377,8 @@ void CMoveList::GCMoveListRecv(PMSG_MOVE_LIST_RECV* lpMsg)
 
 		info.Money = lpInfo->Money;
 
-		info.CanMove = true;
+		info.CanMove = lpInfo->CanMove;
 
-		info.Selected = false;
-
-		this->m_MapList.push_back(info);
+		this->m_MoveList.push_back(info);
 	}
 }

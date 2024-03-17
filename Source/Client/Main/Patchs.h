@@ -32,6 +32,8 @@ private:
 
 	static BOOL ReadMainVersion();
 
+	static void OpenMonsterScript(char* path);
+
 	static bool RenderNumArrow();
 
 	static int RenderEquipedHelperLife(bool RenderedArrow);
@@ -40,7 +42,43 @@ private:
 
 	static bool CheckSpecialText(char* Text);
 
-	static void FixBloodCastleBackWeapon(float x, float y, float z, DWORD c, DWORD f, int Type, int Level, int Option1, bool Link, bool Translate, int RenderType);
+	static void SendContinueDeathStab();
+
+	static void SendContinueBlast();
+
+	static void SendContinueTripleShot();
+
+	static void SendContinuePenetration();
+
+	static void SendContinueTwistingSlash();
+
+	static void SendContinueFireSlash();
+
+	static void SendContinuePowerSlash();
+
+	static void SendContinueRagefulBlow();
+
+	static void SendContinueHellFire();
+
+	static void SendContinueInferno();
+
+	static void SendContinueTwisterAndEvilSpirit();
+
+	static void SendContinueAquaBeam();
+
+	static void SendContinueFlame();
+
+	void SendRequestMagicContinue(int skill, int x, int y, int dir, int dis, int angle, int target);
+
+	void SendRequestMagic(int skill, int target);
+
+	static bool AttackStage(DWORD c, DWORD o);
+
+	static void FixMoveWhileAttacking();
+
+	static void CalcFPS();
+
+	static void FixPigeons();
 };
 
 extern CPatchs gPatchs;

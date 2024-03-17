@@ -13,3 +13,7 @@
 /* MAPS */
 
 #define MAX_MAPS 32
+
+/* MONSTERS */
+
+#define MAX_MONSTER 256

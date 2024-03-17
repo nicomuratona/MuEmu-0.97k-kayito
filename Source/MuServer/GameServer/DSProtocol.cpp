@@ -694,7 +694,7 @@ void DGCharacterInfoRecv(SDHP_CHARACTER_INFO_RECV* lpMsg)
 
 	gItemManager.GCItemListSend(lpObj->Index);
 
-	gSkillManager.GCSkillListSend(lpObj, 0);
+	gSkillManager.GCSkillListSend(lpObj);
 
 	gQuest.GCQuestInfoSend(lpObj->Index);
 

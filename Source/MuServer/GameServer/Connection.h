@@ -10,11 +10,11 @@ public:
 
 	CConnection();
 
-	~CConnection();
+	virtual ~CConnection();
 
-	void Init(HWND hwnd, void* function);
+	void Init(HWND hwnd, char* name, void* function);
 
-	bool Connect(char* IpAddress, WORD port, DWORD WinMsg);
+	bool Connect(char* IpAddress, WORD port);
 
 	void Disconnect();
 
@@ -28,9 +28,21 @@ public:
 
 private:
 
+	bool CreateEventHandler();
+
+	static DWORD WINAPI SocketEventsThread(CConnection* lpConnection);
+
+private:
+
+	std::string sConnectionName;
+
 	HWND m_hwnd;
 
 	SOCKET m_socket;
+
+	HANDLE m_EventHandlerThread;
+
+	WSAEVENT m_hEvent;
 
 	BYTE m_RecvBuff[MAX_BUFF_SIZE];
 

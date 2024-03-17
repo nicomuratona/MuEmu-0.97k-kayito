@@ -44,7 +44,9 @@ private:
 
 	static void RenderTextEnergy(char* Dest, char* Format);
 
-	static void PrintPlayerSetAttackSpeed();
+	static void CalculateAttackSpeed(DWORD This);
+
+	static void SetAttackSpeed();
 
 	static void RenderDamageHP(float Position[3], int Value, float Color[3], float scale, bool bMove);
 
@@ -86,17 +88,11 @@ public:
 
 	DWORD ViewEnergy;
 
-	DWORD ViewAddStrength;
-
-	DWORD ViewAddDexterity;
-
-	DWORD ViewAddVitality;
-
-	DWORD ViewAddEnergy;
-
 	DWORD ViewPhysiSpeed;
 
 	DWORD ViewMagicSpeed;
+
+	DWORD ViewPing;
 };
 
 extern CPrintPlayer gPrintPlayer;

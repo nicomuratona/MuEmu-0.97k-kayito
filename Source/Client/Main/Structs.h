@@ -64,3 +64,62 @@ struct ITEM_ATTRIBUTE /* Struct Size = 64 */
 	/*+62*/ //BYTE ResistanceLightning;
 	/*+63*/ //BYTE ResistanceFire;
 };
+
+struct GATE_ATTRIBUTE
+{
+	BYTE Flag;
+	BYTE Map;
+	BYTE StartX;
+	BYTE StartY;
+	BYTE EndX;
+	BYTE EndY;
+	BYTE Target;
+	BYTE Direction;
+	BYTE RequireLevel;
+};
+
+struct PARTY_t
+{
+	char name[11];
+	BYTE number;
+	BYTE map;
+	BYTE x;
+	BYTE y;
+	DWORD CurLife;
+	DWORD MaxLife;
+	BYTE stepHP;
+	int index;
+	DWORD state;
+};
+
+struct BITMAP_t
+{
+	char FileName[MAX_BITMAP_FILE_NAME];
+	float Width;
+	float Height;
+	char Components;
+	GLuint TextureNumber;
+	BYTE Ref;
+	BYTE* Buffer;
+};
+
+struct MONSTER_ATTRIBUTE
+{
+	WORD Life;
+	WORD MoveSpeed;
+	WORD AttackSpeed;
+	WORD AttackDamageMin;
+	WORD AttackDamageMax;
+	WORD Defense;
+	WORD MagicDefense;
+	WORD AttackRating;
+	WORD SuccessfulBlocking;
+};
+
+struct MONSTER_SCRIPT
+{
+	BYTE Type;
+	char Name[32];
+	WORD Level;
+	MONSTER_ATTRIBUTE Attribute;
+};

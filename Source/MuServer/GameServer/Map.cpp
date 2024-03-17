@@ -426,7 +426,7 @@ bool CMap::ItemDrop(int index, int level, float dur, int x, int y, BYTE SkillOpt
 
 bool CMap::CheckItemGive(int aIndex, int index)
 {
-	if (MAP_ITEM_RANGE(index) == false)
+	if (MAP_ITEM_RANGE(index) == 0)
 	{
 		return false;
 	}
@@ -459,11 +459,11 @@ bool CMap::CheckItemGive(int aIndex, int index)
 
 	int loot = 1;
 
-	if (OBJECT_RANGE(this->m_Item[index].m_UserIndex) != false && this->m_Item[index].m_LootTime > GetTickCount() && this->m_Item[index].m_UserIndex != aIndex)
+	if (OBJECT_RANGE(this->m_Item[index].m_UserIndex) != 0 && this->m_Item[index].m_LootTime > GetTickCount() && this->m_Item[index].m_UserIndex != aIndex)
 	{
 		loot = 0;
 
-		if (this->m_Item[index].m_QuestItem == 0 && OBJECT_RANGE(lpObj->PartyNumber) != false && lpObj->PartyNumber == gObj[this->m_Item[index].m_UserIndex].PartyNumber)
+		if (this->m_Item[index].m_QuestItem == 0 && OBJECT_RANGE(lpObj->PartyNumber) != 0 && lpObj->PartyNumber == gObj[this->m_Item[index].m_UserIndex].PartyNumber)
 		{
 			loot = 1;
 		}
@@ -479,7 +479,7 @@ bool CMap::CheckItemGive(int aIndex, int index)
 
 void CMap::ItemGive(int aIndex, int index)
 {
-	if (MAP_ITEM_RANGE(index) == false)
+	if (MAP_ITEM_RANGE(index) == 0)
 	{
 		return;
 	}

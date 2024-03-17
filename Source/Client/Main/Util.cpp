@@ -129,6 +129,26 @@ void PacketArgumentEncrypt(BYTE* out_buff, BYTE* in_buff, int size)
 	}
 }
 
+void ConsoleProtocolLog(int type, BYTE* lpMsg, int size)
+{
+	BYTE head, subhead;
+
+	BYTE header = lpMsg[0];
+
+	if (header == 0xC1 || header == 0xC3)
+	{
+		head = lpMsg[2];
+	}
+	else if (header == 0xC2 || header == 0xC4)
+	{
+		head = lpMsg[3];
+	}
+
+	subhead = ((header == 0xC1) ? lpMsg[3] : lpMsg[4]);
+
+	gConsole.Write("[%s] Header: 0x%02X, Head: 0x%02X, SubHead: 0x%02X, Size: %d", gConsole.GetOutputString(type), header, head, subhead, size);
+}
+
 char* ConvertModuleFileName(char* name)
 {
 	static char buff[MAX_PATH] = { 0 };
@@ -180,7 +200,7 @@ int CenterTextPosX(char* buff, int PosX)
 
 	GetTextExtentPoint(m_hFontDC, buff, strlen(buff), &sz);
 
-	return (PosX - (640 * sz.cx / WindowWidth >> 1));
+	return (PosX - (((640 * sz.cx) / WindowWidth) >> 1));
 }
 
 int CenterTextPosY(char* buff, int PosY)
@@ -189,7 +209,7 @@ int CenterTextPosY(char* buff, int PosY)
 
 	GetTextExtentPoint(m_hFontDC, buff, strlen(buff), &sz);
 
-	return (PosY - (480 * sz.cy / WindowHeight >> 1));
+	return (PosY - (((480 * sz.cy) / WindowHeight) >> 1));
 }
 
 float ImgCenterScreenPosX(float Size)
@@ -244,6 +264,52 @@ void Encrypt(BYTE* OutBuff, BYTE* InBuff, int size)
 	}
 }
 
+void ConvertGold(double dGold, char* szText, int iDecimals)
+{
+	char szTemp[256];
+
+	int iCipherCnt = 0;
+
+	DWORD dwValueTemp = (DWORD)dGold;
+
+	// integer digits
+	while (dwValueTemp / 1000 > 0)
+	{
+		iCipherCnt = iCipherCnt + 3;
+
+		dwValueTemp = dwValueTemp / 1000;
+	}
+
+	sprintf_s(szTemp, "%d", dwValueTemp);
+
+	std::string sText = szTemp;
+
+	while (iCipherCnt > 0)
+	{
+		dwValueTemp = (DWORD)dGold;
+
+		dwValueTemp = (dwValueTemp % (int)pow(10.0f, (float)iCipherCnt)) / (int)pow(10.0f, (float)(iCipherCnt - 3));
+
+		sprintf_s(szTemp, ",%03d", dwValueTemp);
+
+		sText += szTemp;
+
+		iCipherCnt = iCipherCnt - 3;
+	}
+
+	// place after decimal point
+	if (iDecimals > 0)
+	{
+		dwValueTemp = (int)(dGold * pow(10.0f, (float)iDecimals)) % (int)pow(10.0f, (float)iDecimals);
+
+		sprintf_s(szTemp, ".%d", dwValueTemp);
+
+		sText += szTemp;
+	}
+
+	wsprintf(szText, sText.c_str());
+}
+
 void MyRenderBitmapRotate(int Texture, float x, float y, float Width, float Height, float Rotate, float u, float v, float uWidth, float vHeight)
 {
 	x = ConvertX(x);
@@ -257,6 +323,10 @@ void MyRenderBitmapRotate(int Texture, float x, float y, float Width, float Heig
 	BindTexture(Texture);
 
 	vec3_t p[4], p2[4];
+
+	x += (Width * 0.5f);
+
+	y += (Height * 0.5f);
 
 	y = WindowHeight - y;
 
@@ -304,6 +374,172 @@ void MyRenderBitmapRotate(int Texture, float x, float y, float Width, float Heig
 	glEnd();
 }
 
+void MyRenderBitRotate(int Texture, float x, float y, float Width, float Height, float Rotate, float u, float v, float uWidth, float vHeight)
+{
+	x = ConvertX(x);
+	y = ConvertY(y);
+
+	Width = ConvertX(Width);
+	Height = ConvertY(Height);
+
+	y = Height - y;
+
+	BindTexture(Texture);
+
+	float cx = (Width / 2.0f) - (Width - x);
+	float cy = (Height / 2.0f) - (Height - y);
+
+	float ax = (-Width * 0.5f) + cx;
+	float bx = (Width * 0.5f) + cx;
+
+	float ay = (-Height * 0.5f) + cy;
+	float by = (Height * 0.5f) + cy;
+
+	vec3_t p[4];
+
+	Vector(ax, by, 0.0f, p[0]);
+	Vector(ax, ay, 0.0f, p[1]);
+	Vector(bx, ay, 0.0f, p[2]);
+	Vector(bx, by, 0.0f, p[3]);
+
+	vec3_t Angle;
+
+	Vector(0.0f, 0.0f, Rotate, Angle);
+
+	float Matrix[3][4];
+
+	AngleMatrix(Angle, Matrix);
+
+	float c[4][2];
+
+	c[0][0] = u;
+	c[0][1] = v;
+
+	c[3][0] = u + uWidth;
+	c[3][1] = v;
+
+	c[2][0] = u + uWidth;
+	c[2][1] = v + vHeight;
+
+	c[1][0] = u;
+	c[1][1] = v + vHeight;
+
+	vec3_t p2[4];
+
+	glBegin(GL_TRIANGLE_FAN);
+
+	for (int i = 0; i < 4; i++)
+	{
+		glTexCoord2f(c[i][0], c[i][1]);
+
+		VectorRotate(p[i], Matrix, p2[i]);
+
+		glVertex2f(p2[i][0] + (WindowWidth / 2.0f), p2[i][1] + (WindowHeight / 2.0f));
+	}
+
+	glEnd();
+}
+
+void MyRenderPointRotate(int Texture, float ix, float iy, float iWidth, float iHeight, float x, float y, float Width, float Height, float Rotate, float Rotate_Loc, float u, float v, float uWidth, float vHeight, char* Tooltip)
+{
+	ix = ConvertX(ix);
+	iy = ConvertY(iy);
+
+	x = ConvertX(x);
+	y = ConvertY(y);
+
+	Width = ConvertX(Width);
+	Height = ConvertY(Height);
+
+	y = Height - y;
+
+	iy = Height - iy;
+
+	BindTexture(Texture);
+
+	vec3_t p;
+
+	Vector((ix - (Width * 0.5f)) + ((Width / 2.0f) - (Width - x)), (iy - (Height * 0.5f)) + ((Height / 2.0f) - (Height - y)), 0.0f, p);
+
+	vec3_t Angle;
+
+	Vector(0.0f, 0.0f, Rotate, Angle);
+
+	float Matrix[3][4];
+
+	AngleMatrix(Angle, Matrix);
+
+	vec3_t p3;
+
+	VectorRotate(p, Matrix, p3);
+
+	vec3_t p2[4];
+
+	Vector(-(iWidth * 0.5f), (iHeight * 0.5f), 0.0f, p2[0]);
+	Vector(-(iWidth * 0.5f), -(iHeight * 0.5f), 0.0f, p2[1]);
+	Vector((iWidth * 0.5f), -(iHeight * 0.5f), 0.0f, p2[2]);
+	Vector((iWidth * 0.5f), (iHeight * 0.5f), 0.0f, p2[3]);
+
+	Vector(0.0f, 0.0f, Rotate_Loc, Angle);
+
+	AngleMatrix(Angle, Matrix);
+
+	float c[4][2];
+
+	c[0][0] = u;
+	c[0][1] = v;
+
+	c[3][0] = u + uWidth;
+	c[3][1] = v;
+
+	c[2][0] = u + uWidth;
+	c[2][1] = v + vHeight;
+
+	c[1][0] = u;
+	c[1][1] = v + vHeight;
+
+	vec3_t p4[4];
+
+	glBegin(GL_TRIANGLE_FAN);
+
+	for (int i = 0; i < 4; i++)
+	{
+		glTexCoord2f(c[i][0], c[i][1]);
+
+		Matrix[0][3] = p3[0];
+
+		Matrix[1][3] = p3[1];
+
+		VectorTransform(p2[i], Matrix, p4[i]);
+
+		glVertex2f(p4[i][0] + (WindowWidth / 2.0f), p4[i][1] + (WindowHeight / 2.0f));
+	}
+
+	glEnd();
+
+	if (Tooltip)
+	{
+		float dx = ((p3[0] + (WindowWidth / 2.0f)) * (float)(640.0f / WindowWidth)) - (iWidth / 4.0f);
+		float dy = ((p3[1] + (WindowHeight / 2.0f)) * (float)(480.0f / WindowHeight)) + (iHeight / 4.0f);
+
+		if (IsWorkZone((int)(dx), (int)(480.0f - dy), (int)(iWidth / 2.0f), (int)(iHeight / 2.0f)))
+		{
+			glColor3f(1.0f, 1.0f, 1.0f);
+			SetBackgroundTextColor = Color4b(0, 0, 0, 255);
+			SetTextColor = Color4b(0, 255, 255, 255);
+
+			RenderTipText
+			(
+				CenterTextPosX(Tooltip, (int)(dx + (iWidth / 2.0f))),
+				(int)(480.0f - dy - 5.0f),
+				Tooltip
+			);
+		}
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+	}
+}
+
 void RenderTriangleColor(float x, float y, float Width, float Height)
 {
 	DisableTexture(false);
@@ -340,4 +576,48 @@ void RenderTriangleColor(float x, float y, float Width, float Height)
 	}
 
 	glEnd();
+}
+
+BYTE GetDestValue(int xPos, int yPos, int xDst, int yDst)
+{
+	int DestX = xDst - xPos;
+
+	int DestY = yDst - yPos;
+
+	if (DestX < -8)
+	{
+		DestX = -8;
+	}
+
+	if (DestX > 7)
+	{
+		DestX = 7;
+	}
+
+	if (DestY < -8)
+	{
+		DestY = -8;
+	}
+
+	if (DestY > 7)
+	{
+		DestY = 7;
+	}
+
+	BYTE byValue1 = ((BYTE)(DestX + 8)) << 4;
+
+	BYTE byValue2 = ((BYTE)(DestY + 8)) & 0xF;
+
+	return (byValue1 | byValue2);
+}
+
+void GetNearRandomPos(vec3_t Pos, int iRange, vec3_t NewPos)
+{
+	VectorCopy(Pos, NewPos);
+
+	NewPos[0] += (float)(rand() % (iRange * 2 + 1) - iRange);
+
+	NewPos[1] += (float)(rand() % (iRange * 2 + 1) - iRange);
+
+	NewPos[2] += (float)(rand() % (iRange * 2 + 1) - iRange);
 }

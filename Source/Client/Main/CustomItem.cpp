@@ -43,12 +43,12 @@ CUSTOM_ITEM_INFO* CCustomItem::GetInfoByItem(int ItemIndex)
 {
 	if (ItemIndex < 0 || ItemIndex >= MAX_ITEM)
 	{
-		return 0;
+		return NULL;
 	}
 
 	if (this->m_CustomItemInfo[ItemIndex].ItemIndex != ItemIndex)
 	{
-		return 0;
+		return NULL;
 	}
 
 	return &this->m_CustomItemInfo[ItemIndex];

@@ -108,6 +108,23 @@ enum eTextAligns
 	RT3_SORT_CENTER = 1,		// Center align
 };
 
+/* Tooltip Text Colors */
+enum eTooltipTextColor
+{
+	TEXT_COLOR_WHITE = 0,
+	TEXT_COLOR_BLUE = 1,
+	TEXT_COLOR_RED = 2,
+	TEXT_COLOR_YELLOW = 3,
+	TEXT_COLOR_GREEN = 4,
+	TEXT_COLOR_DARKRED = 5,
+	TEXT_COLOR_PURPLE = 6,
+	TEXT_COLOR_DARKBLUE = 7,
+	TEXT_COLOR_DARKYELLOW = 8,
+	TEXT_COLOR_GREEN_BLUE = 9,
+	TEXT_COLOR_GRAY = 10,
+	TEXT_COLOR_REDPURPLE = 11,
+};
+
 /* Resolutions */
 enum eResolutionValues
 {

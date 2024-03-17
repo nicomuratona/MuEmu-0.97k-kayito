@@ -34,7 +34,7 @@
 35	"Summon Bali"			0	250	0	0	0	0	*	0	0	0	0	0	1	0
 36	"Summon Soldier"		0	350	0	0	0	0	*	0	0	0	0	0	1	0
 41	"Twisting Slash"		0	10	10	2	3	0	5	0	0	0	0	1	0	1
-42	"Rageful Blow"			60	25	20	3	4	0	4	0	0	0	0	2	0	0
+42	"Rageful Blow"			60	25	20	3	3	0	4	0	0	0	0	2	0	0
 43	"Death Stab"			70	15	12	2	2	0	5	0	0	0	0	2	0	0
 47	"Impale"			15	8	0	3	6	0	*	0	0	0	0	1	0	1
 48	"Greater Life"			0	22	24	0	5	0	*	8	0	0	0	1	0	0

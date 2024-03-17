@@ -14,21 +14,21 @@
     <ProjectGuid>{99FEE110-4599-4DF9-A022-7CD4A72F9649}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>InfoEncoder</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -96,6 +96,7 @@
     <ClInclude Include="CCRC32.h" />
     <ClInclude Include="CustomGlow.h" />
     <ClInclude Include="CustomItem.h" />
+    <ClInclude Include="CustomMonster.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="ItemOption.h" />
     <ClInclude Include="MapManager.h" />
@@ -107,6 +108,7 @@
     <ClCompile Include="CCRC32.cpp" />
     <ClCompile Include="CustomGlow.cpp" />
     <ClCompile Include="CustomItem.cpp" />
+    <ClCompile Include="CustomMonster.cpp" />
     <ClCompile Include="InfoEncoder.cpp" />
     <ClCompile Include="ItemOption.cpp" />
     <ClCompile Include="MapManager.cpp" />

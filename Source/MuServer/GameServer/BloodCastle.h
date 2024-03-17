@@ -174,6 +174,8 @@ public:
 
 	int GetState(int level);
 
+	int GetCurrentRemainTime(int level);
+
 	int GetRemainTime(int level);
 
 	int GetEnterEnabled(int level);

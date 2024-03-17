@@ -94,6 +94,10 @@ public:
 
 	int GetState(int index);
 
+	char* GetInvasionName(int index);
+
+	int GetCurrentRemainTime(int index);
+
 	int GetRemainTime(int index);
 
 	bool AddMonster(INVASION_INFO* lpInfo, int aIndex);

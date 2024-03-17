@@ -21,7 +21,6 @@
 #include "MapManager.h"
 #include "Message.h"
 #include "Monster.h"
-#include "MonsterSkillManager.h"
 #include "Move.h"
 #include "Notice.h"
 #include "Party.h"
@@ -212,11 +211,6 @@ void CObjectManager::ObjectSetStateProc()
 			}
 
 			lpObj->AttackerKilled = 0;
-
-			if (lpObj->CurrentAI != 0 && lpObj->RegenType != 0)
-			{
-				continue;
-			}
 
 			if (BC_MAP_RANGE(lpObj->Map) != 0 && lpObj->Class >= 131 && lpObj->Class <= 134)
 			{
@@ -499,11 +493,6 @@ void CObjectManager::ObjectMoveProc()
 			continue;
 		}
 
-		if (lpObj->CurrentAI != 0 && (lpObj->Type == OBJECT_MONSTER || lpObj->Type == OBJECT_NPC))
-		{
-			continue;
-		}
-
 		if (lpObj->PathCount == 0 || gEffectManager.CheckImmobilizeEffect(lpObj) != 0)
 		{
 			continue;
@@ -576,10 +565,7 @@ void CObjectManager::ObjectMonsterAndMsgProc()
 		{
 			if (gObj[n].Type == OBJECT_MONSTER || gObj[n].Type == OBJECT_NPC)
 			{
-				if (gObj[n].CurrentAI == 0)
-				{
-					gObjMonsterProcess(&gObj[n]);
-				}
+				gObjMonsterProcess(&gObj[n]);
 			}
 			else
 			{
@@ -847,7 +833,7 @@ void CObjectManager::CharacterCalcExperienceAlone(LPOBJ lpObj, LPOBJ lpMonster, 
 
 	experience = ((damage * experience) / (int)lpMonster->MaxLife) * gServerInfo.m_AddExperienceRate[lpObj->AccountLevel];
 
-	experience = (experience * (lpObj->ExperienceRate + lpObj->EffectOption.AddExperienceRate)) / 100;
+	experience = (experience * lpObj->ExperienceRate) / 100;
 
 	experience = (experience * (gMapManager.GetMapExperienceRate(lpObj->Map))) / 100;
 
@@ -964,7 +950,7 @@ void CObjectManager::CharacterCalcExperienceParty(LPOBJ lpObj, LPOBJ lpMonster, 
 
 		experience = ((((TotalExperience * ExperienceRate) * lpTarget->Level) / TotalLevel) / 100) * gServerInfo.m_AddExperienceRate[lpTarget->AccountLevel];
 
-		experience = (experience * (lpTarget->ExperienceRate + lpTarget->EffectOption.AddExperienceRate + (lpTarget->EffectOption.AddPartyBonusExperienceRate * (PartyCount - 1)))) / 100;
+		experience = (experience * lpTarget->ExperienceRate) / 100;
 
 		experience = (experience * (gMapManager.GetMapExperienceRate(lpTarget->Map))) / 100;
 
@@ -989,7 +975,7 @@ void CObjectManager::CharacterCalcExperienceParty(LPOBJ lpObj, LPOBJ lpMonster, 
 
 bool CObjectManager::CharacterLevelUp(LPOBJ lpObj, DWORD AddExperience, int MaxLevelUp, int ExperienceType)
 {
-	if (lpObj->Level >= MAX_CHARACTER_LEVEL)
+	if (lpObj->Level >= gServerInfo.m_MaxCharacterLevel)
 	{
 		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(47, lpObj->Lang));
 
@@ -1019,7 +1005,7 @@ bool CObjectManager::CharacterLevelUp(LPOBJ lpObj, DWORD AddExperience, int MaxL
 
 		gObjCalcExperience(lpObj);
 
-		if (lpObj->Level >= MAX_CHARACTER_LEVEL)
+		if (lpObj->Level >= gServerInfo.m_MaxCharacterLevel)
 		{
 			AddExperience = 0;
 
@@ -1245,12 +1231,12 @@ bool CObjectManager::CharacterUseScroll(LPOBJ lpObj, CItem* lpItem)
 {
 	int skill, slot;
 
-	if ((lpObj->Strength + lpObj->AddStrength) < lpItem->m_RequireStrength)
+	if (lpObj->Strength < lpItem->m_RequireStrength)
 	{
 		return 0;
 	}
 
-	if ((lpObj->Dexterity + lpObj->AddDexterity) < lpItem->m_RequireDexterity)
+	if (lpObj->Dexterity < lpItem->m_RequireDexterity)
 	{
 		return 0;
 	}
@@ -1292,7 +1278,7 @@ bool CObjectManager::CharacterUseScroll(LPOBJ lpObj, CItem* lpItem)
 		return 0;
 	}
 
-	gSkillManager.GCSkillAddSend(lpObj->Index, slot, skill, (BYTE)lpItem->m_Level, 0);
+	gSkillManager.GCSkillAddSend(lpObj->Index, slot, skill, (BYTE)lpItem->m_Level);
 
 	return 1;
 }
@@ -1742,13 +1728,9 @@ void CObjectManager::CharacterAutoRecuperation(LPOBJ lpObj)
 
 			rate += lpObj->HPRecoveryRate;
 
-			rate += lpObj->EffectOption.AddHPRecoveryRate;
-
 			int value = (int)(((lpObj->MaxLife + lpObj->AddLife) * rate) / 100);
 
 			value += lpObj->HPRecovery;
-
-			value += lpObj->EffectOption.AddHPRecovery;
 
 			if ((lpObj->Life + value) > (lpObj->MaxLife + lpObj->AddLife))
 			{
@@ -1773,13 +1755,9 @@ void CObjectManager::CharacterAutoRecuperation(LPOBJ lpObj)
 
 			rate += lpObj->MPRecoveryRate;
 
-			rate += lpObj->EffectOption.AddMPRecoveryRate;
-
 			int value = (int)(((lpObj->MaxMana + lpObj->AddMana) * rate) / 100);
 
 			value += lpObj->MPRecovery;
-
-			value += lpObj->EffectOption.AddMPRecovery;
 
 			if ((lpObj->Mana + value) > (lpObj->MaxMana + lpObj->AddMana))
 			{
@@ -1804,13 +1782,9 @@ void CObjectManager::CharacterAutoRecuperation(LPOBJ lpObj)
 
 			rate += lpObj->BPRecoveryRate;
 
-			rate += lpObj->EffectOption.AddBPRecoveryRate;
-
 			int value = (int)(((lpObj->MaxBP + lpObj->AddBP) * rate) / 100);
 
 			value += lpObj->BPRecovery;
-
-			value += lpObj->EffectOption.AddBPRecovery;
 
 			if ((lpObj->BP + value) > (lpObj->MaxBP + lpObj->AddBP))
 			{
@@ -1917,28 +1891,28 @@ void CObjectManager::CharacterCalcBP(LPOBJ lpObj)
 	{
 		case CLASS_DW:
 		{
-			lpObj->MaxBP = (int)(((lpObj->Strength + lpObj->AddStrength) * 0.20) + ((lpObj->Dexterity + lpObj->AddDexterity) * 0.40) + ((lpObj->Vitality + lpObj->AddVitality) * 0.30) + ((lpObj->Energy + lpObj->AddEnergy) * 0.20));
+			lpObj->MaxBP = (int)((lpObj->Strength * 0.20) + (lpObj->Dexterity * 0.40) + (lpObj->Vitality * 0.30) + (lpObj->Energy * 0.20));
 
 			break;
 		}
 
 		case CLASS_DK:
 		{
-			lpObj->MaxBP = (int)(((lpObj->Strength + lpObj->AddStrength) * 0.15) + ((lpObj->Dexterity + lpObj->AddDexterity) * 0.20) + ((lpObj->Vitality + lpObj->AddVitality) * 0.30) + ((lpObj->Energy + lpObj->AddEnergy) * 1.00));
+			lpObj->MaxBP = (int)((lpObj->Strength * 0.15) + (lpObj->Dexterity * 0.20) + (lpObj->Vitality * 0.30) + (lpObj->Energy * 1.00));
 
 			break;
 		}
 
 		case CLASS_FE:
 		{
-			lpObj->MaxBP = (int)(((lpObj->Strength + lpObj->AddStrength) * 0.30) + ((lpObj->Dexterity + lpObj->AddDexterity) * 0.20) + ((lpObj->Vitality + lpObj->AddVitality) * 0.30) + ((lpObj->Energy + lpObj->AddEnergy) * 0.20));
+			lpObj->MaxBP = (int)((lpObj->Strength * 0.30) + (lpObj->Dexterity * 0.20) + (lpObj->Vitality * 0.30) + (lpObj->Energy * 0.20));
 
 			break;
 		}
 
 		case CLASS_MG:
 		{
-			lpObj->MaxBP = (int)(((lpObj->Strength + lpObj->AddStrength) * 0.20) + ((lpObj->Dexterity + lpObj->AddDexterity) * 0.25) + ((lpObj->Vitality + lpObj->AddVitality) * 0.30) + ((lpObj->Energy + lpObj->AddEnergy) * 0.15));
+			lpObj->MaxBP = (int)((lpObj->Strength * 0.20) + (lpObj->Dexterity * 0.25) + (lpObj->Vitality * 0.30) + (lpObj->Energy * 0.15));
 
 			break;
 		}
@@ -2037,14 +2011,6 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 	{
 		change = 0;
 
-		lpObj->AddStrength = lpObj->EffectOption.AddStrength;
-
-		lpObj->AddDexterity = lpObj->EffectOption.AddDexterity;
-
-		lpObj->AddVitality = lpObj->EffectOption.AddVitality;
-
-		lpObj->AddEnergy = lpObj->EffectOption.AddEnergy;
-
 		for (int n = 0; n < INVENTORY_WEAR_SIZE; n++)
 		{
 			if (lpObj->Inventory[n].m_IsValidItem != 0)
@@ -2059,13 +2025,13 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 		}
 	}
 
-	int Strength = lpObj->Strength + lpObj->AddStrength;
+	int Strength = lpObj->Strength;
 
-	int Dexterity = lpObj->Dexterity + lpObj->AddDexterity;
+	int Dexterity = lpObj->Dexterity;
 
-	int Vitality = lpObj->Vitality + lpObj->AddVitality;
+	int Vitality = lpObj->Vitality;
 
-	int Energy = lpObj->Energy + lpObj->AddEnergy;
+	int Energy = lpObj->Energy;
 
 	if (lpObj->Class == CLASS_DW)
 	{
@@ -2080,10 +2046,6 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 		lpObj->MagicDamageMin = Energy / gServerInfo.m_DWMagicDamageMinConstA;
 
 		lpObj->MagicDamageMax = Energy / gServerInfo.m_DWMagicDamageMaxConstA;
-
-		lpObj->CurseDamageMin = Energy / gServerInfo.m_DWMagicDamageMinConstA;
-
-		lpObj->CurseDamageMax = Energy / gServerInfo.m_DWMagicDamageMaxConstA;
 	}
 	else if (lpObj->Class == CLASS_DK)
 	{
@@ -2098,10 +2060,6 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 		lpObj->MagicDamageMin = Energy / gServerInfo.m_DKMagicDamageMinConstA;
 
 		lpObj->MagicDamageMax = Energy / gServerInfo.m_DKMagicDamageMaxConstA;
-
-		lpObj->CurseDamageMin = Energy / gServerInfo.m_DKMagicDamageMinConstA;
-
-		lpObj->CurseDamageMax = Energy / gServerInfo.m_DKMagicDamageMaxConstA;
 
 		lpObj->DKDamageMultiplierRate = 200 + (Energy / gServerInfo.m_DKDamageMultiplierConstA);
 
@@ -2143,10 +2101,6 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 		lpObj->MagicDamageMin = Energy / gServerInfo.m_FEMagicDamageMinConstA;
 
 		lpObj->MagicDamageMax = Energy / gServerInfo.m_FEMagicDamageMaxConstA;
-
-		lpObj->CurseDamageMin = Energy / gServerInfo.m_FEMagicDamageMinConstA;
-
-		lpObj->CurseDamageMax = Energy / gServerInfo.m_FEMagicDamageMaxConstA;
 	}
 	else if (lpObj->Class == CLASS_MG)
 	{
@@ -2161,10 +2115,6 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 		lpObj->MagicDamageMin = Energy / gServerInfo.m_MGMagicDamageMinConstA;
 
 		lpObj->MagicDamageMax = Energy / gServerInfo.m_MGMagicDamageMaxConstA;
-
-		lpObj->CurseDamageMin = Energy / gServerInfo.m_MGMagicDamageMinConstA;
-
-		lpObj->CurseDamageMax = Energy / gServerInfo.m_MGMagicDamageMaxConstA;
 	}
 
 	if (Right->IsItem() != 0)
@@ -2218,23 +2168,6 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 
 	if (lpObj->Class == CLASS_DW)
 	{
-		lpObj->AttackSuccessRatePvP = (((lpObj->Level) * gServerInfo.m_DWAttackSuccessRatePvPConstA) / gServerInfo.m_DWAttackSuccessRatePvPConstB) + ((Dexterity * gServerInfo.m_DWAttackSuccessRatePvPConstC) / gServerInfo.m_DWAttackSuccessRatePvPConstD);
-	}
-	else if (lpObj->Class == CLASS_DK)
-	{
-		lpObj->AttackSuccessRatePvP = (((lpObj->Level) * gServerInfo.m_DKAttackSuccessRatePvPConstA) / gServerInfo.m_DKAttackSuccessRatePvPConstB) + ((Dexterity * gServerInfo.m_DKAttackSuccessRatePvPConstC) / gServerInfo.m_DKAttackSuccessRatePvPConstD);
-	}
-	else if (lpObj->Class == CLASS_FE)
-	{
-		lpObj->AttackSuccessRatePvP = (((lpObj->Level) * gServerInfo.m_FEAttackSuccessRatePvPConstA) / gServerInfo.m_FEAttackSuccessRatePvPConstB) + ((Dexterity * gServerInfo.m_FEAttackSuccessRatePvPConstC) / gServerInfo.m_FEAttackSuccessRatePvPConstD);
-	}
-	else if (lpObj->Class == CLASS_MG)
-	{
-		lpObj->AttackSuccessRatePvP = (((lpObj->Level) * gServerInfo.m_MGAttackSuccessRatePvPConstA) / gServerInfo.m_MGAttackSuccessRatePvPConstB) + ((Dexterity * gServerInfo.m_MGAttackSuccessRatePvPConstC) / gServerInfo.m_MGAttackSuccessRatePvPConstD);
-	}
-
-	if (lpObj->Class == CLASS_DW)
-	{
 		lpObj->PhysiSpeed = Dexterity / gServerInfo.m_DWPhysiSpeedConstA;
 
 		lpObj->MagicSpeed = Dexterity / gServerInfo.m_DWMagicSpeedConstA;
@@ -2261,18 +2194,6 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 	lpObj->PhysiSpeed += lpObj->DrinkSpeed;
 
 	lpObj->MagicSpeed += lpObj->DrinkSpeed;
-
-	lpObj->PhysiSpeed += lpObj->EffectOption.AddPhysiSpeed;
-
-	lpObj->MagicSpeed += lpObj->EffectOption.AddMagicSpeed;
-
-	lpObj->PhysiSpeed += (lpObj->PhysiSpeed * lpObj->EffectOption.MulPhysiSpeed) / 100;
-
-	lpObj->MagicSpeed += (lpObj->MagicSpeed * lpObj->EffectOption.MulMagicSpeed) / 100;
-
-	lpObj->PhysiSpeed += (lpObj->PhysiSpeed * lpObj->EffectOption.DivPhysiSpeed) / 100;
-
-	lpObj->MagicSpeed += (lpObj->MagicSpeed * lpObj->EffectOption.DivMagicSpeed) / 100;
 
 	bool RightItem = 0;
 
@@ -2364,23 +2285,6 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 	lpObj->DefenseSuccessRate += lpObj->Inventory[6].GetDefenseSuccessRate();
 
 	lpObj->DefenseSuccessRate += lpObj->Inventory[7].GetDefenseSuccessRate();
-
-	if (lpObj->Class == CLASS_DW)
-	{
-		lpObj->DefenseSuccessRatePvP = (((lpObj->Level) * gServerInfo.m_DWDefenseSuccessRatePvPConstA) / gServerInfo.m_DWDefenseSuccessRatePvPConstB) + (Dexterity / gServerInfo.m_DWDefenseSuccessRatePvPConstC);
-	}
-	else if (lpObj->Class == CLASS_DK)
-	{
-		lpObj->DefenseSuccessRatePvP = (((lpObj->Level) * gServerInfo.m_DKDefenseSuccessRatePvPConstA) / gServerInfo.m_DKDefenseSuccessRatePvPConstB) + (Dexterity / gServerInfo.m_DKDefenseSuccessRatePvPConstC);
-	}
-	else if (lpObj->Class == CLASS_FE)
-	{
-		lpObj->DefenseSuccessRatePvP = (((lpObj->Level) * gServerInfo.m_FEDefenseSuccessRatePvPConstA) / gServerInfo.m_FEDefenseSuccessRatePvPConstB) + (Dexterity / gServerInfo.m_FEDefenseSuccessRatePvPConstC);
-	}
-	else if (lpObj->Class == CLASS_MG)
-	{
-		lpObj->DefenseSuccessRatePvP = (((lpObj->Level) * gServerInfo.m_MGDefenseSuccessRatePvPConstA) / gServerInfo.m_MGDefenseSuccessRatePvPConstB) + (Dexterity / gServerInfo.m_MGDefenseSuccessRatePvPConstC);
-	}
 
 	int LastItemIndex = -1;
 
@@ -2572,29 +2476,13 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 
 	lpObj->MaxMana += gDefaultClassInfo.m_DefaultClassInfo[lpObj->Class].LevelMana * (lpObj->Level - 1);
 
-	lpObj->MaxLife += ((lpObj->Vitality - gDefaultClassInfo.m_DefaultClassInfo[lpObj->Class].Vitality) + lpObj->AddVitality) * lpObj->VitalityToLife;
+	lpObj->MaxLife += ((lpObj->Vitality - gDefaultClassInfo.m_DefaultClassInfo[lpObj->Class].Vitality)) * lpObj->VitalityToLife;
 
-	lpObj->MaxMana += ((lpObj->Energy - gDefaultClassInfo.m_DefaultClassInfo[lpObj->Class].Energy) + lpObj->AddEnergy) * lpObj->EnergyToMana;
+	lpObj->MaxMana += ((lpObj->Energy - gDefaultClassInfo.m_DefaultClassInfo[lpObj->Class].Energy)) * lpObj->EnergyToMana;
 
 	this->CharacterCalcBP(lpObj);
 
-	lpObj->AddLife += lpObj->EffectOption.AddMaxHP;
-
 	lpObj->AddLife += (int)(lpObj->MaxLife * lpObj->EffectOption.MulMaxHP) / 100;
-
-	lpObj->AddLife -= (int)(lpObj->MaxLife * lpObj->EffectOption.DivMaxHP) / 100;
-
-	lpObj->AddMana += lpObj->EffectOption.AddMaxMP;
-
-	lpObj->AddMana += (int)(lpObj->MaxMana * lpObj->EffectOption.MulMaxMP) / 100;
-
-	lpObj->AddMana -= (int)(lpObj->MaxMana * lpObj->EffectOption.DivMaxMP) / 100;
-
-	lpObj->AddBP += lpObj->EffectOption.AddMaxBP;
-
-	lpObj->AddBP += (int)(lpObj->MaxBP * lpObj->EffectOption.MulMaxBP) / 100;
-
-	lpObj->AddBP -= (int)(lpObj->MaxBP * lpObj->EffectOption.DivMaxBP) / 100;
 
 	lpObj->Life = ((lpObj->MaxLife + lpObj->AddLife) * TotalHP) / 100;
 
@@ -2610,9 +2498,9 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 
 #if(GAMESERVER_EXTRA==0)
 
-	GCLifeSend(aIndex, 0xFE, (int)(lpObj->MaxLife + lpObj->AddLife), (lpObj->MaxShield + lpObj->AddShield));
+	GCLifeSend(aIndex, 0xFE, (int)(lpObj->MaxLife + lpObj->AddLife));
 
-	GCLifeSend(aIndex, 0xFF, (int)lpObj->Life, lpObj->Shield);
+	GCLifeSend(aIndex, 0xFF, (int)lpObj->Life);
 
 	GCManaSend(aIndex, 0xFE, (int)(lpObj->MaxMana + lpObj->AddMana), (lpObj->MaxBP + lpObj->AddBP));
 

@@ -16,7 +16,7 @@ HWND hWnd;
 
 TCHAR szTitle[MAX_LOADSTRING] = "MuEmu DataServer Ex097";
 
-TCHAR szWindowClass[MAX_LOADSTRING] = "CONNECTSERVER";
+TCHAR szWindowClass[MAX_LOADSTRING] = "DATASERVER";
 
 int main()
 {

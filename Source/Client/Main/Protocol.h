@@ -6,6 +6,12 @@
 //************ GameServer -> Client ************//
 //**********************************************//
 
+struct PMSG_LIVE_CLIENT_RECV
+{
+	PBMSG_HEAD header; // C1:0E
+	DWORD TickCount;
+};
+
 struct PMSG_NOTICE_RECV
 {
 	PBMSG_HEAD header; // C1:0D
@@ -40,6 +46,42 @@ struct PMSG_USER_DIE_RECV
 	BYTE index[2];
 	BYTE skill;
 	BYTE killer[2];
+};
+
+struct PMSG_SKILL_ATTACK_SEND
+{
+	PBMSG_HEAD header; // C3:19
+	BYTE skill;
+	BYTE index[2];
+};
+
+struct PMSG_DURATION_SKILL_ATTACK_RECV
+{
+	PBMSG_HEAD header; // C3:1E
+	BYTE skill;
+	BYTE index[2];
+	BYTE x;
+	BYTE y;
+	BYTE dir;
+};
+
+struct PMSG_DURATION_SKILL_ATTACK_SEND
+{
+	PBMSG_HEAD header; // C3:1E
+	BYTE skill;
+	BYTE x;
+	BYTE y;
+	BYTE dir;
+	BYTE dis;
+	BYTE angle;
+	BYTE index[2];
+};
+
+struct PMSG_ITEM_GET_RECV
+{
+	PBMSG_HEAD header; // C3:22
+	BYTE result;
+	BYTE ItemInfo[MAX_ITEM_INFO];
 };
 
 struct PMSG_LIFE_RECV
@@ -263,10 +305,6 @@ struct PMSG_NEW_CHARACTER_CALC_RECV
 	DWORD ViewMaxMP;
 	DWORD ViewCurBP;
 	DWORD ViewMaxBP;
-	DWORD ViewAddStrength;
-	DWORD ViewAddDexterity;
-	DWORD ViewAddVitality;
-	DWORD ViewAddEnergy;
 	DWORD ViewPhysiSpeed;
 	DWORD ViewMagicSpeed;
 };
@@ -338,11 +376,17 @@ private:
 
 	void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size);
 
+	void GCLiveClientRecv(PMSG_LIVE_CLIENT_RECV* lpMsg);
+
 	void GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg);
 
 	void GCDamageRecv(PMSG_DAMAGE_RECV* lpMsg);
 
 	void GCUserDieRecv(PMSG_USER_DIE_RECV* lpMsg);
+
+	void GCDurationSkillAttackRecv(PMSG_DURATION_SKILL_ATTACK_RECV* lpMsg);
+
+	static void CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg);
 
 	void GCLifeRecv(PMSG_LIFE_RECV* lpMsg);
 

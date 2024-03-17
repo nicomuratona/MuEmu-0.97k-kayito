@@ -20,6 +20,21 @@ void CItem::Init()
 {
 	SetCompleteHook(0xE9, 0x0047B910, &this->ItemConvert);
 
+	SetCompleteHook(0xE9, 0x004C86A9, &this->InsertOptionText);
+
+	SetCompleteHook(0xE8, 0x004C5BC4, &this->OptionAddExcellentDamageRate);
+
+	SetCompleteHook(0xE8, 0x004C5A4E, &this->OptionAddPhysiDamageByLevel);
+	SetCompleteHook(0xE8, 0x004C5AEB, &this->OptionAddPhysiDamageByLevel);
+
+	SetCompleteHook(0xE8, 0x004C5B90, &this->OptionMulPhysiDamage);
+
+	SetCompleteHook(0xE8, 0x004C5B5C, &this->OptionAddMagicDamageByLevel);
+
+	SetCompleteHook(0xE8, 0x004C5C2E, &this->OptionAddHuntHP);
+
+	SetCompleteHook(0xE8, 0x004C5C62, &this->OptionAddHuntMP);
+
 	SetCompleteHook(0xE9, 0x004C45C0, &this->myCalcMaxDurability);
 
 	SetCompleteHook(0xE9, 0x0047C690, &this->ItemValue);
@@ -471,7 +486,7 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 		{
 			ip->Special[ip->SpecialNum] = pItemOption;
 
-			ip->SpecialValue[ip->SpecialNum] = pItemValue;
+			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
 
 			ip->SpecialNum++;
 		}
@@ -485,7 +500,7 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 		{
 			ip->Special[ip->SpecialNum] = pItemOption;
 
-			ip->SpecialValue[ip->SpecialNum] = pItemValue;
+			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
 
 			ip->SpecialNum++;
 		}
@@ -499,7 +514,7 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 		{
 			ip->Special[ip->SpecialNum] = pItemOption;
 
-			ip->SpecialValue[ip->SpecialNum] = pItemValue;
+			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
 
 			ip->SpecialNum++;
 		}
@@ -513,7 +528,7 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 		{
 			ip->Special[ip->SpecialNum] = pItemOption;
 
-			ip->SpecialValue[ip->SpecialNum] = pItemValue;
+			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
 
 			ip->SpecialNum++;
 		}
@@ -527,7 +542,7 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 		{
 			ip->Special[ip->SpecialNum] = pItemOption;
 
-			ip->SpecialValue[ip->SpecialNum] = pItemValue;
+			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
 
 			ip->SpecialNum++;
 		}
@@ -541,13 +556,474 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 		{
 			ip->Special[ip->SpecialNum] = pItemOption;
 
-			ip->SpecialValue[ip->SpecialNum] = pItemValue;
+			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
 
 			ip->SpecialNum++;
 		}
 	}
 
 	ip->SpecialNum = (ip->SpecialNum > MAX_SPECIAL_OPTION) ? MAX_SPECIAL_OPTION : ip->SpecialNum;
+}
+
+_declspec(naked) void CItem::InsertOptionText()
+{
+	static DWORD jmpBack = 0x004C8B71;
+	static int i;
+	static ITEM* ip;
+	static int iMana;
+
+	_asm
+	{
+		Pushad;
+		Mov ip, Ebx;
+	}
+
+	for (i = 0; i < ip->SpecialNum; i++)
+	{
+		if (ip->Special[i] == SKILL_DEFENSE)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[80], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_FALLING_SLASH)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[81], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_LUNGE)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[82], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_UPPERCUT)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[83], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_CYCLONE)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[84], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_SLASH)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[85], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_TRIPLE_SHOT)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[86], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_FIRE_BREATH)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[745], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+
+			wsprintf(TextList[TextNum], GlobalText[179]);
+
+			TextListColor[TextNum] = TEXT_COLOR_DARKRED;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_POWER_SLASH)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[98], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_PHYSI_DAMAGE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[88], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+
+			if (ip->Type == 31)
+			{
+				wsprintf(TextList[TextNum], GlobalText[89], ip->SpecialValue[i]);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_MAGIC_DAMAGE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[89], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_DEFENSE_SUCCESS_RATE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[90], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_DEFENSE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[91], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_CRITICAL_DAMAGE_RATE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[87]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+
+			wsprintf(TextList[TextNum], GlobalText[94], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_HP_RECOVERY_RATE)
+		{
+			if (ip->Type < GET_ITEM(13, 14) || ip->Type > GET_ITEM(13, 18))
+			{
+				wsprintf(TextList[TextNum], GlobalText[92], ip->SpecialValue[i]);
+			}
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_MUL_HP)
+		{
+			wsprintf(TextList[TextNum], GlobalText[622], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_MUL_MP)
+		{
+			wsprintf(TextList[TextNum], GlobalText[623], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_DAMAGE_REDUCTION)
+		{
+			wsprintf(TextList[TextNum], GlobalText[624], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_DAMAGE_REFLECT)
+		{
+			wsprintf(TextList[TextNum], GlobalText[625], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_MUL_DEFENSE_SUCCESS_RATE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[626], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_MONEY_AMOUNT_DROP_RATE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[627], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_EXCELLENT_DAMAGE_RATE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[628], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_PHYSI_DAMAGE_BY_LEVEL)
+		{
+			wsprintf(TextList[TextNum], GlobalText[629], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_MUL_PHYSI_DAMAGE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[630], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_MAGIC_DAMAGE_BY_LEVEL)
+		{
+			wsprintf(TextList[TextNum], GlobalText[631], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_MUL_MAGIC_DAMAGE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[632], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_SPEED)
+		{
+			wsprintf(TextList[TextNum], GlobalText[633], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_HUNT_HP)
+		{
+			wsprintf(TextList[TextNum], GlobalText[634], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_HUNT_MP)
+		{
+			wsprintf(TextList[TextNum], GlobalText[635], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_WING_HP)
+		{
+			wsprintf(TextList[TextNum], GlobalText[740], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_WING_MP)
+		{
+			wsprintf(TextList[TextNum], GlobalText[741], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_IGNORE_DEFENSE_RATE)
+		{
+			wsprintf(TextList[TextNum], GlobalText[742], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_BP)
+		{
+			wsprintf(TextList[TextNum], GlobalText[743], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_MUL_BP)
+		{
+			wsprintf(TextList[TextNum], GlobalText[744], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == 90)
+		{
+			wsprintf(TextList[TextNum], GlobalText[746], ip->SpecialValue[i]);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else
+		{
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+	}
+
+	_asm
+	{
+		Popad;
+		Mov Eax, Dword Ptr Ds : [0x07EAA154] ;
+		Jmp[jmpBack];
+	}
+}
+
+int CItem::OptionAddExcellentDamageRate(char* _Dest, const char* _Format)
+{
+	return wsprintf(_Dest, _Format, 10);
+}
+
+int CItem::OptionAddPhysiDamageByLevel(char* _Dest, const char* _Format)
+{
+	return wsprintf(_Dest, _Format, 20);
+}
+
+int CItem::OptionMulPhysiDamage(char* _Dest, const char* _Format)
+{
+	return wsprintf(_Dest, _Format, 2);
+}
+
+int CItem::OptionAddMagicDamageByLevel(char* _Dest, const char* _Format)
+{
+	return wsprintf(_Dest, _Format, 20);
+}
+
+int CItem::OptionAddHuntHP(char* _Dest, const char* _Format)
+{
+	return wsprintf(_Dest, _Format, 8);
+}
+
+int CItem::OptionAddHuntMP(char* _Dest, const char* _Format)
+{
+	return wsprintf(_Dest, _Format, 8);
 }
 
 WORD CItem::myCalcMaxDurability(ITEM* ip, ITEM_ATTRIBUTE* p, int Level)
@@ -670,7 +1146,7 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 				price *= 2;
 			}
 
-			price *= (ULONGLONG)(1 << m_ItemLevel);
+			price *= ((ULONGLONG)1 << m_ItemLevel);
 
 			price *= (ULONGLONG)ip->Durability;
 
@@ -860,49 +1336,7 @@ DWORD CItem::ConvertRepairGold(int Gold, int Durability, int MaxDurability, shor
 
 	money = ((money >= 1000) ? ((money / 100) * 100) : money);
 
-	gItem.ConvertGold(money, Text);
+	ConvertGold(money, Text);
 
 	return money;
-}
-
-void CItem::ConvertGold(double dGold, char* szText, int iDecimals)
-{
-	char szTemp[256];
-
-	int iCipherCnt = 0;
-
-	DWORD dwValueTemp = (DWORD)dGold;
-
-	// integer digits
-	while (dwValueTemp / 1000 > 0)
-	{
-		iCipherCnt = iCipherCnt + 3;
-
-		dwValueTemp = dwValueTemp / 1000;
-	}
-
-	wsprintf(szText, "%d", dwValueTemp);
-
-	while (iCipherCnt > 0)
-	{
-		dwValueTemp = (DWORD)dGold;
-
-		dwValueTemp = (dwValueTemp % (int)pow(10.0f, (float)iCipherCnt)) / (int)pow(10.0f, (float)(iCipherCnt - 3));
-
-		wsprintf(szTemp, ",%03d", dwValueTemp);
-
-		strcat(szText, szTemp);
-
-		iCipherCnt = iCipherCnt - 3;
-	}
-
-	// place after decimal point
-	if (iDecimals > 0)
-	{
-		dwValueTemp = (int)(dGold * pow(10.0f, (float)iDecimals)) % (int)pow(10.0f, (float)iDecimals);
-
-		wsprintf(szTemp, ".%d", dwValueTemp);
-
-		strcat(szText, szTemp);
-	}
 }

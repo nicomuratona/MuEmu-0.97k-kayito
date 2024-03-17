@@ -5,6 +5,9 @@
 #define REAL_WIDTH(width) ((width) * WindowWidth / 640)
 #define REAL_HEIGHT(height) ((height) * WindowHeight / 480)
 
+/* TERRAIN */
+#define TERRAIN_SIZE 256
+
 /* OPENGL */
 #define Color3b(r, b, g)	((g << 16) + (b << 8) + r)
 #define Color4b(r, b, g, o)	((o << 24) + (g << 16) + (b << 8) + r)
@@ -22,8 +25,15 @@
 #define MAX_ITEM_PRICE 2000000000
 
 #define INVENTORY_WEAR_SIZE 12
+#define INVENTORY_COLUMN_SIZE 8
+#define INVENTORY_ROW_SIZE 8
+#define INVENTORY_ITEM_SIZE (INVENTORY_COLUMN_SIZE * INVENTORY_ROW_SIZE)
+#define INVENTORY_MAX_SIZE (INVENTORY_WEAR_SIZE + INVENTORY_ITEM_SIZE)
 
 #define INVENTORY_WEAR_RANGE(x) (((x) < 0) ? 0 : ((x) >= INVENTORY_WEAR_SIZE) ? 0 : 1)
+#define INVENTORY_MAX_RANGE(x) (((x) < 0) ? 0 : ((x) >= INVENTORY_MAX_SIZE) ? 0 : 1)
+
+#define MAX_ITEM_INFO 4
 
 /* WNDPROC */
 #define WM_AUTOCLICKTIMER 0x01
@@ -36,6 +46,10 @@
 #define MAX_CLASS 4
 #define MAX_RESISTANCE 4
 #define MAX_CHARACTER_LEVEL 400
+
+/* MONSTER */
+#define MONSTER_BASE_MODEL 270
+#define MAX_MONSTER 256
 
 /* BUFFS */
 #define FindEffect(x,y) ((((x) & (y)) == (y)) ? 1 : 0)
@@ -50,3 +64,9 @@
 #define MAX_TEXTURE 1450
 #define PLUS_TEXTURE 512
 #define TOTAL_TEXTURE (MAX_TEXTURE + PLUS_TEXTURE)
+
+#define MAX_BITMAP_FILE_NAME 32
+
+/* MAP */
+#define MAX_MAPS 32
+#define MAX_GATES 100

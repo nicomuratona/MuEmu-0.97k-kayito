@@ -34,7 +34,7 @@
 
 void ProtocolCore(BYTE head, BYTE* lpMsg, int size, int aIndex, int encrypt, int serial)
 {
-	gConsole.Output(CON_PROTO_TCP_RECV, "RECV 0: %02X, 1: %02X, 2: %02X, 3: %02X, 4: %02X, 5: %02X", (size > 0) ? lpMsg[0] : 0, (size > 1) ? lpMsg[1] : 0, (size > 2) ? lpMsg[2] : 0, (size > 3) ? lpMsg[3] : 0, (size > 4) ? lpMsg[4] : 0, (size > 5) ? lpMsg[5] : 0);
+	ConsoleProtocolLog(CON_PROTO_TCP_RECV, lpMsg, size);
 
 	if (gObj[aIndex].Type == OBJECT_USER && gHackPacketCheck.CheckPacketHack(aIndex, head, ((lpMsg[0] == 0xC1) ? lpMsg[3] : lpMsg[4]), encrypt, serial) == 0)
 	{
@@ -721,6 +721,8 @@ void CGLiveClientRecv(PMSG_LIVE_CLIENT_RECV* lpMsg, int aIndex)
 	}
 
 	//LogAdd(LOG_RED, "[%d] Latency: %d", lpObj->Index, abs((int)((GetTickCount() - lpObj->ServerTickCount) - (lpMsg->TickCount - lpObj->ClientTickCount))));
+
+	GCLiveClientSend(aIndex, lpMsg->TickCount);
 
 	if (gServerInfo.m_CheckLatencyHack != 0 && abs((int)((GetTickCount() - lpObj->ServerTickCount) - (lpMsg->TickCount - lpObj->ClientTickCount))) > gServerInfo.m_CheckLatencyHackTolerance)
 	{
@@ -1542,6 +1544,17 @@ void GCServerMsgSend(int aIndex, BYTE msg)
 	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 }
 
+void GCLiveClientSend(int aIndex, DWORD TickCount)
+{
+	PMSG_LIVE_CLIENT_SEND pMsg;
+
+	pMsg.header.set(0x0E, sizeof(pMsg));
+
+	pMsg.TickCount = TickCount;
+
+	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
+}
+
 void GCWeatherSend(int aIndex, BYTE weather)
 {
 	PMSG_WEATHER_SEND pMsg;
@@ -2150,14 +2163,6 @@ void GCNewCharacterCalcSend(LPOBJ lpObj)
 	pMsg.ViewCurBP = (DWORD)(lpObj->BP);
 
 	pMsg.ViewMaxBP = (DWORD)(lpObj->MaxBP + lpObj->AddBP);
-
-	pMsg.ViewAddStrength = lpObj->AddStrength;
-
-	pMsg.ViewAddDexterity = lpObj->AddDexterity;
-
-	pMsg.ViewAddVitality = lpObj->AddVitality;
-
-	pMsg.ViewAddEnergy = lpObj->AddEnergy;
 
 	pMsg.ViewPhysiSpeed = lpObj->PhysiSpeed;
 

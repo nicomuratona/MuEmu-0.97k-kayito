@@ -36,14 +36,14 @@ void CCommandManager::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (lpMemScript->SetBuffer(path) == false)
+	if (!lpMemScript->SetBuffer(path))
 	{
 		ErrorMessageBox(lpMemScript->GetLastError());
 
@@ -58,14 +58,13 @@ void CCommandManager::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
-			{
-				break;
-			}
+			token = lpMemScript->GetToken();
 
-			if (strcmp("end", lpMemScript->GetString()) == 0)
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
@@ -739,8 +738,6 @@ void CCommandManager::CommandAddPoint(LPOBJ lpObj, char* arg, int type)
 
 	if (gObjectManager.CharacterLevelUpPointAdd(lpObj, type, amount) != 0)
 	{
-		pMsg.result = 20;
-
 		switch (type)
 		{
 			case 2: // Vitality
@@ -761,14 +758,23 @@ void CCommandManager::CommandAddPoint(LPOBJ lpObj, char* arg, int type)
 		pMsg.MaxBP = GET_MAX_WORD_VALUE((lpObj->MaxBP + lpObj->AddBP));
 
 	#if(GAMESERVER_EXTRA==1)
+
 		pMsg.ViewPoint = (DWORD)(lpObj->LevelUpPoint);
+
 		pMsg.ViewMaxHP = (DWORD)(lpObj->MaxLife + lpObj->AddLife);
+
 		pMsg.ViewMaxMP = (DWORD)(lpObj->MaxMana + lpObj->AddMana);
+
 		pMsg.ViewMaxBP = (DWORD)(lpObj->MaxBP + lpObj->AddBP);
+
 		pMsg.ViewStrength = lpObj->Strength;
+
 		pMsg.ViewDexterity = lpObj->Dexterity;
+
 		pMsg.ViewVitality = lpObj->Vitality;
+
 		pMsg.ViewEnergy = lpObj->Energy;
+
 	#endif
 
 		GCNewCharacterInfoSend(lpObj);
@@ -1139,7 +1145,7 @@ void CCommandManager::DGCommandResetRecv(SDHP_COMMAND_RESET_RECV* lpMsg)
 			lpObj->Skill[n].Clear();
 		}
 
-		gSkillManager.GCSkillListSend(lpObj, 0);
+		gSkillManager.GCSkillListSend(lpObj);
 
 		gObjectManager.CharacterCalcAttribute(lpObj->Index);
 	}
@@ -1395,7 +1401,7 @@ void CCommandManager::DGCommandGrandResetRecv(SDHP_COMMAND_RESET_RECV* lpMsg)
 			lpObj->Skill[n].Clear();
 		}
 
-		gSkillManager.GCSkillListSend(lpObj, 0);
+		gSkillManager.GCSkillListSend(lpObj);
 
 		gObjectManager.CharacterCalcAttribute(lpObj->Index);
 	}

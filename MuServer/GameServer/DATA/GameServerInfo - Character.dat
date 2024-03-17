@@ -144,26 +144,6 @@ MGAttackSuccessRateConstC = 2
 MGAttackSuccessRateConstD = 4
 
 ;==================================================
-; Character Attack Success Rate PvP Settings
-;==================================================
-DWAttackSuccessRatePvPConstA = 3
-DWAttackSuccessRatePvPConstB = 1
-DWAttackSuccessRatePvPConstC = 4
-DWAttackSuccessRatePvPConstD = 1
-DKAttackSuccessRatePvPConstA = 3
-DKAttackSuccessRatePvPConstB = 1
-DKAttackSuccessRatePvPConstC = 45
-DKAttackSuccessRatePvPConstD = 10
-FEAttackSuccessRatePvPConstA = 3
-FEAttackSuccessRatePvPConstB = 1
-FEAttackSuccessRatePvPConstC = 6
-FEAttackSuccessRatePvPConstD = 10
-MGAttackSuccessRatePvPConstA = 3
-MGAttackSuccessRatePvPConstB = 1
-MGAttackSuccessRatePvPConstC = 35
-MGAttackSuccessRatePvPConstD = 10
-
-;==================================================
 ; Character Speed Settings
 ;==================================================
 DWPhysiSpeedConstA = 20
@@ -182,22 +162,6 @@ DWDefenseSuccessRateConstA = 3
 DKDefenseSuccessRateConstA = 3
 FEDefenseSuccessRateConstA = 4
 MGDefenseSuccessRateConstA = 3
-
-;==================================================
-; Character Defense Success Rate PvP Settings
-;==================================================
-DWDefenseSuccessRatePvPConstA = 2
-DWDefenseSuccessRatePvPConstB = 1
-DWDefenseSuccessRatePvPConstC = 4
-DKDefenseSuccessRatePvPConstA = 2
-DKDefenseSuccessRatePvPConstB = 1
-DKDefenseSuccessRatePvPConstC = 2
-FEDefenseSuccessRatePvPConstA = 2
-FEDefenseSuccessRatePvPConstB = 1
-FEDefenseSuccessRatePvPConstC = 10
-MGDefenseSuccessRatePvPConstA = 2
-MGDefenseSuccessRatePvPConstB = 1
-MGDefenseSuccessRatePvPConstC = 4
 
 ;==================================================
 ; Character Defense Settings

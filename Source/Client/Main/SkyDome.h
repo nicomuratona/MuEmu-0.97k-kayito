@@ -1,7 +1,5 @@
 #pragma once
 
-#define MAX_MAP_SKY 16
-
 #define SKY_TOP_TEXTURE ".\\Data\\World%d\\Sky.bmp"
 
 #define PI 3.1415926535897f
@@ -58,7 +56,7 @@ public:
 
 	char TexturePath[256];
 
-	GLuint texturesID[MAX_MAP_SKY];
+	GLuint texturesID[MAX_MAPS];
 
 	SkyStruct SkyColor;
 

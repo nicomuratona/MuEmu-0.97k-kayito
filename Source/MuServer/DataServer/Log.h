@@ -1,10 +1,9 @@
 #pragma once
 
-#define MAX_LOG 1
-
 enum eLogType
 {
 	LOG_GENERAL = 0,
+	MAX_LOG
 };
 
 struct LOG_INFO

@@ -23,6 +23,8 @@ void ErrorMessageBox(char* message, ...);
 
 void LogAdd(eLogColor color, char* text, ...);
 
+void ConsoleProtocolLog(int type, BYTE* lpMsg, int size);
+
 bool DataSend(int aIndex, BYTE* lpMsg, DWORD size);
 
 void DataSendAll(BYTE* lpMsg, int size);

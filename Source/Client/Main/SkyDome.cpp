@@ -254,7 +254,7 @@ void CSkyDome::GenerateSkyDome(float radius, float dtheta, float dphi, float hTi
 
 void CSkyDome::LoadSkyDome()
 {
-	for (int i = 0; i < MAX_MAP_SKY; i++)
+	for (int i = 0; i < MAX_MAPS; i++)
 	{
 		sprintf_s(this->TexturePath, SKY_TOP_TEXTURE, i + 1);
 
@@ -371,7 +371,7 @@ void CSkyDome::RenderSkyDome()
 
 	glEnable(GL_LIGHT1);					// Enable Light One
 
-	glColor4f(this->SkyColor.R, this->SkyColor.G, this->SkyColor.B, 0.5);	// Full Brightness. 50% Alpha
+	glColor4f(this->SkyColor.R, this->SkyColor.G, this->SkyColor.B, 0.5f);	// Full Brightness. 50% Alpha
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);			// Set The Blending Function For Translucency
 

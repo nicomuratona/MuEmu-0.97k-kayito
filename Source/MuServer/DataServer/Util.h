@@ -7,6 +7,8 @@ void ErrorMessageBox(char* message, ...);
 
 void LogAdd(eLogColor color, char* text, ...);
 
+void ConsoleProtocolLog(int type, BYTE* lpMsg, int size);
+
 bool GetCharacterSlot(char CharacterName[5][11], char* name, BYTE* slot);
 
 bool CheckTextSyntax(char* text, int size);

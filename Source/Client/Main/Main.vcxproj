@@ -21,14 +21,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -109,8 +109,10 @@
     <ClInclude Include="Controller.h" />
     <ClInclude Include="CustomGlow.h" />
     <ClInclude Include="CustomItem.h" />
+    <ClInclude Include="CustomMonster.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="EventTimer.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FullMap.h" />
     <ClInclude Include="GuildLogo.h" />
@@ -127,6 +129,7 @@
     <ClInclude Include="LoadModels.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="MathLib.h" />
+    <ClInclude Include="MemScript.h" />
     <ClInclude Include="MoveList.h" />
     <ClInclude Include="MP3.h" />
     <ClInclude Include="Offsets.h" />
@@ -159,6 +162,8 @@
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="CustomGlow.cpp" />
     <ClCompile Include="CustomItem.cpp" />
+    <ClCompile Include="CustomMonster.cpp" />
+    <ClCompile Include="EventTimer.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FullMap.cpp" />
     <ClCompile Include="GuildLogo.cpp" />
@@ -176,6 +181,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="MathLib.cpp" />
+    <ClCompile Include="MemScript.cpp" />
     <ClCompile Include="MoveList.cpp" />
     <ClCompile Include="MP3.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />

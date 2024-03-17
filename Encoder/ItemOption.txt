@@ -149,8 +149,8 @@
 3	72		10		03,000		03,031		*		*		*		1		// Spear Excellent 1
 3	72		10		04,000		04,031		*		*		*		1		// Bow/Crossbow Excellent 1
 3	72		10		05,000		05,031		*		*		*		1		// Staff Excellent 1
-3	66		30		06,000		06,031		*		*		*		1		// Shield Excellent 1
-3	66		30		07,000		11,031		*		*		*		1		// Body Parts Excellent 1
+3	66		4		06,000		06,031		*		*		*		1		// Shield Excellent 1
+3	66		4		07,000		11,031		*		*		*		1		// Body Parts Excellent 1
 
 3	80		5		12,003		12,003		*		*		*		1		// Level 2 Elf Wings Excellent 1
 3	80		5		12,004		12,004		*		*		*		1		// Level 2 Wizard Wings Excellent 1
@@ -159,8 +159,8 @@
 
 3	84		5		13,003		13,003		*		*		*		1		// Dinorant Excellent 1
 
-3	66		30		13,008		13,008		*		*		*		1		// Ring of Ice Excellent 1
-3	66		30		13,009		13,009		*		*		*		1		// Ring of Poison Wings Excellent 1
+3	66		4		13,008		13,008		*		*		*		1		// Ring of Ice Excellent 1
+3	66		4		13,009		13,009		*		*		*		1		// Ring of Poison Wings Excellent 1
 
 3	72		10		13,012		13,012		*		*		*		1		// Pendant of Lightning Excellent 1
 3	72		10		13,013		13,013		*		*		*		1		// Pendant of Fire Wings Excellent 1
@@ -172,8 +172,8 @@
 4	73		20		03,000		03,031		*		*		*		2		// Spear Excellent 2
 4	73		20		04,000		04,031		*		*		*		2		// Bow/Crossbow Excellent 2
 4	75		20		05,000		05,031		*		*		*		2		// Staff Excellent 2
-4	67		10		06,000		06,031		*		*		*		2		// Shield Excellent 2
-4	67		10		07,000		11,031		*		*		*		2		// Body Parts Excellent 2
+4	67		4		06,000		06,031		*		*		*		2		// Shield Excellent 2
+4	67		4		07,000		11,031		*		*		*		2		// Body Parts Excellent 2
 
 4	81		5		12,003		12,003		*		*		*		2		// Level 2 Elf Wings Excellent 2
 4	81		5		12,004		12,004		*		*		*		2		// Level 2 Wizard Wings Excellent 2
@@ -182,8 +182,8 @@
 
 4	83		50		13,003		13,003		*		*		*		2		// Dinorant Excellent 2
 
-4	67		10		13,008		13,008		*		*		*		2		// Ring of Ice Excellent 2
-4	67		10		13,009		13,009		*		*		*		2		// Ring of Poison Wings Excellent 2
+4	67		4		13,008		13,008		*		*		*		2		// Ring of Ice Excellent 2
+4	67		4		13,009		13,009		*		*		*		2		// Ring of Poison Wings Excellent 2
 
 4	75		20		13,012		13,012		*		*		*		2		// Pendant of Lightning Excellent 2
 4	73		20		13,013		13,013		*		*		*		2		// Pendant of Fire Wings Excellent 2
@@ -195,8 +195,8 @@
 5	74		2		03,000		03,031		*		*		*		4		// Spear Excellent 3
 5	74		2		04,000		04,031		*		*		*		4		// Bow/Crossbow Excellent 3
 5	76		2		05,000		05,031		*		*		*		4		// Staff Excellent 3
-5	68		5		06,000		06,031		*		*		*		4		// Shield Excellent 3
-5	68		5		07,000		11,031		*		*		*		4		// Body Parts Excellent 3
+5	68		4		06,000		06,031		*		*		*		4		// Shield Excellent 3
+5	68		4		07,000		11,031		*		*		*		4		// Body Parts Excellent 3
 
 5	82		3		12,003		12,003		*		*		*		4		// Level 2 Elf Wings Excellent 3
 5	82		3		12,004		12,004		*		*		*		4		// Level 2 Wizard Wings Excellent 3
@@ -205,8 +205,8 @@
 
 5	77		5		13,003		13,003		*		*		*		4		// Dinorant Excellent 3
 
-5	68		5		13,008		13,008		*		*		*		4		// Ring of Ice Excellent 3
-5	68		5		13,009		13,009		*		*		*		4		// Ring of Poison Wings Excellent 3
+5	68		4		13,008		13,008		*		*		*		4		// Ring of Ice Excellent 3
+5	68		4		13,009		13,009		*		*		*		4		// Ring of Poison Wings Excellent 3
 
 5	76		2		13,012		13,012		*		*		*		4		// Pendant of Lightning Excellent 3
 5	74		2		13,013		13,013		*		*		*		4		// Pendant of Fire Wings Excellent 3
@@ -233,39 +233,39 @@
 6	77		7		13,013		13,013		*		*		*		8		// Pendant of Fire Wings Excellent 4
 
 //***************** Excellent Option 5 *****************//
-7	78		12		00,000		00,031		*		*		*		16		// Sword Excellent 5
-7	78		12		01,000		01,031		*		*		*		16		// Axe Excellent 5
-7	78		12		02,000		02,031		*		*		*		16		// Mace Excellent 5
-7	78		12		03,000		03,031		*		*		*		16		// Spear Excellent 5
-7	78		12		04,000		04,031		*		*		*		16		// Bow/Crossbow Excellent 5
-7	78		12		05,000		05,031		*		*		*		16		// Staff Excellent 5
-7	70		4		06,000		06,031		*		*		*		16		// Shield Excellent 5
-7	70		4		07,000		11,031		*		*		*		16		// Body Parts Excellent 5
+7	78		8		00,000		00,031		*		*		*		16		// Sword Excellent 5
+7	78		8		01,000		01,031		*		*		*		16		// Axe Excellent 5
+7	78		8		02,000		02,031		*		*		*		16		// Mace Excellent 5
+7	78		8		03,000		03,031		*		*		*		16		// Spear Excellent 5
+7	78		8		04,000		04,031		*		*		*		16		// Bow/Crossbow Excellent 5
+7	78		8		05,000		05,031		*		*		*		16		// Staff Excellent 5
+7	70		10		06,000		06,031		*		*		*		16		// Shield Excellent 5
+7	70		10		07,000		11,031		*		*		*		16		// Body Parts Excellent 5
 
 7	77		5		12,003		12,003		*		*		*		16		// Level 2 Elf Wings Excellent 5
 7	77		5		12,004		12,004		*		*		*		16		// Level 2 Wizard Wings Excellent 5
 7	77		5		12,005		12,005		*		*		*		16		// Level 2 Knight Wings Excellent 5
 7	77		5		12,006		12,006		*		*		*		16		// Level 2 Gladiator Wings Excellent 5
 
-7	70		4		13,008		13,008		*		*		*		16		// Ring of Ice Excellent 5
-7	70		4		13,009		13,009		*		*		*		16		// Ring of Poison Wings Excellent 5
+7	70		10		13,008		13,008		*		*		*		16		// Ring of Ice Excellent 5
+7	70		10		13,009		13,009		*		*		*		16		// Ring of Poison Wings Excellent 5
 
-7	78		12		13,012		13,012		*		*		*		16		// Pendant of Lightning Excellent 5
-7	78		12		13,013		13,013		*		*		*		16		// Pendant of Fire Wings Excellent 5
+7	78		8		13,012		13,012		*		*		*		16		// Pendant of Lightning Excellent 5
+7	78		8		13,013		13,013		*		*		*		16		// Pendant of Fire Wings Excellent 5
 
 //***************** Excellent Option 6 *****************//
-8	79		12		00,000		00,031		*		*		*		32		// Sword Excellent 6
-8	79		12		01,000		01,031		*		*		*		32		// Axe Excellent 6
-8	79		12		02,000		02,031		*		*		*		32		// Mace Excellent 6
-8	79		12		03,000		03,031		*		*		*		32		// Spear Excellent 6
-8	79		12		04,000		04,031		*		*		*		32		// Bow/Crossbow Excellent 6
-8	79		12		05,000		05,031		*		*		*		32		// Staff Excellent 6
-8	71		4		06,000		06,031		*		*		*		32		// Shield Excellent 6
-8	71		4		07,000		11,031		*		*		*		32		// Body Parts Excellent 6
+8	79		8		00,000		00,031		*		*		*		32		// Sword Excellent 6
+8	79		8		01,000		01,031		*		*		*		32		// Axe Excellent 6
+8	79		8		02,000		02,031		*		*		*		32		// Mace Excellent 6
+8	79		8		03,000		03,031		*		*		*		32		// Spear Excellent 6
+8	79		8		04,000		04,031		*		*		*		32		// Bow/Crossbow Excellent 6
+8	79		8		05,000		05,031		*		*		*		32		// Staff Excellent 6
+8	71		30		06,000		06,031		*		*		*		32		// Shield Excellent 6
+8	71		30		07,000		11,031		*		*		*		32		// Body Parts Excellent 6
 
-8	71		4		13,008		13,008		*		*		*		32		// Ring of Ice Excellent 6
-8	71		4		13,009		13,009		*		*		*		32		// Ring of Poison Wings Excellent 6
+8	71		30		13,008		13,008		*		*		*		32		// Ring of Ice Excellent 6
+8	71		30		13,009		13,009		*		*		*		32		// Ring of Poison Wings Excellent 6
 
-8	79		12		13,012		13,012		*		*		*		32		// Pendant of Lightning Excellent 6
-8	79		12		13,013		13,013		*		*		*		32		// Pendant of Fire Wings Excellent 6
+8	79		8		13,012		13,012		*		*		*		32		// Pendant of Lightning Excellent 6
+8	79		8		13,013		13,013		*		*		*		32		// Pendant of Fire Wings Excellent 6
 end

@@ -175,16 +175,6 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 		{
 			return false;
 		}
-
-		if (lpTarget->MonsterSkillElementOption.CheckImmuneTime() != false)
-		{
-			if (lpTarget->MonsterSkillElementOption.m_SkillElementImmuneNumber == skill)
-			{
-				this->MissSend(lpObj, lpTarget, lpSkill, send, count);
-
-				return true;
-			}
-		}
 	}
 
 #pragma endregion
@@ -200,11 +190,6 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 	if (damage == 0)
 	{
 		if ((lpObj->Type != OBJECT_USER || lpTarget->Type != OBJECT_USER) && this->MissCheck(lpObj, lpTarget, lpSkill, send, count, &miss) == false)
-		{
-			return true;
-		}
-
-		if ((lpObj->Type == OBJECT_USER && lpTarget->Type == OBJECT_USER) && this->MissCheckPvP(lpObj, lpTarget, lpSkill, send, count, &miss) == false)
 		{
 			return true;
 		}
@@ -371,11 +356,6 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 		lpTarget->LastAttackerID = lpObj->Index;
 
 		gObjAddMsgSendDelay(lpTarget, 0, lpObj->Index, 100, 0);
-
-		if (lpTarget->CurrentAI != 0)
-		{
-			lpTarget->Agro.IncAgro(lpObj->Index, (damage / 50));
-		}
 	}
 
 #pragma endregion
@@ -829,21 +809,9 @@ bool CAttack::MissCheck(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int send, 
 {
 	int AttackSuccessRate = lpObj->AttackSuccessRate;
 
-	AttackSuccessRate += lpObj->EffectOption.AddAttackSuccessRate;
-
-	AttackSuccessRate += (AttackSuccessRate * lpObj->EffectOption.MulAttackSuccessRate) / 100;
-
-	AttackSuccessRate -= (AttackSuccessRate * lpObj->EffectOption.DivAttackSuccessRate) / 100;
-
 	AttackSuccessRate = ((AttackSuccessRate < 0) ? 0 : AttackSuccessRate);
 
 	int DefenseSuccessRate = lpTarget->DefenseSuccessRate;
-
-	DefenseSuccessRate += lpTarget->EffectOption.AddDefenseSuccessRate;
-
-	DefenseSuccessRate += (DefenseSuccessRate * lpTarget->EffectOption.MulDefenseSuccessRate) / 100;
-
-	DefenseSuccessRate -= (DefenseSuccessRate * lpTarget->EffectOption.DivDefenseSuccessRate) / 100;
 
 	DefenseSuccessRate = ((DefenseSuccessRate < 0) ? 0 : DefenseSuccessRate);
 
@@ -868,35 +836,6 @@ bool CAttack::MissCheck(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int send, 
 
 			return false;
 		}
-	}
-
-	return true;
-}
-
-bool CAttack::MissCheckPvP(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int send, int count, BYTE* miss)
-{
-	(*miss) = 0;
-
-	int AttackSuccessRate = (int)((100 * (((lpObj->AttackSuccessRatePvP * 10000.0f) / (lpObj->AttackSuccessRatePvP + lpTarget->DefenseSuccessRatePvP)) / 10000.0f)) * (((lpObj->Level * 10000.0f) / (lpObj->Level + lpTarget->Level)) / 10000.0f));
-
-	if ((lpTarget->Level - lpObj->Level) >= 100)
-	{
-		AttackSuccessRate -= 5;
-	}
-	else if ((lpTarget->Level - lpObj->Level) >= 200)
-	{
-		AttackSuccessRate -= 10;
-	}
-	else if ((lpTarget->Level - lpObj->Level) >= 300)
-	{
-		AttackSuccessRate -= 15;
-	}
-
-	if ((GetLargeRand() % 100) > AttackSuccessRate)
-	{
-		this->MissSend(lpObj, lpTarget, lpSkill, send, count);
-
-		return false;
 	}
 
 	return true;
@@ -991,23 +930,6 @@ int CAttack::GetTargetDefense(LPOBJ lpObj, LPOBJ lpTarget, WORD* effect)
 
 	defense += lpTarget->EffectOption.AddDefense;
 
-	defense -= lpTarget->EffectOption.SubDefense;
-
-	if (lpObj->Type == OBJECT_USER && lpTarget->Type == OBJECT_USER)
-	{
-		defense += lpTarget->DefensePvP;
-	}
-
-	if (lpTarget->MonsterSkillElementOption.CheckDefenseTime() != false)
-	{
-		defense += lpTarget->MonsterSkillElementOption.m_SkillElementDefense;
-	}
-
-	if (lpTarget->EffectOption.MulDefense > 0)
-	{
-		defense += (defense * lpTarget->EffectOption.MulDefense) / 100;
-	}
-
 	if (lpTarget->EffectOption.DivDefense > 0)
 	{
 		defense -= (defense * lpTarget->EffectOption.DivDefense) / 100;
@@ -1018,7 +940,7 @@ int CAttack::GetTargetDefense(LPOBJ lpObj, LPOBJ lpTarget, WORD* effect)
 		defense = (defense * 50) / 100;
 	}
 
-	if ((GetLargeRand() % 100) < ((lpObj->IgnoreDefenseRate + lpObj->EffectOption.AddIgnoreDefenseRate) - lpTarget->ResistIgnoreDefenseRate))
+	if ((GetLargeRand() % 100) < ((lpObj->IgnoreDefenseRate) - lpTarget->ResistIgnoreDefenseRate))
 	{
 		(*effect) = DAMAGE_TYPE_IGNORE;
 
@@ -1057,18 +979,6 @@ int CAttack::GetAttackDamage(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, WORD*
 		DamageMin += lpObj->EffectOption.AddPhysiDamage;
 
 		DamageMax += lpObj->EffectOption.AddPhysiDamage;
-
-		DamageMin += lpObj->EffectOption.AddMinPhysiDamage;
-
-		DamageMax += lpObj->EffectOption.AddMaxPhysiDamage;
-
-		DamageMin += (DamageMin * lpObj->EffectOption.MulPhysiDamage) / 100;
-
-		DamageMax += (DamageMax * lpObj->EffectOption.MulPhysiDamage) / 100;
-
-		DamageMin -= (DamageMin * lpObj->EffectOption.DivPhysiDamage) / 100;
-
-		DamageMax -= (DamageMax * lpObj->EffectOption.DivPhysiDamage) / 100;
 
 		int range = (DamageMax - DamageMin);
 
@@ -1144,25 +1054,13 @@ int CAttack::GetAttackDamage(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, WORD*
 
 		DamageMax += lpObj->EffectOption.AddPhysiDamage;
 
-		DamageMin += lpObj->EffectOption.AddMinPhysiDamage;
-
-		DamageMax += lpObj->EffectOption.AddMaxPhysiDamage;
-
-		DamageMin += (DamageMin * lpObj->EffectOption.MulPhysiDamage) / 100;
-
-		DamageMax += (DamageMax * lpObj->EffectOption.MulPhysiDamage) / 100;
-
-		DamageMin -= (DamageMin * lpObj->EffectOption.DivPhysiDamage) / 100;
-
-		DamageMax -= (DamageMax * lpObj->EffectOption.DivPhysiDamage) / 100;
-
 		int range = (DamageMax - DamageMin);
 
 		range = ((range < 1) ? 1 : range);
 
 		damage = DamageMin + (GetLargeRand() % range);
 
-		if ((GetLargeRand() % 100) < ((lpObj->CriticalDamageRate + lpObj->EffectOption.AddCriticalDamageRate) - lpTarget->ResistCriticalDamageRate))
+		if ((GetLargeRand() % 100) < ((lpObj->CriticalDamageRate) - lpTarget->ResistCriticalDamageRate))
 		{
 			(*effect) = DAMAGE_TYPE_CRITICAL;
 
@@ -1173,26 +1071,14 @@ int CAttack::GetAttackDamage(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, WORD*
 			damage += lpObj->EffectOption.AddCriticalDamage;
 		}
 
-		if ((GetLargeRand() % 100) < ((lpObj->ExcellentDamageRate + lpObj->EffectOption.AddExcellentDamageRate) - lpTarget->ResistExcellentDamageRate))
+		if ((GetLargeRand() % 100) < ((lpObj->ExcellentDamageRate) - lpTarget->ResistExcellentDamageRate))
 		{
 			(*effect) = DAMAGE_TYPE_EXCELLENT;
 
 			damage = (DamageMax * 120) / 100;
 
 			damage += lpObj->ExcellentDamage;
-
-			damage += lpObj->EffectOption.AddExcellentDamage;
 		}
-	}
-
-	if (lpObj->Type == OBJECT_USER && lpTarget->Type == OBJECT_USER)
-	{
-		damage += lpObj->DamagePvP;
-	}
-
-	if (lpObj->MonsterSkillElementOption.CheckAttackTime() != false)
-	{
-		damage += lpObj->MonsterSkillElementOption.m_SkillElementAttack;
 	}
 
 	damage -= TargetDefense;
@@ -1224,10 +1110,6 @@ int CAttack::GetAttackDamageWizard(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill,
 
 	DamageMax += lpObj->EffectOption.AddMagicDamage;
 
-	DamageMin += lpObj->EffectOption.AddMinMagicDamage;
-
-	DamageMax += lpObj->EffectOption.AddMaxMagicDamage;
-
 	int type = gSkillManager.GetSkillType(lpSkill->m_index);
 
 	if (CHECK_RANGE(type, MAX_RESISTANCE_TYPE) != false)
@@ -1236,14 +1118,6 @@ int CAttack::GetAttackDamageWizard(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill,
 
 		DamageMax += lpObj->AddResistance[type];
 	}
-
-	DamageMin += (DamageMin * lpObj->EffectOption.MulMagicDamage) / 100;
-
-	DamageMax += (DamageMax * lpObj->EffectOption.MulMagicDamage) / 100;
-
-	DamageMin -= (DamageMin * lpObj->EffectOption.DivMagicDamage) / 100;
-
-	DamageMax -= (DamageMax * lpObj->EffectOption.DivMagicDamage) / 100;
 
 	if (Right->IsItem() != false && Right->m_IsValidItem != false && ((Right->m_Index >= GET_ITEM(0, 0) && Right->m_Index < GET_ITEM(1, 0)) || (Right->m_Index >= GET_ITEM(5, 0) && Right->m_Index < GET_ITEM(6, 0))))
 	{
@@ -1260,7 +1134,7 @@ int CAttack::GetAttackDamageWizard(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill,
 
 	int damage = DamageMin + (GetLargeRand() % range);
 
-	if ((GetLargeRand() % 100) < ((lpObj->CriticalDamageRate + lpObj->EffectOption.AddCriticalDamageRate) - lpTarget->ResistCriticalDamageRate))
+	if ((GetLargeRand() % 100) < ((lpObj->CriticalDamageRate) - lpTarget->ResistCriticalDamageRate))
 	{
 		(*effect) = DAMAGE_TYPE_CRITICAL;
 
@@ -1271,103 +1145,13 @@ int CAttack::GetAttackDamageWizard(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill,
 		damage += lpObj->EffectOption.AddCriticalDamage;
 	}
 
-	if ((GetLargeRand() % 100) < ((lpObj->ExcellentDamageRate + lpObj->EffectOption.AddExcellentDamageRate) - lpTarget->ResistExcellentDamageRate))
+	if ((GetLargeRand() % 100) < ((lpObj->ExcellentDamageRate) - lpTarget->ResistExcellentDamageRate))
 	{
 		(*effect) = DAMAGE_TYPE_EXCELLENT;
 
 		damage = (DamageMax * 120) / 100;
 
 		damage += lpObj->ExcellentDamage;
-
-		damage += lpObj->EffectOption.AddExcellentDamage;
-	}
-
-	if (lpObj->Type == OBJECT_USER && lpTarget->Type == OBJECT_USER)
-	{
-		damage += lpObj->DamagePvP;
-	}
-
-	damage -= TargetDefense;
-
-	damage = ((damage < 0) ? 0 : damage);
-
-	return damage;
-}
-
-int CAttack::GetAttackDamageCursed(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, WORD* effect, int TargetDefense)
-{
-	CItem* Right = &lpObj->Inventory[0];
-
-	CItem* Left = &lpObj->Inventory[1];
-
-	int DamageMin = lpObj->CurseDamageMin;
-
-	int DamageMax = lpObj->CurseDamageMax;
-
-	DamageMin += lpSkill->m_DamageMin;
-
-	DamageMax += lpSkill->m_DamageMax;
-
-	DamageMin += lpObj->SkillDamageBonus;
-
-	DamageMax += lpObj->SkillDamageBonus;
-
-	DamageMin += lpObj->EffectOption.AddCurseDamage;
-
-	DamageMax += lpObj->EffectOption.AddCurseDamage;
-
-	DamageMin += lpObj->EffectOption.AddMinCurseDamage;
-
-	DamageMax += lpObj->EffectOption.AddMaxCurseDamage;
-
-	int type = gSkillManager.GetSkillType(lpSkill->m_index);
-
-	if (CHECK_RANGE(type, MAX_RESISTANCE_TYPE) != false)
-	{
-		DamageMin += lpObj->AddResistance[type];
-
-		DamageMax += lpObj->AddResistance[type];
-	}
-
-	DamageMin += (DamageMin * lpObj->EffectOption.MulCurseDamage) / 100;
-
-	DamageMax += (DamageMax * lpObj->EffectOption.MulCurseDamage) / 100;
-
-	DamageMin -= (DamageMin * lpObj->EffectOption.DivCurseDamage) / 100;
-
-	DamageMax -= (DamageMax * lpObj->EffectOption.DivCurseDamage) / 100;
-
-	int range = (DamageMax - DamageMin);
-
-	range = ((range < 1) ? 1 : range);
-
-	int damage = DamageMin + (GetLargeRand() % range);
-
-	if ((GetLargeRand() % 100) < ((lpObj->CriticalDamageRate + lpObj->EffectOption.AddCriticalDamageRate) - lpTarget->ResistCriticalDamageRate))
-	{
-		(*effect) = 3;
-
-		damage = DamageMax;
-
-		damage += lpObj->CriticalDamage;
-
-		damage += lpObj->EffectOption.AddCriticalDamage;
-	}
-
-	if ((GetLargeRand() % 100) < ((lpObj->ExcellentDamageRate + lpObj->EffectOption.AddExcellentDamageRate) - lpTarget->ResistExcellentDamageRate))
-	{
-		(*effect) = 2;
-
-		damage = (DamageMax * 120) / 100;
-
-		damage += lpObj->ExcellentDamage;
-
-		damage += lpObj->EffectOption.AddExcellentDamage;
-	}
-
-	if (lpObj->Type == OBJECT_USER && lpTarget->Type == OBJECT_USER)
-	{
-		damage += lpObj->DamagePvP;
 	}
 
 	damage -= TargetDefense;
@@ -1382,10 +1166,6 @@ void CAttack::GetPreviewDefense(LPOBJ lpObj, DWORD* defense)
 	(*defense) = lpObj->Defense;
 
 	(*defense) += lpObj->EffectOption.AddDefense;
-
-	(*defense) -= lpObj->EffectOption.SubDefense;
-
-	(*defense) += ((*defense) * lpObj->EffectOption.MulDefense) / 100;
 
 	(*defense) -= ((*defense) * lpObj->EffectOption.DivDefense) / 100;
 }
@@ -1443,14 +1223,6 @@ void CAttack::GetPreviewPhysiDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* Damage
 	(*DamageMin) += lpObj->EffectOption.AddPhysiDamage;
 
 	(*DamageMax) += lpObj->EffectOption.AddPhysiDamage;
-
-	(*DamageMin) += lpObj->EffectOption.AddMinPhysiDamage;
-
-	(*DamageMax) += lpObj->EffectOption.AddMaxPhysiDamage;
-
-	(*MulDamage) = lpObj->EffectOption.MulPhysiDamage;
-
-	(*DivDamage) = lpObj->EffectOption.DivPhysiDamage;
 }
 
 void CAttack::GetPreviewMagicDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* MulDamage, DWORD* DivDamage, DWORD* DamageRate)
@@ -1467,14 +1239,6 @@ void CAttack::GetPreviewMagicDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* Damage
 
 	(*DamageMax) += lpObj->EffectOption.AddMagicDamage;
 
-	(*DamageMin) += lpObj->EffectOption.AddMinMagicDamage;
-
-	(*DamageMax) += lpObj->EffectOption.AddMaxMagicDamage;
-
-	(*MulDamage) = lpObj->EffectOption.MulMagicDamage;
-
-	(*DivDamage) = lpObj->EffectOption.DivMagicDamage;
-
 	if (Right->IsItem() != false && Right->m_IsValidItem != false && ((Right->m_Index >= GET_ITEM(0, 0) && Right->m_Index < GET_ITEM(1, 0)) || (Right->m_Index >= GET_ITEM(5, 0) && Right->m_Index < GET_ITEM(6, 0))))
 	{
 		(*DamageRate) = (int)(((Right->m_MagicDamageRate / 2) + (Right->m_Level * 2)) * Right->m_CurrentDurabilityState);
@@ -1483,31 +1247,6 @@ void CAttack::GetPreviewMagicDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* Damage
 	{
 		(*DamageRate) = 0;
 	}
-}
-
-void CAttack::GetPreviewCurseDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* MulDamage, DWORD* DivDamage, DWORD* DamageRate)
-{
-	CItem* Right = &lpObj->Inventory[0];
-
-	CItem* Left = &lpObj->Inventory[1];
-
-	(*DamageMin) = lpObj->CurseDamageMin;
-
-	(*DamageMax) = lpObj->CurseDamageMax;
-
-	(*DamageMin) += lpObj->EffectOption.AddCurseDamage;
-
-	(*DamageMax) += lpObj->EffectOption.AddCurseDamage;
-
-	(*DamageMin) += lpObj->EffectOption.AddMinCurseDamage;
-
-	(*DamageMax) += lpObj->EffectOption.AddMaxCurseDamage;
-
-	(*MulDamage) = lpObj->EffectOption.MulCurseDamage;
-
-	(*DivDamage) = lpObj->EffectOption.DivCurseDamage;
-
-	(*DamageRate) = 0;
 }
 
 void CAttack::CGAttackRecv(PMSG_ATTACK_RECV* lpMsg, int aIndex)

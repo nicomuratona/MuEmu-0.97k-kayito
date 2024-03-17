@@ -129,6 +129,7 @@
 134	1	"Statue of Saint"
 150	1	"Bali"
 151	1	"Soldier"
+152	1	"Pichula"
 200	1	"Soccer Ball"
 230	1	"Wandering Merchant Alex"
 231	1	"Thompson Kenel"

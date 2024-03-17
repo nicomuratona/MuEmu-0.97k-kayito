@@ -25,7 +25,7 @@ void CCustomGlow::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		printf(MEM_SCRIPT_ALLOC_ERROR, path);
 
@@ -43,14 +43,13 @@ void CCustomGlow::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
-			{
-				break;
-			}
+			token = lpMemScript->GetToken();
 
-			if (strcmp("end", lpMemScript->GetString()) == 0)
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}

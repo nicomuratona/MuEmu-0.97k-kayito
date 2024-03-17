@@ -99,14 +99,14 @@ void CBloodCastle::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (lpMemScript->SetBuffer(path) == 0)
+	if (!lpMemScript->SetBuffer(path))
 	{
 		ErrorMessageBox(lpMemScript->GetLastError());
 
@@ -125,9 +125,13 @@ void CBloodCastle::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
+			token = lpMemScript->GetToken();
+
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
@@ -136,13 +140,15 @@ void CBloodCastle::Load(char* path)
 
 			while (true)
 			{
+				token = lpMemScript->GetToken();
+
+				if (token == TOKEN_END || token == TOKEN_END_SECTION)
+				{
+					break;
+				}
+
 				if (section == 0)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					this->m_WarningTime = lpMemScript->GetNumber();
 
 					this->m_NotifyTime = lpMemScript->GetAsNumber();
@@ -153,11 +159,6 @@ void CBloodCastle::Load(char* path)
 				}
 				else if (section == 1)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					BLOOD_CASTLE_START_TIME info;
 
 					info.Year = lpMemScript->GetNumber();
@@ -178,11 +179,6 @@ void CBloodCastle::Load(char* path)
 				}
 				else if (section == 2)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					int level = lpMemScript->GetNumber();
 
 					this->m_BloodCastleExperienceTable[level][0] = lpMemScript->GetAsNumber();
@@ -191,11 +187,6 @@ void CBloodCastle::Load(char* path)
 				}
 				else if (section == 3)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					int level = lpMemScript->GetNumber();
 
 					this->m_BloodCastleMoneyTable[level][0] = lpMemScript->GetAsNumber();
@@ -204,20 +195,11 @@ void CBloodCastle::Load(char* path)
 				}
 				else if (section == 4)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					int level = lpMemScript->GetNumber();
 
 					this->m_BloodCastleNpcLife[level][0] = lpMemScript->GetAsNumber();
 
 					this->m_BloodCastleNpcLife[level][1] = lpMemScript->GetAsNumber();
-				}
-				else
-				{
-					break;
 				}
 			}
 		}
@@ -823,6 +805,18 @@ int CBloodCastle::GetState(int level)
 	return this->m_BloodCastleLevel[level].State;
 }
 
+int CBloodCastle::GetCurrentRemainTime(int level)
+{
+	if (BC_LEVEL_RANGE(level) == 0)
+	{
+		return BC_STATE_BLANK;
+	}
+
+	BLOOD_CASTLE_LEVEL* lpLevel = &this->m_BloodCastleLevel[level];
+
+	return lpLevel->RemainTime;
+}
+
 int CBloodCastle::GetRemainTime(int level)
 {
 	if (BC_LEVEL_RANGE(level) == 0)
@@ -1062,7 +1056,7 @@ int CBloodCastle::GetUserAbleLevel(LPOBJ lpObj)
 		{
 			level = 4;
 		}
-		else if (lpObj->Level >= 261 && lpObj->Level <= MAX_CHARACTER_LEVEL)
+		else if (lpObj->Level >= 261 && lpObj->Level <= gServerInfo.m_MaxCharacterLevel)
 		{
 			level = 5;
 		}
@@ -1089,7 +1083,7 @@ int CBloodCastle::GetUserAbleLevel(LPOBJ lpObj)
 		{
 			level = 4;
 		}
-		else if (lpObj->Level >= 281 && lpObj->Level <= MAX_CHARACTER_LEVEL)
+		else if (lpObj->Level >= 281 && lpObj->Level <= gServerInfo.m_MaxCharacterLevel)
 		{
 			level = 5;
 		}

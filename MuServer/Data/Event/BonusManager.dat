@@ -1,16 +1,16 @@
 // DOW: 1=Sunday / 2=Monday / 3=Tuesday / 4=Wednesday / 5=Thursday / 6=Friday / 7=Saturday
 0
 //Index	Year	Month	Day	DoW	Hour	Minute	Second
-
+0	*	*	*	*	20	0	0
 end
 
-// Bonus Time = Seconds
+// Bonus Time = Minutes
 1
-//Index	StartMessage	FinalMessage	BonusTime
-
+//Index	StartMessage	EndMessage	BonusTime	AlarmTime	AlarmMsg	BonusName
+0	19		21		60		5		18		"Happy Hour"
 end
 
-// BonusIndexs
+// Bonus Types
 //	EXPERIENCE RATE = 0
 //	ITEM DROP RATE = 1
 //	COMMON ITEM DROP RATE = 2
@@ -19,6 +19,7 @@ end
 //	GRAND RESET AMOUNT = 5
 // ItemIndex format: 00,000 or *
 2
-//Index	BonusIndex	BonusValue_AL0	BonusValue_AL1	BonusValue_AL2	BonusValue_AL3	ItemIndex	ItemLevel	MapNumber	MonsterClass	MonsterLevelMin	MonsterLevelMax
-
+//Bonus	Bonus	Value	Value	Value	Value	Item	Item	Map	Monster	Monster	Monster
+//Index	Type	AL0	AL1	AL2	AL3	Index	Level	Number	Class	MinLvl	MaxLvl
+0	0	150	150	150	150	*	*	*	*	*	*
 end

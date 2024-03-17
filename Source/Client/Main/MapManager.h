@@ -1,7 +1,5 @@
 #pragma once
 
-#define MAX_MAPS 32
-
 struct MAP_MANAGER_INFO
 {
 	int MapNumber;

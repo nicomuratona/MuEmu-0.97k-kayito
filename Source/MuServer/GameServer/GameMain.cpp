@@ -4,7 +4,6 @@
 #include "DSProtocol.h"
 #include "HackCheck.h"
 #include "JSProtocol.h"
-#include "MonsterAI.h"
 #include "MonsterManager.h"
 #include "ObjectManager.h"
 #include "QueueTimer.h"
@@ -42,9 +41,9 @@ void GameMainInit(HWND hwnd)
 
 	gMonsterManager.SetMonsterData();
 
-	gJoinServerConnection.Init(hwnd, JoinServerProtocolCore);
+	gJoinServerConnection.Init(hwnd, "JoinServerConnection", JoinServerProtocolCore);
 
-	gDataServerConnection.Init(hwnd, DataServerProtocolCore);
+	gDataServerConnection.Init(hwnd, "DataServerConnection", DataServerProtocolCore);
 }
 
 void ConnectServerInfoSend()
@@ -66,122 +65,60 @@ void ConnectServerInfoSend()
 	gSocketManagerUdp.DataSend((BYTE*)&pMsg, pMsg.header.size);
 }
 
-bool JoinServerConnect(DWORD wMsg)
+bool JoinServerConnect()
 {
-	if (!gJoinServerConnection.Connect(gServerInfo.m_JoinServerAddress, (WORD)gServerInfo.m_JoinServerPort, wMsg))
+	if (!gJoinServerConnection.Connect(gServerInfo.m_JoinServerAddress, (WORD)gServerInfo.m_JoinServerPort))
 	{
-		LogAdd(LOG_RED, "JoinServer Connect Failed");
+		LogAdd(LOG_RED, "[JoinServerConnection] Connect Failed");
 
 		return false;
 	}
 
-	LogAdd(LOG_GREEN, "JoinServer Connected");
+	LogAdd(LOG_GREEN, "[JoinServerConnection] Connected");
 
 	GJServerInfoSend();
 
 	return true;
 }
 
-bool DataServerConnect(DWORD wMsg)
+bool DataServerConnect()
 {
-	if (!gDataServerConnection.Connect(gServerInfo.m_DataServerAddress, (WORD)gServerInfo.m_DataServerPort, wMsg))
+	if (!gDataServerConnection.Connect(gServerInfo.m_DataServerAddress, (WORD)gServerInfo.m_DataServerPort))
 	{
-		LogAdd(LOG_RED, "DataServer Connect Failed");
+		LogAdd(LOG_RED, "[DataServerConnection] Connect Failed");
 
 		return false;
 	}
 
-	LogAdd(LOG_GREEN, "DataServer Connected");
+	LogAdd(LOG_GREEN, "[DataServerConnection] Connected");
 
 	GDServerInfoSend();
 
 	return true;
 }
 
-bool JoinServerReconnect(HWND hwnd, DWORD wMsg)
+bool JoinServerReconnect(HWND hwnd)
 {
 	if (!gJoinServerConnection.CheckState())
 	{
-		gJoinServerConnection.Init(hwnd, JoinServerProtocolCore);
+		gJoinServerConnection.Init(hwnd, "JoinServerConnection", JoinServerProtocolCore);
 
-		return JoinServerConnect(wMsg);
+		return JoinServerConnect();
 	}
 
 	return true;
 }
 
-bool DataServerReconnect(HWND hwnd, DWORD wMsg)
+bool DataServerReconnect(HWND hwnd)
 {
 	if (!gDataServerConnection.CheckState())
 	{
-		gDataServerConnection.Init(hwnd, DataServerProtocolCore);
+		gDataServerConnection.Init(hwnd, "DataServerConnection", DataServerProtocolCore);
 
-		return DataServerConnect(wMsg);
+		return DataServerConnect();
 	}
 
 	return true;
-}
-
-void JoinServerMsgProc(WPARAM wParam, LPARAM lParam)
-{
-	switch (LOWORD(lParam))
-	{
-		case FD_READ:
-		{
-			gJoinServerConnection.DataRecv();
-
-			break;
-		}
-
-		case FD_WRITE:
-		{
-			gJoinServerConnection.DataSendEx();
-
-			break;
-		}
-
-		case FD_CLOSE:
-		{
-			LogAdd(LOG_RED, "JoinServer Disconnected");
-
-			gJoinServerConnection.Disconnect();
-
-			gObjAllDisconnect();
-
-			break;
-		}
-	}
-}
-
-void DataServerMsgProc(WPARAM wParam, LPARAM lParam)
-{
-	switch (LOWORD(lParam))
-	{
-		case FD_READ:
-		{
-			gDataServerConnection.DataRecv();
-
-			break;
-		}
-
-		case FD_WRITE:
-		{
-			gDataServerConnection.DataSendEx();
-
-			break;
-		}
-
-		case FD_CLOSE:
-		{
-			LogAdd(LOG_RED, "DataServer Disconnected");
-
-			gDataServerConnection.Disconnect();
-
-			gObjAllDisconnect();
-
-			break;
-		}
-	}
 }
 
 void CALLBACK QueueTimerCallback(PVOID lpParameter, BOOLEAN TimerOrWaitFired)
@@ -202,20 +139,6 @@ void CALLBACK QueueTimerCallback(PVOID lpParameter, BOOLEAN TimerOrWaitFired)
 		case QUEUE_TIMER_MONSTER_MOVE:
 		{
 			gObjectManager.ObjectMoveProc();
-
-			break;
-		}
-
-		case QUEUE_TIMER_MONSTER_AI:
-		{
-			CMonsterAI::MonsterAIProc();
-
-			break;
-		}
-
-		case QUEUE_TIMER_MONSTER_AI_MOVE:
-		{
-			CMonsterAI::MonsterMoveProc();
 
 			break;
 		}

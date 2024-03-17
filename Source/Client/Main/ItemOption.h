@@ -27,6 +27,8 @@ public:
 
 	bool GetItemOption(int index, WORD ItemIndex, BYTE ItemSkill, BYTE ItemLuck, BYTE ItemOption, BYTE ItemExcellent, BYTE* pItemOption, BYTE* pItemValue);
 
+	int GetItemOptionValue(int index, int value, BYTE ItemLevel);
+
 private:
 
 	std::map<int, std::vector<ITEM_OPTION_INFO>> m_ItemOptionInfo;

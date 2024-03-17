@@ -188,6 +188,12 @@ struct PMSG_SERVER_MSG_SEND
 	BYTE MsgNumber;
 };
 
+struct PMSG_LIVE_CLIENT_SEND
+{
+	PBMSG_HEAD header; // C1:0E
+	DWORD TickCount;
+};
+
 struct PMSG_WEATHER_SEND
 {
 	PBMSG_HEAD header; // C1:0F
@@ -554,10 +560,6 @@ struct PMSG_NEW_CHARACTER_CALC_SEND
 	DWORD ViewMaxMP;
 	DWORD ViewCurBP;
 	DWORD ViewMaxBP;
-	DWORD ViewAddStrength;
-	DWORD ViewAddDexterity;
-	DWORD ViewAddVitality;
-	DWORD ViewAddEnergy;
 	DWORD ViewPhysiSpeed;
 	DWORD ViewMagicSpeed;
 };
@@ -573,6 +575,19 @@ struct PMSG_HEALTH_BAR
 	WORD index;
 	BYTE type;
 	BYTE rateHP;
+};
+
+struct PMSG_EVENT_TIME_SEND
+{
+	PSWMSG_HEAD header; // C2:F3:E6
+	BYTE count;
+};
+
+struct PMSG_EVENT_TIME
+{
+	char name[32];
+	BYTE status;
+	DWORD time;
 };
 
 //**********************************************//
@@ -632,6 +647,8 @@ void GCEventStateSendToAll(BYTE state, BYTE event);
 void GCEventStateSendToAll(int map, BYTE state, BYTE event);
 
 void GCServerMsgSend(int aIndex, BYTE msg);
+
+void GCLiveClientSend(int aIndex, DWORD TickCount);
 
 void GCWeatherSend(int aIndex, BYTE weather);
 

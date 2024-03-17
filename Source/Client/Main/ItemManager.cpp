@@ -131,25 +131,25 @@ int CItemManager::GetTargetSlotEquiped(ITEM* lpItem, int slot)
 
 	STRUCT_DECRYPT;
 
-	ITEM* PlayerRightHand = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_WEAPON_RIGHT)));
+	ITEM* PlayerRightHand = &*(ITEM*)(CharacterMachine + (536 + (68 * EQUIPMENT_WEAPON_RIGHT)));
 
-	ITEM* PlayerLeftHand = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_WEAPON_LEFT)));
+	ITEM* PlayerLeftHand = &*(ITEM*)(CharacterMachine + (536 + (68 * EQUIPMENT_WEAPON_LEFT)));
 
-	ITEM* PlayerRightRing = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_RING_RIGHT)));
+	ITEM* PlayerRightRing = &*(ITEM*)(CharacterMachine + (536 + (68 * EQUIPMENT_RING_RIGHT)));
 
-	ITEM* PlayerLeftRing = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * EQUIPMENT_RING_LEFT)));
+	ITEM* PlayerLeftRing = &*(ITEM*)(CharacterMachine + (536 + (68 * EQUIPMENT_RING_LEFT)));
 
-	BYTE PlayerClass = *(BYTE*)(*(DWORD*)(CharacterAttribute)+0x0B) & 7;
+	BYTE PlayerClass = *(BYTE*)(CharacterAttribute + 0x0B) & 7;
 
 	BYTE PlayerEvo = ((*(BYTE*)(Hero + 0x1BC) >> 3) & 0x1);
 
-	WORD PlayerLevel = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E);
+	WORD PlayerLevel = *(WORD*)(CharacterAttribute + 0x0E);
 
-	WORD PlayerStrength = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x14);
+	WORD PlayerStrength = *(WORD*)(CharacterAttribute + 0x14);
 
-	WORD PlayerDexterity = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x16);
+	WORD PlayerDexterity = *(WORD*)(CharacterAttribute + 0x16);
 
-	WORD PlayerEnergy = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x1A);
+	WORD PlayerEnergy = *(WORD*)(CharacterAttribute + 0x1A);
 
 	if (slot == EQUIPMENT_WEAPON_RIGHT && PlayerRightHand->Type != -1 && PlayerLeftHand->Type == -1)
 	{
@@ -160,7 +160,7 @@ int CItemManager::GetTargetSlotEquiped(ITEM* lpItem, int slot)
 		slot = EQUIPMENT_RING_LEFT;
 	}
 
-	ITEM* TargetSlotItem = &*(ITEM*)(*(DWORD*)(CharacterMachine)+(536 + (68 * slot)));
+	ITEM* TargetSlotItem = &*(ITEM*)(CharacterMachine + (536 + (68 * slot)));
 
 	if (TargetSlotItem->Type != -1)
 	{

@@ -1,16 +1,5 @@
 #pragma once
 
-struct TEXTURE_INFO
-{
-	char Name[32];
-	float Width;
-	float Height;
-	DWORD Component;
-	GLuint Texture;
-	DWORD Ref;
-	BYTE* Buffer;
-};
-
 class CLoadModels
 {
 public:
@@ -20,6 +9,8 @@ public:
 	virtual ~CLoadModels();
 
 	void Init();
+
+	BITMAP_t* GetBitmap(int uiTextureNumber);
 
 private:
 
@@ -43,7 +34,7 @@ private:
 
 private:
 
-	TEXTURE_INFO lpTextures[TOTAL_TEXTURE];
+	BITMAP_t lpTextures[TOTAL_TEXTURE];
 
 	short TextureCount;
 

@@ -16,23 +16,14 @@ struct MOVE_LIST_INFO
 {
 	BYTE MapNumber;
 	char MapName[32];
-	WORD LevelMin;
-	DWORD Money;
-};
-
-//**********************************************//
-//**********************************************//
-//**********************************************//
-
-struct MAP_INFO
-{
-	BYTE MapNumber;
-	char MapName[32];
-	WORD LevelMin;
-	DWORD Money;
 	bool CanMove;
-	bool Selected;
+	WORD LevelMin;
+	DWORD Money;
 };
+
+//**********************************************//
+//**********************************************//
+//**********************************************//
 
 class CMoveList
 {
@@ -42,21 +33,21 @@ public:
 
 	virtual ~CMoveList();
 
-	void Init();
-
 	void Toggle();
 
-	void CheckMoveListMouse();
+	void Render();
+
+	void UpdateMouse();
 
 	void GCMoveListRecv(PMSG_MOVE_LIST_RECV* lpMsg);
 
 private:
 
-	static void MainProc();
+	bool CheckInterfaces();
 
-	void RenderMoveListBack();
+	void RenderFrame();
 
-	void RenderMoveListMaps();
+	void RenderMapsList();
 
 	bool CheckClickOnMap();
 
@@ -84,7 +75,7 @@ private:
 
 	float ReqMoneyPosX;
 
-	std::vector<MAP_INFO> m_MapList;
+	std::vector<MOVE_LIST_INFO> m_MoveList;
 };
 
 extern CMoveList gMoveList;

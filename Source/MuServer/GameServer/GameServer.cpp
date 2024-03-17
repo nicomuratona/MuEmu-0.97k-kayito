@@ -62,9 +62,9 @@ int main()
 		{
 			GameMainInit(hWnd);
 
-			JoinServerConnect(WM_JOIN_SERVER_MSG_PROC);
+			JoinServerConnect();
 
-			DataServerConnect(WM_DATA_SERVER_MSG_PROC);
+			DataServerConnect();
 
 			gSocketManagerUdp.Connect(gServerInfo.m_ConnectServerAddress, (WORD)gServerInfo.m_ConnectServerPort);
 
@@ -75,10 +75,6 @@ int main()
 			gQueueTimer.CreateTimer(QUEUE_TIMER_MONSTER, 100, &QueueTimerCallback);
 
 			gQueueTimer.CreateTimer(QUEUE_TIMER_MONSTER_MOVE, 100, &QueueTimerCallback);
-
-			gQueueTimer.CreateTimer(QUEUE_TIMER_MONSTER_AI, 100, &QueueTimerCallback);
-
-			gQueueTimer.CreateTimer(QUEUE_TIMER_MONSTER_AI_MOVE, 100, &QueueTimerCallback);
 
 			gQueueTimer.CreateTimer(QUEUE_TIMER_EVENT, 100, &QueueTimerCallback);
 
@@ -450,27 +446,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 				case TIMER_10000:
 				{
-					JoinServerReconnect(hWnd, WM_JOIN_SERVER_MSG_PROC);
+					JoinServerReconnect(hWnd);
 
-					DataServerReconnect(hWnd, WM_DATA_SERVER_MSG_PROC);
+					DataServerReconnect(hWnd);
 
 					break;
 				}
 			}
-
-			break;
-		}
-
-		case WM_JOIN_SERVER_MSG_PROC:
-		{
-			JoinServerMsgProc(wParam, lParam);
-
-			break;
-		}
-
-		case WM_DATA_SERVER_MSG_PROC:
-		{
-			DataServerMsgProc(wParam, lParam);
 
 			break;
 		}

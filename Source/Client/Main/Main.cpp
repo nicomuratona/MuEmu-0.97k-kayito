@@ -83,8 +83,6 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 
 	gFullMap.Init();
 
-	gMoveList.Init();
-
 	gWeaponView.Init();
 
 	gGuildLogo.Init();
@@ -106,6 +104,8 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 	gCustomGlow.Load(gProtect.m_MainInfo.CustomGlowInfo);
 
 	gCustomItem.Load(gProtect.m_MainInfo.CustomItemInfo);
+
+	gCustomMonster.Load(gProtect.m_MainInfo.CustomMonsterInfo);
 
 	gProtect.CheckClientFile();
 

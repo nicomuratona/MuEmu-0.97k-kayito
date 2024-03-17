@@ -11,6 +11,7 @@
 #include "DevilSquare.h"
 #include "DSProtocol.h"
 #include "EffectManager.h"
+#include "EventTimeManager.h"
 #include "FlyingDragons.h"
 #include "GameMain.h"
 #include "GameMaster.h"
@@ -26,7 +27,6 @@
 #include "MemoryAllocator.h"
 #include "Message.h"
 #include "Monster.h"
-#include "MonsterSkillManager.h"
 #include "Move.h"
 #include "Notice.h"
 #include "ObjectManager.h"
@@ -233,11 +233,11 @@ void gObjSetExperienceTable()
 
 	for (int n = 1; n <= MAX_CHARACTER_LEVEL; n++)
 	{
-		gLevelExperience[n] = (((n + 9) * n) * n) * 10;
+		gLevelExperience[n] = (((n + 9) * n) * n) * 2;
 
 		if (n > 255)
 		{
-			gLevelExperience[n] += (((over + 9) * over) * over) * 1000;
+			gLevelExperience[n] += (((over + 9) * over) * over) * 5;
 
 			over++;
 		}
@@ -283,14 +283,6 @@ void gObjCharZeroSet(int aIndex)
 	lpObj->Vitality = 0;
 
 	lpObj->Energy = 0;
-
-	lpObj->AddStrength = 0;
-
-	lpObj->AddDexterity = 0;
-
-	lpObj->AddVitality = 0;
-
-	lpObj->AddEnergy = 0;
 
 	lpObj->Life = 0;
 
@@ -543,18 +535,6 @@ void gObjCharZeroSet(int aIndex)
 
 	lpObj->BPRecoveryCount = 0;
 
-	lpObj->MonsterSkillElementOption.Reset();
-
-	lpObj->Agro.ResetAll();
-
-	lpObj->BasicAI = 0;
-
-	lpObj->CurrentAI = 0;
-
-	lpObj->CurrentAIState = 0;
-
-	lpObj->LastAIRunTime = 0;
-
 	lpObj->GroupNumber = 0;
 
 	lpObj->SubGroupNumber = 0;
@@ -683,14 +663,6 @@ void gObjClearSpecialOption(LPOBJ lpObj)
 	lpObj->MPConsumptionRate = 100;
 
 	lpObj->BPConsumptionRate = 100;
-
-	lpObj->DamagePvP = 0;
-
-	lpObj->DefensePvP = 0;
-
-	lpObj->AttackSuccessRatePvP = 0;
-
-	lpObj->DefenseSuccessRatePvP = 0;
 
 	lpObj->ShieldDamageReduction = gServerInfo.m_DefenseConstA;
 
@@ -2084,8 +2056,6 @@ void gObjTeleport(int aIndex, int map, int x, int y)
 
 void gObjSkillUseProc(LPOBJ lpObj)
 {
-	CMonsterSkillElementOption::CheckSkillElementOptionProc(lpObj);
-
 	if (lpObj->Type == OBJECT_USER && lpObj->DrinkSpeed > 0)
 	{
 		if (GetTickCount() >= lpObj->DrinkLastTime)
@@ -2269,6 +2239,8 @@ void gObjSecondProc()
 				gObjCheckMapTile(lpObj, 3);
 
 				GCHealthBarSend(lpObj);
+
+				gEventTimeManager.GCEventTimeSend(lpObj->Index);
 
 				if (lpObj->ChatLimitTime > 0)
 				{

@@ -7,6 +7,8 @@ void ErrorMessageBox(char* message, ...);
 
 void LogAdd(eLogColor color, char* text, ...);
 
+void ConsoleProtocolLog(int type, BYTE* lpMsg, int size);
+
 bool CheckTextSyntax(char* text, int size);
 
 LONG CheckAccountCaseSensitive(int value);

@@ -69,22 +69,22 @@ void CLoadModels::SetTexturesOffset()
 	SetDword(0x0047F5FF + 2, (DWORD)(&this->lpTextures->Height));
 	SetDword(0x004F8296 + 2, (DWORD)(&this->lpTextures->Height));
 	/*------------------------------------*/
-	SetDword(0x00409FAC + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x0040A03C + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x0040A797 + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x0040A7EE + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x0040FF45 + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x00441064 + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x00441097 + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x004416C3 + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x004416FB + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x00478C35 + 2, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x0047955F + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x0047F4FB + 3, (DWORD)(&this->lpTextures->Component));
-	SetDword(0x00511F12 + 3, (DWORD)(&this->lpTextures->Component));
+	SetDword(0x00409FAC + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x0040A03C + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x0040A797 + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x0040A7EE + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x0040FF45 + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x00441064 + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x00441097 + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x004416C3 + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x004416FB + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x00478C35 + 2, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x0047955F + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x0047F4FB + 3, (DWORD)(&this->lpTextures->Components));
+	SetDword(0x00511F12 + 3, (DWORD)(&this->lpTextures->Components));
 	/*------------------------------------*/
-	SetDword(0x0047F4C0 + 1, (DWORD)(&this->lpTextures->Texture));
-	SetDword(0x005114A0 + 3, (DWORD)(&this->lpTextures->Texture));
+	SetDword(0x0047F4C0 + 1, (DWORD)(&this->lpTextures->TextureNumber));
+	SetDword(0x005114A0 + 3, (DWORD)(&this->lpTextures->TextureNumber));
 	/*------------------------------------*/
 	SetDword(0x0040F704 + 2, (DWORD)(&this->lpTextures->Buffer));
 	SetDword(0x0040FE8F + 1, (DWORD)(&this->lpTextures->Buffer));
@@ -395,4 +395,9 @@ void CLoadModels::PartObjectColorHook(int Type, float Alpha, float Bright, float
 	{
 		PartObjectColor(Type, Alpha, Bright, Light, ExtraMon);
 	}
+}
+
+BITMAP_t* CLoadModels::GetBitmap(int uiTextureNumber)
+{
+	return &this->lpTextures[uiTextureNumber];
 }

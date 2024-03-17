@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Camera.h"
 #include "Controller.h"
+#include "EventTimer.h"
 #include "FullMap.h"
 #include "MoveList.h"
 #include "resource.h"
@@ -203,6 +204,20 @@ void Controller::CheckKeyboardKeys()
 	else
 	{
 		KeyState['M'] = 0;
+	}
+
+	if (((gController.GetAsyncKeyStateHook('H') >> 8) & 0x80) == 0x80) // H Pressed
+	{
+		if (!KeyState['H'])
+		{
+			KeyState['H'] = 1;
+
+			gEventTimer.Toggle();
+		}
+	}
+	else
+	{
+		KeyState['H'] = 0;
 	}
 
 	if (((gController.GetAsyncKeyStateHook(VK_TAB) >> 8) & 0x80) == 0x80) // Tab Pressed

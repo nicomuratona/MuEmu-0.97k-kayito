@@ -54,6 +54,10 @@ struct BONUS_INFO
 	int StartMessage;
 	int FinalMessage;
 	int BonusTime;
+	int AlarmMinLeft;
+	int AlarmTime;
+	int AlarmMsg;
+	char BonusName[32];
 	std::vector<BONUS_START_TIME> StartTime;
 	std::vector<BONUS_VALUE_INFO> ValueInfo;
 };
@@ -89,6 +93,10 @@ public:
 	void CheckSync(BONUS_INFO* lpInfo);
 
 	int GetState(int index);
+
+	char* GetBonusName(int index);
+
+	int GetCurrentRemainTime(int index);
 
 	int GetRemainTime(int index);
 

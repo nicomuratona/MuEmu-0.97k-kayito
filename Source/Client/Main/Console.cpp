@@ -5,6 +5,10 @@ Console gConsole;
 Console::Console()
 {
 	this->inUse = false;
+
+	this->m_OutputType[CON_GENERAL] = "General";
+	this->m_OutputType[CON_PROTO_TCP_RECV] = "RECV";
+	this->m_OutputType[CON_PROTO_TCP_SEND] = "SEND";
 }
 
 Console::~Console()
@@ -82,4 +86,21 @@ void Console::Write(char* message, ...)
 	HANDLE Handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	WriteFile(Handle, log, (DWORD)strlen(log), &bytewrite, 0);
+}
+
+void Console::Clear()
+{
+	system("CLS");
+}
+
+const char* Console::GetOutputString(int type)
+{
+	try
+	{
+		return this->m_OutputType.at(type).c_str();
+	}
+	catch (...)
+	{
+		return this->m_OutputType.at(CON_GENERAL).c_str();
+	}
 }

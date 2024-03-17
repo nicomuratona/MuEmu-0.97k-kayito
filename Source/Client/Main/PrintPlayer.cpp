@@ -42,17 +42,11 @@ CPrintPlayer::CPrintPlayer()
 
 	this->ViewEnergy = 0;
 
-	this->ViewAddStrength = 0;
-
-	this->ViewAddDexterity = 0;
-
-	this->ViewAddVitality = 0;
-
-	this->ViewAddEnergy = 0;
-
 	this->ViewPhysiSpeed = 0;
 
 	this->ViewMagicSpeed = 0;
+
+	this->ViewPing = 0;
 }
 
 CPrintPlayer::~CPrintPlayer()
@@ -98,7 +92,9 @@ void CPrintPlayer::Init()
 
 	SetCompleteHook(0xE8, 0x004EE95E, &this->RenderTextEnergy); // text.bmd 212: "Energy: %d"
 
-	SetCompleteHook(0xE9, 0x0047DD95, &this->PrintPlayerSetAttackSpeed); // Set the attack speed
+	SetCompleteHook(0xE9, 0x0047DD80, &this->CalculateAttackSpeed); // Fix the attack speed
+
+	SetCompleteHook(0xE9, 0x00443E70, &this->SetAttackSpeed); // Set the attack speed
 
 	SetCompleteHook(0xE8, 0x0042AD92, &this->RenderDamageHP); // Damage number on attack
 
@@ -188,7 +184,7 @@ void CPrintPlayer::RenderExperience()
 {
 	STRUCT_DECRYPT;
 
-	WORD wLevel = *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E); // current level
+	WORD wLevel = *(WORD*)(CharacterAttribute + 0x0E); // current level
 
 	STRUCT_ENCRYPT;
 
@@ -198,13 +194,13 @@ void CPrintPlayer::RenderExperience()
 
 	if (wPriorLevel > 0)
 	{
-		dwPriorExperience = (((wPriorLevel + 9) * wPriorLevel) * wPriorLevel) * 10;
+		dwPriorExperience = (((wPriorLevel + 9) * wPriorLevel) * wPriorLevel) * 2;
 
 		if (wPriorLevel > 255)
 		{
 			int iLevelOverN = wPriorLevel - 255;
 
-			dwPriorExperience += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 1000;
+			dwPriorExperience += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 5;
 		}
 	}
 
@@ -276,32 +272,93 @@ void CPrintPlayer::RenderTextEnergy(char* Dest, char* Format)
 	wsprintf(Dest, Format, gPrintPlayer.ViewEnergy);
 }
 
-__declspec(naked) void CPrintPlayer::PrintPlayerSetAttackSpeed()
+void CPrintPlayer::CalculateAttackSpeed(DWORD This)
 {
-	static DWORD PrintPlayerSetAttackSpeedAddress1 = 0x0047DE20;
+	*(WORD*)(CharacterAttribute + 0x38) = GET_MAX_WORD_VALUE(gPrintPlayer.ViewPhysiSpeed);
 
-	_asm
+	*(WORD*)(CharacterAttribute + 0x44) = GET_MAX_WORD_VALUE(gPrintPlayer.ViewMagicSpeed);
+}
+
+void CPrintPlayer::SetAttackSpeed()
+{
+	// formula for calculating attack speed
+	float AttackSpeed1 = gPrintPlayer.ViewPhysiSpeed * 0.004f; // Knight, Normal attack
+
+	float MagicSpeed1 = gPrintPlayer.ViewMagicSpeed * 0.004f; // Fairy
+
+	float MagicSpeed2 = gPrintPlayer.ViewMagicSpeed * 0.002f; // Xuan
+
+	DWORD b = *(DWORD*)(Models + 73368); // &Models[MODEL_PLAYER]
+
+	int i;
+
+	// fist attack
+	*(float*)(b + 548) = 0.6f + AttackSpeed1; // PLAYER_ATTACK_FIST
+
+	// normal attack
+	for (i = 0; i <= 20; i++) // PLAYER_ATTACK_SWORD_RIGHT1 ~ PLAYER_ATTACK_RIDE_CROSSBOW
 	{
-		Mov Edx, gPrintPlayer.ViewPhysiSpeed;
-		Movzx Eax, Al;
-		Mov Ecx, Dword Ptr Ds : [gProtect.m_MainInfo.DWMaxAttackSpeed + Eax * 4] ;
-		And Ecx, 0xFFFF;
-		Cmp Edx, Ecx;
-		Jle NEXT1;
-		Mov Edx, Ecx;
-	NEXT1:
-		Lea Esi, [Ebx + 0x38];
-		Mov Word Ptr Ds : [Esi] , Dx;
-		Mov Edx, gPrintPlayer.ViewMagicSpeed;
-		Mov Ecx, Dword Ptr Ds : [gProtect.m_MainInfo.DWMaxAttackSpeed + Eax * 4] ;
-		And Ecx, 0xFFFF;
-		Cmp Edx, Ecx;
-		Jle NEXT2;
-		Mov Edx, Ecx;
-	NEXT2:
-		Lea Edi, [Ebx + 0x44];
-		Jmp[PrintPlayerSetAttackSpeedAddress1];
+		*(float*)(b + 564 + 16 * i) = 0.25f + AttackSpeed1;
 	}
+
+	// Skill attack
+	*(float*)(b + 900) = 0.30f + AttackSpeed1; // PLAYER_ATTACK_SKILL_SWORD1
+
+	*(float*)(b + 916) = 0.30f + AttackSpeed1; // PLAYER_ATTACK_SKILL_SWORD2
+
+	*(float*)(b + 932) = 0.27f + AttackSpeed1; // PLAYER_ATTACK_SKILL_SWORD3
+
+	*(float*)(b + 948) = 0.30f + AttackSpeed1; // PLAYER_ATTACK_SKILL_SWORD4
+
+	*(float*)(b + 964) = 0.24f + AttackSpeed1; // PLAYER_ATTACK_SKILL_SWORD5
+
+	*(float*)(b + 980) = 0.24f + AttackSpeed1; // PLAYER_ATTACK_SKILL_WHEEL
+
+	*(float*)(b + 1076) = 0.25f + AttackSpeed1; // PLAYER_ATTACK_ONETOONE
+
+	*(float*)(b + 1060) = 0.30f + AttackSpeed1; // PLAYER_ATTACK_SKILL_SPEAR
+
+	// riding state
+	*(float*)(b + 1028) = 0.3f + AttackSpeed1; // PLAYER_SKILL_RIDER
+
+	*(float*)(b + 1044) = 0.3f + AttackSpeed1; // PLAYER_SKILL_RIDER_FLY
+
+	*(float*)(b + 1300) = 0.25f + AttackSpeed1; // PLAYER_ATTACK_TWO_HAND_SWORD_TWO
+
+	// bow attack
+	for (i = 0; i <= 3; i++) // PLAYER_ATTACK_BOW ~ PLAYER_ATTACK_FLY_CROSSBOW
+	{
+		*(float*)(b + 740 + 16 * i) = 0.30f + AttackSpeed1;
+	}
+
+	for (i = 0; i <= 1; i++) // PLAYER_ATTACK_RIDE_BOW ~ PLAYER_ATTACK_RIDE_CROSSBOW
+	{
+		*(float*)(b + 868 + 16 * i) = 0.30f + AttackSpeed1;
+	}
+
+	// fairy magic
+	*(float*)(b + 1380) = 0.25f + MagicSpeed1; // PLAYER_SKILL_ELF1
+
+	// normal magic
+	for (i = 0; i <= 3; i++) // PLAYER_SKILL_HAND1 ~ PLAYER_SKILL_WEAPON2
+	{
+		*(float*)(b + 1316 + 16 * i) = 0.29f + MagicSpeed2;
+	}
+
+	// other magic
+	*(float*)(b + 1396) = 0.30f + MagicSpeed2; // PLAYER_SKILL_TELEPORT
+
+	*(float*)(b + 1412) = 0.40f + MagicSpeed2; // PLAYER_SKILL_FLASH
+
+	*(float*)(b + 1428) = 0.60f + MagicSpeed2; // PLAYER_SKILL_INFERNO
+
+	*(float*)(b + 1444) = 0.50f + MagicSpeed2; // PLAYER_SKILL_HELL
+
+	*(float*)(b + 1460) = 0.30f + MagicSpeed2; // PLAYER_RIDE_SKILL
+
+	*(float*)(b + 996) = 0.38f; // PLAYER_ATTACK_SKILL_FURY_STRIKE
+
+	*(float*)(b + 1012) = 0.34f; // PLAYER_SKILL_VITALITY
 }
 
 void CPrintPlayer::RenderDamageHP(float Position[3], int Value, float Color[3], float scale, bool bMove)

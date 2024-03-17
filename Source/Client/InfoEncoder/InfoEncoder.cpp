@@ -4,6 +4,7 @@
 #include "CustomGlow.h"
 #include "CustomItem.h"
 #include "ItemOption.h"
+#include "CustomMonster.h"
 
 struct MAIN_FILE_INFO
 {
@@ -21,10 +22,6 @@ struct MAIN_FILE_INFO
 	char PluginName[32];
 	DWORD ClientCRC32;
 	DWORD PluginCRC32;
-	DWORD DWMaxAttackSpeed;
-	DWORD DKMaxAttackSpeed;
-	DWORD FEMaxAttackSpeed;
-	DWORD MGMaxAttackSpeed;
 	DWORD ReconnectTime;
 	BYTE HealthBarType;
 	BYTE EnableSky;
@@ -35,6 +32,7 @@ struct MAIN_FILE_INFO
 	CUSTOM_GLOW_INFO CustomGlowInfo[MAX_ITEM];
 	CUSTOM_ITEM_INFO CustomItemInfo[MAX_ITEM];
 	ITEM_OPTION_INFO ItemOptionInfo[MAX_ITEM_OPTION_INFO];
+	CUSTOM_MONSTER_INFO CustomMonsterInfo[MAX_MONSTER];
 };
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -71,14 +69,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	GetPrivateProfileString("MainInfo", "PluginName", "", info.PluginName, sizeof(info.PluginName), ".\\MainInfo.ini");
 
-	info.DWMaxAttackSpeed = GetPrivateProfileInt("CharacterInfo", "DWMaxAttackSpeed", 65535, ".\\MainInfo.ini");
-
-	info.DKMaxAttackSpeed = GetPrivateProfileInt("CharacterInfo", "DKMaxAttackSpeed", 65535, ".\\MainInfo.ini");
-
-	info.FEMaxAttackSpeed = GetPrivateProfileInt("CharacterInfo", "FEMaxAttackSpeed", 65535, ".\\MainInfo.ini");
-
-	info.MGMaxAttackSpeed = GetPrivateProfileInt("CharacterInfo", "MGMaxAttackSpeed", 65535, ".\\MainInfo.ini");
-
 	info.ReconnectTime = GetPrivateProfileInt("ReconnectInfo", "ReconnectTime", 0, ".\\MainInfo.ini");
 
 	/*================================================================*/
@@ -105,6 +95,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	gItemOption.Load("ItemOption.txt");
 
+	gCustomMonster.Load("CustomMonster.txt");
+
 	/*****************************************************************/
 	/*********************** Load struct files ***********************/
 	/*****************************************************************/
@@ -116,6 +108,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	memcpy(info.CustomItemInfo, gCustomItem.m_CustomItemInfo, sizeof(info.CustomItemInfo));
 
 	memcpy(info.ItemOptionInfo, gItemOption.m_ItemOptionInfo, sizeof(info.ItemOptionInfo));
+
+	memcpy(info.CustomMonsterInfo, gCustomMonster.m_CustomMonsterInfo, sizeof(info.CustomMonsterInfo));
 
 	/*=================================================================*/
 

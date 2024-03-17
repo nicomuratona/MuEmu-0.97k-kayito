@@ -138,9 +138,9 @@ void CSocketManager::Clean()
 
 bool CSocketManager::CreateListenSocket()
 {
-	if ((this->m_listen = WSASocket(AF_INET, SOCK_STREAM, 0, 0, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
+	if ((this->m_listen = WSASocketW(AF_INET, SOCK_STREAM, 0, 0, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
 	{
-		LogAdd(LOG_RED, "[SocketManager] WSASocket() failed with error: %d", WSAGetLastError());
+		LogAdd(LOG_RED, "[SocketManager] WSASocketW() failed with error: %d", WSAGetLastError());
 
 		return false;
 	}
@@ -301,14 +301,18 @@ bool CSocketManager::DataRecv(int index, IO_MAIN_BUFFER* lpIoBuffer)
 		}
 		else
 		{
-			LogAdd(LOG_RED, "[SocketManager] Protocol header error (Index: %d, Header: %x)", index, lpMsg[count]);
+			CClientManager* lpClientManager = &gClientManager[index];
+
+			LogAdd(LOG_RED, "[SocketManager] Protocol header error (IP: %s, Header: %x)", lpClientManager->m_IpAddr, lpMsg[count]);
 
 			return false;
 		}
 
 		if (size < 3 || size > MAX_MAIN_PACKET_SIZE)
 		{
-			LogAdd(LOG_RED, "[SocketManager] Protocol size error (Index: %d, Header: %x, Size: %d, Head: %x)", index, header, size, head);
+			CClientManager* lpClientManager = &gClientManager[index];
+
+			LogAdd(LOG_RED, "[SocketManager] Protocol size error (IP: %s, Header: %x, Size: %d, Head: %x)", lpClientManager->m_IpAddr, header, size, head);
 
 			return false;
 		}
@@ -357,7 +361,7 @@ bool CSocketManager::DataRecv(int index, IO_MAIN_BUFFER* lpIoBuffer)
 
 bool CSocketManager::DataSend(int index, BYTE* lpMsg, int size)
 {
-	gConsole.Output(CON_PROTO_TCP_SEND, "SEND 0: %02X, 1: %02X, 2: %02X, 3: %02X, 4: %02X, 5: %02X", (size > 0) ? lpMsg[0] : 0, (size > 1) ? lpMsg[1] : 0, (size > 2) ? lpMsg[2] : 0, (size > 3) ? lpMsg[3] : 0, (size > 4) ? lpMsg[4] : 0, (size > 5) ? lpMsg[5] : 0);
+	ConsoleProtocolLog(CON_PROTO_TCP_SEND, lpMsg, size);
 
 	this->m_critical.lock();
 
@@ -637,14 +641,19 @@ int CALLBACK CSocketManager::ServerAcceptCondition(IN LPWSABUF lpCallerId, IN LP
 {
 	SOCKADDR_IN* SocketAddr = (SOCKADDR_IN*)lpCallerId->buf;
 
-	if (gIpManager.CheckIpAddress(inet_ntoa(SocketAddr->sin_addr)) == false)
+	char IPAddress[INET_ADDRSTRLEN];
+
+	if (inet_ntop(AF_INET, &SocketAddr->sin_addr, IPAddress, INET_ADDRSTRLEN) == NULL)
 	{
 		return CF_REJECT;
 	}
-	else
+
+	if (gIpManager.CheckIpAddress(IPAddress) == false)
 	{
-		return CF_ACCEPT;
+		return CF_REJECT;
 	}
+
+	return CF_ACCEPT;
 }
 
 DWORD WINAPI CSocketManager::ServerAcceptThread(CSocketManager* lpSocketManager)
@@ -694,7 +703,20 @@ DWORD WINAPI CSocketManager::ServerAcceptThread(CSocketManager* lpSocketManager)
 
 		CClientManager* lpClientManager = &gClientManager[index];
 
-		lpClientManager->AddClient(index, inet_ntoa(SocketAddr.sin_addr), socket);
+		char IPAddress[INET_ADDRSTRLEN];
+
+		if (inet_ntop(AF_INET, &SocketAddr.sin_addr, IPAddress, INET_ADDRSTRLEN) == NULL)
+		{
+			LogAdd(LOG_RED, "[SocketManager] inet_ntop() failed with error: %d", WSAGetLastError());
+
+			closesocket(socket);
+
+			lpSocketManager->m_critical.unlock();
+
+			continue;
+		}
+
+		lpClientManager->AddClient(index, IPAddress, socket);
 
 		DWORD RecvSize = 0, Flags = 0;
 

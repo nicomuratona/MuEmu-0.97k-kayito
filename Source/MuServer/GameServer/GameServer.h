@@ -5,9 +5,6 @@
 #define TIMER_1000 100
 #define TIMER_10000 101
 
-#define WM_JOIN_SERVER_MSG_PROC (WM_USER+1)
-#define WM_DATA_SERVER_MSG_PROC (WM_USER+2)
-
 ATOM MyRegisterClass(HINSTANCE hInstance);
 
 bool InitInstance(HINSTANCE hInstance);

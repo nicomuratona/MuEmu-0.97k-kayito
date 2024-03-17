@@ -40,14 +40,14 @@ void CItemManager::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (lpMemScript->SetBuffer(path) == 0)
+	if (!lpMemScript->SetBuffer(path))
 	{
 		ErrorMessageBox(lpMemScript->GetLastError());
 
@@ -60,9 +60,13 @@ void CItemManager::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
+			token = lpMemScript->GetToken();
+
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
@@ -71,7 +75,9 @@ void CItemManager::Load(char* path)
 
 			while (true)
 			{
-				if (strcmp("end", lpMemScript->GetAsString()) == 0)
+				token = lpMemScript->GetToken();
+
+				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
 					break;
 				}
@@ -225,7 +231,7 @@ void CItemManager::Load(char* path)
 
 				if (section <= 11 || section == 13)
 				{
-					lpMemScript->GetToken();
+					lpMemScript->GetAsNumber();
 				}
 
 				if (section != 14)
@@ -479,7 +485,7 @@ bool CItemManager::CheckItemRequireLevel(LPOBJ lpObj, CItem* lpItem)
 
 bool CItemManager::CheckItemRequireStrength(LPOBJ lpObj, CItem* lpItem)
 {
-	if ((lpObj->Strength + lpObj->AddStrength) >= lpItem->m_RequireStrength)
+	if (lpObj->Strength >= lpItem->m_RequireStrength)
 	{
 		return 1;
 	}
@@ -491,7 +497,7 @@ bool CItemManager::CheckItemRequireStrength(LPOBJ lpObj, CItem* lpItem)
 
 bool CItemManager::CheckItemRequireDexterity(LPOBJ lpObj, CItem* lpItem)
 {
-	if ((lpObj->Dexterity + lpObj->AddDexterity) >= lpItem->m_RequireDexterity)
+	if (lpObj->Dexterity >= lpItem->m_RequireDexterity)
 	{
 		return 1;
 	}
@@ -503,7 +509,7 @@ bool CItemManager::CheckItemRequireDexterity(LPOBJ lpObj, CItem* lpItem)
 
 bool CItemManager::CheckItemRequireVitality(LPOBJ lpObj, CItem* lpItem)
 {
-	if ((lpObj->Vitality + lpObj->AddVitality) >= lpItem->m_RequireVitality)
+	if (lpObj->Vitality >= lpItem->m_RequireVitality)
 	{
 		return 1;
 	}
@@ -515,7 +521,7 @@ bool CItemManager::CheckItemRequireVitality(LPOBJ lpObj, CItem* lpItem)
 
 bool CItemManager::CheckItemRequireEnergy(LPOBJ lpObj, CItem* lpItem)
 {
-	if ((lpObj->Energy + lpObj->AddEnergy) >= lpItem->m_RequireEnergy)
+	if (lpObj->Energy >= lpItem->m_RequireEnergy)
 	{
 		return 1;
 	}

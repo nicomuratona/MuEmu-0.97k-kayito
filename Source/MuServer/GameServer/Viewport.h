@@ -137,10 +137,6 @@ public:
 
 	bool AddViewportObjectItem(int aIndex, int bIndex, int type);
 
-	void AddViewportObjectAgro(int aIndex, int bIndex, int type);
-
-	void DelViewportObjectAgro(int aIndex, int bIndex, int type);
-
 	void DestroyViewportPlayer1(int aIndex);
 
 	void DestroyViewportPlayer2(int aIndex);

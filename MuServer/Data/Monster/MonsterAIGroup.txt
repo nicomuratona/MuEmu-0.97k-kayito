@@ -1,3 +1,0 @@
-0
-//Number	Guid	Monster	Rank	StartAI	AI1	AI2	AI3	CreateType	Map	X	Y	Dir	RegenType
-end

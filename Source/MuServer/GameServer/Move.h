@@ -41,6 +41,7 @@ struct MOVE_LIST_INFO
 {
 	BYTE MapNumber;
 	char MapName[32];
+	bool CanMove;
 	WORD LevelMin;
 	DWORD Money;
 };

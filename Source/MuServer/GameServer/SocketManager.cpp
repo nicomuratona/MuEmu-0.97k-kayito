@@ -7,6 +7,7 @@
 #include "Protocol.h"
 #include "SerialCheck.h"
 #include "User.h"
+#include "Util.h"
 
 CSocketManager gSocketManager;
 
@@ -139,9 +140,9 @@ void CSocketManager::Clean()
 
 bool CSocketManager::CreateListenSocket()
 {
-	if ((this->m_listen = WSASocket(AF_INET, SOCK_STREAM, 0, 0, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
+	if ((this->m_listen = WSASocketW(AF_INET, SOCK_STREAM, 0, 0, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
 	{
-		gLog.Output(LOG_CONNECT, "[SocketManager] WSASocket() failed with error: %d", WSAGetLastError());
+		gLog.Output(LOG_CONNECT, "[SocketManager] WSASocketW() failed with error: %d", WSAGetLastError());
 
 		return false;
 	}
@@ -789,7 +790,14 @@ int CALLBACK CSocketManager::ServerAcceptCondition(IN LPWSABUF lpCallerId, IN LP
 {
 	SOCKADDR_IN* SocketAddr = (SOCKADDR_IN*)lpCallerId->buf;
 
-	if (gIpManager.CheckIpAddress(inet_ntoa(SocketAddr->sin_addr)) == 0)
+	char IPAddress[INET_ADDRSTRLEN];
+
+	if (inet_ntop(AF_INET, &SocketAddr->sin_addr, IPAddress, INET_ADDRSTRLEN) == NULL)
+	{
+		return CF_REJECT;
+	}
+
+	if (gIpManager.CheckIpAddress(IPAddress) == 0)
 	{
 		return CF_REJECT;
 	}
@@ -820,7 +828,20 @@ DWORD WINAPI CSocketManager::ServerAcceptThread(CSocketManager* lpSocketManager)
 
 		lpSocketManager->m_critical.lock();
 
-		int index = gObjAddSearch(socket, inet_ntoa(SocketAddr.sin_addr));
+		char IPAddress[INET_ADDRSTRLEN];
+
+		if (inet_ntop(AF_INET, &SocketAddr.sin_addr, IPAddress, INET_ADDRSTRLEN) == NULL)
+		{
+			LogAdd(LOG_RED, "[SocketManager] inet_ntop() failed with error: %d", WSAGetLastError());
+
+			closesocket(socket);
+
+			lpSocketManager->m_critical.unlock();
+
+			continue;
+		}
+
+		int index = gObjAddSearch(socket, IPAddress);
 
 		if (index == -1)
 		{
@@ -842,7 +863,7 @@ DWORD WINAPI CSocketManager::ServerAcceptThread(CSocketManager* lpSocketManager)
 			continue;
 		}
 
-		if (gObjAdd(socket, inet_ntoa(SocketAddr.sin_addr), index) == -1)
+		if (gObjAdd(socket, IPAddress, index) == -1)
 		{
 			gLog.Output(LOG_CONNECT, "[SocketManager] gObjAdd() failed with error: %d", GetLastError());
 

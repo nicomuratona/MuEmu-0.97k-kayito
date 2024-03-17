@@ -40,7 +40,7 @@ void CFruit::Init()
 
 int CFruit::GetMaxFruitPoint(LPOBJ lpObj)
 {
-	if (lpObj->Level < 1 || lpObj->Level > MAX_CHARACTER_LEVEL)
+	if (lpObj->Level < 1 || lpObj->Level > gServerInfo.m_MaxCharacterLevel)
 	{
 		return 0;
 	}

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Protocol.h"
 #include "ChaosMix.h"
+#include "EventTimer.h"
 #include "HackCheck.h"
 #include "HealthBar.h"
 #include "HWID.h"
@@ -30,6 +31,10 @@ CProtocol::~CProtocol()
 void CProtocol::Init()
 {
 	SetCompleteHook(0xE9, 0x004389D7, &this->HookProtocol);
+
+	SetDword(0x0041F188, 1000); // For Ping
+
+	SetCompleteHook(0xE8, 0x0043A62C, &this->CGItemGetRecv);
 }
 
 _declspec(naked) void CProtocol::HookProtocol()
@@ -125,10 +130,17 @@ void CProtocol::ProtocolCompiler(BYTE* lpMsg)
 
 void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 {
-	//gConsole.Write("RECV 0: %02X, 1: %02X, 2: %02X, 3: %02X, 4: %02X, 5: %02X", (Size > 0) ? lpMsg[0] : 0, (Size > 1) ? lpMsg[1] : 0, (Size > 2) ? lpMsg[2] : 0, (Size > 3) ? lpMsg[3] : 0, (Size > 4) ? lpMsg[4] : 0, (Size > 5) ? lpMsg[5] : 0);
+	//ConsoleProtocolLog(CON_PROTO_TCP_RECV, lpMsg, Size);
 
 	switch (head)
 	{
+		case 0xE:
+		{
+			this->GCLiveClientRecv((PMSG_LIVE_CLIENT_RECV*)lpMsg);
+
+			break;
+		}
+
 		case 0xD:
 		{
 			this->GCNoticeRecv((PMSG_NOTICE_RECV*)lpMsg);
@@ -146,6 +158,13 @@ void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 		case 0x17:
 		{
 			this->GCUserDieRecv((PMSG_USER_DIE_RECV*)lpMsg);
+
+			break;
+		}
+
+		case 0x1E:
+		{
+			this->GCDurationSkillAttackRecv((PMSG_DURATION_SKILL_ATTACK_RECV*)lpMsg);
 
 			break;
 		}
@@ -329,6 +348,13 @@ void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 
 					break;
 				}
+
+				case 0xE6:
+				{
+					gEventTimer.GCEventTimeRecv((PMSG_EVENT_TIME_RECV*)lpMsg);
+
+					break;
+				}
 			}
 
 			break;
@@ -349,6 +375,11 @@ void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 			break;
 		}
 	}
+}
+
+void CProtocol::GCLiveClientRecv(PMSG_LIVE_CLIENT_RECV* lpMsg)
+{
+	gPrintPlayer.ViewPing = GetTickCount() - lpMsg->TickCount;
 }
 
 void CProtocol::GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg)
@@ -387,6 +418,90 @@ void CProtocol::GCUserDieRecv(PMSG_USER_DIE_RECV* lpMsg)
 	}
 }
 
+void CProtocol::GCDurationSkillAttackRecv(PMSG_DURATION_SKILL_ATTACK_RECV* lpMsg)
+{
+	int aIndex = FindCharacterIndex(MAKE_NUMBERW(lpMsg->index[0], lpMsg->index[1]));
+
+	if (aIndex >= 0 && aIndex < MAX_MAIN_VIEWPORT)
+	{
+		DWORD c = CharactersClient + (aIndex * 916);
+
+		*(float*)(c + 0x24) = (lpMsg->dir / 256.0f) * 360.0f;
+	}
+}
+
+void CProtocol::CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg)
+{
+	if (lpMsg->result != (BYTE)0xFF)
+	{
+		char szMessage[128];
+
+		int Type = ConvertItemType(lpMsg->ItemInfo);
+
+		if (lpMsg->result == (BYTE)0xFE) // Receive Money
+		{
+			STRUCT_DECRYPT;
+
+			int backupGold = *(DWORD*)(CharacterMachine + 0x548);
+
+			*(DWORD*)(CharacterMachine + 0x548) = (lpMsg->ItemInfo[0] << 24) + (lpMsg->ItemInfo[1] << 16) + (lpMsg->ItemInfo[2] << 8) + (lpMsg->ItemInfo[3]);
+
+			int getGold = 0;
+
+			if (backupGold != -1)
+			{
+				getGold = *(DWORD*)(CharacterMachine + 0x548) - backupGold;
+			}
+
+			STRUCT_ENCRYPT;
+
+			if (getGold > 0)
+			{
+				char money[32];
+
+				ConvertGold(getGold, money);
+
+				wsprintf(szMessage, "%s %s %s", money, GlobalText[224], GlobalText[918]);
+
+				UIChatLogWindow_AddText("", szMessage, 1);
+			}
+		}
+		else // Receive Item
+		{
+			if (lpMsg->result != (BYTE)0xFD) // Not Stackeable
+			{
+				if (INVENTORY_MAX_RANGE(lpMsg->result) != 0)
+				{
+					InsertInventoryItem((ITEM*)OffsetInventoryItems, 8, 8, lpMsg->result, lpMsg->ItemInfo, false);
+				}
+			}
+
+			ITEM_ATTRIBUTE* ItemInfo = (ITEM_ATTRIBUTE*)(ItemAttribute + Type * sizeof(ITEM_ATTRIBUTE));
+
+			int Level = (lpMsg->ItemInfo[1] >> 3) & 0xF;
+
+			wsprintf(szMessage, "%s +%d %s", ItemInfo->Name, Level, GlobalText[918]);
+
+			UIChatLogWindow_AddText("", szMessage, 1);
+		}
+
+		if (Type == GET_ITEM(14, 13) // Jewel of Bless
+		    || Type == GET_ITEM(14, 14) // Jewel of Soul
+		    || Type == GET_ITEM(14, 16) // Jewel of Life
+		    || Type == GET_ITEM(13, 15) // Jewel of Chaos
+		    || Type == GET_ITEM(14, 22)) // Jewel of Creation
+		{
+			PlayBuffer(49, Hero, FALSE);
+		}
+		else
+		{
+			PlayBuffer(29, Hero, FALSE);
+		}
+	}
+
+	SendGetItem = -1;
+}
+
 void CProtocol::GCLifeRecv(PMSG_LIFE_RECV* lpMsg)
 {
 	if (lpMsg->type == 0xFE)
@@ -423,13 +538,13 @@ void CProtocol::GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg)
 	{
 		STRUCT_DECRYPT;
 
-		*(WORD*)(*(DWORD*)(CharacterAttribute)+0x14) = GET_MAX_WORD_VALUE(lpMsg->ViewStrength);
+		*(WORD*)(CharacterAttribute + 0x14) = GET_MAX_WORD_VALUE(lpMsg->ViewStrength);
 
-		*(WORD*)(*(DWORD*)(CharacterAttribute)+0x16) = GET_MAX_WORD_VALUE(lpMsg->ViewDexterity);
+		*(WORD*)(CharacterAttribute + 0x16) = GET_MAX_WORD_VALUE(lpMsg->ViewDexterity);
 
-		*(WORD*)(*(DWORD*)(CharacterAttribute)+0x18) = GET_MAX_WORD_VALUE(lpMsg->ViewVitality);
+		*(WORD*)(CharacterAttribute + 0x18) = GET_MAX_WORD_VALUE(lpMsg->ViewVitality);
 
-		*(WORD*)(*(DWORD*)(CharacterAttribute)+0x1A) = GET_MAX_WORD_VALUE(lpMsg->ViewEnergy);
+		*(WORD*)(CharacterAttribute + 0x1A) = GET_MAX_WORD_VALUE(lpMsg->ViewEnergy);
 
 		STRUCT_ENCRYPT;
 
@@ -500,45 +615,6 @@ void CProtocol::GCCharacterListRecv(PMSG_CHARACTER_LIST_RECV* lpMsg)
 void CProtocol::GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg)
 {
 	gReconnect.ReconnectOnCharacterInfo();
-
-	*(WORD*)(Hero + 0x1DC) = 0;
-
-	*(BYTE*)(Hero + 0x00) = 0;
-
-	STRUCT_DECRYPT;
-
-	switch (*(BYTE*)(*(DWORD*)(CharacterAttribute)+0x0B) & 7)
-	{
-		case 0:
-		{
-			SetByte(0x0044895B, ((gProtect.m_MainInfo.DWMaxAttackSpeed >= 0xFFFF) ? 0x02 : 0x0F));
-
-			break;
-		}
-
-		case 1:
-		{
-			SetByte(0x0044895B, ((gProtect.m_MainInfo.DKMaxAttackSpeed >= 0xFFFF) ? 0x0F : 0x0F));
-
-			break;
-		}
-
-		case 2:
-		{
-			SetByte(0x0044895B, ((gProtect.m_MainInfo.FEMaxAttackSpeed >= 0xFFFF) ? 0x02 : 0x0F));
-
-			break;
-		}
-
-		case 3:
-		{
-			SetByte(0x0044895B, ((gProtect.m_MainInfo.MGMaxAttackSpeed >= 0xFFFF) ? 0x02 : 0x0F));
-
-			break;
-		}
-	}
-
-	STRUCT_ENCRYPT;
 }
 
 void CProtocol::GCCharacterRegenRecv(PMSG_CHARACTER_REGEN_RECV* lpMsg)
@@ -598,17 +674,17 @@ void CProtocol::GCNewCharacterInfoRecv(PMSG_NEW_CHARACTER_INFO_RECV* lpMsg)
 {
 	STRUCT_DECRYPT;
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E) = GET_MAX_WORD_VALUE(lpMsg->Level);
+	*(WORD*)(CharacterAttribute + 0x0E) = GET_MAX_WORD_VALUE(lpMsg->Level);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x54) = GET_MAX_WORD_VALUE(lpMsg->LevelUpPoint);
+	*(WORD*)(CharacterAttribute + 0x54) = GET_MAX_WORD_VALUE(lpMsg->LevelUpPoint);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x14) = GET_MAX_WORD_VALUE(lpMsg->Strength);
+	*(WORD*)(CharacterAttribute + 0x14) = GET_MAX_WORD_VALUE(lpMsg->Strength);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x16) = GET_MAX_WORD_VALUE(lpMsg->Dexterity);
+	*(WORD*)(CharacterAttribute + 0x16) = GET_MAX_WORD_VALUE(lpMsg->Dexterity);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x18) = GET_MAX_WORD_VALUE(lpMsg->Vitality);
+	*(WORD*)(CharacterAttribute + 0x18) = GET_MAX_WORD_VALUE(lpMsg->Vitality);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x1A) = GET_MAX_WORD_VALUE(lpMsg->Energy);
+	*(WORD*)(CharacterAttribute + 0x1A) = GET_MAX_WORD_VALUE(lpMsg->Energy);
 
 	STRUCT_ENCRYPT;
 
@@ -647,17 +723,17 @@ void CProtocol::GCNewCharacterCalcRecv(PMSG_NEW_CHARACTER_CALC_RECV* lpMsg)
 {
 	STRUCT_DECRYPT;
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x1C) = GET_MAX_WORD_VALUE(lpMsg->ViewCurHP);
+	*(WORD*)(CharacterAttribute + 0x1C) = GET_MAX_WORD_VALUE(lpMsg->ViewCurHP);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x20) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxHP);
+	*(WORD*)(CharacterAttribute + 0x20) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxHP);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x1E) = GET_MAX_WORD_VALUE(lpMsg->ViewCurMP);
+	*(WORD*)(CharacterAttribute + 0x1E) = GET_MAX_WORD_VALUE(lpMsg->ViewCurMP);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x22) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxMP);
+	*(WORD*)(CharacterAttribute + 0x22) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxMP);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x24) = GET_MAX_WORD_VALUE(lpMsg->ViewCurBP);
+	*(WORD*)(CharacterAttribute + 0x24) = GET_MAX_WORD_VALUE(lpMsg->ViewCurBP);
 
-	*(WORD*)(*(DWORD*)(CharacterAttribute)+0x26) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxBP);
+	*(WORD*)(CharacterAttribute + 0x26) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxBP);
 
 	STRUCT_ENCRYPT;
 
@@ -672,14 +748,6 @@ void CProtocol::GCNewCharacterCalcRecv(PMSG_NEW_CHARACTER_CALC_RECV* lpMsg)
 	gPrintPlayer.ViewCurBP = lpMsg->ViewCurBP;
 
 	gPrintPlayer.ViewMaxBP = lpMsg->ViewMaxBP;
-
-	gPrintPlayer.ViewAddStrength = lpMsg->ViewAddStrength;
-
-	gPrintPlayer.ViewAddDexterity = lpMsg->ViewAddDexterity;
-
-	gPrintPlayer.ViewAddVitality = lpMsg->ViewAddVitality;
-
-	gPrintPlayer.ViewAddEnergy = lpMsg->ViewAddEnergy;
 
 	gPrintPlayer.ViewPhysiSpeed = lpMsg->ViewPhysiSpeed;
 
@@ -700,9 +768,11 @@ void CProtocol::GCHealthBarRecv(PMSG_HEALTH_BAR_RECV* lpMsg)
 
 void CProtocol::DataSend(BYTE* lpMsg, DWORD size)
 {
+	//ConsoleProtocolLog(CON_PROTO_TCP_SEND, lpMsg, size);
+
 	BYTE EncBuff[2048];
 
-	if (gPacketManager.AddData(lpMsg, size) != false && gPacketManager.ExtractPacket(EncBuff) != false)
+	if (gPacketManager.AddData(lpMsg, size) && gPacketManager.ExtractPacket(EncBuff))
 	{
 		BYTE send[2048];
 

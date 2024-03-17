@@ -14,10 +14,8 @@
 #include "Map.h"
 #include "MapManager.h"
 #include "MemoryAllocator.h"
-#include "MonsterAIUtil.h"
 #include "MonsterManager.h"
 #include "MonsterSetBase.h"
-#include "MonsterSkillManager.h"
 #include "ObjectManager.h"
 #include "Party.h"
 #include "Protocol.h"
@@ -71,7 +69,7 @@ void gObjMonsterDieGiveItem(LPOBJ lpObj, LPOBJ lpTarget)
 
 	int ItemDropRate = gServerInfo.m_ItemDropRate[lpTarget->AccountLevel];
 
-	ItemDropRate = (ItemDropRate * (lpTarget->ItemDropRate + lpTarget->EffectOption.AddItemDropRate)) / 100;
+	ItemDropRate = (ItemDropRate * lpTarget->ItemDropRate) / 100;
 
 	ItemDropRate = (ItemDropRate * gMapManager.GetMapItemDropRate(lpObj->Map)) / 100;
 
@@ -269,16 +267,10 @@ bool gObjSetMonster(int aIndex, int MonsterClass)
 	lpObj->Resistance[2] = ((lpInfo->Resistance[0] > 255) ? 255 : lpInfo->Resistance[2]);
 	lpObj->Resistance[3] = ((lpInfo->Resistance[0] > 255) ? 255 : lpInfo->Resistance[3]);
 	lpObj->ScriptMaxLife = (float)lpInfo->ScriptLife;
-	lpObj->BasicAI = lpInfo->AINumber;
-	lpObj->CurrentAI = lpInfo->AINumber;
-	lpObj->CurrentAIState = 0;
-	lpObj->LastAIRunTime = 0;
 	lpObj->GroupNumber = 0;
 	lpObj->SubGroupNumber = 0;
 	lpObj->GroupMemberGuid = -1;
 	lpObj->RegenType = 0;
-
-	lpObj->Agro.ResetAll();
 
 	gObjSetInventory1Pointer(lpObj);
 
@@ -1001,8 +993,6 @@ void gObjMonsterAttack(LPOBJ lpObj, LPOBJ lpTarget)
 
 		pMsg.index[1] = SET_NUMBERLB(lpObj->TargetNumber);
 
-		pMsg.dis = 0;
-
 		gSkillManager.CGSkillAttackRecv(&pMsg, lpObj->Index);
 	}
 	else if (lpObj->Class == 89 || lpObj->Class == 95 || lpObj->Class == 112 || lpObj->Class == 118 || lpObj->Class == 124 || lpObj->Class == 130)
@@ -1016,8 +1006,6 @@ void gObjMonsterAttack(LPOBJ lpObj, LPOBJ lpTarget)
 		pMsg.index[0] = SET_NUMBERHB(lpObj->TargetNumber);
 
 		pMsg.index[1] = SET_NUMBERLB(lpObj->TargetNumber);
-
-		pMsg.dis = 0;
 
 		gSkillManager.CGSkillAttackRecv(&pMsg, lpObj->Index);
 	}
@@ -1050,8 +1038,6 @@ void gObjMonsterAttack(LPOBJ lpObj, LPOBJ lpTarget)
 			pMsg.index[0] = SET_NUMBERHB(lpObj->TargetNumber);
 
 			pMsg.index[1] = SET_NUMBERLB(lpObj->TargetNumber);
-
-			pMsg.dis = 0;
 
 			gSkillManager.CGSkillAttackRecv(&pMsg, lpObj->Index);
 		}
@@ -1568,161 +1554,101 @@ void gObjMonsterProcess(LPOBJ lpObj)
 
 	if (lpObj->ActionState.Attack == 1)
 	{
-		if (CMonsterSkillManager::CheckMonsterSkill(lpObj->Class, 0))
+		int AttackType = lpObj->AttackType;
+
+		int AttackFlag = 0;
+
+		if (AttackType >= 100)
 		{
-			BOOL bEnableAttack = TRUE;
-
-			if (lpObj->TargetNumber < 0)
+			if ((GetLargeRand() % 5) == 0)
 			{
-				lpObj->TargetNumber = -1;
+				AttackType -= 100;
 
-				lpObj->ActionState.Emotion = 0;
-
-				lpObj->ActionState.Attack = 0;
-
-				lpObj->ActionState.Move = 0;
-
-				lpObj->NextActionTime = 1000;
-
-				return;
-			}
-
-			if (gObj[lpObj->TargetNumber].Live == FALSE || gObj[lpObj->TargetNumber].Teleport != 0)
-			{
-				bEnableAttack = FALSE;
-			}
-
-			if (gObj[lpObj->TargetNumber].Connected <= OBJECT_LOGGED || gObj[lpObj->TargetNumber].CloseCount != -1)
-			{
-				bEnableAttack = FALSE;
-			}
-
-			if (bEnableAttack == FALSE)
-			{
-				lpObj->TargetNumber = -1;
-
-				lpObj->ActionState.Emotion = 0;
-
-				lpObj->ActionState.Attack = 0;
-
-				lpObj->ActionState.Move = 0;
-
-				lpObj->NextActionTime = 1000;
-
-				return;
-			}
-
-			if (GetLargeRand() % 4 == 0)
-			{
-				GCActionSend(lpObj, ACTION_ATTACK1, lpObj->Index, lpObj->TargetNumber);
-
-				gAttack.Attack(lpObj, &gObj[lpObj->TargetNumber], NULL, FALSE, 0, 0);
+				AttackFlag = TRUE;
 			}
 			else
 			{
-				CMonsterSkillManager::UseMonsterSkill(lpObj->Index, lpObj->TargetNumber, 0, -1, NULL);
+				AttackType = 0;
 			}
-
-			lpObj->ActionState.Attack = 0;
 		}
-		else
+
+		if (AttackFlag != FALSE || lpObj->AttackType == 50)
 		{
-			int AttackType = lpObj->AttackType;
-
-			int AttackFlag = 0;
-
-			if (AttackType >= 100)
+			if (lpObj->TargetNumber >= 0)
 			{
-				if ((GetLargeRand() % 5) == 0)
+				if (gObj[lpObj->TargetNumber].Connected > OBJECT_LOGGED && gObj[lpObj->TargetNumber].CloseCount == -1)
 				{
-					AttackType -= 100;
+					if (gObj[lpObj->TargetNumber].Live == FALSE)
+					{
+						lpObj->TargetNumber = -1;
 
-					AttackFlag = TRUE;
+						lpObj->ActionState.Emotion = 0;
+
+						lpObj->ActionState.Attack = 0;
+
+						lpObj->ActionState.Move = 0;
+
+						lpObj->NextActionTime = 1000;
+					}
+					else if (gObj[lpObj->TargetNumber].Teleport == 0)
+					{
+						gObjMonsterMagicAttack(lpObj, 0);
+					}
 				}
 				else
 				{
-					AttackType = 0;
+					lpObj->TargetNumber = -1;
+
+					lpObj->ActionState.Emotion = 0;
+
+					lpObj->ActionState.Attack = 0;
+
+					lpObj->ActionState.Move = 0;
+
+					lpObj->NextActionTime = 1000;
 				}
 			}
-
-			if (AttackFlag != FALSE || lpObj->AttackType == 50)
-			{
-				if (lpObj->TargetNumber >= 0)
-				{
-					if (gObj[lpObj->TargetNumber].Connected > OBJECT_LOGGED && gObj[lpObj->TargetNumber].CloseCount == -1)
-					{
-						if (gObj[lpObj->TargetNumber].Live == FALSE)
-						{
-							lpObj->TargetNumber = -1;
-
-							lpObj->ActionState.Emotion = 0;
-
-							lpObj->ActionState.Attack = 0;
-
-							lpObj->ActionState.Move = 0;
-
-							lpObj->NextActionTime = 1000;
-						}
-						else if (gObj[lpObj->TargetNumber].Teleport == 0)
-						{
-							gObjMonsterMagicAttack(lpObj, 0);
-						}
-					}
-					else
-					{
-						lpObj->TargetNumber = -1;
-
-						lpObj->ActionState.Emotion = 0;
-
-						lpObj->ActionState.Attack = 0;
-
-						lpObj->ActionState.Move = 0;
-
-						lpObj->NextActionTime = 1000;
-					}
-				}
-			}
-			else
-			{
-				if (lpObj->TargetNumber >= 0)
-				{
-					if (gObj[lpObj->TargetNumber].Connected > OBJECT_LOGGED && gObj[lpObj->TargetNumber].CloseCount == -1)
-					{
-						if (gObj[lpObj->TargetNumber].Live == FALSE)
-						{
-							lpObj->TargetNumber = -1;
-
-							lpObj->ActionState.Emotion = 0;
-
-							lpObj->ActionState.Attack = 0;
-
-							lpObj->ActionState.Move = 0;
-
-							lpObj->NextActionTime = 1000;
-						}
-						else if (gObj[lpObj->TargetNumber].Teleport == 0)
-						{
-							gObjMonsterAttack(lpObj, &gObj[lpObj->TargetNumber]);
-						}
-
-					}
-					else
-					{
-						lpObj->TargetNumber = -1;
-
-						lpObj->ActionState.Emotion = 0;
-
-						lpObj->ActionState.Attack = 0;
-
-						lpObj->ActionState.Move = 0;
-
-						lpObj->NextActionTime = 1000;
-					}
-				}
-			}
-
-			lpObj->ActionState.Attack = 0;
 		}
+		else
+		{
+			if (lpObj->TargetNumber >= 0)
+			{
+				if (gObj[lpObj->TargetNumber].Connected > OBJECT_LOGGED && gObj[lpObj->TargetNumber].CloseCount == -1)
+				{
+					if (gObj[lpObj->TargetNumber].Live == FALSE)
+					{
+						lpObj->TargetNumber = -1;
+
+						lpObj->ActionState.Emotion = 0;
+
+						lpObj->ActionState.Attack = 0;
+
+						lpObj->ActionState.Move = 0;
+
+						lpObj->NextActionTime = 1000;
+					}
+					else if (gObj[lpObj->TargetNumber].Teleport == 0)
+					{
+						gObjMonsterAttack(lpObj, &gObj[lpObj->TargetNumber]);
+					}
+
+				}
+				else
+				{
+					lpObj->TargetNumber = -1;
+
+					lpObj->ActionState.Emotion = 0;
+
+					lpObj->ActionState.Attack = 0;
+
+					lpObj->ActionState.Move = 0;
+
+					lpObj->NextActionTime = 1000;
+				}
+			}
+		}
+
+		lpObj->ActionState.Attack = 0;
 	}
 }
 

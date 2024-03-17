@@ -53,14 +53,8 @@
     <Filter Include="User">
       <UniqueIdentifier>{35ce25f3-d735-4ab8-8a68-3cf567487666}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Monsters\AI">
-      <UniqueIdentifier>{1d04dd2f-fa4a-40f7-89c7-bf42b13ead22}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Monsters\NPC">
       <UniqueIdentifier>{3255f519-93c5-4041-873c-ce64967edbff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Monsters\Skill">
-      <UniqueIdentifier>{31c278ff-f6be-4b12-ab42-dc26940f34d8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Connection\Protocols">
       <UniqueIdentifier>{87c9e7c3-6006-4827-aa75-d2e18e5aa759}</UniqueIdentifier>
@@ -168,80 +162,11 @@
     <ClInclude Include="User.h">
       <Filter>User</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterAI.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIAgro.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIAutomata.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIAutomataInfo.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIElement.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIElementInfo.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIGroup.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIGroupMember.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIMovePath.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIMovePathInfo.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIRule.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIRuleInfo.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIState.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIUnit.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIUnitInfo.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterAIUtil.h">
-      <Filter>Monsters\AI</Filter>
-    </ClInclude>
     <ClInclude Include="NpcTalk.h">
       <Filter>Monsters\NPC</Filter>
     </ClInclude>
     <ClInclude Include="CustomNpcMove.h">
       <Filter>Monsters\NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterSkillElement.h">
-      <Filter>Monsters\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterSkillElementInfo.h">
-      <Filter>Monsters\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterSkillElementOption.h">
-      <Filter>Monsters\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterSkillInfo.h">
-      <Filter>Monsters\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterSkillManager.h">
-      <Filter>Monsters\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterSkillUnit.h">
-      <Filter>Monsters\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterSkillUnitInfo.h">
-      <Filter>Monsters\Skill</Filter>
     </ClInclude>
     <ClInclude Include="Gate.h">
       <Filter>Map</Filter>
@@ -432,6 +357,9 @@
     <ClInclude Include="Blacklist.h">
       <Filter>Connection</Filter>
     </ClInclude>
+    <ClInclude Include="EventTimeManager.h">
+      <Filter>Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math.cpp">
@@ -527,80 +455,11 @@
     <ClCompile Include="User.cpp">
       <Filter>User</Filter>
     </ClCompile>
-    <ClCompile Include="MonsterAI.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIAgro.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIAutomata.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIAutomataInfo.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIElement.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIElementInfo.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIGroup.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIGroupMember.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIMovePath.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIMovePathInfo.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIRule.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIRuleInfo.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIState.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIUnit.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIUnitInfo.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterAIUtil.cpp">
-      <Filter>Monsters\AI</Filter>
-    </ClCompile>
     <ClCompile Include="NpcTalk.cpp">
       <Filter>Monsters\NPC</Filter>
     </ClCompile>
     <ClCompile Include="CustomNpcMove.cpp">
       <Filter>Monsters\NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterSkillElement.cpp">
-      <Filter>Monsters\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterSkillElementInfo.cpp">
-      <Filter>Monsters\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterSkillElementOption.cpp">
-      <Filter>Monsters\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterSkillInfo.cpp">
-      <Filter>Monsters\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterSkillManager.cpp">
-      <Filter>Monsters\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterSkillUnit.cpp">
-      <Filter>Monsters\Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterSkillUnitInfo.cpp">
-      <Filter>Monsters\Skill</Filter>
     </ClCompile>
     <ClCompile Include="Gate.cpp">
       <Filter>Map</Filter>
@@ -784,6 +643,9 @@
     </ClCompile>
     <ClCompile Include="Blacklist.cpp">
       <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="EventTimeManager.cpp">
+      <Filter>Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

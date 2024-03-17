@@ -21,14 +21,14 @@ void CBlackList::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (lpMemScript->SetBuffer(path) == 0)
+	if (!lpMemScript->SetBuffer(path))
 	{
 		ErrorMessageBox(lpMemScript->GetLastError());
 
@@ -43,9 +43,13 @@ void CBlackList::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
+			token = lpMemScript->GetToken();
+
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
@@ -54,13 +58,15 @@ void CBlackList::Load(char* path)
 
 			while (true)
 			{
+				token = lpMemScript->GetToken();
+
+				if (token == TOKEN_END || token == TOKEN_END_SECTION)
+				{
+					break;
+				}
+
 				if (section == 0)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					BLACK_LIST_IP_INFO info;
 
 					memcpy(info.IpAddr, lpMemScript->GetString(), sizeof(info.IpAddr));
@@ -69,20 +75,11 @@ void CBlackList::Load(char* path)
 				}
 				else if (section == 1)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					BLACK_LIST_HWID_INFO info;
 
 					memcpy(info.HardwareId, lpMemScript->GetString(), sizeof(info.HardwareId));
 
 					this->m_BlacklistHWID.push_back(info);
-				}
-				else
-				{
-					break;
 				}
 			}
 		}

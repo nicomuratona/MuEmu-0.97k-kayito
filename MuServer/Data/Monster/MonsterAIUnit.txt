@@ -1,4 +1,0 @@
-0
-//Index	Name					DelayTime	Automata	AIClassNormal	AIClassMove	AIClassAttack	AIClassHeal	AIClassAvoid	AIClassHelp	AIClassSpecial	AIClassEvent
-1	"Monster General"			1700		1		1		8		3		5		4		*		*		*
-end

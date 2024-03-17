@@ -6,6 +6,8 @@ void ErrorMessageBox(char* message, ...);
 
 void LogAdd(eLogColor color, char* text, ...);
 
+void ConsoleProtocolLog(int type, BYTE* lpMsg, int size);
+
 void ConnectServerTimeoutProc();
 
 int GetFreeClientIndex();

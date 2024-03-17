@@ -24,14 +24,14 @@ void CItemBagEx::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (lpMemScript->SetBuffer(path) == false)
+	if (!lpMemScript->SetBuffer(path))
 	{
 		ErrorMessageBox(lpMemScript->GetLastError());
 
@@ -46,9 +46,13 @@ void CItemBagEx::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
+			token = lpMemScript->GetToken();
+
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
@@ -57,13 +61,15 @@ void CItemBagEx::Load(char* path)
 
 			while (true)
 			{
+				token = lpMemScript->GetToken();
+
+				if (token == TOKEN_END || token == TOKEN_END_SECTION)
+				{
+					break;
+				}
+
 				if (section == 2)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					ITEM_BAG_EX_INFO info;
 
 					info.Index = lpMemScript->GetNumber();
@@ -74,11 +80,6 @@ void CItemBagEx::Load(char* path)
 				}
 				else if (section == 3)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					ITEM_BAG_EX_DROP_INFO info;
 
 					info.Index = lpMemScript->GetNumber();
@@ -105,11 +106,6 @@ void CItemBagEx::Load(char* path)
 				}
 				else if (section >= 4)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					ITEM_BAG_EX_ITEM_INFO info;
 
 					info.Index = SafeGetItem(GET_ITEM(lpMemScript->GetNumber(), lpMemScript->GetAsNumber()));
@@ -137,13 +133,6 @@ void CItemBagEx::Load(char* path)
 					else
 					{
 						it->second.push_back(info);
-					}
-				}
-				else
-				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
 					}
 				}
 			}

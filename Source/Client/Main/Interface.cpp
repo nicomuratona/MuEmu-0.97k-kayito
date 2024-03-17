@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Interface.h"
 #include "Camera.h"
+#include "EventTimer.h"
 #include "FullMap.h"
 #include "MoveList.h"
 #include "Protect.h"
@@ -30,7 +31,7 @@ void Interface::Init()
 
 	SetCompleteHook(0xE8, 0x005254B2, &this->MyUpdateWindowsMouse);
 
-	SetCompleteHook(0xE8, 0x004BC0DE, &this->MyRenderWindows);
+	SetCompleteHook(0xE8, 0x00525CEC, &this->MyRenderWindows);
 }
 
 void Interface::RenderLogInScene(HDC Hdc)
@@ -57,6 +58,8 @@ void Interface::RenderMainScene()
 void Interface::LoadImages()
 {
 	((void(__cdecl*)()) 0x0050EB80)(); // OpenImages
+
+	gFullMap.LoadImages();
 }
 
 void Interface::MyUpdateWindowsMouse()
@@ -65,12 +68,18 @@ void Interface::MyUpdateWindowsMouse()
 
 	gFullMap.CheckZoomButton();
 
-	gMoveList.CheckMoveListMouse();
+	gMoveList.UpdateMouse();
+
+	gEventTimer.UpdateMouse();
 }
 
 void Interface::MyRenderWindows()
 {
-	RenderWindows();
+	((void(_cdecl*)()) 0x004C3530)();
+
+	gMoveList.Render();
+
+	gEventTimer.Render();
 }
 
 void Interface::BindObject(short MonsterID, DWORD ModelID, float Width, float Height, float X, float Y)

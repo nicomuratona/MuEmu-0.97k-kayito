@@ -2,7 +2,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-#define _CRT_SECURE_NO_WARNINGS
+#define _WIN32_WINNT _WIN32_WINNT_VISTA
 
 // System Include
 #include <windows.h>
@@ -22,14 +22,15 @@
 #include <strmif.h>
 #include <control.h>
 #include <mbstring.h>
+#include <fstream>
 
 // General Includes
 #include "Console.h"
+#include "MathLib.h"
 #include "Offsets.h"
 #include "Defines.h"
 #include "Enums.h"
 #include "Structs.h"
-#include "MathLib.h"
 #include "Util.h"
 #include "stb.h"
 
@@ -38,4 +39,4 @@
 #pragma comment(lib,"version.lib")
 #pragma comment(lib,"Rpcrt4.lib")
 #pragma comment(lib,"Opengl32.lib")
-#pragma comment(lib, "strmiids.lib")
+#pragma comment(lib,"strmiids.lib")

@@ -200,6 +200,44 @@ LRESULT WINAPI cWindow::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 {
 	switch (msg)
 	{
+		case WM_LBUTTONDOWN:
+		{
+			if (MouseRButton || MouseRButtonPush)
+			{
+				return 0;
+			}
+
+			MouseLButtonPop = false;
+
+			if (!MouseLButton)
+			{
+				MouseLButtonPush = true;
+			}
+
+			MouseLButton = true;
+
+			return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
+
+		case WM_RBUTTONDOWN:
+		{
+			if (MouseLButton || MouseLButtonPush)
+			{
+				return 0;
+			}
+
+			MouseRButtonPop = false;
+
+			if (!MouseRButton)
+			{
+				MouseRButtonPush = true;
+			}
+
+			MouseRButton = true;
+
+			return DefWindowProc(hwnd, msg, wParam, lParam);
+		}
+
 		case WM_NPROTECT_EXIT_TWO: // Fix disconnect when minimize
 		{
 			return 0;
@@ -260,11 +298,11 @@ void cWindow::ChangeWindowText()
 		return;
 	}
 
-	static char text[256];
+	char text[256];
 
 	STRUCT_DECRYPT;
 
-	sprintf_s(text, sizeof(text), "%s || Resets: %d || GrandResets: %d || Level: %d", (char*)(*(DWORD*)(CharacterAttribute)+0x00), gPrintPlayer.ViewReset, gPrintPlayer.ViewGrandReset, *(WORD*)(*(DWORD*)(CharacterAttribute)+0x0E));
+	sprintf_s(text, sizeof(text), "%s || Resets: %d || GrandResets: %d || Level: %d || PING: %u ms || FPS: %.0f", (char*)(CharacterAttribute + 0x00), gPrintPlayer.ViewReset, gPrintPlayer.ViewGrandReset, *(WORD*)(CharacterAttribute + 0x0E), gPrintPlayer.ViewPing, FPS);
 
 	STRUCT_ENCRYPT;
 

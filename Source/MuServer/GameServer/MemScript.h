@@ -1,19 +1,22 @@
 #pragma once
 
-#define MEM_SCRIPT_ALLOC_ERROR "[%s] Could not alloc memory for MemScript"
-#define MEM_SCRIPT_ERROR_CODE0 "[%s] Could not open file"
-#define MEM_SCRIPT_ERROR_CODE1 "[%s] Could not alloc file buffer"
-#define MEM_SCRIPT_ERROR_CODE2 "[%s] Could not read file"
-#define MEM_SCRIPT_ERROR_CODE3 "[%s] Could not get file buffer"
-#define MEM_SCRIPT_ERROR_CODE4 "[%s] The file were not configured correctly"
-#define MEM_SCRIPT_ERROR_CODEX "[%s] Unknow error code: %d"
+#define MEM_SCRIPT_ALLOC_ERROR "[%s] Could not alloc memory for MemScript.\n"
+#define MEM_SCRIPT_ERROR_CODE0 "[%s] Could not open file.\n"
+#define MEM_SCRIPT_ERROR_CODE1 "[%s] Could not alloc file buffer.\n"
+#define MEM_SCRIPT_ERROR_CODE2 "[%s] Could not read file.\n"
+#define MEM_SCRIPT_ERROR_CODE3 "[%s] Could not get file buffer.\n"
+#define MEM_SCRIPT_ERROR_CODE4 "[%s] The file is taking too long to read.\n"
+#define MEM_SCRIPT_ERROR_CODE5 "[%s] There is an error in line %d.\n"
+#define MEM_SCRIPT_ERROR_CODEX "[%s] Unknow error code: %d.\n"
 
 enum eTokenResult
 {
 	TOKEN_NUMBER = 0,
 	TOKEN_STRING = 1,
 	TOKEN_END = 2,
-	TOKEN_ERROR = 3,
+	TOKEN_END_LINE = 3,
+	TOKEN_END_SECTION = 4,
+	TOKEN_ERROR = 5,
 };
 
 class CMemScript
@@ -22,27 +25,11 @@ public:
 
 	CMemScript();
 
-	~CMemScript();
+	virtual ~CMemScript();
 
 	bool SetBuffer(char* path);
 
-	bool GetBuffer(char* buff, DWORD* size);
-
-	char GetChar();
-
-	void UnGetChar(char ch);
-
-	char CheckComment(char ch);
-
-	eTokenResult GetToken();
-
-	eTokenResult GetTokenNumber(char ch);
-
-	eTokenResult GetTokenString(char ch);
-
-	eTokenResult GetTokenCommon(char ch);
-
-	void SetLastError(int error);
+	eTokenResult GetToken(bool wReturn = false);
 
 	char* GetLastError();
 
@@ -60,17 +47,39 @@ public:
 
 private:
 
-	char* m_buff;
+	bool IsEncodingAnsi();
 
-	DWORD m_size;
+	char GetChar();
+
+	void UnGetChar(char ch);
+
+	char CheckComment(char ch);
+
+	bool CheckSpace(char ch);
+
+	eTokenResult GetTokenNumber(char ch);
+
+	eTokenResult GetTokenString(char ch);
+
+	eTokenResult GetTokenCommon(char ch);
+
+	void SetLastError(int error);
+
+private:
+
+	std::vector<char> m_buffer;
+
+	size_t m_position;
 
 	char m_path[256];
-
-	DWORD m_count;
 
 	float m_number;
 
 	char m_string[256];
+
+	DWORD m_line;
+
+	eTokenResult m_lastToken;
 
 	DWORD m_tick;
 

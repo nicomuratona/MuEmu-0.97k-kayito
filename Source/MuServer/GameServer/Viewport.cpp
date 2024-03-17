@@ -93,8 +93,6 @@ bool CViewport::AddViewportObject1(int aIndex, int bIndex, int type)
 	{
 		if (lpObj->VpPlayer[n].state == VIEWPORT_NONE)
 		{
-			this->AddViewportObjectAgro(aIndex, bIndex, type);
-
 			lpObj->VpPlayer[n].state = VIEWPORT_SEND;
 
 			lpObj->VpPlayer[n].index = bIndex;
@@ -164,28 +162,6 @@ bool CViewport::AddViewportObjectItem(int aIndex, int bIndex, int type)
 	}
 
 	return 0;
-}
-
-void CViewport::AddViewportObjectAgro(int aIndex, int bIndex, int type)
-{
-	if (gObj[aIndex].Type == OBJECT_MONSTER && gObj[aIndex].CurrentAI != 0)
-	{
-		if (type == OBJECT_USER)
-		{
-			gObj[aIndex].Agro.SetAgro(bIndex, 1000);
-		}
-	}
-}
-
-void CViewport::DelViewportObjectAgro(int aIndex, int bIndex, int type)
-{
-	if (gObj[aIndex].Type == OBJECT_MONSTER && gObj[aIndex].CurrentAI != 0)
-	{
-		if (type == OBJECT_USER)
-		{
-			gObj[aIndex].Agro.DelAgro(bIndex);
-		}
-	}
 }
 
 void CViewport::DestroyViewportPlayer1(int aIndex)
@@ -315,16 +291,12 @@ void CViewport::DestroyViewportMonster1(int aIndex)
 		{
 			lpObj->VpPlayer[n].state = VIEWPORT_DESTROY;
 
-			this->DelViewportObjectAgro(aIndex, lpTarget->Index, lpTarget->Type);
-
 			continue;
 		}
 
 		if (lpTarget->Connected != OBJECT_ONLINE || lpTarget->Teleport != 0)
 		{
 			lpObj->VpPlayer[n].state = VIEWPORT_DESTROY;
-
-			this->DelViewportObjectAgro(aIndex, lpTarget->Index, lpTarget->Type);
 
 			continue;
 		}
@@ -333,16 +305,12 @@ void CViewport::DestroyViewportMonster1(int aIndex)
 		{
 			lpObj->VpPlayer[n].state = VIEWPORT_DESTROY;
 
-			this->DelViewportObjectAgro(aIndex, lpTarget->Index, lpTarget->Type);
-
 			continue;
 		}
 
 		if (this->CheckViewportObjectPosition(aIndex, lpTarget->Map, lpTarget->X, lpTarget->Y, gMapManager.GetMapViewRange(lpObj->Map)) == 0)
 		{
 			lpObj->VpPlayer[n].state = VIEWPORT_DESTROY;
-
-			this->DelViewportObjectAgro(aIndex, lpTarget->Index, lpTarget->Type);
 
 			continue;
 		}

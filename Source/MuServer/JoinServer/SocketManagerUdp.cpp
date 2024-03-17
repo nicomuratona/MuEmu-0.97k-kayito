@@ -71,24 +71,32 @@ bool CSocketManagerUdp::Connect(char* IpAddress, WORD port)
 
 	this->m_SocketAddr.sin_family = AF_INET;
 
-	this->m_SocketAddr.sin_addr.s_addr = inet_addr(IpAddress);
+	inet_pton(AF_INET, IpAddress, &this->m_SocketAddr.sin_addr.s_addr);
 
 	this->m_SocketAddr.sin_port = htons(port);
 
 	if (this->m_SocketAddr.sin_addr.s_addr == INADDR_NONE)
 	{
-		hostent* host = gethostbyname(IpAddress);
+		char port_str[16] = {};
+		sprintf_s(port_str, "%d", port);
 
-		if (host == 0)
+		struct addrinfo hints = {}, * addrs;
+		hints.ai_family = AF_INET;
+		hints.ai_socktype = SOCK_DGRAM;
+		hints.ai_protocol = IPPROTO_UDP;
+
+		int err = getaddrinfo(IpAddress, port_str, &hints, &addrs);
+
+		if (err != 0)
 		{
-			LogAdd(LOG_RED, "[SocketManagerUdp] gethostbyname() failed with error: %d", WSAGetLastError());
+			LogAdd(LOG_RED, "[SocketManagerUdp] getaddrinfo() failed with error: %d", err);
 
 			this->Clean();
 
 			return false;
 		}
 
-		memcpy(&this->m_SocketAddr.sin_addr.s_addr, *host->h_addr_list, host->h_length);
+		memcpy(&this->m_SocketAddr.sin_addr.s_addr, addrs->ai_addr, addrs->ai_addrlen);
 	}
 
 	memset(this->m_SendBuff, 0, sizeof(this->m_SendBuff));

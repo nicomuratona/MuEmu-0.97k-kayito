@@ -84,7 +84,6 @@ struct PMSG_SKILL_ATTACK_RECV
 	PBMSG_HEAD header; // C3:19
 	BYTE skill;
 	BYTE index[2];
-	BYTE dis;
 };
 
 struct PMSG_SKILL_CANCEL_RECV
@@ -103,6 +102,7 @@ struct PMSG_DURATION_SKILL_ATTACK_RECV
 	BYTE dir;
 	BYTE dis;
 	BYTE angle;
+	BYTE index[2];
 };
 
 struct PMSG_SKILL_TELEPORT_ALLY_RECV
@@ -160,10 +160,9 @@ struct PMSG_SKILL_LIST_SEND
 
 struct PMSG_SKILL_LIST
 {
-#pragma pack(1)
 	BYTE slot;
-	BYTE skill[2];
-#pragma pack()
+	BYTE skill;
+	BYTE level;
 };
 
 //**********************************************//
@@ -211,6 +210,8 @@ public:
 
 	int GetSkillAngle(int x, int y, int tx, int ty);
 
+	int GetSkillFrustrum(int* SkillFrustrumX, int* SkillFrustrumY, BYTE angle, int x, int y, float sx, float sy);
+
 	int GetSkillFrustrum(int* SkillFrustrumX, int* SkillFrustrumY, BYTE angle, int x, int y, float sx, float sy, float tx, float ty);
 
 	int GetSkillNumber(int index, int level);
@@ -253,7 +254,7 @@ public:
 
 	void UseAttackSkill(int aIndex, int bIndex, CSkill* lpSkill);
 
-	void UseDurationSkillAttack(int aIndex, CSkill* lpSkill, BYTE x, BYTE y, BYTE dir, BYTE angle);
+	void UseDurationSkillAttack(int aIndex, int bIndex, CSkill* lpSkill, BYTE x, BYTE y, BYTE dir, BYTE angle);
 
 	bool RunningSkill(int aIndex, int bIndex, CSkill* lpSkill, BYTE x, BYTE y, BYTE angle);
 
@@ -269,6 +270,8 @@ public:
 
 	bool SkillDefense(int aIndex, int bIndex, CSkill* lpSkill);
 
+	bool SkillTripleShot(int aIndex, int bIndex, CSkill* lpSkill, BYTE angle);
+
 	bool SkillHeal(int aIndex, int bIndex, CSkill* lpSkill);
 
 	bool SkillGreaterDefense(int aIndex, int bIndex, CSkill* lpSkill);
@@ -277,7 +280,17 @@ public:
 
 	bool SkillSummon(int aIndex, int bIndex, CSkill* lpSkill);
 
+	bool SkillTwistingSlash(int aIndex, int bIndex, CSkill* lpSkill);
+
+	bool SkillRagefulBlow(int aIndex, int bIndex, CSkill* lpSkill);
+
+	bool SkillDeathStab(int aIndex, int bIndex, CSkill* lpSkill);
+
 	bool SkillGreaterLife(int aIndex, int bIndex, CSkill* lpSkill);
+
+	bool SkillMonsterAreaAttack(int aIndex, int bIndex, CSkill* lpSkill);
+
+	bool SkillFireSlash(int aIndex, int bIndex, CSkill* lpSkill);
 
 	bool SkillPowerSlash(int aIndex, int bIndex, CSkill* lpSkill, BYTE angle);
 
@@ -299,11 +312,11 @@ public:
 
 	void GCDurationSkillAttackSend(LPOBJ lpObj, int skill, BYTE x, BYTE y, BYTE dir);
 
-	void GCSkillAddSend(int aIndex, BYTE slot, int skill, BYTE level, BYTE type);
+	void GCSkillAddSend(int aIndex, BYTE slot, int skill, BYTE level);
 
-	void GCSkillDelSend(int aIndex, BYTE slot, int skill, BYTE level, BYTE type);
+	void GCSkillDelSend(int aIndex, BYTE slot, int skill, BYTE level);
 
-	void GCSkillListSend(LPOBJ lpObj, BYTE type);
+	void GCSkillListSend(LPOBJ lpObj);
 
 private:
 

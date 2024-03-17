@@ -17,17 +17,13 @@ void GameMainInit(HWND hwnd);
 
 void ConnectServerInfoSend();
 
-bool JoinServerConnect(DWORD wMsg);
+bool JoinServerConnect();
 
-bool DataServerConnect(DWORD wMsg);
+bool DataServerConnect();
 
-bool JoinServerReconnect(HWND hwnd, DWORD wMsg);
+bool JoinServerReconnect(HWND hwnd);
 
-bool DataServerReconnect(HWND hwnd, DWORD wMsg);
-
-void JoinServerMsgProc(WPARAM wParam, LPARAM lParam);
-
-void DataServerMsgProc(WPARAM wParam, LPARAM lParam);
+bool DataServerReconnect(HWND hwnd);
 
 void CALLBACK QueueTimerCallback(PVOID lpParameter, BOOLEAN TimerOrWaitFired);
 

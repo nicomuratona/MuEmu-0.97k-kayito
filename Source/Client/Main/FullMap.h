@@ -1,5 +1,8 @@
 #pragma once
 
+#define MAP_SIZE 512
+#define MAP_TEXTURE_NUMBER 1960
+
 class CFullMap
 {
 public:
@@ -10,6 +13,8 @@ public:
 
 	void Init();
 
+	void LoadImages();
+
 	void Toggle();
 
 	void CheckZoomButton();
@@ -18,9 +23,7 @@ private:
 
 	static void RenderFullMap(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale);
 
-	void RenderMapZone();
-
-	void PaintBorder(int sx, int sy);
+	void RenderGates();
 
 	void RenderCharacters();
 
@@ -30,36 +33,39 @@ private:
 
 	bool CheckInterfaces();
 
+	void LoadMap();
+
+	void LoadGates();
+
+	void PaintBorder(int sx, int sy, BYTE* bitmap);
+
 private:
 
 	bool FullMapSwitch;
 
 	// Sizes
-	float MaxSizeX;
-	float MaxSizeY;
+	float MaxSize;
 
-	int VisualRangeX;
-	int VisualRangeY;
+	float Size;
 
-	float ScaleX;
-	float ScaleY;
+	int VisualRange;
 
-	// Position
-	float StartPosX;
-	float StartPosY;
+	float Scale;
 
 	float CharPosX;
 	float CharPosY;
 
-	float MinScaleOffsetX;
-	float MaxScaleOffsetX;
-
-	float MinScaleOffsetY;
-	float MaxScaleOffsetY;
+	float MapOffsetX;
+	float MapOffsetY;
 
 	BYTE ZoomLevel;
 
 	HFONT FullMapFont;
+
+	int LastMap;
+	GLuint MapTextureID;
+
+	std::vector<BYTE> m_GatesIndex;
 };
 
 extern CFullMap gFullMap;

@@ -2,7 +2,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#define _WIN32_WINNT _WIN32_WINNT_VISTA
 
 // System includes
 #include <windows.h>
@@ -15,7 +15,9 @@
 #include <sql.h>
 #include <sqlext.h>
 #include <assert.h>
+#include <vector>
 #include <fstream>
+#include <WS2tcpip.h>
 
 // General includes
 #include "Console.h"

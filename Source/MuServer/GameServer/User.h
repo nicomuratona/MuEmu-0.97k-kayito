@@ -2,8 +2,6 @@
 
 #include "Effect.h"
 #include "Item.h"
-#include "MonsterAIAgro.h"
-#include "MonsterSkillElementOption.h"
 #include "Skill.h"
 #include "GuildManager.h"
 
@@ -19,7 +17,7 @@
 #define MAX_VIEWPORT 75
 #define MAX_MONEY 2000000000
 #define MAX_CHECKSUM_KEY 1024
-#define MAX_CHARACTER_LEVEL 400
+#define MAX_CHARACTER_LEVEL 1000
 #define MAX_ACCOUNT_LEVEL 4
 #define MAX_DAMAGE_REDUCTION 6
 #define MAX_MESSAGE_SIZE 255
@@ -288,66 +286,11 @@ struct EFFECT_OPTION
 {
 	int AddPhysiDamage;
 	int AddMagicDamage;
-	int AddCurseDamage;
-	int AddMinPhysiDamage;
-	int AddMaxPhysiDamage;
-	int AddMinMagicDamage;
-	int AddMaxMagicDamage;
-	int AddMinCurseDamage;
-	int AddMaxCurseDamage;
-	int AddAttackSuccessRate;
-	int AddPhysiSpeed;
-	int AddMagicSpeed;
 	int AddDefense;
-	int AddDefenseSuccessRate;
-	int AddMaxHP;
-	int AddMaxMP;
-	int AddMaxBP;
-	int AddStrength;
-	int AddDexterity;
-	int AddVitality;
-	int AddEnergy;
 	int AddDamageReduction;
-	int AddCriticalDamageRate;
 	int AddCriticalDamage;
-	int AddExcellentDamageRate;
-	int AddExcellentDamage;
-	int AddExperienceRate;
-	int AddGrandExperienceRate;
-	int AddPartyBonusExperienceRate;
-	int AddIgnoreDefenseRate;
-	int AddItemDropRate;
-	int AddHPRecovery;
-	int AddMPRecovery;
-	int AddBPRecovery;
-	int AddHPRecoveryRate;
-	int AddMPRecoveryRate;
-	int AddBPRecoveryRate;
-	int AddSwordPowerDamageRate;
-	int AddSwordPowerDefenseRate;
-	int SubDefense;
-	int MulPhysiDamage;
-	int MulMagicDamage;
-	int MulCurseDamage;
-	int MulAttackSuccessRate;
-	int MulPhysiSpeed;
-	int MulMagicSpeed;
-	int MulDefense;
-	int MulDefenseSuccessRate;
 	int MulMaxHP;
-	int MulMaxMP;
-	int MulMaxBP;
-	int DivPhysiDamage;
-	int DivMagicDamage;
-	int DivCurseDamage;
-	int DivAttackSuccessRate;
-	int DivPhysiSpeed;
-	int DivMagicSpeed;
 	int DivDefense;
-	int DivDefenseSuccessRate;
-	int DivMaxHP;
-	int DivMaxMP;
-	int DivMaxBP;
 };
 
 struct ACTION_STATE
@@ -435,10 +378,6 @@ struct OBJECTSTRUCT
 	float MaxMana;
 	WORD ChatLimitTime;
 	BYTE ChatLimitTimeSec;
-	int AddStrength;
-	int AddDexterity;
-	int AddVitality;
-	int AddEnergy;
 	int BP;
 	int MaxBP;
 	int AddBP;
@@ -521,8 +460,6 @@ struct OBJECTSTRUCT
 	int PhysiDamageMax;
 	int MagicDamageMin;
 	int MagicDamageMax;
-	int CurseDamageMin;
-	int CurseDamageMax;
 	int PhysiDamageMaxLeft;
 	int PhysiDamageMinLeft;
 	int PhysiDamageMaxRight;
@@ -639,10 +576,6 @@ struct OBJECTSTRUCT
 	int BPRecoveryCount;
 	int MPConsumptionRate;
 	int BPConsumptionRate;
-	int DamagePvP;
-	int DefensePvP;
-	int AttackSuccessRatePvP;
-	int DefenseSuccessRatePvP;
 	int ShieldDamageReduction;
 	int ShieldDamageReductionTime;
 	int DamageReduction[MAX_DAMAGE_REDUCTION];
@@ -662,16 +595,10 @@ struct OBJECTSTRUCT
 	int OffensiveFullHPRestoreRate;
 	int OffensiveFullMPRestoreRate;
 	int OffensiveFullBPRestoreRate;
-	CMonsterSkillElementOption MonsterSkillElementOption;
-	int BasicAI;
-	int CurrentAI;
-	int CurrentAIState;
-	int LastAIRunTime;
 	int GroupNumber;
 	int SubGroupNumber;
 	int GroupMemberGuid;
 	int RegenType;
-	CMonsterAIAgro Agro;
 	int LastAutomataRuntime;
 	int LastAutomataDelay;
 	DWORD LastCheckTick;

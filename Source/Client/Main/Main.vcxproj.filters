@@ -199,6 +199,15 @@
     <ClInclude Include="MP3.h">
       <Filter>Sound</Filter>
     </ClInclude>
+    <ClInclude Include="EventTimer.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomMonster.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="MemScript.h">
+      <Filter>Util Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCRC32.Cpp">
@@ -329,6 +338,15 @@
     </ClCompile>
     <ClCompile Include="MP3.cpp">
       <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="EventTimer.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomMonster.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="MemScript.cpp">
+      <Filter>Util Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

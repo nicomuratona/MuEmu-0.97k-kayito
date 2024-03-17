@@ -14,7 +14,7 @@
 
 void DataServerProtocolCore(int index, BYTE head, BYTE* lpMsg, int size)
 {
-	gConsole.Output(CON_PROTO_TCP_RECV, "RECV 0: %02X, 1: %02X, 2: %02X, 3: %02X, 4: %02X, 5: %02X", (size > 0) ? lpMsg[0] : 0, (size > 1) ? lpMsg[1] : 0, (size > 2) ? lpMsg[2] : 0, (size > 3) ? lpMsg[3] : 0, (size > 4) ? lpMsg[4] : 0, (size > 5) ? lpMsg[5] : 0);
+	ConsoleProtocolLog(CON_PROTO_TCP_RECV, lpMsg, size);
 
 	gServerManager[index].m_PacketTime = GetTickCount();
 

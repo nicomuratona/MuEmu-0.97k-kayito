@@ -47,8 +47,6 @@ public:
 
 	bool MissCheck(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int send, int count, BYTE* miss);
 
-	bool MissCheckPvP(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int send, int count, BYTE* miss);
-
 	bool ApplySkillEffect(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int damage);
 
 	int GetTargetDefense(LPOBJ lpObj, LPOBJ lpTarget, WORD* effect);
@@ -57,15 +55,11 @@ public:
 
 	int GetAttackDamageWizard(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, WORD* effect, int TargetDefense);
 
-	int GetAttackDamageCursed(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, WORD* effect, int TargetDefense);
-
 	void GetPreviewDefense(LPOBJ lpObj, DWORD* defense);
 
 	void GetPreviewPhysiDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* MulDamage, DWORD* DivDamage);
 
 	void GetPreviewMagicDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* MulDamage, DWORD* DivDamage, DWORD* DamageRate);
-
-	void GetPreviewCurseDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* MulDamage, DWORD* DivDamage, DWORD* DamageRate);
 
 	void CGAttackRecv(PMSG_ATTACK_RECV* lpMsg, int aIndex);
 };

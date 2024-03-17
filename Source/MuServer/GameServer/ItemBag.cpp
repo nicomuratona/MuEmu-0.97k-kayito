@@ -40,14 +40,14 @@ void CItemBag::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (lpMemScript->SetBuffer(path) == false)
+	if (!lpMemScript->SetBuffer(path))
 	{
 		ErrorMessageBox(lpMemScript->GetLastError());
 
@@ -60,9 +60,13 @@ void CItemBag::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
+			token = lpMemScript->GetToken();
+
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
@@ -71,13 +75,15 @@ void CItemBag::Load(char* path)
 
 			while (true)
 			{
+				token = lpMemScript->GetToken();
+
+				if (token == TOKEN_END || token == TOKEN_END_SECTION)
+				{
+					break;
+				}
+
 				if (section == 0)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					strcpy_s(this->m_EventName, lpMemScript->GetString());
 
 					this->m_DropZen = lpMemScript->GetAsNumber();
@@ -92,11 +98,6 @@ void CItemBag::Load(char* path)
 				}
 				else if (section == 1)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					ITEM_BAG_INFO info;
 
 					memset(&info, 0, sizeof(info));
@@ -116,13 +117,6 @@ void CItemBag::Load(char* path)
 					info.ExceOption = lpMemScript->GetAsNumber();
 
 					this->SetInfo(info);
-				}
-				else
-				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
 				}
 			}
 		}

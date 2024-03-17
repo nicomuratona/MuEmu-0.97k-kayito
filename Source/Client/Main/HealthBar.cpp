@@ -172,7 +172,7 @@ __declspec(naked) void CHealthBar::DrawPointingHealthBar()
 		Pushad;
 	}
 
-	ViewportAddress = CharactersClient + (*(DWORD*)(0x00559C50) * 916);
+	ViewportAddress = CharactersClient + (SelectedCharacter * 916);
 
 	if (!ViewportAddress)
 	{

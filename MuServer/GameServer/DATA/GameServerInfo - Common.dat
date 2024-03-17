@@ -12,7 +12,7 @@ CheckAutoPotionHackTolerance = 0
 ;==================================================
 ; Common Settings
 ;==================================================
-MaxItemOption = 7
+MaxItemOption = 4
 MaxIpConnection = 10
 DisconnectOnlineAccount = 0
 PersonalCodeCheck = 0
@@ -116,6 +116,7 @@ ShopItemBlockSellOnMaxMoney = 1
 ;==================================================
 ; Level Up Settings
 ;==================================================
+MaxCharacterLevel = 1000
 MaxLevelUp = 1
 MaxLevelUpEvent = 1
 MaxStatPoint_AL0 = 32767

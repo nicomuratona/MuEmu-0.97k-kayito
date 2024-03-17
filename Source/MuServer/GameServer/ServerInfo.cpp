@@ -24,18 +24,11 @@
 #include "ItemOptionRate.h"
 #include "ItemStack.h"
 #include "ItemValue.h"
+#include "Map.h"
 #include "MapManager.h"
 #include "Message.h"
-#include "MonsterAIAutomata.h"
-#include "MonsterAIElement.h"
-#include "MonsterAIGroup.h"
-#include "MonsterAIRule.h"
-#include "MonsterAIUnit.h"
 #include "MonsterManager.h"
 #include "MonsterSetBase.h"
-#include "MonsterSkillElement.h"
-#include "MonsterSkillManager.h"
-#include "MonsterSkillUnit.h"
 #include "Move.h"
 #include "Notice.h"
 #include "PacketManager.h"
@@ -277,25 +270,9 @@ void CServerInfo::ReadMapInfo()
 
 void CServerInfo::ReadMonsterInfo()
 {
-	CMonsterAIAutomata::LoadData(gPath.GetFullPath("Monster\\MonsterAIAutomata.txt"));
-
-	CMonsterAIElement::LoadData(gPath.GetFullPath("Monster\\MonsterAIElement.txt"));
-
-	CMonsterAIGroup::LoadData(gPath.GetFullPath("Monster\\MonsterAIGroup.txt"));
-
-	CMonsterAIRule::LoadData(gPath.GetFullPath("Monster\\MonsterAIRule.txt"));
-
-	CMonsterAIUnit::LoadData(gPath.GetFullPath("Monster\\MonsterAIUnit.txt"));
-
 	gMonsterManager.Load(gPath.GetFullPath("Monster\\Monster.txt"));
 
 	gMonsterSetBase.Load(gPath.GetFullPath("Monster\\MonsterSetBase.txt"));
-
-	CMonsterSkillElement::LoadData(gPath.GetFullPath("Monster\\MonsterSkillElement.txt"));
-
-	CMonsterSkillUnit::LoadData(gPath.GetFullPath("Monster\\MonsterSkillUnit.txt"));
-
-	CMonsterSkillManager::LoadData(gPath.GetFullPath("Monster\\MonsterSkill.txt"));
 
 	LogAdd(LOG_BLUE, "[ServerInfo] Monster loaded successfully");
 }
@@ -950,38 +927,6 @@ void CServerInfo::ReadCharacterInfo(char* section, char* path)
 
 	this->m_MGAttackSuccessRateConstD = GetPrivateProfileInt(section, "MGAttackSuccessRateConstD", 0, path);
 
-	this->m_DWAttackSuccessRatePvPConstA = GetPrivateProfileInt(section, "DWAttackSuccessRatePvPConstA", 0, path);
-
-	this->m_DWAttackSuccessRatePvPConstB = GetPrivateProfileInt(section, "DWAttackSuccessRatePvPConstB", 0, path);
-
-	this->m_DWAttackSuccessRatePvPConstC = GetPrivateProfileInt(section, "DWAttackSuccessRatePvPConstC", 0, path);
-
-	this->m_DWAttackSuccessRatePvPConstD = GetPrivateProfileInt(section, "DWAttackSuccessRatePvPConstD", 0, path);
-
-	this->m_DKAttackSuccessRatePvPConstA = GetPrivateProfileInt(section, "DKAttackSuccessRatePvPConstA", 0, path);
-
-	this->m_DKAttackSuccessRatePvPConstB = GetPrivateProfileInt(section, "DKAttackSuccessRatePvPConstB", 0, path);
-
-	this->m_DKAttackSuccessRatePvPConstC = GetPrivateProfileInt(section, "DKAttackSuccessRatePvPConstC", 0, path);
-
-	this->m_DKAttackSuccessRatePvPConstD = GetPrivateProfileInt(section, "DKAttackSuccessRatePvPConstD", 0, path);
-
-	this->m_FEAttackSuccessRatePvPConstA = GetPrivateProfileInt(section, "FEAttackSuccessRatePvPConstA", 0, path);
-
-	this->m_FEAttackSuccessRatePvPConstB = GetPrivateProfileInt(section, "FEAttackSuccessRatePvPConstB", 0, path);
-
-	this->m_FEAttackSuccessRatePvPConstC = GetPrivateProfileInt(section, "FEAttackSuccessRatePvPConstC", 0, path);
-
-	this->m_FEAttackSuccessRatePvPConstD = GetPrivateProfileInt(section, "FEAttackSuccessRatePvPConstD", 0, path);
-
-	this->m_MGAttackSuccessRatePvPConstA = GetPrivateProfileInt(section, "MGAttackSuccessRatePvPConstA", 0, path);
-
-	this->m_MGAttackSuccessRatePvPConstB = GetPrivateProfileInt(section, "MGAttackSuccessRatePvPConstB", 0, path);
-
-	this->m_MGAttackSuccessRatePvPConstC = GetPrivateProfileInt(section, "MGAttackSuccessRatePvPConstC", 0, path);
-
-	this->m_MGAttackSuccessRatePvPConstD = GetPrivateProfileInt(section, "MGAttackSuccessRatePvPConstD", 0, path);
-
 	this->m_DWPhysiSpeedConstA = GetPrivateProfileInt(section, "DWPhysiSpeedConstA", 0, path);
 
 	this->m_DWMagicSpeedConstA = GetPrivateProfileInt(section, "DWMagicSpeedConstA", 0, path);
@@ -1005,30 +950,6 @@ void CServerInfo::ReadCharacterInfo(char* section, char* path)
 	this->m_FEDefenseSuccessRateConstA = GetPrivateProfileInt(section, "FEDefenseSuccessRateConstA", 0, path);
 
 	this->m_MGDefenseSuccessRateConstA = GetPrivateProfileInt(section, "MGDefenseSuccessRateConstA", 0, path);
-
-	this->m_DWDefenseSuccessRatePvPConstA = GetPrivateProfileInt(section, "DWDefenseSuccessRatePvPConstA", 0, path);
-
-	this->m_DWDefenseSuccessRatePvPConstB = GetPrivateProfileInt(section, "DWDefenseSuccessRatePvPConstB", 0, path);
-
-	this->m_DWDefenseSuccessRatePvPConstC = GetPrivateProfileInt(section, "DWDefenseSuccessRatePvPConstC", 0, path);
-
-	this->m_DKDefenseSuccessRatePvPConstA = GetPrivateProfileInt(section, "DKDefenseSuccessRatePvPConstA", 0, path);
-
-	this->m_DKDefenseSuccessRatePvPConstB = GetPrivateProfileInt(section, "DKDefenseSuccessRatePvPConstB", 0, path);
-
-	this->m_DKDefenseSuccessRatePvPConstC = GetPrivateProfileInt(section, "DKDefenseSuccessRatePvPConstC", 0, path);
-
-	this->m_FEDefenseSuccessRatePvPConstA = GetPrivateProfileInt(section, "FEDefenseSuccessRatePvPConstA", 0, path);
-
-	this->m_FEDefenseSuccessRatePvPConstB = GetPrivateProfileInt(section, "FEDefenseSuccessRatePvPConstB", 0, path);
-
-	this->m_FEDefenseSuccessRatePvPConstC = GetPrivateProfileInt(section, "FEDefenseSuccessRatePvPConstC", 0, path);
-
-	this->m_MGDefenseSuccessRatePvPConstA = GetPrivateProfileInt(section, "MGDefenseSuccessRatePvPConstA", 0, path);
-
-	this->m_MGDefenseSuccessRatePvPConstB = GetPrivateProfileInt(section, "MGDefenseSuccessRatePvPConstB", 0, path);
-
-	this->m_MGDefenseSuccessRatePvPConstC = GetPrivateProfileInt(section, "MGDefenseSuccessRatePvPConstC", 0, path);
 
 	this->m_DWDefenseConstA = GetPrivateProfileInt(section, "DWDefenseConstA", 0, path);
 
@@ -1439,6 +1360,13 @@ void CServerInfo::ReadCommonInfo(char* section, char* path)
 	this->m_TradeItemBlockSell = GetPrivateProfileInt(section, "TradeItemBlockSell", 0, path);
 
 	this->m_ShopItemBlockSellOnMaxMoney = GetPrivateProfileInt(section, "ShopItemBlockSellOnMaxMoney", 0, path);
+
+	this->m_MaxCharacterLevel = GetPrivateProfileInt(section, "MaxCharacterLevel", 400, path);
+
+	if (this->m_MaxCharacterLevel > MAX_CHARACTER_LEVEL)
+	{
+		this->m_MaxCharacterLevel = MAX_CHARACTER_LEVEL;
+	}
 
 	this->m_MaxLevelUp = GetPrivateProfileInt(section, "MaxLevelUp", 0, path);
 

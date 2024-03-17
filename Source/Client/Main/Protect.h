@@ -4,6 +4,7 @@
 #include "CustomGlow.h"
 #include "CustomItem.h"
 #include "ItemOption.h"
+#include "CustomMonster.h"
 
 struct MAIN_FILE_INFO
 {
@@ -21,10 +22,6 @@ struct MAIN_FILE_INFO
 	char PluginName[32];
 	DWORD ClientCRC32;
 	DWORD PluginCRC32;
-	DWORD DWMaxAttackSpeed;
-	DWORD DKMaxAttackSpeed;
-	DWORD FEMaxAttackSpeed;
-	DWORD MGMaxAttackSpeed;
 	DWORD ReconnectTime;
 	BYTE HealthBarType;
 	BYTE EnableSky;
@@ -35,6 +32,7 @@ struct MAIN_FILE_INFO
 	CUSTOM_GLOW_INFO CustomGlowInfo[MAX_ITEM];
 	CUSTOM_ITEM_INFO CustomItemInfo[MAX_ITEM];
 	ITEM_OPTION_INFO ItemOptionInfo[MAX_ITEM_OPTION_INFO];
+	CUSTOM_MONSTER_INFO CustomMonsterInfo[MAX_MONSTER];
 };
 
 class CProtect

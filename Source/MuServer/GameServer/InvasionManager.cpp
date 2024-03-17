@@ -67,14 +67,14 @@ void CInvasionManager::Load(char* path)
 {
 	CMemScript* lpMemScript = new CMemScript;
 
-	if (lpMemScript == 0)
+	if (lpMemScript == NULL)
 	{
 		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (lpMemScript->SetBuffer(path) == 0)
+	if (!lpMemScript->SetBuffer(path))
 	{
 		ErrorMessageBox(lpMemScript->GetLastError());
 
@@ -146,9 +146,13 @@ void CInvasionManager::Load(char* path)
 
 	try
 	{
+		eTokenResult token;
+
 		while (true)
 		{
-			if (lpMemScript->GetToken() == TOKEN_END)
+			token = lpMemScript->GetToken();
+
+			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
@@ -157,13 +161,15 @@ void CInvasionManager::Load(char* path)
 
 			while (true)
 			{
+				token = lpMemScript->GetToken();
+
+				if (token == TOKEN_END || token == TOKEN_END_SECTION)
+				{
+					break;
+				}
+
 				if (section == 0)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					INVASION_START_TIME info;
 
 					int index = lpMemScript->GetNumber();
@@ -186,11 +192,6 @@ void CInvasionManager::Load(char* path)
 				}
 				else if (section == 1)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					int index = lpMemScript->GetNumber();
 
 					this->m_InvasionInfo[index].RespawnMessage = lpMemScript->GetAsNumber();
@@ -213,11 +214,6 @@ void CInvasionManager::Load(char* path)
 				}
 				else if (section == 2)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					INVASION_RESPWAN_INFO info;
 
 					int index = lpMemScript->GetNumber();
@@ -232,11 +228,6 @@ void CInvasionManager::Load(char* path)
 				}
 				else if (section == 3)
 				{
-					if (strcmp("end", lpMemScript->GetAsString()) == 0)
-					{
-						break;
-					}
-
 					INVASION_MONSTER_INFO info;
 
 					int index = lpMemScript->GetNumber();
@@ -250,10 +241,6 @@ void CInvasionManager::Load(char* path)
 					info.RegenTime = lpMemScript->GetAsNumber();
 
 					this->m_InvasionInfo[index].MonsterInfo.push_back(info);
-				}
-				else
-				{
-					break;
 				}
 			}
 		}
@@ -426,6 +413,7 @@ void CInvasionManager::CheckSync(INVASION_INFO* lpInfo)
 	if (lpInfo->StartTime.empty() != 0)
 	{
 		this->SetState(lpInfo, INVASION_STATE_BLANK);
+
 		return;
 	}
 
@@ -458,6 +446,26 @@ int CInvasionManager::GetState(int index)
 	}
 
 	return this->m_InvasionInfo[index].State;
+}
+
+char* CInvasionManager::GetInvasionName(int index)
+{
+	if (index < 0 || index >= MAX_INVASION)
+	{
+		return NULL;
+	}
+
+	return this->m_InvasionInfo[index].InvasionName;
+}
+
+int CInvasionManager::GetCurrentRemainTime(int index)
+{
+	if (index < 0 || index >= MAX_INVASION)
+	{
+		return 0;
+	}
+
+	return this->m_InvasionInfo[index].RemainTime;
 }
 
 int CInvasionManager::GetRemainTime(int index)
