@@ -25,7 +25,7 @@ void CNpcTalk::GDNpcGoldenArcherOpenRecv(SDHP_NPC_GOLDEN_ARCHER_OPEN_RECV* lpMsg
 
 	pMsg.index = lpMsg->index;
 
-	if (gQueryManager.ExecQuery("SELECT * FROM GoldenCoin WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+	if (gQueryManager.ExecResultQuery("SELECT * FROM GoldenCoin WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == false)
 	{
 		gQueryManager.Close();
 
@@ -40,7 +40,7 @@ void CNpcTalk::GDNpcGoldenArcherOpenRecv(SDHP_NPC_GOLDEN_ARCHER_OPEN_RECV* lpMsg
 
 		newLuckyNumber[12] = '\0';
 
-		gQueryManager.ExecQuery("INSERT INTO GoldenCoin (AccountID,RenaCount,StoneCount,LuckyNumber) VALUES ('%s',%d,%d,'%s')", lpMsg->account, 0, 0, newLuckyNumber);
+		gQueryManager.ExecUpdateQuery("INSERT INTO GoldenCoin (AccountID, RenaCount, StoneCount, LuckyNumber) VALUES ('%s', %d, %d, '%s')", lpMsg->account, 0, 0, newLuckyNumber);
 
 		gQueryManager.Close();
 
@@ -77,7 +77,7 @@ void CNpcTalk::GDNpcGoldenArcherRegisterCountRecv(SDHP_NPC_GOLDEN_ARCHER_REG_COU
 
 	pMsg.result = 0;
 
-	if (gQueryManager.ExecQuery("SELECT * FROM GoldenCoin WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+	if (gQueryManager.ExecResultQuery("SELECT * FROM GoldenCoin WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == false)
 	{
 		gQueryManager.Close();
 
@@ -92,7 +92,7 @@ void CNpcTalk::GDNpcGoldenArcherRegisterCountRecv(SDHP_NPC_GOLDEN_ARCHER_REG_COU
 
 		newLuckyNumber[12] = '\0';
 
-		gQueryManager.ExecQuery("INSERT INTO GoldenCoin (AccountID,RenaCount,StoneCount,LuckyNumber) VALUES ('%s',%d,%d,'%s')", lpMsg->account, ((lpMsg->type == 0) ? lpMsg->count : 0), ((lpMsg->type == 1) ? lpMsg->count : 0), newLuckyNumber);
+		gQueryManager.ExecUpdateQuery("INSERT INTO GoldenCoin (AccountID, RenaCount, StoneCount, LuckyNumber) VALUES ('%s', %d, %d, '%s')", lpMsg->account, ((lpMsg->type == 0) ? lpMsg->count : 0), ((lpMsg->type == 1) ? lpMsg->count : 0), newLuckyNumber);
 
 		gQueryManager.Close();
 
@@ -110,11 +110,11 @@ void CNpcTalk::GDNpcGoldenArcherRegisterCountRecv(SDHP_NPC_GOLDEN_ARCHER_REG_COU
 
 		if (lpMsg->type == 0)
 		{
-			gQueryManager.ExecQuery("Update GoldenCoin SET RenaCount=RenaCount+%d WHERE AccountID = '%s'", lpMsg->count, lpMsg->account);
+			gQueryManager.ExecUpdateQuery("Update GoldenCoin SET RenaCount=RenaCount+%d WHERE AccountID='%s'", lpMsg->count, lpMsg->account);
 		}
 		else
 		{
-			gQueryManager.ExecQuery("Update GoldenCoin SET StoneCount=StoneCount+%d WHERE AccountID = '%s'", lpMsg->count, lpMsg->account);
+			gQueryManager.ExecUpdateQuery("Update GoldenCoin SET StoneCount=StoneCount+%d WHERE AccountID='%s'", lpMsg->count, lpMsg->account);
 		}
 
 		gQueryManager.Close();
@@ -137,7 +137,7 @@ void CNpcTalk::GDNpcGoldenArcherRegisterLuckyNumRecv(SDHP_NPC_GOLDEN_ARCHER_REG_
 
 	sprintf_s(LuckyNumber, "%s%s%s", lpMsg->serial1, lpMsg->serial2, lpMsg->serial3);
 
-	if (gQueryManager.ExecQuery("SELECT * FROM GoldenCoin WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+	if (gQueryManager.ExecResultQuery("SELECT * FROM GoldenCoin WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == false)
 	{
 		gQueryManager.Close();
 
@@ -152,7 +152,7 @@ void CNpcTalk::GDNpcGoldenArcherRegisterLuckyNumRecv(SDHP_NPC_GOLDEN_ARCHER_REG_
 
 		newLuckyNumber[12] = '\0';
 
-		gQueryManager.ExecQuery("INSERT INTO GoldenCoin (AccountID,RenaCount,StoneCount,LuckyNumber) VALUES ('%s',%d,%d,'%s')", lpMsg->account, 0, 0, newLuckyNumber);
+		gQueryManager.ExecUpdateQuery("INSERT INTO GoldenCoin (AccountID, RenaCount, StoneCount, LuckyNumber) VALUES ('%s', %d, %d, '%s')", lpMsg->account, 0, 0, newLuckyNumber);
 
 		gQueryManager.Close();
 
@@ -179,7 +179,7 @@ void CNpcTalk::GDNpcGoldenArcherRegisterLuckyNumRecv(SDHP_NPC_GOLDEN_ARCHER_REG_
 
 			newLuckyNumber[12] = '\0';
 
-			gQueryManager.ExecQuery("Update GoldenCoin SET RenaCount = 0, StoneCount = 0, LuckyNumber = '%s' WHERE AccountID = '%s'", newLuckyNumber, lpMsg->account);
+			gQueryManager.ExecUpdateQuery("Update GoldenCoin SET RenaCount=0, StoneCount=0, LuckyNumber='%s' WHERE AccountID = '%s'", newLuckyNumber, lpMsg->account);
 
 			gQueryManager.Close();
 

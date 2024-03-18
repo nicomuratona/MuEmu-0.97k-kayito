@@ -51,17 +51,21 @@ int main()
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) == 0)
 	{
-		char JoinServerODBC[32] = { 0 };
+		char JoinServerHost[32] = { 0 };
 
 		char JoinServerUSER[32] = { 0 };
 
 		char JoinServerPASS[32] = { 0 };
 
-		GetPrivateProfileString("JoinServerInfo", "JoinServerODBC", "", JoinServerODBC, sizeof(JoinServerODBC), ".\\JoinServer.ini");
+		char JoinServerDB[32] = { 0 };
+
+		GetPrivateProfileString("JoinServerInfo", "JoinServerHost", "", JoinServerHost, sizeof(JoinServerHost), ".\\JoinServer.ini");
 
 		GetPrivateProfileString("JoinServerInfo", "JoinServerUSER", "", JoinServerUSER, sizeof(JoinServerUSER), ".\\JoinServer.ini");
 
 		GetPrivateProfileString("JoinServerInfo", "JoinServerPASS", "", JoinServerPASS, sizeof(JoinServerPASS), ".\\JoinServer.ini");
+
+		GetPrivateProfileString("JoinServerInfo", "JoinServerDB", "", JoinServerDB, sizeof(JoinServerDB), ".\\JoinServer.ini");
 
 		GetPrivateProfileString("JoinServerInfo", "GlobalPassword", "XwefDastoD", GlobalPassword, sizeof(GlobalPassword), ".\\JoinServer.ini");
 
@@ -77,7 +81,7 @@ int main()
 
 		MD5Encryption = GetPrivateProfileInt("JoinServerInfo", "MD5Encryption", 0, ".\\JoinServer.ini");
 
-		if (gQueryManager.Connect(JoinServerODBC, JoinServerUSER, JoinServerPASS) == false)
+		if (gQueryManager.Connect(JoinServerHost, JoinServerUSER, JoinServerPASS, JoinServerDB) == false)
 		{
 			LogAdd(LOG_RED, "Could not connect to database");
 		}

@@ -44,21 +44,25 @@ int main()
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) == 0)
 	{
-		char DataServerODBC[32] = { 0 };
+		char DataServerHost[32] = { 0 };
 
 		char DataServerUSER[32] = { 0 };
 
 		char DataServerPASS[32] = { 0 };
 
-		GetPrivateProfileString("DataServerInfo", "DataServerODBC", "", DataServerODBC, sizeof(DataServerODBC), ".\\DataServer.ini");
+		char DataServerDB[32] = { 0 };
+
+		GetPrivateProfileString("DataServerInfo", "DataServerHost", "", DataServerHost, sizeof(DataServerHost), ".\\DataServer.ini");
 
 		GetPrivateProfileString("DataServerInfo", "DataServerUSER", "", DataServerUSER, sizeof(DataServerUSER), ".\\DataServer.ini");
 
 		GetPrivateProfileString("DataServerInfo", "DataServerPASS", "", DataServerPASS, sizeof(DataServerPASS), ".\\DataServer.ini");
 
+		GetPrivateProfileString("DataServerInfo", "DataServerDB", "", DataServerDB, sizeof(DataServerDB), ".\\DataServer.ini");
+
 		WORD DataServerPort = GetPrivateProfileInt("DataServerInfo", "DataServerPort", 55960, ".\\DataServer.ini");
 
-		if (gQueryManager.Connect(DataServerODBC, DataServerUSER, DataServerPASS) == false)
+		if (gQueryManager.Connect(DataServerHost, DataServerUSER, DataServerPASS, DataServerDB) == false)
 		{
 			LogAdd(LOG_RED, "Could not connect to database");
 		}

@@ -129,7 +129,7 @@ void GJConnectAccountRecv(SDHP_CONNECT_ACCOUNT_RECV* lpMsg, int index)
 
 	if (MD5Encryption == 0)
 	{
-		if (gQueryManager.ExecQuery("SELECT memb__pwd FROM MEMB_INFO WHERE memb___id='%s' COLLATE Latin1_General_BIN", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+		if (gQueryManager.ExecResultQuery("SELECT memb__pwd FROM MEMB_INFO WHERE memb___id='%s'", lpMsg->account) == false || gQueryManager.Fetch() == false)
 		{
 			gQueryManager.Close();
 
@@ -164,7 +164,7 @@ void GJConnectAccountRecv(SDHP_CONNECT_ACCOUNT_RECV* lpMsg, int index)
 	}
 	else
 	{
-		if (gQueryManager.ExecQuery("SELECT memb__pwd FROM MEMB_INFO WHERE memb___id='%s' COLLATE Latin1_General_BIN", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+		if (gQueryManager.ExecResultQuery("SELECT memb__pwd FROM MEMB_INFO WHERE memb___id='%s'", lpMsg->account) == false || gQueryManager.Fetch() == false)
 		{
 			gQueryManager.Close();
 
@@ -200,18 +200,15 @@ void GJConnectAccountRecv(SDHP_CONNECT_ACCOUNT_RECV* lpMsg, int index)
 		}
 	}
 
-	if (gQueryManager.ExecQuery("EXEC WZ_DesblocAccount '%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
-	{
-		gQueryManager.Close();
+	gQueryManager.ExecUpdateQuery("CALL WZ_DesblocAccount('%s')", lpMsg->account);
 
-		pMsg.result = 2;
+	gQueryManager.Close();
 
-		gSocketManager.DataSend(index, (BYTE*)&pMsg, pMsg.header.size);
+	gQueryManager.ExecUpdateQuery("CALL WZ_DesblocCharacters('%s')", lpMsg->account);
 
-		return;
-	}
+	gQueryManager.Close();
 
-	if (gQueryManager.ExecQuery("SELECT sno__numb, bloc_code FROM MEMB_INFO WHERE memb___id='%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+	if (gQueryManager.ExecResultQuery("SELECT sno__numb, bloc_code FROM MEMB_INFO WHERE memb___id='%s'", lpMsg->account) == false || gQueryManager.Fetch() == false)
 	{
 		gQueryManager.Close();
 
@@ -228,7 +225,7 @@ void GJConnectAccountRecv(SDHP_CONNECT_ACCOUNT_RECV* lpMsg, int index)
 
 	gQueryManager.Close();
 
-	if (gQueryManager.ExecQuery("EXEC WZ_GetAccountLevel '%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+	if (gQueryManager.ExecResultQuery("CALL WZ_GetAccountLevel('%s')", lpMsg->account) == false || gQueryManager.Fetch() == false)
 	{
 		gQueryManager.Close();
 
@@ -245,7 +242,7 @@ void GJConnectAccountRecv(SDHP_CONNECT_ACCOUNT_RECV* lpMsg, int index)
 
 	gQueryManager.Close();
 
-	gQueryManager.ExecQuery("EXEC WZ_CONNECT_MEMB '%s','%s','%s'", lpMsg->account, gServerManager[index].m_ServerName, lpMsg->IpAddress);
+	gQueryManager.ExecUpdateQuery("CALL WZ_CONNECT_MEMB('%s', '%s', '%s')", lpMsg->account, gServerManager[index].m_ServerName, lpMsg->IpAddress);
 
 	gQueryManager.Close();
 
@@ -305,7 +302,7 @@ void GJDisconnectAccountRecv(SDHP_DISCONNECT_ACCOUNT_RECV* lpMsg, int index)
 		return;
 	}
 
-	gQueryManager.ExecQuery("EXEC WZ_DISCONNECT_MEMB '%s'", lpMsg->account);
+	gQueryManager.ExecUpdateQuery("CALL WZ_DISCONNECT_MEMB('%s')", lpMsg->account);
 
 	gQueryManager.Close();
 
@@ -333,7 +330,7 @@ void GJAccountLevelRecv(SDHP_ACCOUNT_LEVEL_RECV* lpMsg, int index)
 
 	memcpy(pMsg.account, lpMsg->account, sizeof(pMsg.account));
 
-	if (gQueryManager.ExecQuery("EXEC WZ_GetAccountLevel '%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+	if (gQueryManager.ExecResultQuery("CALL WZ_GetAccountLevel('%s')", lpMsg->account) == false || gQueryManager.Fetch() == false)
 	{
 		gQueryManager.Close();
 
@@ -353,9 +350,7 @@ void GJAccountLevelRecv(SDHP_ACCOUNT_LEVEL_RECV* lpMsg, int index)
 
 void GJAccountLevelSaveRecv(SDHP_ACCOUNT_LEVEL_SAVE_RECV* lpMsg, int index)
 {
-	gQueryManager.ExecQuery("EXEC WZ_SetAccountLevel '%s','%d','%d'", lpMsg->account, lpMsg->AccountLevel, lpMsg->AccountExpireTime);
-
-	gQueryManager.Fetch();
+	gQueryManager.ExecUpdateQuery("CALL WZ_SetAccountLevel('%s', '%d', '%d')", lpMsg->account, lpMsg->AccountLevel, lpMsg->AccountExpireTime);
 
 	gQueryManager.Close();
 }

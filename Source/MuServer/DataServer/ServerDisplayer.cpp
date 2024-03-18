@@ -40,6 +40,8 @@ void CServerDisplayer::Init(HWND hWnd)
 	this->m_hwnd = hWnd;
 
 	gLog.AddLog(true, "LOG");
+
+	gLog.AddLog(true, "LOG_QUERY");
 }
 
 void CServerDisplayer::Run()

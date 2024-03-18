@@ -51,7 +51,7 @@ void CCommandManager::GDCommandResetRecv(SDHP_COMMAND_RESET_RECV* lpMsg, int ind
 
 	memcpy(pMsg.name, lpMsg->name, sizeof(pMsg.name));
 
-	gQueryManager.ExecQuery("EXEC WZ_GetResetInfo '%s','%s'", lpMsg->account, lpMsg->name);
+	gQueryManager.ExecResultQuery("CALL WZ_GetResetInfo('%s', '%s')", lpMsg->account, lpMsg->name);
 
 	gQueryManager.Fetch();
 
@@ -78,7 +78,7 @@ void CCommandManager::GDCommandGrandResetRecv(SDHP_COMMAND_RESET_RECV* lpMsg, in
 
 	memcpy(pMsg.name, lpMsg->name, sizeof(pMsg.name));
 
-	gQueryManager.ExecQuery("EXEC WZ_GetGrandResetInfo '%s','%s'", lpMsg->account, lpMsg->name);
+	gQueryManager.ExecResultQuery("CALL WZ_GetGrandResetInfo('%s', '%s')", lpMsg->account, lpMsg->name);
 
 	gQueryManager.Fetch();
 

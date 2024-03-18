@@ -44,6 +44,8 @@ void CServerDisplayer::Init(HWND hWnd)
 	gLog.AddLog(true, "LOG");
 
 	gLog.AddLog(true, "LOG_ACCOUNT");
+
+	gLog.AddLog(true, "LOG_QUERY");
 }
 
 void CServerDisplayer::Run()

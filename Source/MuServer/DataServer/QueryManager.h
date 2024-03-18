@@ -1,74 +1,90 @@
 #pragma once
 
-#define MAX_COLUMNS 100
+#include "mysql_connection.h"
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/prepared_statement.h>
 
 class CQueryManager
 {
+	struct membuf : std::streambuf
+	{
+		membuf(char* begin, char* end)
+		{
+			this->setg(begin, begin, end);
+		}
+	};
+
 public:
 
 	CQueryManager();
 
-	~CQueryManager();
+	virtual ~CQueryManager();
 
-	bool Connect(char* odbc, char* user, char* pass);
+	bool Connect(std::string Server, std::string Username, std::string Password, std::string SchemaName);
 
 	void Disconnect();
 
-	void Diagnostic(char* query);
+	void PrepareQuery(std::string query, ...);
 
-	bool ExecQuery(char* query, ...);
+	bool ExecPreparedUpdateQuery();
+
+	bool ExecPreparedResultQuery();
+
+	bool ExecUpdateQuery(std::string query, ...);
+
+	bool ExecResultQuery(std::string query, ...);
+
+	bool ExecQuery(std::string query, ...);
 
 	void Close();
 
-	SQLRETURN Fetch();
+	bool Fetch();
 
-	int FindIndex(char* ColName);
+	void SetAsInteger(int position, int value);
 
-	int GetResult(int index);
+	void SetAsFloat(int position, float value);
 
-	int GetAsInteger(char* ColName);
+	void SetAsInteger64(int position, __int64 value);
 
-	float GetAsFloat(char* ColName);
+	void SetAsString(int position, char* InBuffer, int InBufferSize);
 
-	__int64 GetAsInteger64(char* ColName);
+	void SetAsBinary(int position, unsigned char* InBuffer, int InBufferSize);
 
-	void GetAsString(char* ColName, char* OutBuffer, int OutBufferSize);
+	int GetAsInteger(std::string ColName);
 
-	void GetAsBinary(char* ColName, BYTE* OutBuffer, int OutBufferSize);
+	float GetAsFloat(std::string ColName);
 
-	void BindParameterAsString(int ParamNumber, void* InBuffer, int ColumnSize);
+	__int64 GetAsInteger64(std::string ColName);
 
-	void BindParameterAsBinary(int ParamNumber, void* InBuffer, int ColumnSize);
+	void GetAsString(std::string ColName, char* OutBuffer, int OutBufferSize);
 
-	void ConvertStringToBinary(char* InBuff, int InSize, BYTE* OutBuff, int OutSize);
-
-	void ConvertBinaryToString(BYTE* InBuff, int InSize, char* OutBuff, int OutSize);
+	void GetAsBinary(std::string ColName, unsigned char* OutBuffer, int OutBufferSize);
 
 private:
 
-	SQLHANDLE m_SQLEnvironment;
+	void Diagnostic(sql::SQLException& e, char* Query = NULL);
 
-	SQLHANDLE m_SQLConnection;
+	void ConvertStringToBinary(char* InBuff, int InSize, unsigned char* OutBuff, int OutSize);
 
-	SQLHANDLE m_STMT;
+	void ConvertBinaryToString(unsigned char* InBuff, int InSize, char* OutBuff, int OutSize);
 
-	char m_odbc[32];
+private:
 
-	char m_user[32];
+	std::string Server;
+	std::string Username;
+	std::string Password;
+	std::string SchemaName;
 
-	char m_pass[32];
+	sql::Driver* driver;
 
-	SQLINTEGER m_RowCount;
+	sql::Connection* con;
+	sql::Statement* stmt;
+	sql::PreparedStatement* pstmt;
+	sql::ResultSet* res;
 
-	SQLSMALLINT m_ColCount;
-
-	SQLCHAR m_SQLColName[MAX_COLUMNS][30];
-
-	char m_SQLData[MAX_COLUMNS][8192];
-
-	SQLINTEGER m_SQLDataLen[MAX_COLUMNS];
-
-	SQLINTEGER m_SQLBindValue[MAX_COLUMNS];
+	std::map<int, std::stringstream*> m_BinaryBuffs;
+	std::map<int, std::string> m_StringBuffs;
 };
 
 extern CQueryManager gQueryManager;

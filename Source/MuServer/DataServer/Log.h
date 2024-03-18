@@ -3,6 +3,7 @@
 enum eLogType
 {
 	LOG_GENERAL = 0,
+	LOG_QUERY,
 	MAX_LOG
 };
 
