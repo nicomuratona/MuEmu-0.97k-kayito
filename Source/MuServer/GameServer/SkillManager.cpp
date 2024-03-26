@@ -222,40 +222,6 @@ int CSkillManager::GetSkillFrustrum(int* SkillFrustrumX, int* SkillFrustrumY, BY
 
 	vec3_t Angle;
 
-	float Matrix[3][4];
-
-	Vector(0.0f, 0.0f, angle, Angle);
-
-	AngleMatrix(Angle, Matrix);
-
-	vec3_t vFrustrum[4];
-
-	for (int n = 0; n < 4; n++)
-	{
-		VectorRotate(p[n], Matrix, vFrustrum[n]);
-
-		SkillFrustrumX[n] = (int)vFrustrum[n][0] + x;
-
-		SkillFrustrumY[n] = (int)vFrustrum[n][1] + y;
-	}
-
-	return 1;
-}
-
-int CSkillManager::GetSkillFrustrum(int* SkillFrustrumX, int* SkillFrustrumY, BYTE angle, int x, int y, float sx, float sy, float tx, float ty)
-{
-	vec3_t p[4];
-
-	Vector(-sx, sy, 0.0f, p[0]);
-
-	Vector(sx, sy, 0.0f, p[1]);
-
-	Vector(tx, ty, 0.0f, p[2]);
-
-	Vector(-tx, ty, 0.0f, p[3]);
-
-	vec3_t Angle;
-
 	Vector(0.0f, 0.0f, (vec_t)((angle * 360) / 255), Angle);
 
 	float Matrix[3][4];
@@ -1212,9 +1178,16 @@ bool CSkillManager::SkillTripleShot(int aIndex, int bIndex, CSkill* lpSkill, BYT
 {
 	LPOBJ lpObj = &gObj[aIndex];
 
+	SKILL_INFO SkillInfo;
+
+	if (!this->GetInfo(lpSkill->m_index, &SkillInfo))
+	{
+		return false;
+	}
+
 	int SkillFrustrumX[4], SkillFrustrumY[4];
 
-	this->GetSkillFrustrum(SkillFrustrumX, SkillFrustrumY, angle, lpObj->X, lpObj->Y, 4.0f, 4.0f, 1.0f, 0.0f);
+	this->GetSkillFrustrum(SkillFrustrumX, SkillFrustrumY, angle, lpObj->X, lpObj->Y, (float)SkillInfo.Radio, (float)SkillInfo.Range);
 
 	int count = 0;
 
@@ -1232,7 +1205,7 @@ bool CSkillManager::SkillTripleShot(int aIndex, int bIndex, CSkill* lpSkill, BYT
 			continue;
 		}
 
-		if (!this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y))
+		if (!this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y))
 		{
 			continue;
 		}
@@ -1753,9 +1726,16 @@ bool CSkillManager::SkillPowerSlash(int aIndex, int bIndex, CSkill* lpSkill, BYT
 {
 	LPOBJ lpObj = &gObj[aIndex];
 
+	SKILL_INFO SkillInfo;
+
+	if (!this->GetInfo(lpSkill->m_index, &SkillInfo))
+	{
+		return false;
+	}
+
 	int SkillFrustrumX[4], SkillFrustrumY[4];
 
-	this->GetSkillFrustrum(SkillFrustrumX, SkillFrustrumY, angle, lpObj->X, lpObj->Y, 6.0f, 6.0f, 1.0f, 0.0f);
+	this->GetSkillFrustrum(SkillFrustrumX, SkillFrustrumY, angle, lpObj->X, lpObj->Y, (float)SkillInfo.Radio, (float)SkillInfo.Range);
 
 	int count = 0;
 
@@ -1773,7 +1753,7 @@ bool CSkillManager::SkillPowerSlash(int aIndex, int bIndex, CSkill* lpSkill, BYT
 			continue;
 		}
 
-		if (!this->CheckSkillRadio(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y))
+		if (!this->CheckSkillRange(lpSkill->m_index, lpObj->X, lpObj->Y, gObj[index].X, gObj[index].Y))
 		{
 			continue;
 		}

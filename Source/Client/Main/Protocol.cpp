@@ -5,6 +5,7 @@
 #include "HackCheck.h"
 #include "HealthBar.h"
 #include "HWID.h"
+#include "ItemManager.h"
 #include "ItemStack.h"
 #include "ItemValue.h"
 #include "Language.h"
@@ -476,11 +477,13 @@ void CProtocol::CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg)
 				}
 			}
 
-			ITEM_ATTRIBUTE* ItemInfo = (ITEM_ATTRIBUTE*)(ItemAttribute + Type * sizeof(ITEM_ATTRIBUTE));
+			char szItem[64] = { 0, };
 
 			int Level = (lpMsg->ItemInfo[1] >> 3) & 0xF;
 
-			wsprintf(szMessage, "%s +%d %s", ItemInfo->Name, Level, GlobalText[918]);
+			gItemManager.GetItemName(Type, Level, szItem);
+
+			wsprintf(szMessage, "%s %s", szItem, GlobalText[918]);
 
 			UIChatLogWindow_AddText("", szMessage, 1);
 		}

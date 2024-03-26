@@ -346,7 +346,7 @@ public:
 
 	// DISCONNECT MEMBER
 
-	void GDGuildMemberDisconnectSend(int aIndex, char* GuildName, char* Name); // To DataServer 0x07, 0x02
+	void GDGuildMemberDisconnectSend(char* GuildName, char* Name); // To DataServer 0x07, 0x02
 
 	void DGGuildMemberDisconnectRecv(SDHP_GUILD_MEMBER_DISCONNECT_RECV* lpMsg); // From DataServer 0x07, 0x02
 

@@ -678,6 +678,14 @@ bool CItemManager::CheckItemMoveToInventory(LPOBJ lpObj, CItem* lpItem, int slot
 		}
 	}
 
+	if (lpObj->Map == MAP_ICARUS)
+	{
+		if (lpItem->m_Index == GET_ITEM(13, 2)) // Uniria
+		{
+			return 0;
+		}
+	}
+
 	if (lpItem->m_Index == GET_ITEM(13, 10)) // Rings
 	{
 		if (lpObj->Inventory[slot ^ 1].IsItem() != 0 && lpObj->Inventory[slot ^ 1].m_Index == lpItem->m_Index)
@@ -2376,6 +2384,8 @@ void CItemManager::CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg, int aIndex)
 		gMap[lpObj->Map].ItemGive(aIndex, index);
 
 		pMsg.result = 0xFD;
+
+		this->ItemByteConvert(pMsg.ItemInfo, item);
 
 		DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 

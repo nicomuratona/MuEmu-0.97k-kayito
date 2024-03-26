@@ -17,6 +17,8 @@ public:
 	BYTE InterfaceRectCheck(int x, int y, int width, int height, DWORD InterfaceOffset, int InterfaceWidth, int InterfaceHeight);
 
 	int GetTargetSlotEquiped(ITEM* lpItem, int slot);
+
+	void GetItemName(int iType, int iLevel, char* Text);
 };
 
 extern CItemManager gItemManager;

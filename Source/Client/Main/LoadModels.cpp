@@ -8,12 +8,6 @@ CLoadModels gLoadModels;
 CLoadModels::CLoadModels()
 {
 	memset(this->lpTextures, 0, sizeof(this->lpTextures));
-
-	this->TextureCount = MAX_TEXTURE;
-
-	this->TextureOverFlow = 0;
-
-	this->TextureType = 0;
 }
 
 CLoadModels::~CLoadModels()
@@ -191,7 +185,7 @@ void CLoadModels::MyOpenTexture(int Model, char* SubFolder, int Type, bool Check
 
 		DWORD pBitmap = NULL;
 
-		short textureFound = gLoadModels.TextureCheck(pTexture, &pBitmap);
+		short textureFound = FindTextureByName(pTexture, &pBitmap);
 
 		if (textureFound < 0)
 		{
@@ -218,9 +212,9 @@ void CLoadModels::MyOpenTexture(int Model, char* SubFolder, int Type, bool Check
 				OpenJPG(path, TextureCurrent, Type, GL_REPEAT, (char*)(pModel + 0), Check);
 			}
 
-			MemoryCpy(((DWORD)&gLoadModels.lpTextures + 56 * TextureCurrent), pTexture, 32);
+			MemoryCpy(((DWORD)&gLoadModels.lpTextures + TextureCurrent * sizeof(BITMAP_t)), pTexture, 32);
 
-			*(short*)(*(DWORD*)(pModel + 0x38) + 2 * i) = TextureCurrent;
+			*(short*)(*(DWORD*)(pModel + 0x38) + 2 * i) = TextureCurrent; // pModel->IndexTexture[i]
 
 			TextureCurrent += 1;
 		}
@@ -251,44 +245,6 @@ void CLoadModels::MyOpenTexture(int Model, char* SubFolder, int Type, bool Check
 			*(short*)(*(DWORD*)(pModel + 0x38) + 2 * i) = 300;
 		}
 	}
-}
-
-short CLoadModels::TextureCheck(char* name, DWORD* index)
-{
-	if (this->TextureOverFlow == 0)
-	{
-		switch (this->TextureType)
-		{
-			case 1:
-			{
-				if (TextureCurrent >= 490)
-				{
-					this->TextureOverFlow = 1;
-				}
-
-				break;
-			}
-
-			case 2:
-			{
-				if (TextureCurrent >= 688)
-				{
-					this->TextureOverFlow = 1;
-				}
-
-				break;
-			}
-		}
-	}
-
-	if (this->TextureOverFlow == 1)
-	{
-		TextureCurrent = this->TextureCount;
-
-		this->TextureOverFlow = 2;
-	}
-
-	return FindTextureByName(name, index);
 }
 
 void CLoadModels::CheckTextureExists(int Model, char* SubFolder, char* filename, char* ext)
@@ -328,27 +284,16 @@ void CLoadModels::OpenPlayerTexturesHook()
 {
 	TextureCurrent = 301;
 
-	gLoadModels.TextureType = 1;
-
 	OpenPlayerTextures();
-
-	if (gLoadModels.TextureOverFlow)
-	{
-		gLoadModels.TextureOverFlow = 0;
-
-		gLoadModels.TextureCount = TextureCurrent;
-	}
-
-	gLoadModels.TextureType = 0;
 }
 
 void CLoadModels::OpenItemTexturesHook()
 {
 	TextureCurrent = 500;
 
-	gLoadModels.TextureType = 2;
-
 	OpenItemTextures();
+
+	TextureCurrent = MAX_TEXTURE;
 
 	char modelFolder[MAX_PATH];
 
@@ -378,15 +323,6 @@ void CLoadModels::OpenItemTexturesHook()
 			gLoadModels.MyOpenTexture((gCustomItem.m_CustomItemInfo[n].ItemIndex + ITEM_BASE_MODEL), textureFolder);
 		}
 	}
-
-	if (gLoadModels.TextureOverFlow)
-	{
-		gLoadModels.TextureOverFlow = 0;
-
-		gLoadModels.TextureCount = TextureCurrent;
-	}
-
-	gLoadModels.TextureType = 0;
 }
 
 void CLoadModels::PartObjectColorHook(int Type, float Alpha, float Bright, float Light[3], bool ExtraMon)

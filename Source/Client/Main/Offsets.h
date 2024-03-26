@@ -86,8 +86,10 @@
 #define SetTextColor *(DWORD*)0x00559C78
 #define SetBackgroundTextColor *(DWORD*)0x00559C80
 #define RenderText ((int(_cdecl*)(int iPos_x, int iPos_y, char *pszText, int iBoxWidth, int iSort, SIZE *lpTextSize)) 0x0047F650)
+#define RenderCenteredText ((int(_cdecl*)(int iPos_x, int iPos_y, char *pszText)) 0x00514270)
 #define GetTextLine(x) (char*)(0x07D29D24 + (300 * x))
 #define GlobalText ((char(*)[300])0x07D29D24)
+#define ChaosEventName ((char(*)[100])0x00559FFC)
 #define UIChatLogWindow_AddText ((void(_cdecl*)(const char* strID, const char* strText, int MsgType)) 0x00480620)
 #define CreateNotice ((void(_cdecl*)(char *Text, int Color)) 0x0047FAE0)
 #define RenderTipText ((void(_cdecl*)(int sx, int sy, char* Text)) 0x0047F7F0)
@@ -102,6 +104,7 @@
 
 // Monster
 #define MonsterScript (&*(MONSTER_SCRIPT*)0x07CF2000)
+#define SommonTable (&*(int*)0x00559FE4)
 
 // Character
 #define CharacterAttribute *(DWORD*)0x07CF1FF4

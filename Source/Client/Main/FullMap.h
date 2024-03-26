@@ -1,7 +1,7 @@
 #pragma once
 
 #define MAP_SIZE 512
-#define MAP_TEXTURE_NUMBER 1960
+#define MAP_TEXTURE_NUMBER 10999
 
 class CFullMap
 {

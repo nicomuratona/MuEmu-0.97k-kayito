@@ -278,9 +278,261 @@ int CItemManager::GetTargetSlotEquiped(ITEM* lpItem, int slot)
 		}
 	}
 
+	if (World == MAP_ICARUS)
+	{
+		if (lpItem->Type == GET_ITEM(13, 2)) // Uniria
+		{
+			slot = -1;
+
+			goto EXIT;
+		}
+	}
+
 EXIT:
 
 	STRUCT_ENCRYPT;
 
 	return slot;
+}
+
+void CItemManager::GetItemName(int iType, int iLevel, char* Text)
+{
+	ITEM_ATTRIBUTE* ItemInfo = (ITEM_ATTRIBUTE*)(ItemAttribute + iType * sizeof(ITEM_ATTRIBUTE));
+
+	// The name of the item.
+	if (iType >= GET_ITEM(14, 23) && iType <= GET_ITEM(14, 26)) // Quest item.
+	{
+		wsprintf(Text, "%s", ItemInfo->Name);
+	}
+	else if (iType == GET_ITEM(14, 12)) // Event item
+	{
+		switch (iLevel)
+		{
+			case 0:
+			{
+				wsprintf(Text, "%s", GlobalText[100]);
+
+				break;
+			}
+
+			case 1:
+			{
+				wsprintf(Text, "%s", GlobalText[101]);
+
+				break;
+			}
+
+			case 2:
+			{
+				wsprintf(Text, "%s", ChaosEventName[ItemInfo->Durability]);
+
+				break;
+			}
+		}
+	}
+	else if (iType == GET_ITEM(14, 11)) // Lucky Box/Christmas Star/Firecracker/Magic Pouch./Love Heart//Commendation
+	{
+		switch (iLevel)
+		{
+			case 0:
+			{
+				wsprintf(Text, "%s", ItemInfo->Name);
+
+				break;
+			}
+
+			case 1:
+			{
+				wsprintf(Text, "%s", GlobalText[105]);
+
+				break;
+			}
+
+			case 2:
+			{
+				wsprintf(Text, "%s", GlobalText[106]);
+
+				break;
+			}
+
+			case 3:
+			{
+				wsprintf(Text, "%s", GlobalText[107]);
+
+				break;
+			}
+
+			case 5:
+			{
+				wsprintf(Text, "%s", GlobalText[109]);
+
+				break;
+			}
+
+			case 6:
+			{
+				wsprintf(Text, "%s", GlobalText[110]);
+
+				break;
+			}
+
+			case 7:
+			{
+				wsprintf(Text, "%s", GlobalText[111]);
+
+				break;
+			}
+
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+			case 12: // sky box
+			{
+				wsprintf(Text, "%s +%d", GlobalText[115], iLevel - 7);
+
+				break;
+			}
+		}
+	}
+	else if (iType == GET_ITEM(13, 15)) // circle. ( Energy / Stamina / Agility / Strength / Command )
+	{
+		switch (iLevel)
+		{
+			case 0:
+			{
+				wsprintf(Text, "%s %s", GlobalText[168], ItemInfo->Name);
+
+				break;
+			}
+
+			case 1:
+			{
+				wsprintf(Text, "%s %s", GlobalText[169], ItemInfo->Name);
+
+				break;
+			}
+
+			case 2:
+			{
+				wsprintf(Text, "%s %s", GlobalText[167], ItemInfo->Name);
+
+				break;
+			}
+
+			case 3:
+			{
+				wsprintf(Text, "%s %s", GlobalText[166], ItemInfo->Name);
+
+				break;
+			}
+		}
+	}
+	else if (iType == GET_ITEM(13, 14)) // Locke's Feather.
+	{
+		wsprintf(Text, "%s", ItemInfo->Name);
+	}
+	else if (iType == GET_ITEM(14, 21)) // Lena. (1:stone).
+	{
+		switch (iLevel)
+		{
+			case 0:
+			{
+				wsprintf(Text, "%s", ItemInfo->Name);
+
+				break;
+			}
+
+			case 1: // stone.
+			{
+				wsprintf(Text, "%s", GlobalText[810]);
+
+				break;
+			}
+		}
+	}
+	else if (iType == GET_ITEM(13, 19)) // Archangel's Absolute Weapon
+	{
+		switch (iLevel)
+		{
+			case 0:
+			{
+				wsprintf(Text, "%s", GlobalText[811]);
+
+				break;
+			}
+
+			case 1:
+			{
+				wsprintf(Text, "%s", GlobalText[812]);
+
+				break;
+			}
+
+			case 2:
+			{
+				wsprintf(Text, "%s", GlobalText[817]);
+
+				break;
+			}
+
+			default:
+			{
+				wsprintf(Text, "%s", GlobalText[809]);
+
+				break;
+			}
+		}
+	}
+	else if (iType == GET_ITEM(14, 9)) // wine, olives of love
+	{
+		switch (iLevel)
+		{
+			case 0:
+			{
+				wsprintf(Text, "%s", ItemInfo->Name);
+
+				break;
+			}
+
+			case 1:
+			{
+				wsprintf(Text, "%s", GlobalText[108]);
+
+				break;
+			}
+		}
+	}
+	/*
+	else if (iType == GET_ITEM(12, 11)) // summon orb
+	{
+		wsprintf(Text, "%s %s", SkillAttribute[30 + iLevel].Name, GlobalText[102]);
+	}
+	*/
+	else if (iType == GET_ITEM(13, 10)) // transformation ring
+	{
+		wsprintf(Text, "%s %s", MonsterScript[SommonTable[iLevel]].Name, GlobalText[103]);
+	}
+	else if (iType >= GET_ITEM(12, 3) && iType <= GET_ITEM(12, 6)) // Wings of Spirit ~ Wings of Darkness.
+	{
+		if (iLevel == 0)
+		{
+			wsprintf(Text, "%s", ItemInfo->Name);
+		}
+		else
+		{
+			wsprintf(Text, "%s +%d", ItemInfo->Name, iLevel);
+		}
+	}
+	else
+	{
+		if (iLevel == 0)
+		{
+			wsprintf(Text, "%s", ItemInfo->Name);
+		}
+		else
+		{
+			wsprintf(Text, "%s +%d", ItemInfo->Name, iLevel);
+		}
+	}
 }

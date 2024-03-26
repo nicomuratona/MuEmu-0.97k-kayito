@@ -1,6 +1,6 @@
 #pragma once
 
-#define MAX_GUILD_MEMBER 80
+#define MAX_GUILD_MEMBER 40
 
 struct GUILD_MEMBER_INFO
 {

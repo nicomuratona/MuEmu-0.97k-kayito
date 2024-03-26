@@ -22,8 +22,6 @@ private:
 
 	static void MyOpenTexture(int Model, char* SubFolder, int Type = GL_NEAREST, bool Check = true);
 
-	short TextureCheck(char* name, DWORD* index);
-
 	void CheckTextureExists(int Model, char* SubFolder, char* filename, char* ext);
 
 	static void OpenPlayerTexturesHook();
@@ -35,12 +33,6 @@ private:
 private:
 
 	BITMAP_t lpTextures[TOTAL_TEXTURE];
-
-	short TextureCount;
-
-	DWORD TextureType;
-
-	DWORD TextureOverFlow;
 };
 
 extern CLoadModels gLoadModels;

@@ -487,32 +487,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-LRESULT CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
-		case WM_INITDIALOG:
-		{
-			return 1;
-		}
-
-		case WM_COMMAND:
-		{
-			if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-			{
-				EndDialog(hDlg, LOWORD(wParam));
-
-				return 1;
-			}
-
-			break;
-		}
-	}
-
-	return 0;
-}
-
-INT_PTR CALLBACK UserOnline(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK UserOnline(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -677,4 +652,29 @@ INT_PTR CALLBACK UserOnline(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 	}
 
 	return FALSE;
+}
+
+LRESULT CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+		case WM_INITDIALOG:
+		{
+			return 1;
+		}
+
+		case WM_COMMAND:
+		{
+			if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+			{
+				EndDialog(hDlg, LOWORD(wParam));
+
+				return 1;
+			}
+
+			break;
+		}
+	}
+
+	return 0;
 }

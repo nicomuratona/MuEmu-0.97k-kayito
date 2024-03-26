@@ -204,9 +204,6 @@
     <ClInclude Include="MemoryAllocatorInfo.h">
       <Filter>Management</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Management</Filter>
-    </ClInclude>
     <ClInclude Include="ServerDisplayer.h">
       <Filter>Management</Filter>
     </ClInclude>
@@ -359,6 +356,9 @@
     </ClInclude>
     <ClInclude Include="EventTimeManager.h">
       <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

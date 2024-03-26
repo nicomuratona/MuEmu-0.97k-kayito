@@ -106,6 +106,8 @@ void CPatchs::Init()
 
 	SetByte(0x0042C417, 0xE8); // Fix autobuff view to others
 
+	SetCompleteHook(0xE9, 0x00443AAF, 0x00443D76); // Fix Dinorant Movement
+
 	SetCompleteHook(0xE8, 0x0042B33D, &this->IgnoreRandomStuck);
 
 	SetCompleteHook(0xE9, 0x00483AC5, &this->FixChasingAttackMovement);

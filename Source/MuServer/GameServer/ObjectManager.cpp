@@ -638,9 +638,14 @@ bool CObjectManager::CharacterGameClose(int aIndex)
 		}
 	}
 
-	if (lpObj->Guild != 0 && lpObj->Guild->WarState == GUILD_WAR_STATE_DECLARE)
+	if (lpObj->Guild != 0)
 	{
-		gGuild.GuildMasterCloseCheck(lpObj);
+		gGuild.GDGuildMemberDisconnectSend(lpObj->Guild->Name, lpObj->Name);
+
+		if (lpObj->Guild->WarState == GUILD_WAR_STATE_DECLARE)
+		{
+			gGuild.GuildMasterCloseCheck(lpObj);
+		}
 	}
 
 	if (BC_MAP_RANGE(lpObj->Map) != 0)
@@ -660,11 +665,6 @@ bool CObjectManager::CharacterGameClose(int aIndex)
 	GDCharacterInfoSaveSend(aIndex);
 
 	GDDisconnectCharacterSend(aIndex);
-
-	if (lpObj->Guild != 0)
-	{
-		gGuild.GDGuildMemberDisconnectSend(0, lpObj->Guild->Name, lpObj->Name);
-	}
 
 	gObjClearViewport(lpObj);
 

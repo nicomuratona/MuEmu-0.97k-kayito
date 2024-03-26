@@ -212,8 +212,6 @@ public:
 
 	int GetSkillFrustrum(int* SkillFrustrumX, int* SkillFrustrumY, BYTE angle, int x, int y, float sx, float sy);
 
-	int GetSkillFrustrum(int* SkillFrustrumX, int* SkillFrustrumY, BYTE angle, int x, int y, float sx, float sy, float tx, float ty);
-
 	int GetSkillNumber(int index, int level);
 
 	bool CheckSkillMana(LPOBJ lpObj, int index);

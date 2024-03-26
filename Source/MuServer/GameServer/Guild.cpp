@@ -342,7 +342,7 @@ void CGuild::GCGuildDeleteSend(int aIndex, int result)
 	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 }
 
-void CGuild::GDGuildMemberDisconnectSend(int aIndex, char* GuildName, char* Name)
+void CGuild::GDGuildMemberDisconnectSend(char* GuildName, char* Name)
 {
 	SDHP_GUILD_MEMBER_DISCONNECT_SEND pMsg;
 

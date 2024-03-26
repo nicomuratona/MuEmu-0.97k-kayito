@@ -205,6 +205,8 @@ void CGuild::GDGuildMemberDisconnectRecv(SDHP_GUILD_MEMBER_DISCONNECT_RECV* lpMs
 
 	memcpy(pMsg.Name, lpMsg->Name, sizeof(pMsg.Name));
 
+	gGuildManager.DisconnectMember(lpMsg->Name);
+
 	for (int n = 0; n < MAX_SERVER; n++)
 	{
 		if (gServerManager[n].CheckState() != false)
