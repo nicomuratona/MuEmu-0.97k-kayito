@@ -490,7 +490,7 @@ namespace kayito_Editor
 
 					object[] Params = new object[] { this.Pass_Box.Text.Trim(), this.Code_Box.Text.Trim(), this.Vip_Level.Value, this.Vip_Date.Value, (!this.Ban_Box.Checked ? "'0'" : "'1'"), this.Ban_Date.Value, this.User_Box.Text.Trim() };
 
-					query = string.Format("UPDATE MEMB_INFO SET memb__pwd = '{0}', sno__numb = '{1}', AccountLevel = {2}, AccountExpireDate = '{3}', bloc_code = {4}, Bloc_Expire = '{5}' WHERE (memb___id = '{6}')", Params);
+					query = string.Format("UPDATE MEMB_INFO SET memb__pwd = '{0}', sno__numb = '{1}', AccountLevel = {2}, AccountExpireDate = CONVERT(smalldatetime, '{3}', 104), bloc_code = {4}, Bloc_Expire = CONVERT(smalldatetime, '{5}', 104) WHERE (memb___id = '{6}')", Params);
 
 					if ((Import.USE_ME != 1) ? MuOnline.Mu_ExecuteSQL(query) : MuOnline.Me_ExecuteSQL(query))
 					{
