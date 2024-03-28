@@ -44,31 +44,27 @@ int main()
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) == 0)
 	{
-		char DataServerHost[32] = { 0 };
+		char DataBaseHost[64] = { 0 };
+		WORD DataBasePort = 3306;
+		char DataBaseUser[32] = { 0 };
+		char DataBasePass[32] = { 0 };
+		char DataBaseName[32] = { 0 };
 
-		char DataServerUSER[32] = { 0 };
+		GetPrivateProfileString("DataBaseInfo", "DataBaseHost", "", DataBaseHost, sizeof(DataBaseHost), ".\\DataServer.ini");
+		DataBasePort = GetPrivateProfileInt("DataBaseInfo", "DataBasePort", 3306, ".\\DataServer.ini");
+		GetPrivateProfileString("DataBaseInfo", "DataBaseUser", "", DataBaseUser, sizeof(DataBaseUser), ".\\DataServer.ini");
+		GetPrivateProfileString("DataBaseInfo", "DataBasePass", "", DataBasePass, sizeof(DataBasePass), ".\\DataServer.ini");
+		GetPrivateProfileString("DataBaseInfo", "DataBaseName", "", DataBaseName, sizeof(DataBaseName), ".\\DataServer.ini");
 
-		char DataServerPASS[32] = { 0 };
+		WORD DS_TCP_Port = GetPrivateProfileInt("DataServerInfo", "DS_TCP_Port", 55960, ".\\DataServer.ini");
 
-		char DataServerDB[32] = { 0 };
-
-		GetPrivateProfileString("DataServerInfo", "DataServerHost", "", DataServerHost, sizeof(DataServerHost), ".\\DataServer.ini");
-
-		GetPrivateProfileString("DataServerInfo", "DataServerUSER", "", DataServerUSER, sizeof(DataServerUSER), ".\\DataServer.ini");
-
-		GetPrivateProfileString("DataServerInfo", "DataServerPASS", "", DataServerPASS, sizeof(DataServerPASS), ".\\DataServer.ini");
-
-		GetPrivateProfileString("DataServerInfo", "DataServerDB", "", DataServerDB, sizeof(DataServerDB), ".\\DataServer.ini");
-
-		WORD DataServerPort = GetPrivateProfileInt("DataServerInfo", "DataServerPort", 55960, ".\\DataServer.ini");
-
-		if (gQueryManager.Connect(DataServerHost, DataServerUSER, DataServerPASS, DataServerDB) == false)
+		if (gQueryManager.Init(DataBaseHost, DataBasePort, DataBaseUser, DataBasePass, DataBaseName) == false)
 		{
 			LogAdd(LOG_RED, "Could not connect to database");
 		}
 		else
 		{
-			if (gSocketManager.Start(DataServerPort) == false)
+			if (gSocketManager.Start(DS_TCP_Port) == false)
 			{
 				gQueryManager.Disconnect();
 			}

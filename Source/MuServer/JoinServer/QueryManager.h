@@ -21,7 +21,9 @@ public:
 
 	virtual ~CQueryManager();
 
-	bool Connect(std::string Server, std::string Username, std::string Password, std::string SchemaName);
+	bool Init(std::string HostName, WORD HostPort, std::string Username, std::string Password, std::string SchemaName);
+
+	bool Connect();
 
 	void Disconnect();
 
@@ -71,12 +73,9 @@ private:
 
 private:
 
-	std::string Server;
-	std::string Username;
-	std::string Password;
-	std::string SchemaName;
-
 	sql::Driver* driver;
+
+	sql::ConnectOptionsMap connection_properties;
 
 	sql::Connection* con;
 	sql::Statement* stmt;

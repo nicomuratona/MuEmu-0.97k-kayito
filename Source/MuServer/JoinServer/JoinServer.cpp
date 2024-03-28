@@ -51,49 +51,45 @@ int main()
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) == 0)
 	{
-		char JoinServerHost[32] = { 0 };
+		char DataBaseHost[64] = { 0 };
+		WORD DataBasePort = 3306;
+		char DataBaseUser[32] = { 0 };
+		char DataBasePass[32] = { 0 };
+		char DataBaseName[32] = { 0 };
 
-		char JoinServerUSER[32] = { 0 };
+		GetPrivateProfileString("DataBaseInfo", "DataBaseHost", "", DataBaseHost, sizeof(DataBaseHost), ".\\JoinServer.ini");
+		DataBasePort = GetPrivateProfileInt("DataBaseInfo", "DataBasePort", 3306, ".\\JoinServer.ini");
+		GetPrivateProfileString("DataBaseInfo", "DataBaseUser", "", DataBaseUser, sizeof(DataBaseUser), ".\\JoinServer.ini");
+		GetPrivateProfileString("DataBaseInfo", "DataBasePass", "", DataBasePass, sizeof(DataBasePass), ".\\JoinServer.ini");
+		GetPrivateProfileString("DataBaseInfo", "DataBaseName", "", DataBaseName, sizeof(DataBaseName), ".\\JoinServer.ini");
 
-		char JoinServerPASS[32] = { 0 };
-
-		char JoinServerDB[32] = { 0 };
-
-		GetPrivateProfileString("JoinServerInfo", "JoinServerHost", "", JoinServerHost, sizeof(JoinServerHost), ".\\JoinServer.ini");
-
-		GetPrivateProfileString("JoinServerInfo", "JoinServerUSER", "", JoinServerUSER, sizeof(JoinServerUSER), ".\\JoinServer.ini");
-
-		GetPrivateProfileString("JoinServerInfo", "JoinServerPASS", "", JoinServerPASS, sizeof(JoinServerPASS), ".\\JoinServer.ini");
-
-		GetPrivateProfileString("JoinServerInfo", "JoinServerDB", "", JoinServerDB, sizeof(JoinServerDB), ".\\JoinServer.ini");
-
-		GetPrivateProfileString("JoinServerInfo", "GlobalPassword", "XwefDastoD", GlobalPassword, sizeof(GlobalPassword), ".\\JoinServer.ini");
-
-		WORD JoinServerPort = GetPrivateProfileInt("JoinServerInfo", "JoinServerPort", 55970, ".\\JoinServer.ini");
+		WORD JS_TCP_Port = GetPrivateProfileInt("JoinServerInfo", "JS_TCP_Port", 55970, ".\\JoinServer.ini");
 
 		char ConnectServerAddress[16] = { 0 };
 
 		GetPrivateProfileString("JoinServerInfo", "ConnectServerAddress", "127.0.0.1", ConnectServerAddress, sizeof(ConnectServerAddress), ".\\JoinServer.ini");
 
-		WORD ConnectServerPort = GetPrivateProfileInt("JoinServerInfo", "ConnectServerPort", 55557, ".\\JoinServer.ini");
+		WORD ConnectServerUDPPort = GetPrivateProfileInt("JoinServerInfo", "ConnectServerUDPPort", 55557, ".\\JoinServer.ini");
 
 		CaseSensitive = GetPrivateProfileInt("JoinServerInfo", "CaseSensitive", 0, ".\\JoinServer.ini");
 
 		MD5Encryption = GetPrivateProfileInt("JoinServerInfo", "MD5Encryption", 0, ".\\JoinServer.ini");
 
-		if (gQueryManager.Connect(JoinServerHost, JoinServerUSER, JoinServerPASS, JoinServerDB) == false)
+		GetPrivateProfileString("JoinServerInfo", "GlobalPassword", "XwefDastoD", GlobalPassword, sizeof(GlobalPassword), ".\\JoinServer.ini");
+
+		if (gQueryManager.Init(DataBaseHost, DataBasePort, DataBaseUser, DataBasePass, DataBaseName) == false)
 		{
 			LogAdd(LOG_RED, "Could not connect to database");
 		}
 		else
 		{
-			if (gSocketManager.Start(JoinServerPort) == false)
+			if (gSocketManager.Start(JS_TCP_Port) == false)
 			{
 				gQueryManager.Disconnect();
 			}
 			else
 			{
-				if (gSocketManagerUdp.Connect(ConnectServerAddress, ConnectServerPort) == false)
+				if (gSocketManagerUdp.Connect(ConnectServerAddress, ConnectServerUDPPort) == false)
 				{
 					gSocketManager.Clean();
 

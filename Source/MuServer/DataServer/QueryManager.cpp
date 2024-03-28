@@ -13,13 +13,7 @@ CQueryManager::CQueryManager()
 
 	this->con = NULL;
 
-	this->Server.clear();
-
-	this->Username.clear();
-
-	this->Password.clear();
-
-	this->SchemaName.clear();
+	this->connection_properties.clear();
 
 	this->stmt = NULL;
 
@@ -37,30 +31,37 @@ CQueryManager::~CQueryManager()
 	this->Disconnect();
 }
 
-bool CQueryManager::Connect(std::string Server, std::string Username, std::string Password, std::string SchemaName)
+bool CQueryManager::Init(std::string HostName, WORD HostPort, std::string Username, std::string Password, std::string SchemaName)
 {
-	this->Server = Server;
+	this->connection_properties["hostName"] = HostName;
 
-	this->Username = Username;
+	this->connection_properties["port"] = HostPort;
 
-	this->Password = Password;
+	this->connection_properties["userName"] = Username;
 
-	this->SchemaName = SchemaName;
+	this->connection_properties["password"] = Password;
 
+	this->connection_properties["schema"] = SchemaName;
+
+	this->connection_properties["OPT_RECONNECT"] = true;
+
+	return this->Connect();
+}
+
+bool CQueryManager::Connect()
+{
 	try
 	{
 		this->driver = get_driver_instance();
 
-		this->con = this->driver->connect(this->Server, this->Username, this->Password);
+		this->con = this->driver->connect(this->connection_properties);
 	}
 	catch (sql::SQLException e)
 	{
-		LogAdd(LOG_RED, "[QueryManager] Could not connect: %s", e.what());
+		LogAdd(LOG_RED, "[QueryManager] Connection to DataBase failed: %s", e.what());
 
 		return false;
 	}
-
-	this->con->setSchema(this->SchemaName);
 
 	return true;
 }
@@ -76,13 +77,7 @@ void CQueryManager::Disconnect()
 		this->con = NULL;
 	}
 
-	this->Server.clear();
-
-	this->Username.clear();
-
-	this->Password.clear();
-
-	this->SchemaName.clear();
+	this->connection_properties.clear();
 
 	this->Close();
 }
@@ -300,9 +295,9 @@ void CQueryManager::Diagnostic(sql::SQLException& e, char* Query)
 
 	LogAdd(LOG_RED, "[QueryManager] State (%s), Diagnostic: %s", SqlState.c_str(), e.what());
 
-	if (SqlState.compare("08S01") == 0)
+	if (SqlState.compare("HY000") == 0)
 	{
-		this->Connect(this->Server, this->Username, this->Password, this->SchemaName);
+		this->Connect();
 	}
 }
 
