@@ -22,6 +22,8 @@ namespace kayitoTools.Source_Files
 
 		public static string GetMaxStringLength(string text, int size)
 		{
+			text = text.Trim('\0');
+
 			if (text.Length <= size)
 			{
 				return text;

@@ -166,9 +166,7 @@ void CGuild::DGGuildCreateRecv(SDHP_GUILD_CREATE_RECV* lpMsg)
 
 		memcpy(lpObj->GuildName, lpMsg->GuildName, sizeof(lpObj->GuildName));
 
-		gViewport.GCViewportSimpleGuildInfoSend(lpObj);
-
-		gViewport.GCViewportSimpleGuildMemberSend(lpObj);
+		this->GCGuildViewportCreateSend(lpMsg->index, lpMsg->GuildName, lpMsg->Mark);
 	}
 
 	if (lpObj->Interface.use != 0 && lpObj->Interface.type == INTERFACE_GUILD_CREATE)
@@ -186,6 +184,25 @@ void CGuild::GCGuildCreateResultSend(int aIndex, int result)
 	pMsg.result = result;
 
 	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
+}
+
+void CGuild::GCGuildViewportCreateSend(int aIndex, char* GuildName, BYTE* Mark)
+{
+	PMSG_GUILD_VIEWPORT_CREATE_SEND pMsg;
+
+	pMsg.header.set(0x5C, sizeof(pMsg));
+
+	pMsg.index[0] = SET_NUMBERHB(aIndex);
+
+	pMsg.index[1] = SET_NUMBERLB(aIndex);
+
+	memcpy(pMsg.GuildName, GuildName, sizeof(pMsg.GuildName));
+
+	memcpy(pMsg.Mark, Mark, sizeof(pMsg.Mark));
+
+	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
+
+	MsgSendV2(&gObj[aIndex], (BYTE*)&pMsg, pMsg.header.size);
 }
 
 void CGuild::CGGuildDeleteRecv(PMSG_GUILD_DELETE_RECV* lpMsg, int aIndex)
@@ -616,9 +633,7 @@ void CGuild::DGGuildMemberJoinRecv(SDHP_GUILD_MEMBER_JOIN_RECV* lpMsg)
 			gNotice.GCNoticeSend(lpObj->Index, 2, "%s", lpGuild->Notice);
 		}
 
-		gViewport.GCViewportSimpleGuildInfoSend(lpObj);
-
-		gViewport.GCViewportSimpleGuildMemberSend(lpObj);
+		this->GCGuildViewportCreateSend(lpObj->Index, lpObj->Guild->Name, lpObj->Guild->Mark);
 	}
 }
 
@@ -747,9 +762,7 @@ void CGuild::DGGuildMemberInfoRecv(SDHP_GUILD_MEMBER_INFO_RECV* lpMsg)
 				gNotice.GCNoticeSend(lpObj->Index, 2, "%s", lpObj->Guild->Notice);
 			}
 
-			gViewport.GCViewportSimpleGuildInfoSend(lpObj);
-
-			gViewport.GCViewportSimpleGuildMemberSend(lpObj);
+			this->GCGuildViewportCreateSend(lpObj->Index, lpObj->Guild->Name, lpObj->Guild->Mark);
 
 			if (lpObj->Guild->WarState != GUILD_WAR_STATE_NONE)
 			{

@@ -272,6 +272,14 @@ struct PMSG_GUILD_CREATE_RESULT_SEND
 	BYTE result;
 };
 
+struct PMSG_GUILD_VIEWPORT_CREATE_SEND
+{
+	PBMSG_HEAD header; // C1:5C
+	BYTE index[2];
+	char GuildName[8];
+	BYTE Mark[32];
+};
+
 struct PMSG_GUILD_VIEWPORT_DELETE_SEND
 {
 	PBMSG_HEAD header; // C1:5D
@@ -335,6 +343,8 @@ public:
 	void DGGuildCreateRecv(SDHP_GUILD_CREATE_RECV* lpMsg); // From DataServer 0x07, 0x00
 
 	void GCGuildCreateResultSend(int aIndex, int result); // To Client 0x56
+
+	void GCGuildViewportCreateSend(int aIndex, char* GuildName, BYTE* Mark); // To Client 0x5C
 
 	// DELETE GUILD
 
