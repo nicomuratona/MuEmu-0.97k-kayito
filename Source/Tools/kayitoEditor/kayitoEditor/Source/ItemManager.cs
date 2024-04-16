@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using static kayito_Editor.Source.ReadScript;
 
 namespace kayito_Editor.Source
 {
@@ -12,7 +13,7 @@ namespace kayito_Editor.Source
 
 		public static int GET_ITEM(int x, int y)
 		{
-		    return (x * MAX_ITEM_TYPE) + y;
+			return (x * MAX_ITEM_TYPE) + y;
 		}
 
 		public const int WAREHOUSE_SIZE = 120;
@@ -64,7 +65,7 @@ namespace kayito_Editor.Source
 			public int RequireMGClass;
 		};
 
-		
+
 
 		public static IDictionary<int, string> m_ItemSection = new Dictionary<int, string>()
 		{
@@ -157,11 +158,11 @@ namespace kayito_Editor.Source
 		{
 			string path = ".\\Data\\Item.txt";
 
-			MemScript lpMemScript = new MemScript();
+			ReadScript lpReadScript = new ReadScript();
 
-			if (lpMemScript.SetBuffer(path) == false)
+			if (!lpReadScript.SetBuffer(path))
 			{
-				MessageBox.Show(lpMemScript.GetLastError());
+				MessageBox.Show(lpReadScript.GetLastError(), "ReadItemTxt");
 
 				return;
 			}
@@ -170,18 +171,24 @@ namespace kayito_Editor.Source
 
 			try
 			{
+				eTokenResult token;
+
 				while (true)
 				{
-					if (lpMemScript.GetToken() == MemScript.eTokenResult.TOKEN_END)
+					token = lpReadScript.GetToken();
+
+					if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 					{
 						break;
 					}
 
-					int section = lpMemScript.GetNumber();
+					int section = lpReadScript.GetNumber();
 
 					while (true)
 					{
-						if (String.Compare(lpMemScript.GetAsString(), "end") == 0)
+						token = lpReadScript.GetToken();
+
+						if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 						{
 							break;
 						}
@@ -190,49 +197,49 @@ namespace kayito_Editor.Source
 
 						info.Section = section;
 
-						info.Index = lpMemScript.GetNumber();
+						info.Index = lpReadScript.GetNumber();
 
-						info.Slot = lpMemScript.GetAsNumber();
+						info.Slot = lpReadScript.GetAsNumber();
 
-						info.Skill = lpMemScript.GetAsNumber();
+						info.Skill = lpReadScript.GetAsNumber();
 
-						info.Width = lpMemScript.GetAsNumber();
+						info.Width = lpReadScript.GetAsNumber();
 
-						info.Height = lpMemScript.GetAsNumber();
+						info.Height = lpReadScript.GetAsNumber();
 
-						info.HaveSerial = lpMemScript.GetAsNumber();
+						info.HaveSerial = lpReadScript.GetAsNumber();
 
-						info.HaveOption = lpMemScript.GetAsNumber();
+						info.HaveOption = lpReadScript.GetAsNumber();
 
-						info.DropItem = lpMemScript.GetAsNumber();
+						info.DropItem = lpReadScript.GetAsNumber();
 
-						info.Name = lpMemScript.GetAsString();
+						info.Name = lpReadScript.GetAsString();
 
 						if (section >= 0 && section <= 5)
 						{
-							info.Level = lpMemScript.GetAsNumber();
+							info.Level = lpReadScript.GetAsNumber();
 
-							info.DamageMin = lpMemScript.GetAsNumber();
+							info.DamageMin = lpReadScript.GetAsNumber();
 
-							info.DamageMax = lpMemScript.GetAsNumber();
+							info.DamageMax = lpReadScript.GetAsNumber();
 
-							info.AttackSpeed = lpMemScript.GetAsNumber();
+							info.AttackSpeed = lpReadScript.GetAsNumber();
 
-							info.Durability = lpMemScript.GetAsNumber();
+							info.Durability = lpReadScript.GetAsNumber();
 
-							info.MagicDurability = lpMemScript.GetAsNumber();
+							info.MagicDurability = lpReadScript.GetAsNumber();
 
-							info.MagicDamageRate = lpMemScript.GetAsNumber();
+							info.MagicDamageRate = lpReadScript.GetAsNumber();
 
-							info.RequireLevel = lpMemScript.GetAsNumber();
+							info.RequireLevel = lpReadScript.GetAsNumber();
 
-							info.RequireStrength = lpMemScript.GetAsNumber();
+							info.RequireStrength = lpReadScript.GetAsNumber();
 
-							info.RequireDexterity = lpMemScript.GetAsNumber();
+							info.RequireDexterity = lpReadScript.GetAsNumber();
 
-							info.RequireEnergy = lpMemScript.GetAsNumber();
+							info.RequireEnergy = lpReadScript.GetAsNumber();
 
-							info.RequireVitality = lpMemScript.GetAsNumber();
+							info.RequireVitality = lpReadScript.GetAsNumber();
 
 							info.TwoHand = ((info.Width >= 2) ? 1 : 0);
 
@@ -240,96 +247,96 @@ namespace kayito_Editor.Source
 						}
 						else if (section >= 6 && section <= 11)
 						{
-							info.Level = lpMemScript.GetAsNumber();
+							info.Level = lpReadScript.GetAsNumber();
 
 							if (section == 6)
 							{
-								info.Defense = lpMemScript.GetAsNumber();
+								info.Defense = lpReadScript.GetAsNumber();
 
-								info.DefenseSuccessRate = lpMemScript.GetAsNumber();
+								info.DefenseSuccessRate = lpReadScript.GetAsNumber();
 							}
 							else if (section >= 7 && section <= 9)
 							{
-								info.Defense = lpMemScript.GetAsNumber();
+								info.Defense = lpReadScript.GetAsNumber();
 
-								info.MagicDefense = lpMemScript.GetAsNumber();
+								info.MagicDefense = lpReadScript.GetAsNumber();
 							}
 							else if (section == 10)
 							{
-								info.Defense = lpMemScript.GetAsNumber();
+								info.Defense = lpReadScript.GetAsNumber();
 
-								info.AttackSpeed = lpMemScript.GetAsNumber();
+								info.AttackSpeed = lpReadScript.GetAsNumber();
 							}
 							else if (section == 11)
 							{
-								info.Defense = lpMemScript.GetAsNumber();
+								info.Defense = lpReadScript.GetAsNumber();
 
-								info.WalkSpeed = lpMemScript.GetAsNumber();
+								info.WalkSpeed = lpReadScript.GetAsNumber();
 							}
 
-							info.Durability = lpMemScript.GetAsNumber();
+							info.Durability = lpReadScript.GetAsNumber();
 
-							info.RequireLevel = lpMemScript.GetAsNumber();
+							info.RequireLevel = lpReadScript.GetAsNumber();
 
-							info.RequireStrength = lpMemScript.GetAsNumber();
+							info.RequireStrength = lpReadScript.GetAsNumber();
 
-							info.RequireDexterity = lpMemScript.GetAsNumber();
+							info.RequireDexterity = lpReadScript.GetAsNumber();
 
-							info.RequireEnergy = lpMemScript.GetAsNumber();
+							info.RequireEnergy = lpReadScript.GetAsNumber();
 
-							info.RequireVitality = lpMemScript.GetAsNumber();
+							info.RequireVitality = lpReadScript.GetAsNumber();
 						}
 						else if (section == 12)
 						{
-							info.Level = lpMemScript.GetAsNumber();
+							info.Level = lpReadScript.GetAsNumber();
 
-							info.Defense = lpMemScript.GetAsNumber();
+							info.Defense = lpReadScript.GetAsNumber();
 
-							info.Durability = lpMemScript.GetAsNumber();
+							info.Durability = lpReadScript.GetAsNumber();
 
-							info.RequireLevel = lpMemScript.GetAsNumber();
+							info.RequireLevel = lpReadScript.GetAsNumber();
 
-							info.RequireEnergy = lpMemScript.GetAsNumber();
+							info.RequireEnergy = lpReadScript.GetAsNumber();
 
-							info.RequireStrength = lpMemScript.GetAsNumber();
+							info.RequireStrength = lpReadScript.GetAsNumber();
 
-							info.RequireDexterity = lpMemScript.GetAsNumber();
+							info.RequireDexterity = lpReadScript.GetAsNumber();
 
-							info.BuyMoney = lpMemScript.GetAsNumber();
+							info.BuyMoney = lpReadScript.GetAsNumber();
 						}
 						else if (section == 13)
 						{
-							info.Level = lpMemScript.GetAsNumber();
+							info.Level = lpReadScript.GetAsNumber();
 
-							info.Durability = lpMemScript.GetAsNumber();
+							info.Durability = lpReadScript.GetAsNumber();
 
-							info.IceResistance = lpMemScript.GetAsNumber();
+							info.IceResistance = lpReadScript.GetAsNumber();
 
-							info.PoisonResistance = lpMemScript.GetAsNumber();
+							info.PoisonResistance = lpReadScript.GetAsNumber();
 
-							info.EarthResistance = lpMemScript.GetAsNumber();
+							info.EarthResistance = lpReadScript.GetAsNumber();
 
-							info.FireResistance = lpMemScript.GetAsNumber();
+							info.FireResistance = lpReadScript.GetAsNumber();
 
 							info.RequireLevel = info.Level;
 						}
 						else if (section == 14)
 						{
-							info.Value = lpMemScript.GetAsNumber();
+							info.Value = lpReadScript.GetAsNumber();
 
-							info.Level = lpMemScript.GetAsNumber();
+							info.Level = lpReadScript.GetAsNumber();
 
 							info.Durability = 1;
 						}
 						else if (section == 15)
 						{
-							info.Level = lpMemScript.GetAsNumber();
+							info.Level = lpReadScript.GetAsNumber();
 
-							info.RequireLevel = lpMemScript.GetAsNumber();
+							info.RequireLevel = lpReadScript.GetAsNumber();
 
-							info.RequireEnergy = lpMemScript.GetAsNumber();
+							info.RequireEnergy = lpReadScript.GetAsNumber();
 
-							info.BuyMoney = lpMemScript.GetAsNumber();
+							info.BuyMoney = lpReadScript.GetAsNumber();
 
 							info.DamageMin = info.Level;
 
@@ -338,15 +345,18 @@ namespace kayito_Editor.Source
 
 						if (section <= 11 || section == 13)
 						{
-							lpMemScript.GetToken();
+							lpReadScript.GetToken();
 						}
 
 						if (section != 14)
 						{
-							info.RequireDWClass = lpMemScript.GetAsNumber();
-							info.RequireDKClass = lpMemScript.GetAsNumber();
-							info.RequireFEClass = lpMemScript.GetAsNumber();
-							info.RequireMGClass = lpMemScript.GetAsNumber();
+							info.RequireDWClass = lpReadScript.GetAsNumber();
+
+							info.RequireDKClass = lpReadScript.GetAsNumber();
+
+							info.RequireFEClass = lpReadScript.GetAsNumber();
+
+							info.RequireMGClass = lpReadScript.GetAsNumber();
 						}
 
 						ItemManager.m_ItemInfo.Add(GET_ITEM(info.Section, info.Index), info);
@@ -355,7 +365,7 @@ namespace kayito_Editor.Source
 			}
 			catch
 			{
-				MessageBox.Show(lpMemScript.GetLastError());
+				MessageBox.Show(lpReadScript.GetLastError(), "ReadItemTxt");
 
 				Environment.Exit(0);
 			}

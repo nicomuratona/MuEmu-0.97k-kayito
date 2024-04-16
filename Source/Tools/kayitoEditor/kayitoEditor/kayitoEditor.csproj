@@ -123,7 +123,7 @@
     <Compile Include="Source\Item.cs" />
     <Compile Include="Source\ItemManager.cs" />
     <Compile Include="Source\ItemOption.cs" />
-    <Compile Include="Source\MemScript.cs" />
+    <Compile Include="Source\ReadScript.cs" />
     <Compile Include="Source\MuOnline.cs" />
     <Compile Include="Source\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -75,17 +75,6 @@ namespace kayito_Editor.Source
 			{48, "Magic Gladiator"},
 		};
 
-		public static List<string> deleteAcc = new List<string>()
-		{
-			"DELETE FROM AccountCharacter WHERE Id = {0}",
-			"DELETE FROM Character WHERE AccountID = {0}",
-			"DELETE FROM ExtWarehouse WHERE AccountID = {0}",
-			"DELETE FROM GoldenCoin WHERE AccountID = {0}",
-			"DELETE FROM MEMB_INFO WHERE memb___id = {0}",
-			"DELETE FROM MEMB_STAT WHERE memb___id = {0}",
-			"DELETE FROM warehouse WHERE AccountID = {0}",
-		};
-
 		public static List<string> deleteAllDB = new List<string>()
 		{
 			"TRUNCATE TABLE AccountCharacter",

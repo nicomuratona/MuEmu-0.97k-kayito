@@ -100,7 +100,7 @@ namespace kayito_Editor.Source
 
 			this.ExcellentOption = lpMsg[7] & 63;
 
-			string image = String.Format(".\\Data\\Items\\{0}\\{1}.jpg", this.Section, this.Index);
+			string image = $".\\Data\\Items\\{this.Section}\\{this.Index}.jpg";
 
 			if (File.Exists(image))
 			{
@@ -130,7 +130,7 @@ namespace kayito_Editor.Source
 
 			this.ExcellentOption = exe;
 
-			string image = String.Format(".\\Data\\Items\\{0}\\{1}.jpg", this.Section, this.Index);
+			string image = $".\\Data\\Items\\{this.Section}\\{this.Index}.jpg";
 
 			if (File.Exists(image))
 			{
@@ -159,9 +159,13 @@ namespace kayito_Editor.Source
 
 			if (this.Serial == 0)
 			{
+				string query = null;
+
 				try
 				{
-					OleDbCommand cmd = new OleDbCommand("dbo.WZ_GetItemSerial", Import.Mu_Connection);
+					query = $"WZ_GetItemSerial";
+
+					OleDbCommand cmd = new OleDbCommand(query, Import.Mu_Connection);
 
 					cmd.CommandType = CommandType.StoredProcedure;
 
@@ -171,7 +175,7 @@ namespace kayito_Editor.Source
 					{
 						if (reader.Read())
 						{
-							result = (int)reader.GetValue(0);
+							result = reader.GetInt32(0);
 						}
 
 						reader.Close();
@@ -188,7 +192,7 @@ namespace kayito_Editor.Source
 				}
 				catch (Exception exception)
 				{
-					MessageBox.Show("SQL：WZ_GetItemSerial.\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 			}
 

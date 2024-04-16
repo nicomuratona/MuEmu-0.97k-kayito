@@ -7,78 +7,90 @@ using System.Windows.Forms;
 namespace kayito_Editor.Forms
 {
 
-    public partial class ServerStats : Form
-    {
-        public ServerStats()
-        {
-            InitializeComponent();
-        }
+	public partial class ServerStats : Form
+	{
+		public ServerStats()
+		{
+			InitializeComponent();
+		}
 
-        private void ServerStats_Load(object sender, EventArgs e)
-        {
-            if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
-            {
-                MessageBox.Show("No connection.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+		private void ServerStats_Load(object sender, EventArgs e)
+		{
+			if (Import.Me_Connection.State != ConnectionState.Open)
+			{
+				MessageBox.Show($"No connection.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
-                this.Dispose();
-            }
+				this.Dispose();
+			}
 
-            string query = null;
+			string query = null;
 
-            try
-            {
-                this.Cursor = Cursors.WaitCursor;
+			try
+			{
+				this.Cursor = Cursors.WaitCursor;
 
-                string[] Query = new string[] { "SELECT TOP 1 (SELECT COUNT(1) FROM [MEMB_INFO]) AS [a], (SELECT COUNT(1) FROM [MEMB_STAT] WHERE ([ConnectStat] = 1)) AS [b] FROM [dbo].[MEMB_INFO]" };
+				query = $"SELECT COUNT(1) FROM MEMB_INFO";
 
-                query = string.Concat(Query);
+				OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
 
-                OleDbDataReader oleDbDataReader = (new OleDbCommand(query, ((Import.USE_ME != 1) ? Import.Mu_Connection : Import.Me_Connection))).ExecuteReader();
+				if (reader.Read())
+				{
+					this.Accounts_Cant.Text = string.Format("{0}", reader.GetValue(0));
+				}
 
-                if (oleDbDataReader.Read())
-                {
-                    this.Accounts_Cant.Text = string.Format("{0}",oleDbDataReader.GetValue(0));
+				reader.Close();
 
-                    this.Onlines_Cant.Text = string.Format("{0}", oleDbDataReader.GetValue(1));
-                }
+				query = $"SELECT COUNT(1) FROM MEMB_STAT WHERE ConnectStat = 1";
 
-                query = "SELECT COUNT(*) from Character";
+				reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
 
-                int TotalChar = 0;
+				if (reader.Read())
+				{
+					this.Onlines_Cant.Text = string.Format("{0}", reader.GetValue(0));
+				}
 
-                oleDbDataReader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+				reader.Close();
 
-                if (oleDbDataReader.Read())
-                {
-                    TotalChar = oleDbDataReader.GetInt32(0);
-                    this.Characters_Cant.Text = string.Format("{0}", TotalChar);
-                }
+				query = $"SELECT COUNT(*) from Character";
 
-                query = "SELECT Class, COUNT(Class) as Cant from Character group by Class order by Class asc";
+				int TotalChar = 0;
 
-                oleDbDataReader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+				reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
 
-                while (oleDbDataReader.Read())
-                {
-                    int Class = oleDbDataReader.GetByte(0);
+				if (reader.Read())
+				{
+					TotalChar = reader.GetInt32(0);
 
-                    ListViewItem lista = new ListViewItem(Import.Classes.ContainsKey(Class) ? Import.Classes[Class] : Import.Classes[-1]);
+					this.Characters_Cant.Text = string.Format("{0}", TotalChar);
+				}
 
-                    int ClassCant = oleDbDataReader.GetInt32(1);
+				reader.Close();
 
-                    lista.SubItems.Add(string.Format("{0:00}% ({1})", (ClassCant*100/TotalChar) , ClassCant));
+				query = $"SELECT Class, COUNT(Class) as Cant from Character group by Class order by Class asc";
 
-                    this.Characters_List.Items.Add(lista);
-                }
+				reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
 
-                oleDbDataReader.Close();
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+				while (reader.Read())
+				{
+					int Class = reader.GetByte(0);
 
-            this.Cursor = Cursors.Default;
-        }
-    }
+					ListViewItem lista = new ListViewItem(Import.Classes.ContainsKey(Class) ? Import.Classes[Class] : Import.Classes[-1]);
+
+					int ClassCant = reader.GetInt32(1);
+
+					lista.SubItems.Add(string.Format("{0:00}% ({1})", (ClassCant * 100 / TotalChar), ClassCant));
+
+					this.Characters_List.Items.Add(lista);
+				}
+
+				reader.Close();
+			}
+			catch (Exception exception)
+			{
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+
+			this.Cursor = Cursors.Default;
+		}
+	}
 }

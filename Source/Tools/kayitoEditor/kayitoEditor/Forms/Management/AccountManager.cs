@@ -15,44 +15,44 @@ namespace kayito_Editor.Forms
 
 		private void Btn_Create_Click(object sender, EventArgs e)
 		{
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Me_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
 
-			string query = "SELECT memb_guid FROM MEMB_INFO WHERE memb___id = '{0}'";
+			string query = null;
 
 			try
 			{
 				if (!Validator.UserName(this.Account_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Account names must be between 4-10 characters, and only contain numbers, letters or underscores.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Account names must be between 4-10 characters, and only contain numbers, letters or underscores.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.PassWord(this.Password_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Passwords must be between 4-10 characters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Passwords must be between 4-10 characters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.Code_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Code must be 18 numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Code must be 18 numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (this.Code_Box.Text.Length < 18)
 				{
-					MessageBox.Show("Error: Code must be 18 numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Code must be 18 numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.UserName(this.Name_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Account names must be between 4-10 characters, and only contain numbers, letters or underscores.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Account names must be between 4-10 characters, and only contain numbers, letters or underscores.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else
 				{
-					query = string.Format(query, this.Account_Box.Text.Trim());
+					query = $"SELECT memb___id FROM MEMB_INFO WHERE memb___id = '{this.Account_Box.Text.Trim()}'";
 
-					OleDbDataReader reader = new OleDbCommand(query, ((Import.USE_ME != 1) ? Import.Mu_Connection : Import.Me_Connection)).ExecuteReader();
+					OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
 
 					if (reader.Read())
 					{
-						MessageBox.Show("Error: The account [" + this.Account_Box.Text.Trim() + "] already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						MessageBox.Show($"Error: The account '{this.Account_Box.Text.Trim()}' already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
 						reader.Close();
 					}
@@ -60,24 +60,22 @@ namespace kayito_Editor.Forms
 					{
 						reader.Close();
 
-						object[] Params = new object[] { this.Account_Box.Text.Trim(), this.Password_Box.Text.Trim(), this.Name_Box.Text.Trim(), this.Code_Box.Text.Trim() };
+						query = $"INSERT INTO MEMB_INFO(memb___id, memb__pwd, memb_name, sno__numb, bloc_code, AccountLevel) VALUES('{this.Account_Box.Text.Trim()}', '{this.Password_Box.Text.Trim()}', '{this.Name_Box.Text.Trim()}', '{this.Code_Box.Text.Trim()}', 0, 0)";
 
-						query = string.Format("INSERT INTO dbo.MEMB_INFO(memb___id, memb__pwd, memb_name, sno__numb, bloc_code, AccountLevel) VALUES('{0}', '{1}', '{2}', '{3}', 0, 0)", Params);
-
-						if ((Import.USE_ME != 1) ? MuOnline.Mu_ExecuteSQL(query) : MuOnline.Me_ExecuteSQL(query))
+						if (MuOnline.Me_ExecuteSQL(query))
 						{
-							MessageBox.Show("Account created.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+							MessageBox.Show($"Account created.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 						}
 						else
 						{
-							MessageBox.Show("Error: Account creation failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+							MessageBox.Show($"Error: Account creation failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 						}
 					}
 				}
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 

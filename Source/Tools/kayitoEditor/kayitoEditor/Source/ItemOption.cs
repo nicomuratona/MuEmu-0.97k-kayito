@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using static kayito_Editor.Source.ReadScript;
 
 namespace kayito_Editor.Source
 {
@@ -56,11 +57,11 @@ namespace kayito_Editor.Source
 		{
 			string path = ".\\Data\\ItemOption.txt";
 
-			MemScript lpMemScript = new MemScript();
+			ReadScript lpReadScript = new ReadScript();
 
-			if (lpMemScript.SetBuffer(path) == false)
+			if (!lpReadScript.SetBuffer(path))
 			{
-				MessageBox.Show(lpMemScript.GetLastError());
+				MessageBox.Show(lpReadScript.GetLastError(), "ReadItemOptionTxt");
 
 				return;
 			}
@@ -69,37 +70,36 @@ namespace kayito_Editor.Source
 
 			try
 			{
+				eTokenResult token;
+
 				while (true)
 				{
-					if (lpMemScript.GetToken() == MemScript.eTokenResult.TOKEN_END)
-					{
-						break;
-					}
+					token = lpReadScript.GetToken();
 
-					if (String.Compare(lpMemScript.GetString(), "end") == 0)
+					if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 					{
 						break;
 					}
 
 					ITEM_OPTION_INFO info = new ITEM_OPTION_INFO();
 
-					info.Index = lpMemScript.GetNumber();
+					info.Index = lpReadScript.GetNumber();
 
-					info.OptionIndex = lpMemScript.GetAsNumber();
+					info.OptionIndex = lpReadScript.GetAsNumber();
 
-					info.OptionValue = lpMemScript.GetAsNumber();
+					info.OptionValue = lpReadScript.GetAsNumber();
 
-					info.ItemMinIndex = ItemManager.GET_ITEM(lpMemScript.GetAsNumber(), lpMemScript.GetAsNumber());
+					info.ItemMinIndex = ItemManager.GET_ITEM(lpReadScript.GetAsNumber(), lpReadScript.GetAsNumber());
 
-					info.ItemMaxIndex = ItemManager.GET_ITEM(lpMemScript.GetAsNumber(), lpMemScript.GetAsNumber());
+					info.ItemMaxIndex = ItemManager.GET_ITEM(lpReadScript.GetAsNumber(), lpReadScript.GetAsNumber());
 
-					info.ItemSkillOption = lpMemScript.GetAsNumber();
+					info.ItemSkillOption = lpReadScript.GetAsNumber();
 
-					info.ItemLuckOption = lpMemScript.GetAsNumber();
+					info.ItemLuckOption = lpReadScript.GetAsNumber();
 
-					info.ItemAddOption = lpMemScript.GetAsNumber();
+					info.ItemAddOption = lpReadScript.GetAsNumber();
 
-					info.ItemExceOption = lpMemScript.GetAsNumber();
+					info.ItemExceOption = lpReadScript.GetAsNumber();
 
 					if (ItemOption.m_ItemOptionInfo.ContainsKey(info.Index))
 					{
@@ -107,13 +107,13 @@ namespace kayito_Editor.Source
 					}
 					else
 					{
-						ItemOption.m_ItemOptionInfo.Add(info.Index, new List<ITEM_OPTION_INFO>(){ info });
+						ItemOption.m_ItemOptionInfo.Add(info.Index, new List<ITEM_OPTION_INFO>() { info });
 					}
 				}
 			}
 			catch
 			{
-				MessageBox.Show(lpMemScript.GetLastError());
+				MessageBox.Show(lpReadScript.GetLastError(), "ReadItemOptionTxt");
 
 				Environment.Exit(0);
 			}

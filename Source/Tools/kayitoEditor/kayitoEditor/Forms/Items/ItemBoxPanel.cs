@@ -11,6 +11,7 @@ namespace kayito_Editor.Forms
 		private readonly int pixels = 25;
 
 		private int sizeX;
+
 		private int sizeY;
 
 		private CItem selectedItem = null;
@@ -19,10 +20,10 @@ namespace kayito_Editor.Forms
 
 		private ItemEditor editor;
 
-        private bool EQUIP_INVENTORY_RANGE(int slot)
-        {
-            return slot >= 0 && (slot < (this.sizeX * this.sizeY));
-        }
+		private bool EQUIP_INVENTORY_RANGE(int slot)
+		{
+			return slot >= 0 && (slot < (this.sizeX * this.sizeY));
+		}
 
 		public ItemBoxPanel(int SizeX, int SizeY)
 		{
@@ -95,9 +96,9 @@ namespace kayito_Editor.Forms
 				return;
 			}
 
-            ItemManager.ITEM_TXT_INFO ItemInfo;
+			ItemManager.ITEM_TXT_INFO ItemInfo;
 
-            if (!ItemManager.m_ItemInfo.TryGetValue((ItemManager.MAX_ITEM_TYPE * this.m_Items[slot].Section) + this.m_Items[slot].Index, out ItemInfo))
+			if (!ItemManager.m_ItemInfo.TryGetValue((ItemManager.MAX_ITEM_TYPE * this.m_Items[slot].Section) + this.m_Items[slot].Index, out ItemInfo))
 			{
 				return;
 			}
@@ -124,9 +125,9 @@ namespace kayito_Editor.Forms
 
 		public bool InsertItem(CItem item, int slot)
 		{
-            ItemManager.ITEM_TXT_INFO ItemInfo;
+			ItemManager.ITEM_TXT_INFO ItemInfo;
 
-            if (!ItemManager.m_ItemInfo.TryGetValue((ItemManager.MAX_ITEM_TYPE * item.Section) + item.Index, out ItemInfo))
+			if (!ItemManager.m_ItemInfo.TryGetValue((ItemManager.MAX_ITEM_TYPE * item.Section) + item.Index, out ItemInfo))
 			{
 				return false;
 			}
@@ -150,9 +151,9 @@ namespace kayito_Editor.Forms
 
 		private void DeleteItem(CItem item)
 		{
-            ItemManager.ITEM_TXT_INFO ItemInfo;
+			ItemManager.ITEM_TXT_INFO ItemInfo;
 
-            if (!ItemManager.m_ItemInfo.TryGetValue((ItemManager.MAX_ITEM_TYPE * item.Section) + item.Index, out ItemInfo))
+			if (!ItemManager.m_ItemInfo.TryGetValue((ItemManager.MAX_ITEM_TYPE * item.Section) + item.Index, out ItemInfo))
 			{
 				return;
 			}
@@ -264,7 +265,7 @@ namespace kayito_Editor.Forms
 			{
 				if (this.m_Items[slot].IsEmpty == false && this.m_Items[slot].Slot == (slot))
 				{
-                    ItemManager.ITEM_TXT_INFO ItemInfo;
+					ItemManager.ITEM_TXT_INFO ItemInfo;
 
 					if (ItemManager.m_ItemInfo.TryGetValue((32 * this.m_Items[slot].Section + this.m_Items[slot].Index), out ItemInfo))
 					{

@@ -114,21 +114,21 @@ namespace kayito_Editor.Forms
 
 			try
 			{
-				query = string.Format("SELECT Inventory, Money FROM Character WHERE AccountID = '{0}' AND Name = '{1}'", this.AccountName, this.CharacterName);
+				query = $"SELECT Inventory, Money FROM Character WHERE AccountID = '{this.AccountName}' AND Name = '{this.CharacterName}'";
 
 				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
 
 				if (reader.Read())
 				{
-                    byte[] inventory = new byte[CItem.ITEM_SIZE * ItemManager.INVENTORY_FULL_SIZE];
+					byte[] inventory = new byte[CItem.ITEM_SIZE * ItemManager.INVENTORY_FULL_SIZE];
 
-                    byte[] item = new byte[CItem.ITEM_SIZE];
+					byte[] item = new byte[CItem.ITEM_SIZE];
 
-                    reader.GetBytes(0, 0, inventory, 0, CItem.ITEM_SIZE * ItemManager.INVENTORY_FULL_SIZE);
+					reader.GetBytes(0, 0, inventory, 0, CItem.ITEM_SIZE * ItemManager.INVENTORY_FULL_SIZE);
 
-                    for (int i = 0; i < ItemManager.INVENTORY_FULL_SIZE; i++)
+					for (int i = 0; i < ItemManager.INVENTORY_FULL_SIZE; i++)
 					{
-                        Buffer.BlockCopy(inventory, (i * CItem.ITEM_SIZE), item, 0, CItem.ITEM_SIZE);
+						Buffer.BlockCopy(inventory, (i * CItem.ITEM_SIZE), item, 0, CItem.ITEM_SIZE);
 
 						CItem newitem = new CItem();
 
@@ -152,12 +152,12 @@ namespace kayito_Editor.Forms
 				{
 					reader.Close();
 
-					MessageBox.Show("Error: Cannot get " + this.CharacterName + " inventory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show($"Error: Cannot get {this.CharacterName} inventory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
@@ -172,26 +172,26 @@ namespace kayito_Editor.Forms
 
 			try
 			{
-				query = string.Format("UPDATE Character SET Inventory = 0x{0}{1}, Money = {2} WHERE AccountID = '{3}' AND Name = '{4}'", this.m_ItemEquipPanel.GetItemsToHex(), this.m_ItemBoxPanel.GetItemsToHex(), this.Character_Zen.Value, this.AccountName, this.CharacterName);
+				query = $"UPDATE Character SET Inventory = 0x{this.m_ItemEquipPanel.GetItemsToHex()}{this.m_ItemBoxPanel.GetItemsToHex()}, Money = {this.Character_Zen.Value} WHERE AccountID = '{this.AccountName}' AND Name = '{this.CharacterName}'";
 
 				if (MuOnline.Mu_ExecuteSQL(query))
 				{
-					MessageBox.Show("Inventory updated.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show($"Inventory updated.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				else
 				{
-					MessageBox.Show("Error: Inventory update failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show($"Error: Inventory update failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
 		private void Btn_Inventory_Reset_Click(object sender, EventArgs e)
 		{
-			DialogResult result = MessageBox.Show("Do you want to RESET '" + this.CharacterName + "' inventory?\n\nAfter reseting, you'll have to press SAVE to apply the changes.", "RESTORE INVENTORY", MessageBoxButtons.YesNo);
+			DialogResult result = MessageBox.Show($"Do you want to RESET '{this.CharacterName}' inventory?\n\nAfter reseting, you'll have to press SAVE to apply the changes.", "RESTORE INVENTORY", MessageBoxButtons.YesNo);
 
 			if (result == DialogResult.Yes)
 			{

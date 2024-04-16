@@ -46,7 +46,7 @@ namespace kayito_Editor
 
 		private void LoadAccounts()
 		{
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Me_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
@@ -57,9 +57,9 @@ namespace kayito_Editor
 
 			try
 			{
-				query = string.Format("SELECT [memb___id] FROM [MEMB_INFO]");
+				query = $"SELECT memb___id FROM MEMB_INFO";
 
-				OleDbDataReader reader = new OleDbCommand(query, ((Import.USE_ME != 1) ? Import.Mu_Connection : Import.Me_Connection)).ExecuteReader();
+				OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
 
 				object value = null;
 
@@ -79,13 +79,13 @@ namespace kayito_Editor
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
 		private void LoadCharacters()
 		{
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Mu_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
@@ -96,9 +96,9 @@ namespace kayito_Editor
 
 			try
 			{
-				query = string.Format("SELECT [Name] FROM [Character]");
+				query = $"SELECT Name FROM Character";
 
-				OleDbDataReader reader = new OleDbCommand(query, ((Import.USE_ME != 1) ? Import.Mu_Connection : Import.Me_Connection)).ExecuteReader();
+				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
 
 				object value = null;
 
@@ -118,7 +118,7 @@ namespace kayito_Editor
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
@@ -126,14 +126,14 @@ namespace kayito_Editor
 		{
 			this.LoadAccounts();
 
-			MessageBox.Show("Accounts Reloaded", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show($"Accounts Reloaded", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void Btn_Char_Reload_Click(object sender, EventArgs e)
 		{
 			this.LoadCharacters();
 
-			MessageBox.Show("Characters Reloaded", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show($"Characters Reloaded", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void Btn_CreateAccount_Click(object sender, EventArgs e)
@@ -167,18 +167,18 @@ namespace kayito_Editor
 
 		private void Btn_DeleteAllChar_Click(object sender, EventArgs e)
 		{
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Mu_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
 
-			MessageBox.Show("TO USE THIS FUNCTION YOU HAVE TO SHUT DOWN YOUR MU SERVER.", "ATENTION !", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show($"TO USE THIS FUNCTION YOU HAVE TO SHUT DOWN YOUR MU SERVER.", "ATENTION !", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-			DialogResult result = MessageBox.Show("Do you want to DELETE ALL CHARACTERS?", "DELETE ALL CHARACTERS", MessageBoxButtons.YesNo);
+			DialogResult result = MessageBox.Show($"Do you want to DELETE ALL CHARACTERS?", "DELETE ALL CHARACTERS", MessageBoxButtons.YesNo);
 
 			if (result == DialogResult.Yes)
 			{
-				string lastQ = "";
+				string lastQ = null;
 
 				string executedQ = "{\n";
 
@@ -200,42 +200,46 @@ namespace kayito_Editor
 						executedQ = executedQ + lastQ + "\n ";
 					}
 
-					this.Name_Box.Items.Clear();
-
-					this.Name_Box.Text = "";
-
-					this.Character_Info_Box.Enabled = false;
-
 					if (qResult)
 					{
-						MessageBox.Show("ALL Characters deleted.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show($"ALL Characters deleted.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 					else
 					{
-						MessageBox.Show("Executed: " + executedQ + "}\nError: " + lastQ, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						MessageBox.Show($"[Executed] {executedQ}}}\n[Error] {lastQ}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					}
 				}
 				catch (Exception exception)
 				{
-					MessageBox.Show("SQL：" + lastQ + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"[SQL] {lastQ}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+				finally
+				{
+					this.LoadCharacters();
+
+					this.Character_List.Text = "";
+
+					this.Name_Box.Items.Clear();
+
+					this.Name_Box.Text = "";
 				}
 			}
 		}
 
 		private void Btn_DeleteAllDB_Click(object sender, EventArgs e)
 		{
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Mu_Connection.State != ConnectionState.Open || Import.Me_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
 
-			MessageBox.Show("TO USE THIS FUNCTION YOU HAVE TO SHUT DOWN YOUR MU SERVER.", "ATENTION !", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show($"TO USE THIS FUNCTION YOU HAVE TO SHUT DOWN YOUR MU SERVER.", "ATENTION !", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-			DialogResult result = MessageBox.Show("Do you want to DELETE ALL THE DATABASE?", "DELETE ALL DATABASE", MessageBoxButtons.YesNo);
+			DialogResult result = MessageBox.Show($"Do you want to DELETE ALL THE DATABASE?", "DELETE ALL DATABASE", MessageBoxButtons.YesNo);
 
 			if (result == DialogResult.Yes)
 			{
-				string lastQ = "";
+				string lastQ = null;
 
 				string executedQ = "{\n";
 
@@ -249,7 +253,7 @@ namespace kayito_Editor
 
 						if (lastQ.Contains("MEMB_INFO") || lastQ.Contains("MEMB_STAT"))
 						{
-							if ((Import.USE_ME != 1) ? !MuOnline.Mu_ExecuteSQL(lastQ) : !MuOnline.Me_ExecuteSQL(lastQ))
+							if (!MuOnline.Me_ExecuteSQL(lastQ))
 							{
 								qResult = false;
 
@@ -269,28 +273,32 @@ namespace kayito_Editor
 						executedQ = executedQ + lastQ + "\n ";
 					}
 
-					this.User_Box.Text = "";
-
-					this.Account_Info_Box.Enabled = false;
-
-					this.Name_Box.Items.Clear();
-
-					this.Name_Box.Text = "";
-
-					this.Character_Info_Box.Enabled = false;
-
 					if (qResult)
 					{
-						MessageBox.Show("ALL DATABASE deleted.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show($"ALL DATABASE deleted.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 					else
 					{
-						MessageBox.Show("Executed: " + executedQ + "}\nError: " + lastQ, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						MessageBox.Show($"[Executed] {executedQ}}}\n[Error] {lastQ}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					}
 				}
 				catch (Exception exception)
 				{
-					MessageBox.Show("SQL：" + lastQ + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"[SQL] {lastQ}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+				finally
+				{
+					this.LoadAccounts();
+
+					this.Account_List.Text = "";
+
+					this.LoadCharacters();
+
+					this.Character_List.Text = "";
+
+					this.Name_Box.Items.Clear();
+
+					this.Name_Box.Text = "";
 				}
 			}
 		}
@@ -315,7 +323,7 @@ namespace kayito_Editor
 
 		private void Account_List_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Me_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
@@ -333,6 +341,11 @@ namespace kayito_Editor
 
 		private void User_Box_TextChanged(object sender, EventArgs e)
 		{
+			if (this.User_Box.Text == "")
+			{
+				return;
+			}
+
 			this.Name_Box.Items.Clear();
 
 			this.Name_Box.Text = "";
@@ -341,14 +354,14 @@ namespace kayito_Editor
 
 			try
 			{
-				query = string.Format("SELECT GameID1, GameID2, GameID3, GameID4, GameID5, GameIDC FROM AccountCharacter WHERE Id = '{0}'", this.User_Box.Text);
+				query = $"SELECT GameID1, GameID2, GameID3, GameID4, GameID5, GameIDC FROM AccountCharacter WHERE Id = '{this.User_Box.Text}'";
 
 				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
 
-				string value = null;
-
 				if (reader.Read())
 				{
+					string value = null;
+
 					for (int i = 0; i < 5; i++)
 					{
 						value = Convert.ToString(reader.GetValue(i));
@@ -373,7 +386,9 @@ namespace kayito_Editor
 					}
 				}
 
-				query = string.Format("SELECT ServerName, ConnectStat, IP, ConnectTM, DisConnectTM from MEMB_STAT WHERE memb___id= '{0}'", this.User_Box.Text);
+				reader.Close();
+
+				query = $"SELECT ServerName, ConnectStat, IP, ConnectTM, DisConnectTM from MEMB_STAT WHERE memb___id= '{this.User_Box.Text}'";
 
 				reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
 
@@ -408,9 +423,11 @@ namespace kayito_Editor
 					this.lastOffline_value.Text = "NO INFO";
 				}
 
-				query = string.Format("SELECT memb__pwd, sno__numb, AccountLevel, AccountExpireDate, bloc_code, Bloc_Expire from MEMB_INFO WHERE memb___id= '{0}'", this.User_Box.Text);
+				reader.Close();
 
-				reader = new OleDbCommand(query, ((Import.USE_ME != 1) ? Import.Mu_Connection : Import.Me_Connection)).ExecuteReader();
+				query = $"SELECT memb__pwd, sno__numb, AccountLevel, AccountExpireDate, bloc_code, Bloc_Expire from MEMB_INFO WHERE memb___id = '{this.User_Box.Text}'";
+
+				reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
 
 				if (reader.Read())
 				{
@@ -436,41 +453,46 @@ namespace kayito_Editor
 				{
 					this.Btn_CreateCharacter.Enabled = true;
 				}
+
+				if (this.Name_Box.Items.Contains(this.Character_List.Text))
+				{
+					this.Name_Box.SelectedIndex = this.Name_Box.Items.IndexOf(this.Character_List.Text);
+				}
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
 		private void Btn_Acc_Apply_Click(object sender, EventArgs e)
 		{
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Me_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
 
-			string query = "SELECT ConnectStat FROM MEMB_STAT WHERE memb___id = '{0}'";
+			string query = null;
 
 			try
 			{
 				if (!Validator.PassWord(this.Pass_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Passwords must be between 4-10 characters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show("$Error: Passwords must be between 4-10 characters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.Code_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Code must be 18 numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show("$Error: Code must be 18 numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (this.Code_Box.Text.Length < 18)
 				{
-					MessageBox.Show("Error: Code must be 18 numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show("$Error: Code must be 18 numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else
 				{
-					query = string.Format(query, this.User_Box.Text.Trim());
+					query = $"SELECT ConnectStat FROM MEMB_STAT WHERE memb___id = '{this.User_Box.Text.Trim()}'";
 
-					OleDbDataReader reader = new OleDbCommand(query, ((Import.USE_ME != 1) ? Import.Mu_Connection : Import.Me_Connection)).ExecuteReader();
+					OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
 
 					if (reader.Read())
 					{
@@ -478,7 +500,7 @@ namespace kayito_Editor
 
 						if (Connected == 1)
 						{
-							MessageBox.Show("Error: Account must be disconnected. Disconnect account or login with another and reload", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+							MessageBox.Show("$Error: Account must be disconnected. Disconnect account or login with another and reload", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
 							reader.Close();
 
@@ -488,23 +510,21 @@ namespace kayito_Editor
 
 					reader.Close();
 
-					object[] Params = new object[] { this.Pass_Box.Text.Trim(), this.Code_Box.Text.Trim(), this.Vip_Level.Value, this.Vip_Date.Value, (!this.Ban_Box.Checked ? "'0'" : "'1'"), this.Ban_Date.Value, this.User_Box.Text.Trim() };
+					query = $"UPDATE MEMB_INFO SET memb__pwd = '{this.Pass_Box.Text.Trim()}', sno__numb = '{this.Code_Box.Text.Trim()}', AccountLevel = {this.Vip_Level.Value}, AccountExpireDate = '{this.Vip_Date.Value.ToString("yyyy-MM-dd HH:mm:ss")}', bloc_code = {(!this.Ban_Box.Checked ? '0' : '1')}, Bloc_Expire = '{this.Ban_Date.Value.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE (memb___id = '{this.User_Box.Text.Trim()}')";
 
-					query = string.Format("UPDATE MEMB_INFO SET memb__pwd = '{0}', sno__numb = '{1}', AccountLevel = {2}, AccountExpireDate = '{3}', bloc_code = {4}, Bloc_Expire = '{5}' WHERE (memb___id = '{6}')", Params);
-
-					if ((Import.USE_ME != 1) ? MuOnline.Mu_ExecuteSQL(query) : MuOnline.Me_ExecuteSQL(query))
+					if (MuOnline.Me_ExecuteSQL(query))
 					{
-						MessageBox.Show("Account updated.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show($"Account updated.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 					else
 					{
-						MessageBox.Show("Error: Account update failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						MessageBox.Show($"Error: Account update failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 				}
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
@@ -532,27 +552,24 @@ namespace kayito_Editor
 
 			try
 			{
-				query = string.Format("SELECT AccountID FROM Character WHERE Name = '{0}'", this.Character_List.Text);
+				query = $"SELECT AccountID FROM Character WHERE Name = '{this.Character_List.Text}'";
 
 				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
 
+				string account = "";
+
 				if (reader.Read())
 				{
-					string account = Convert.ToString(reader.GetValue(0));
-
-					this.User_Box.Text = account;
+					account = reader.GetString(0);
 				}
 
 				reader.Close();
 
-				if (this.Name_Box.Items.Contains(this.Character_List.Text))
-				{
-					this.Name_Box.SelectedIndex = this.Name_Box.Items.IndexOf(this.Character_List.Text);
-				}
+				this.User_Box.Text = account;
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
@@ -579,7 +596,7 @@ namespace kayito_Editor
 
 			try
 			{
-				query = string.Format("SELECT cLevel, ResetCount, GrandResetCount, Class, CtlCode, LevelUpPoint, Strength, Dexterity, Vitality, Energy, MapNumber, MapPosX, MapPosY FROM Character WHERE Name = '{0}'", this.Name_Box.Text);
+				query = $"SELECT cLevel, ResetCount, GrandResetCount, Class, CtlCode, LevelUpPoint, Strength, Dexterity, Vitality, Energy, MapNumber, MapPosX, MapPosY FROM Character WHERE Name = '{this.Name_Box.Text}'";
 
 				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
 
@@ -621,7 +638,7 @@ namespace kayito_Editor
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
@@ -648,68 +665,68 @@ namespace kayito_Editor
 
 		private void Btn_Char_Apply_Click(object sender, EventArgs e)
 		{
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Mu_Connection.State != ConnectionState.Open || Import.Me_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
 
-			string query = "SELECT ConnectStat FROM MEMB_STAT WHERE memb___id = '{0}'";
+			string query = null;
 
 			try
 			{
 				if (!Validator.Number(this.Level_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Level must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Level must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.Reset_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Reset must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Reset must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.GrandReset_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: GrandReset must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: GrandReset must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.Point_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Points must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Points must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.Strength_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Strength must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Strength must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.Dexterity_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Dexterity must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Dexterity must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.Vitality_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Vitality must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Vitality must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.Energy_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Energy must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Energy must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.PosX_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Position X must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Position X must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (!Validator.Number(this.PosY_Box.Text.Trim()))
 				{
-					MessageBox.Show("Error: Position Y must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Position Y must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (Convert.ToString(this.Class_Box.SelectedValue) == "-1")
 				{
-					MessageBox.Show("Error: Class UNKNOWN. Select a valid Class or modify Data/classes.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Class UNKNOWN. Select a valid Class or modify Data/classes.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else if (Convert.ToString(this.Map_Box.SelectedValue) == "-1")
 				{
-					MessageBox.Show("Error: Map UNKNOWN. Select a valid Map or modify Data/maps.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: Map UNKNOWN. Select a valid Map or modify Data/maps.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else
 				{
-					query = string.Format(query, this.User_Box.Text.Trim());
+					query = $"SELECT ConnectStat FROM MEMB_STAT WHERE memb___id = '{this.User_Box.Text.Trim()}'";
 
-					OleDbDataReader reader = new OleDbCommand(query, ((Import.USE_ME != 1) ? Import.Mu_Connection : Import.Me_Connection)).ExecuteReader();
+					OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
 
 					if (reader.Read())
 					{
@@ -717,7 +734,7 @@ namespace kayito_Editor
 
 						if (Connected == 1)
 						{
-							MessageBox.Show("Error: Account must be disconnected. Disconnect account or login with another and reload", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+							MessageBox.Show($"Error: Account must be disconnected. Disconnect account or login with another and reload", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
 							reader.Close();
 
@@ -727,23 +744,21 @@ namespace kayito_Editor
 
 					reader.Close();
 
-					object[] Params = new object[] { this.Level_Box.Text.Trim(), this.Reset_Box.Text.Trim(), this.GrandReset_Box.Text.Trim(), this.Class_Box.SelectedValue, this.Type_Box.SelectedValue, this.Point_Box.Text.Trim(), this.Strength_Box.Text.Trim(), this.Dexterity_Box.Text.Trim(), this.Vitality_Box.Text.Trim(), this.Energy_Box.Text.Trim(), this.Map_Box.SelectedValue, this.PosX_Box.Text.Trim(), this.PosY_Box.Text.Trim(), this.User_Box.Text.Trim(), this.Name_Box.Text.Trim() };
-
-					query = string.Format("UPDATE Character SET cLevel = {0}, ResetCount = {1}, GrandResetCount = {2}, Class = {3}, CtlCode = {4}, LevelUpPoint = {5}, Strength = {6}, Dexterity = {7}, Vitality = {8}, Energy = {9}, MapNumber = {10}, MapPosX = {11}, MapPosY = {12} WHERE AccountID = '{13}' AND Name = '{14}'", Params);
+					query = $"UPDATE Character SET cLevel = {this.Level_Box.Text.Trim()}, ResetCount = {this.Reset_Box.Text.Trim()}, GrandResetCount = {this.GrandReset_Box.Text.Trim()}, Class = {this.Class_Box.SelectedValue}, CtlCode = {this.Type_Box.SelectedValue}, LevelUpPoint = {this.Point_Box.Text.Trim()}, Strength = {this.Strength_Box.Text.Trim()}, Dexterity = {this.Dexterity_Box.Text.Trim()}, Vitality = {this.Vitality_Box.Text.Trim()}, Energy = {this.Energy_Box.Text.Trim()}, MapNumber = {this.Map_Box.SelectedValue}, MapPosX = {this.PosX_Box.Text.Trim()}, MapPosY = {this.PosY_Box.Text.Trim()} WHERE AccountID = '{this.User_Box.Text.Trim()}' AND Name = '{this.Name_Box.Text.Trim()}'";
 
 					if (MuOnline.Mu_ExecuteSQL(query))
 					{
-						MessageBox.Show("Character updated.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show($"Character updated.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 					else
 					{
-						MessageBox.Show("Error: Character update failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						MessageBox.Show($"Error: Character update failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 				}
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 

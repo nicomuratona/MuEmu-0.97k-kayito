@@ -16,7 +16,7 @@ namespace kayito_Editor.Forms
 			this.Class_Box.DisplayMember = "Value";
 			this.Class_Box.ValueMember = "Key";
 
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Me_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
@@ -25,9 +25,9 @@ namespace kayito_Editor.Forms
 
 			try
 			{
-				query = string.Format("SELECT [memb___id] FROM [MEMB_INFO]");
+				query = $"SELECT memb___id FROM MEMB_INFO";
 
-				OleDbDataReader reader = new OleDbCommand(query, ((Import.USE_ME != 1) ? Import.Mu_Connection : Import.Me_Connection)).ExecuteReader();
+				OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
 
 				object value = null;
 
@@ -49,76 +49,80 @@ namespace kayito_Editor.Forms
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
 		private void Btn_Create_Click(object sender, EventArgs e)
 		{
-			if (((Import.USE_ME != 1) ? Import.Mu_Connection.State : Import.Me_Connection.State) != ConnectionState.Open)
+			if (Import.Me_Connection.State != ConnectionState.Open)
 			{
 				return;
 			}
 
-			string query = "SELECT memb_guid FROM MEMB_INFO WHERE memb___id = '{0}'";
-
-			byte[] result = { 0x0 };
+			string query = null;
 
 			try
 			{
-				query = string.Format(query, this.Account_List.Text.Trim());
+				query = $"SELECT memb___id FROM MEMB_INFO WHERE memb___id = '{this.Account_List.Text.Trim()}'";
 
-				OleDbDataReader reader = new OleDbCommand(query, ((Import.USE_ME != 1) ? Import.Mu_Connection : Import.Me_Connection)).ExecuteReader();
+				OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
 
 				if (reader.Read())
 				{
-					OleDbCommand cmd = new OleDbCommand("dbo.WZ_CreateCharacter", Import.Mu_Connection);
+					reader.Close();
+
+					query = $"WZ_CreateCharacter";
+
+					OleDbCommand cmd = new OleDbCommand(query, Import.Mu_Connection);
 
 					cmd.CommandType = CommandType.StoredProcedure;
 
 					cmd.Parameters.AddWithValue("@AccountID", this.Account_List.Text);
 
-					cmd.Parameters.AddWithValue("@Name", this.Name_Box.Text);
+					cmd.Parameters.AddWithValue("@CharName", this.Name_Box.Text);
 
-					cmd.Parameters.AddWithValue("@Class", this.Class_Box.SelectedValue);
+					cmd.Parameters.AddWithValue("@CharClass", this.Class_Box.SelectedValue);
+
+					int result = -1;
 
 					using (reader = cmd.ExecuteReader())
 					{
 						if (reader.Read())
 						{
-							reader.GetBytes(0, 0, result, 0, 1);
+							result = reader.GetInt32(0);
 						}
 					}
 
 					reader.Close();
 
-					if (result[0] == 1)
+					if (result == 1)
 					{
-						MessageBox.Show("Character created", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show($"Character created", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
-					else if (result[0] == 0)
+					else if (result == 0)
 					{
-						MessageBox.Show("Character already exists", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						MessageBox.Show($"Character already exists", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					}
-					else if (result[0] == 3)
+					else if (result == 2)
 					{
-						MessageBox.Show("You can't create more characters in this account", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						MessageBox.Show($"You can't create more characters in this account", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					}
 					else
 					{
-						MessageBox.Show("Can't create character", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						MessageBox.Show($"Can't create character", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					}
 				}
 				else
 				{
-					MessageBox.Show("Error: The account [" + this.Account_List.Text.Trim() + "] doesn't exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show($"Error: The account '{this.Account_List.Text.Trim()}' doesn't exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
 					reader.Close();
 				}
 			}
 			catch (Exception exception)
 			{
-				MessageBox.Show("SQL：" + query + "\nError:" + exception.Message + "\nSource:" + exception.Source + "\nTrace:" + exception.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show($"[SQL] {query}\n[Error] {exception.Message}\n[Source] {exception.Source}\n[Trace] {exception.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 

@@ -83,7 +83,7 @@ namespace kayito_Editor.Forms
 			return -1;
 		}
 
-        private bool EquipItemCheck(ItemManager.ITEM_TXT_INFO itemInfo, int slot)
+		private bool EquipItemCheck(ItemManager.ITEM_TXT_INFO itemInfo, int slot)
 		{
 			if (itemInfo.Slot == -1)
 			{
@@ -120,9 +120,9 @@ namespace kayito_Editor.Forms
 
 		public bool InsertItem(CItem item, int slot)
 		{
-            ItemManager.ITEM_TXT_INFO ItemInfo;
+			ItemManager.ITEM_TXT_INFO ItemInfo;
 
-            if (!ItemManager.m_ItemInfo.TryGetValue((ItemManager.MAX_ITEM_TYPE * item.Section) + item.Index, out ItemInfo))
+			if (!ItemManager.m_ItemInfo.TryGetValue((ItemManager.MAX_ITEM_TYPE * item.Section) + item.Index, out ItemInfo))
 			{
 				return false;
 			}

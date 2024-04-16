@@ -38,23 +38,23 @@ namespace kayito_Editor.Source
 				}
 
 				Import.MU_TRUSTED = GetPrivateProfileInt("MuOnline", "EnableTrusted", 1, path);
-				Import.MU_SERVER = ReadString("MuOnline", "SERVER", "(local)");
-				Import.MU_PORT = ReadString("MuOnline", "PORT", "1433");
-				Import.MU_DB = ReadString("MuOnline", "MU_DB", "MuOnline");
-				Import.MU_DB_USER = ReadString("MuOnline", "USER", "sa");
-				Import.MU_DB_PASS = ReadString("MuOnline", "PASS", "");
+				Import.MU_SERVER = ReadString("MuOnline", "DataBaseHost", "localhost");
+				Import.MU_PORT = ReadString("MuOnline", "DataBasePort", "1433");
+				Import.MU_DB = ReadString("MuOnline", "DataBaseName", "MuOnline");
+				Import.MU_DB_USER = ReadString("MuOnline", "DataBaseUser", "sa");
+				Import.MU_DB_PASS = ReadString("MuOnline", "DataBasePass", "");
 
 				Import.USE_ME = GetPrivateProfileInt("Me_MuOnline", "USE_ME", 0, path);
 				Import.ME_TRUSTED = GetPrivateProfileInt("Me_MuOnline", "EnableTrusted", 1, path);
-				Import.ME_SERVER = ReadString("Me_MuOnline", "SERVER", "(local)");
-				Import.ME_PORT = ReadString("Me_MuOnline", "PORT", "1433");
-				Import.ME_DB = ReadString("Me_MuOnline", "ME_DB", "MuOnline");
-				Import.ME_DB_USER = ReadString("Me_MuOnline", "USER", "sa");
-				Import.ME_DB_PASS = ReadString("Me_MuOnline", "PASS", "");
+				Import.ME_SERVER = ReadString("Me_MuOnline", "DataBaseHost", "localhost");
+				Import.ME_PORT = ReadString("Me_MuOnline", "DataBasePort", "1433");
+				Import.ME_DB = ReadString("Me_MuOnline", "DataBaseName", "MuOnline");
+				Import.ME_DB_USER = ReadString("Me_MuOnline", "DataBaseUser", "sa");
+				Import.ME_DB_PASS = ReadString("Me_MuOnline", "DataBasePass", "");
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message);
+				MessageBox.Show(ex.Message, "InitReader");
 
 				Environment.Exit(0);
 			}
