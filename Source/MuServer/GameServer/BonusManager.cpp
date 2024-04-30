@@ -271,7 +271,7 @@ void CBonusManager::ProcState_EMPTY(BONUS_INFO* lpInfo)
 	{
 		if (lpInfo->StartMessage != -1)
 		{
-			gNotice.GCNoticeSendToAll(0, lpInfo->StartMessage);
+			gNotice.GCNoticeSendToAll(0, lpInfo->StartMessage, lpInfo->BonusName);
 		}
 
 		this->SetState(lpInfo, BONUS_STATE_START);
@@ -284,7 +284,7 @@ void CBonusManager::ProcState_START(BONUS_INFO* lpInfo)
 	{
 		if (lpInfo->FinalMessage != -1)
 		{
-			gNotice.GCNoticeSendToAll(0, lpInfo->FinalMessage);
+			gNotice.GCNoticeSendToAll(0, lpInfo->FinalMessage, lpInfo->BonusName);
 		}
 
 		this->SetState(lpInfo, BONUS_STATE_EMPTY);

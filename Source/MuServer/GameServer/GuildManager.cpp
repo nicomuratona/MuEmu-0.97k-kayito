@@ -15,9 +15,9 @@ CGuildManager::~CGuildManager()
 
 void CGuildManager::AllDelete()
 {
-	for (std::vector<GUILD_INFO*>::iterator it = this->vGuildList.begin(); it != this->vGuildList.end(); it++)
+	for (auto guildPtr : this->vGuildList)
 	{
-		delete (*it);
+		delete guildPtr;
 	}
 
 	this->vGuildList.clear();

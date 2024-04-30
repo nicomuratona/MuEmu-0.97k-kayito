@@ -77,7 +77,7 @@ struct GUILD_INFO
 
 		for (int n = 0; n < MAX_GUILD_MEMBER; n++)
 		{
-			if (this->Members[n].Use != false)
+			if (this->Members[n].Use)
 			{
 				count++;
 			}
