@@ -58,7 +58,9 @@ void CItemDrop::Load(char* path)
 
 			ITEM_DROP_INFO info;
 
-			info.Index = SafeGetItem(GET_ITEM(lpMemScript->GetNumber(), lpMemScript->GetAsNumber()));
+			info.Index = lpMemScript->GetNumber();
+
+			info.Index = SafeGetItem(GET_ITEM(info.Index, lpMemScript->GetAsNumber()));
 
 			info.Level = lpMemScript->GetAsNumber();
 

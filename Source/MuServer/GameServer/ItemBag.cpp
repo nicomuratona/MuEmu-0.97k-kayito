@@ -102,7 +102,9 @@ void CItemBag::Load(char* path)
 
 					memset(&info, 0, sizeof(info));
 
-					info.Index = SafeGetItem(GET_ITEM(lpMemScript->GetNumber(), lpMemScript->GetAsNumber()));
+					info.Index = lpMemScript->GetNumber();
+
+					info.Index = SafeGetItem(GET_ITEM(info.Index, lpMemScript->GetAsNumber()));
 
 					info.MinLevel = lpMemScript->GetAsNumber();
 

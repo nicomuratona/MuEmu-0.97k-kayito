@@ -53,7 +53,9 @@ void CItemStack::Load(char* path)
 
 			ITEM_STACK_INFO info;
 
-			info.ItemIndex = SafeGetItem(GET_ITEM(lpMemScript->GetNumber(), lpMemScript->GetAsNumber()));
+			info.ItemIndex = lpMemScript->GetNumber();
+
+			info.ItemIndex = SafeGetItem(GET_ITEM(info.ItemIndex, lpMemScript->GetAsNumber()));
 
 			info.Level = lpMemScript->GetAsNumber();
 

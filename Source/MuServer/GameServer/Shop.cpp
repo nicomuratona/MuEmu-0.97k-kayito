@@ -59,7 +59,9 @@ void CShop::Load(char* path)
 				break;
 			}
 
-			int ItemIndex = SafeGetItem(GET_ITEM(lpMemScript->GetNumber(), lpMemScript->GetAsNumber()));
+			int ItemIndex = lpMemScript->GetNumber();
+
+			ItemIndex = SafeGetItem(GET_ITEM(ItemIndex, lpMemScript->GetAsNumber()));
 
 			int ItemLevel = lpMemScript->GetAsNumber();
 

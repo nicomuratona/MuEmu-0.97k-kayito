@@ -54,7 +54,9 @@ void CItemValue::Load(char* path)
 
 			ITEM_VALUE_INFO info;
 
-			info.Index = SafeGetItem(GET_ITEM(lpMemScript->GetNumber(), lpMemScript->GetAsNumber()));
+			info.Index = lpMemScript->GetNumber();
+
+			info.Index = SafeGetItem(GET_ITEM(info.Index, lpMemScript->GetAsNumber()));
 
 			info.Level = lpMemScript->GetAsNumber();
 
