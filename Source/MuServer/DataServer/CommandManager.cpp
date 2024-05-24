@@ -51,7 +51,11 @@ void CCommandManager::GDCommandResetRecv(SDHP_COMMAND_RESET_RECV* lpMsg, int ind
 
 	memcpy(pMsg.name, lpMsg->name, sizeof(pMsg.name));
 
+#ifndef MYSQL
 	gQueryManager.ExecQuery("EXEC WZ_GetResetInfo '%s','%s'", lpMsg->account, lpMsg->name);
+#else
+	gQueryManager.ExecResultQuery("CALL WZ_GetResetInfo('%s', '%s')", lpMsg->account, lpMsg->name);
+#endif
 
 	gQueryManager.Fetch();
 
@@ -78,7 +82,11 @@ void CCommandManager::GDCommandGrandResetRecv(SDHP_COMMAND_RESET_RECV* lpMsg, in
 
 	memcpy(pMsg.name, lpMsg->name, sizeof(pMsg.name));
 
+#ifndef MYSQL
 	gQueryManager.ExecQuery("EXEC WZ_GetGrandResetInfo '%s','%s'", lpMsg->account, lpMsg->name);
+#else
+	gQueryManager.ExecResultQuery("CALL WZ_GetGrandResetInfo('%s', '%s')", lpMsg->account, lpMsg->name);
+#endif
 
 	gQueryManager.Fetch();
 

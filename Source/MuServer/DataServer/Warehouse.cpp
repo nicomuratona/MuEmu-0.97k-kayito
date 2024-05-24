@@ -27,15 +27,35 @@ void CWarehouse::GDWarehouseItemRecv(SDHP_WAREHOUSE_ITEM_RECV* lpMsg, int index)
 
 	if (lpMsg->WarehouseNumber == 0)
 	{
+	#ifndef MYSQL
 		if (gQueryManager.ExecQuery("SELECT AccountID FROM warehouse WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+	#else
+		if (gQueryManager.ExecResultQuery("SELECT AccountID FROM warehouse WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == false)
+	#endif
 		{
 			gQueryManager.Close();
 
+		#ifndef MYSQL
+
 			gQueryManager.ExecQuery("INSERT INTO warehouse (AccountID,Money,EndUseDate,DbVersion) VALUES ('%s',0,getdate(),3)", lpMsg->account);
+
+		#else
+
+			gQueryManager.ExecUpdateQuery("INSERT INTO warehouse (AccountID, Money, EndUseDate, DbVersion) VALUES ('%s', 0, now(), 3)", lpMsg->account);
+
+		#endif
 
 			gQueryManager.Close();
 
+		#ifndef MYSQL
+
 			gQueryManager.ExecQuery("UPDATE warehouse SET Items=CONVERT(varbinary(%d),REPLICATE(char(0xFF),%d)) WHERE AccountID='%s'", sizeof(pMsg.WarehouseItem), sizeof(pMsg.WarehouseItem), lpMsg->account);
+
+		#else
+
+			gQueryManager.ExecUpdateQuery("UPDATE warehouse SET Items=REPEAT(char(0xFF), %d) WHERE AccountID='%s'", sizeof(pMsg.WarehouseItem), lpMsg->account);
+
+		#endif
 
 			gQueryManager.Close();
 
@@ -47,7 +67,11 @@ void CWarehouse::GDWarehouseItemRecv(SDHP_WAREHOUSE_ITEM_RECV* lpMsg, int index)
 		{
 			gQueryManager.Close();
 
+		#ifndef MYSQL
 			if (gQueryManager.ExecQuery("SELECT Items,Money,pw FROM warehouse WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+		#else
+			if (gQueryManager.ExecResultQuery("SELECT Items, Money, pw FROM warehouse WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == false)
+		#endif
 			{
 				gQueryManager.Close();
 
@@ -71,15 +95,35 @@ void CWarehouse::GDWarehouseItemRecv(SDHP_WAREHOUSE_ITEM_RECV* lpMsg, int index)
 	}
 	else
 	{
+	#ifndef MYSQL
 		if (gQueryManager.ExecQuery("SELECT AccountID FROM ExtWarehouse WHERE AccountID='%s' AND Number=%d", lpMsg->account, lpMsg->WarehouseNumber) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+	#else
+		if (gQueryManager.ExecResultQuery("SELECT AccountID FROM ExtWarehouse WHERE AccountID='%s' AND Number=%d", lpMsg->account, lpMsg->WarehouseNumber) == false || gQueryManager.Fetch() == false)
+	#endif
 		{
 			gQueryManager.Close();
 
+		#ifndef MYSQL
+
 			gQueryManager.ExecQuery("INSERT INTO ExtWarehouse (AccountID,Money,Number) VALUES ('%s',0,%d)", lpMsg->account, lpMsg->WarehouseNumber);
+
+		#else
+
+			gQueryManager.ExecUpdateQuery("INSERT INTO ExtWarehouse (AccountID, Money, Number) VALUES ('%s', 0, %d)", lpMsg->account, lpMsg->WarehouseNumber);
+
+		#endif
 
 			gQueryManager.Close();
 
+		#ifndef MYSQL
+
 			gQueryManager.ExecQuery("UPDATE ExtWarehouse SET Items=CONVERT(varbinary(%d),REPLICATE(char(0xFF),%d)) WHERE AccountID='%s' AND Number=%d", sizeof(pMsg.WarehouseItem), sizeof(pMsg.WarehouseItem), lpMsg->account, lpMsg->WarehouseNumber);
+
+		#else
+
+			gQueryManager.ExecUpdateQuery("UPDATE ExtWarehouse SET Items=REPEAT(char(0xFF), %d) WHERE AccountID='%s' AND Number=%d", sizeof(pMsg.WarehouseItem), lpMsg->account, lpMsg->WarehouseNumber);
+
+		#endif
 
 			gQueryManager.Close();
 
@@ -91,7 +135,11 @@ void CWarehouse::GDWarehouseItemRecv(SDHP_WAREHOUSE_ITEM_RECV* lpMsg, int index)
 		{
 			gQueryManager.Close();
 
+		#ifndef MYSQL
 			if (gQueryManager.ExecQuery("SELECT Items,Money FROM ExtWarehouse WHERE AccountID='%s' AND Number=%d", lpMsg->account, lpMsg->WarehouseNumber) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+		#else
+			if (gQueryManager.ExecResultQuery("SELECT Items, Money FROM ExtWarehouse WHERE AccountID='%s' AND Number=%d", lpMsg->account, lpMsg->WarehouseNumber) == false || gQueryManager.Fetch() == false)
+		#endif
 			{
 				gQueryManager.Close();
 
@@ -107,7 +155,11 @@ void CWarehouse::GDWarehouseItemRecv(SDHP_WAREHOUSE_ITEM_RECV* lpMsg, int index)
 
 				gQueryManager.Close();
 
+			#ifndef MYSQL
 				if (gQueryManager.ExecQuery("SELECT pw FROM warehouse WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+			#else
+				if (gQueryManager.ExecResultQuery("SELECT pw FROM warehouse WHERE AccountID='%s'", lpMsg->account) == false || gQueryManager.Fetch() == false)
+			#endif
 				{
 					gQueryManager.Close();
 
@@ -128,6 +180,8 @@ void CWarehouse::GDWarehouseItemRecv(SDHP_WAREHOUSE_ITEM_RECV* lpMsg, int index)
 
 void CWarehouse::GDWarehouseItemSaveRecv(SDHP_WAREHOUSE_ITEM_SAVE_RECV* lpMsg)
 {
+#ifndef MYSQL
+
 	if (lpMsg->WarehouseNumber == 0)
 	{
 		gQueryManager.BindParameterAsBinary(1, lpMsg->WarehouseItem[0], sizeof(lpMsg->WarehouseItem));
@@ -152,6 +206,39 @@ void CWarehouse::GDWarehouseItemSaveRecv(SDHP_WAREHOUSE_ITEM_SAVE_RECV* lpMsg)
 
 		gQueryManager.Close();
 	}
+
+#else
+
+	if (lpMsg->WarehouseNumber == 0)
+	{
+		gQueryManager.PrepareQuery("UPDATE warehouse SET Items=?, Money=%d WHERE AccountID='%s'", lpMsg->WarehouseMoney, lpMsg->account);
+
+		gQueryManager.SetAsBinary(1, lpMsg->WarehouseItem[0], sizeof(lpMsg->WarehouseItem));
+
+		gQueryManager.ExecPreparedUpdateQuery();
+
+		gQueryManager.Close();
+
+		gQueryManager.ExecUpdateQuery("UPDATE warehouse SET pw=%d WHERE AccountID='%s'", lpMsg->WarehousePassword, lpMsg->account);
+
+		gQueryManager.Close();
+	}
+	else
+	{
+		gQueryManager.PrepareQuery("UPDATE ExtWarehouse SET Items=?, Money=%d WHERE AccountID='%s' AND Number=%d", lpMsg->WarehouseMoney, lpMsg->account, lpMsg->WarehouseNumber);
+
+		gQueryManager.SetAsBinary(1, lpMsg->WarehouseItem[0], sizeof(lpMsg->WarehouseItem));
+
+		gQueryManager.ExecPreparedUpdateQuery();
+
+		gQueryManager.Close();
+
+		gQueryManager.ExecUpdateQuery("UPDATE warehouse SET pw=%d WHERE AccountID='%s'", lpMsg->WarehousePassword, lpMsg->account);
+
+		gQueryManager.Close();
+	}
+
+#endif
 }
 
 void CWarehouse::DGWarehouseFreeSend(int ServerIndex, WORD index, char* account)

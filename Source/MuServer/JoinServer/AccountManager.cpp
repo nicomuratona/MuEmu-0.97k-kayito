@@ -33,7 +33,11 @@ void CAccountManager::ClearServerAccountInfo(WORD ServerCode)
 
 		gLog.Output(LOG_ACCOUNT, "[AccountInfo] Account disconnected by clear (Account: %s, IpAddress: %s, GameServerCode: %d)", it->second.Account, it->second.IpAddress, it->second.GameServerCode);
 
+	#ifndef MYSQL
 		gQueryManager.ExecQuery("EXEC WZ_DISCONNECT_MEMB '%s'", it->second.Account);
+	#else
+		gQueryManager.ExecUpdateQuery("CALL WZ_DISCONNECT_MEMB('%s')", it->second.Account);
+	#endif
 
 		gQueryManager.Close();
 

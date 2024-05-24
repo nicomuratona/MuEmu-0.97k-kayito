@@ -41,9 +41,21 @@ void CServerDisplayer::Init(HWND hWnd)
 {
 	this->m_hwnd = hWnd;
 
-	gLog.AddLog(true, "LOG");
+#ifndef MYSQL
 
-	gLog.AddLog(true, "LOG_ACCOUNT");
+	gLog.AddLog(GetPrivateProfileInt("Log", "LOG", 1, ".\\JoinServer.ini") != 0 , "LOG");
+
+	gLog.AddLog(GetPrivateProfileInt("Log", "LOG_ACCOUNT", 1, ".\\JoinServer.ini") != 0 , "LOG_ACCOUNT");
+
+#else
+
+	gLog.AddLog(GetPrivateProfileInt("Log", "LOG", 1, ".\\JoinServer.ini") != 0, "LOG");
+
+	gLog.AddLog(GetPrivateProfileInt("Log", "LOG_ACCOUNT", 1, ".\\JoinServer.ini") != 0, "LOG_ACCOUNT");
+
+	gLog.AddLog(GetPrivateProfileInt("Log", "LOG_QUERY", 1, ".\\JoinServer.ini") != 0, "LOG_QUERY");
+
+#endif
 }
 
 void CServerDisplayer::Run()

@@ -10,6 +10,7 @@
 #include <winsock2.h>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <queue>
 #include <map>
 #include <sql.h>

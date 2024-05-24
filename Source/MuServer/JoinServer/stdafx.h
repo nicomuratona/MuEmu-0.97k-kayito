@@ -12,6 +12,7 @@
 #include <map>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <sql.h>
 #include <sqlext.h>
 #include <assert.h>

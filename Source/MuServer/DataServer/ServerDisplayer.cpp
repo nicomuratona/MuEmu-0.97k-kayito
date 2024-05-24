@@ -39,7 +39,17 @@ void CServerDisplayer::Init(HWND hWnd)
 {
 	this->m_hwnd = hWnd;
 
-	gLog.AddLog(true, "LOG");
+#ifndef MYSQL
+
+	gLog.AddLog(GetPrivateProfileInt("Log", "LOG", 1, ".\\DataServer.ini") != 0, "LOG");
+
+#else
+
+	gLog.AddLog(GetPrivateProfileInt("Log", "LOG", 1, ".\\DataServer.ini") != 0, "LOG");
+
+	gLog.AddLog(GetPrivateProfileInt("Log", "LOG_QUERY", 1, ".\\DataServer.ini") != 0, "LOG_QUERY");
+
+#endif
 }
 
 void CServerDisplayer::Run()
