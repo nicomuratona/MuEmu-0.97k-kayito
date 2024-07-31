@@ -1,6 +1,10 @@
-﻿using System;
-using System.Data;
+﻿#if MYSQL
+using MySql.Data.MySqlClient;
+#else
 using System.Data.OleDb;
+#endif
+using System;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -96,7 +100,7 @@ namespace kayito_Editor.Source
 
 			this.AdditionalOption = (lpMsg[1] & 3) + ((lpMsg[7] & 64) / 16);
 
-			this.Serial = BitConverter.ToUInt32(lpMsg, 3);
+			this.Serial = BitManipulation.MAKE_NUMBERDW(BitManipulation.MAKE_NUMBERW(lpMsg[3], lpMsg[4]), BitManipulation.MAKE_NUMBERW(lpMsg[5], lpMsg[6]));
 
 			this.ExcellentOption = lpMsg[7] & 63;
 
@@ -165,13 +169,21 @@ namespace kayito_Editor.Source
 				{
 					query = $"WZ_GetItemSerial";
 
+				#if MYSQL
+					MySqlCommand cmd = new MySqlCommand(query, Import.Mu_Connection);
+				#else
 					OleDbCommand cmd = new OleDbCommand(query, Import.Mu_Connection);
+				#endif
 
 					cmd.CommandType = CommandType.StoredProcedure;
 
 					int result = -1;
 
+				#if MYSQL
+					using (MySqlDataReader reader = cmd.ExecuteReader())
+				#else
 					using (OleDbDataReader reader = cmd.ExecuteReader())
+				#endif
 					{
 						if (reader.Read())
 						{
@@ -196,7 +208,10 @@ namespace kayito_Editor.Source
 				}
 			}
 
-			Buffer.BlockCopy(BitConverter.GetBytes(this.Serial), 0, this.ItemHex, 3, 4);
+			this.ItemHex[3] = BitManipulation.SET_NUMBERHB(BitManipulation.SET_NUMBERHW(this.Serial));
+			this.ItemHex[4] = BitManipulation.SET_NUMBERLB(BitManipulation.SET_NUMBERHW(this.Serial));
+			this.ItemHex[5] = BitManipulation.SET_NUMBERHB(BitManipulation.SET_NUMBERLW(this.Serial));
+			this.ItemHex[6] = BitManipulation.SET_NUMBERLB(BitManipulation.SET_NUMBERLW(this.Serial));
 
 			this.ItemHex[7] = 0;
 			this.ItemHex[7] |= (byte)(((this.Section * ItemManager.MAX_ITEM_TYPE + this.Index) & 256) >> 1);

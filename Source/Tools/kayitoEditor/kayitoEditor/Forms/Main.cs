@@ -1,8 +1,12 @@
 ﻿using kayito_Editor.Forms;
 using kayito_Editor.Source;
+#if MYSQL
+using MySql.Data.MySqlClient;
+#else
+using System.Data.OleDb;
+#endif
 using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -59,7 +63,11 @@ namespace kayito_Editor
 			{
 				query = $"SELECT memb___id FROM MEMB_INFO";
 
+			#if MYSQL
+				MySqlDataReader reader = new MySqlCommand(query, Import.Me_Connection).ExecuteReader();
+			#else
 				OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
+			#endif
 
 				object value = null;
 
@@ -96,9 +104,13 @@ namespace kayito_Editor
 
 			try
 			{
-				query = $"SELECT Name FROM Character";
+				query = $"SELECT Name FROM \"Character\"";
 
+			#if MYSQL
+				MySqlDataReader reader = new MySqlCommand(query, Import.Mu_Connection).ExecuteReader();
+			#else
 				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+			#endif
 
 				object value = null;
 
@@ -356,7 +368,11 @@ namespace kayito_Editor
 			{
 				query = $"SELECT GameID1, GameID2, GameID3, GameID4, GameID5, GameIDC FROM AccountCharacter WHERE Id = '{this.User_Box.Text}'";
 
+			#if MYSQL
+				MySqlDataReader reader = new MySqlCommand(query, Import.Mu_Connection).ExecuteReader();
+			#else
 				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+			#endif
 
 				if (reader.Read())
 				{
@@ -390,7 +406,11 @@ namespace kayito_Editor
 
 				query = $"SELECT ServerName, ConnectStat, IP, ConnectTM, DisConnectTM from MEMB_STAT WHERE memb___id= '{this.User_Box.Text}'";
 
+			#if MYSQL
+				reader = new MySqlCommand(query, Import.Mu_Connection).ExecuteReader();
+			#else
 				reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+			#endif
 
 				if (reader.Read())
 				{
@@ -427,7 +447,11 @@ namespace kayito_Editor
 
 				query = $"SELECT memb__pwd, sno__numb, AccountLevel, AccountExpireDate, bloc_code, Bloc_Expire from MEMB_INFO WHERE memb___id = '{this.User_Box.Text}'";
 
+			#if MYSQL
+				reader = new MySqlCommand(query, Import.Me_Connection).ExecuteReader();
+			#else
 				reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
+			#endif
 
 				if (reader.Read())
 				{
@@ -492,7 +516,11 @@ namespace kayito_Editor
 				{
 					query = $"SELECT ConnectStat FROM MEMB_STAT WHERE memb___id = '{this.User_Box.Text.Trim()}'";
 
+				#if MYSQL
+					MySqlDataReader reader = new MySqlCommand(query, Import.Me_Connection).ExecuteReader();
+				#else
 					OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
+				#endif
 
 					if (reader.Read())
 					{
@@ -552,9 +580,13 @@ namespace kayito_Editor
 
 			try
 			{
-				query = $"SELECT AccountID FROM Character WHERE Name = '{this.Character_List.Text}'";
+				query = $"SELECT AccountID FROM \"Character\" WHERE Name = '{this.Character_List.Text}'";
 
+			#if MYSQL
+				MySqlDataReader reader = new MySqlCommand(query, Import.Mu_Connection).ExecuteReader();
+			#else
 				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+			#endif
 
 				string account = "";
 
@@ -596,9 +628,13 @@ namespace kayito_Editor
 
 			try
 			{
-				query = $"SELECT cLevel, ResetCount, GrandResetCount, Class, CtlCode, LevelUpPoint, Strength, Dexterity, Vitality, Energy, MapNumber, MapPosX, MapPosY FROM Character WHERE Name = '{this.Name_Box.Text}'";
+				query = $"SELECT cLevel, ResetCount, GrandResetCount, Class, CtlCode, LevelUpPoint, Strength, Dexterity, Vitality, Energy, MapNumber, MapPosX, MapPosY FROM \"Character\" WHERE Name = '{this.Name_Box.Text}'";
 
+			#if MYSQL
+				MySqlDataReader reader = new MySqlCommand(query, Import.Mu_Connection).ExecuteReader();
+			#else
 				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+			#endif
 
 				if (reader.Read())
 				{
@@ -726,7 +762,11 @@ namespace kayito_Editor
 				{
 					query = $"SELECT ConnectStat FROM MEMB_STAT WHERE memb___id = '{this.User_Box.Text.Trim()}'";
 
+				#if MYSQL
+					MySqlDataReader reader = new MySqlCommand(query, Import.Me_Connection).ExecuteReader();
+				#else
 					OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
+				#endif
 
 					if (reader.Read())
 					{
@@ -744,7 +784,7 @@ namespace kayito_Editor
 
 					reader.Close();
 
-					query = $"UPDATE Character SET cLevel = {this.Level_Box.Text.Trim()}, ResetCount = {this.Reset_Box.Text.Trim()}, GrandResetCount = {this.GrandReset_Box.Text.Trim()}, Class = {this.Class_Box.SelectedValue}, CtlCode = {this.Type_Box.SelectedValue}, LevelUpPoint = {this.Point_Box.Text.Trim()}, Strength = {this.Strength_Box.Text.Trim()}, Dexterity = {this.Dexterity_Box.Text.Trim()}, Vitality = {this.Vitality_Box.Text.Trim()}, Energy = {this.Energy_Box.Text.Trim()}, MapNumber = {this.Map_Box.SelectedValue}, MapPosX = {this.PosX_Box.Text.Trim()}, MapPosY = {this.PosY_Box.Text.Trim()} WHERE AccountID = '{this.User_Box.Text.Trim()}' AND Name = '{this.Name_Box.Text.Trim()}'";
+					query = $"UPDATE \"Character\" SET cLevel = {this.Level_Box.Text.Trim()}, ResetCount = {this.Reset_Box.Text.Trim()}, GrandResetCount = {this.GrandReset_Box.Text.Trim()}, Class = {this.Class_Box.SelectedValue}, CtlCode = {this.Type_Box.SelectedValue}, LevelUpPoint = {this.Point_Box.Text.Trim()}, Strength = {this.Strength_Box.Text.Trim()}, Dexterity = {this.Dexterity_Box.Text.Trim()}, Vitality = {this.Vitality_Box.Text.Trim()}, Energy = {this.Energy_Box.Text.Trim()}, MapNumber = {this.Map_Box.SelectedValue}, MapPosX = {this.PosX_Box.Text.Trim()}, MapPosY = {this.PosY_Box.Text.Trim()} WHERE AccountID = '{this.User_Box.Text.Trim()}' AND Name = '{this.Name_Box.Text.Trim()}'";
 
 					if (MuOnline.Mu_ExecuteSQL(query))
 					{

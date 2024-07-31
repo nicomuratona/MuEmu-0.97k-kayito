@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿#if MYSQL
+using MySql.Data.MySqlClient;
+#else
 using System.Data.OleDb;
+#endif
+using System.Collections.Generic;
 
 namespace kayito_Editor.Source
 {
 	class Import
 	{
-		public static int MU_TRUSTED;
 		public static string MU_SERVER;
 		public static string MU_PORT;
 		public static string MU_DB;
@@ -14,15 +17,19 @@ namespace kayito_Editor.Source
 
 		public static int USE_ME;
 
-		public static int ME_TRUSTED;
 		public static string ME_SERVER;
 		public static string ME_PORT;
 		public static string ME_DB;
 		public static string ME_DB_USER;
 		public static string ME_DB_PASS;
 
+	#if MYSQL
+		public static MySqlConnection Mu_Connection;
+		public static MySqlConnection Me_Connection;
+	#else
 		public static OleDbConnection Mu_Connection;
 		public static OleDbConnection Me_Connection;
+	#endif
 
 		public static IDictionary<int, string> Classes = new Dictionary<int, string>()
 		{
@@ -78,7 +85,7 @@ namespace kayito_Editor.Source
 		public static List<string> deleteAllDB = new List<string>()
 		{
 			"TRUNCATE TABLE AccountCharacter",
-			"TRUNCATE TABLE Character",
+			"TRUNCATE TABLE \"Character\"",
 			"TRUNCATE TABLE ExtWarehouse",
 			"TRUNCATE TABLE GameServerInfo",
 			"TRUNCATE TABLE GoldenCoin",
@@ -96,7 +103,7 @@ namespace kayito_Editor.Source
 		public static List<string> deleteAllChars = new List<string>()
 		{
 			"TRUNCATE TABLE AccountCharacter",
-			"TRUNCATE TABLE Character",
+			"TRUNCATE TABLE \"Character\"",
 			"TRUNCATE TABLE Guild",
 			"TRUNCATE TABLE GuildMember",
 			"TRUNCATE TABLE OptionData",

@@ -1,7 +1,11 @@
 ﻿using kayito_Editor.Source;
+#if MYSQL
+using MySql.Data.MySqlClient;
+#else
+using System.Data.OleDb;
+#endif
 using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Windows.Forms;
 
 namespace kayito_Editor.Forms
@@ -31,7 +35,11 @@ namespace kayito_Editor.Forms
 
 				query = $"SELECT COUNT(1) FROM MEMB_INFO";
 
+			#if MYSQL
+				MySqlDataReader reader = new MySqlCommand(query, Import.Me_Connection).ExecuteReader();
+			#else
 				OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
+			#endif
 
 				if (reader.Read())
 				{
@@ -42,7 +50,11 @@ namespace kayito_Editor.Forms
 
 				query = $"SELECT COUNT(1) FROM MEMB_STAT WHERE ConnectStat = 1";
 
+			#if MYSQL
+				reader = new MySqlCommand(query, Import.Me_Connection).ExecuteReader();
+			#else
 				reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
+			#endif
 
 				if (reader.Read())
 				{
@@ -51,11 +63,15 @@ namespace kayito_Editor.Forms
 
 				reader.Close();
 
-				query = $"SELECT COUNT(*) from Character";
+				query = $"SELECT COUNT(*) from \"Character\"";
 
 				int TotalChar = 0;
 
+			#if MYSQL
+				reader = new MySqlCommand(query, Import.Mu_Connection).ExecuteReader();
+			#else
 				reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+			#endif
 
 				if (reader.Read())
 				{
@@ -66,9 +82,13 @@ namespace kayito_Editor.Forms
 
 				reader.Close();
 
-				query = $"SELECT Class, COUNT(Class) as Cant from Character group by Class order by Class asc";
+				query = $"SELECT Class, COUNT(Class) as Cant from \"Character\" group by Class order by Class asc";
 
+			#if MYSQL
+				reader = new MySqlCommand(query, Import.Mu_Connection).ExecuteReader();
+			#else
 				reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+			#endif
 
 				while (reader.Read())
 				{

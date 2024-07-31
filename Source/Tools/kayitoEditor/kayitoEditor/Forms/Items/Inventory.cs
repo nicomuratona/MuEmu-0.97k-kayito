@@ -1,7 +1,11 @@
 ﻿using kayito_Editor.Source;
+#if MYSQL
+using MySql.Data.MySqlClient;
+#else
+using System.Data.OleDb;
+#endif
 using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Windows.Forms;
 
 namespace kayito_Editor.Forms
@@ -114,9 +118,13 @@ namespace kayito_Editor.Forms
 
 			try
 			{
-				query = $"SELECT Inventory, Money FROM Character WHERE AccountID = '{this.AccountName}' AND Name = '{this.CharacterName}'";
+				query = $"SELECT Inventory, Money FROM \"Character\" WHERE AccountID = '{this.AccountName}' AND Name = '{this.CharacterName}'";
 
+			#if MYSQL
+				MySqlDataReader reader = new MySqlCommand(query, Import.Mu_Connection).ExecuteReader();
+			#else
 				OleDbDataReader reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+			#endif
 
 				if (reader.Read())
 				{
@@ -172,7 +180,7 @@ namespace kayito_Editor.Forms
 
 			try
 			{
-				query = $"UPDATE Character SET Inventory = 0x{this.m_ItemEquipPanel.GetItemsToHex()}{this.m_ItemBoxPanel.GetItemsToHex()}, Money = {this.Character_Zen.Value} WHERE AccountID = '{this.AccountName}' AND Name = '{this.CharacterName}'";
+				query = $"UPDATE \"Character\" SET Inventory = 0x{this.m_ItemEquipPanel.GetItemsToHex()}{this.m_ItemBoxPanel.GetItemsToHex()}, Money = {this.Character_Zen.Value} WHERE AccountID = '{this.AccountName}' AND Name = '{this.CharacterName}'";
 
 				if (MuOnline.Mu_ExecuteSQL(query))
 				{

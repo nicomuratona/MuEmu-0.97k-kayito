@@ -1,7 +1,11 @@
 ﻿using kayito_Editor.Source;
+#if MYSQL
+using MySql.Data.MySqlClient;
+#else
+using System.Data.OleDb;
+#endif
 using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Windows.Forms;
 
 namespace kayito_Editor.Forms
@@ -48,7 +52,11 @@ namespace kayito_Editor.Forms
 				{
 					query = $"SELECT memb___id FROM MEMB_INFO WHERE memb___id = '{this.Account_Box.Text.Trim()}'";
 
+				#if MYSQL
+					MySqlDataReader reader = new MySqlCommand(query, Import.Me_Connection).ExecuteReader();
+				#else
 					OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
+				#endif
 
 					if (reader.Read())
 					{

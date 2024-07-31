@@ -1,7 +1,11 @@
 ﻿using kayito_Editor.Source;
+#if MYSQL
+using MySql.Data.MySqlClient;
+#else
+using System.Data.OleDb;
+#endif
 using System;
 using System.Data;
-using System.Data.OleDb;
 using System.Windows.Forms;
 
 namespace kayito_Editor.Forms
@@ -27,7 +31,11 @@ namespace kayito_Editor.Forms
 			{
 				query = $"SELECT memb___id FROM MEMB_INFO";
 
+			#if MYSQL
+				MySqlDataReader reader = new MySqlCommand(query, Import.Me_Connection).ExecuteReader();
+			#else
 				OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
+			#endif
 
 				object value = null;
 
@@ -62,11 +70,17 @@ namespace kayito_Editor.Forms
 
 			string query = null;
 
+			int result = -1;
+
 			try
 			{
 				query = $"SELECT memb___id FROM MEMB_INFO WHERE memb___id = '{this.Account_List.Text.Trim()}'";
 
+			#if MYSQL
+				MySqlDataReader reader = new MySqlCommand(query, Import.Me_Connection).ExecuteReader();
+			#else
 				OleDbDataReader reader = new OleDbCommand(query, Import.Me_Connection).ExecuteReader();
+			#endif
 
 				if (reader.Read())
 				{
@@ -74,7 +88,11 @@ namespace kayito_Editor.Forms
 
 					query = $"WZ_CreateCharacter";
 
+				#if MYSQL
+					MySqlCommand cmd = new MySqlCommand(query, Import.Mu_Connection);
+				#else
 					OleDbCommand cmd = new OleDbCommand(query, Import.Mu_Connection);
+				#endif
 
 					cmd.CommandType = CommandType.StoredProcedure;
 
@@ -83,8 +101,6 @@ namespace kayito_Editor.Forms
 					cmd.Parameters.AddWithValue("@CharName", this.Name_Box.Text);
 
 					cmd.Parameters.AddWithValue("@CharClass", this.Class_Box.SelectedValue);
-
-					int result = -1;
 
 					using (reader = cmd.ExecuteReader())
 					{

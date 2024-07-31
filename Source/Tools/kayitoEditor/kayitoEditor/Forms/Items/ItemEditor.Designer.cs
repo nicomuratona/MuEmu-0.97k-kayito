@@ -257,6 +257,11 @@ namespace kayito_Editor.Forms
 			this.Durability_Box.Size = new System.Drawing.Size(77, 22);
 			this.Durability_Box.TabIndex = 3;
 			this.Durability_Box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.Durability_Box.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
 			// 
 			// Option_Box
 			// 

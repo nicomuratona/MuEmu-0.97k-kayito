@@ -1,6 +1,10 @@
 ﻿using kayito_Editor.Source;
-using System;
+#if MYSQL
+using MySql.Data.MySqlClient;
+#else
 using System.Data.OleDb;
+#endif
+using System;
 using System.Windows.Forms;
 
 namespace kayito_Editor
@@ -13,33 +17,46 @@ namespace kayito_Editor
 
 			try
 			{
-				if (Import.MU_TRUSTED != 1)
-				{
-					connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.MU_SERVER},{Import.MU_PORT};Initial Catalog={Import.MU_DB};Uid={Import.MU_DB_USER};Pwd={Import.MU_DB_PASS}";
-				}
-				else
-				{
-					connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.MU_SERVER};Initial Catalog={Import.MU_DB};Integrated Security=SSPI;";
-				}
+			#if MYSQL
+				connection_string = $"SERVER={Import.MU_SERVER};PORT={Import.MU_PORT};DATABASE={Import.MU_DB};UID={Import.MU_DB_USER};PASSWORD={Import.MU_DB_PASS};";
+
+				Import.Mu_Connection = new MySqlConnection(connection_string);
+			#else
+				connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.MU_SERVER},{Import.MU_PORT};Initial Catalog={Import.MU_DB};Uid={Import.MU_DB_USER};Pwd={Import.MU_DB_PASS}";
 
 				Import.Mu_Connection = new OleDbConnection(connection_string);
+			#endif
 
 				Import.Mu_Connection.Open();
 
+			#if MYSQL
+				// Set ANSI_QUOTES mode
+				using (MySqlCommand cmd = new MySqlCommand("SET SESSION sql_mode = 'ANSI_QUOTES'", Import.Mu_Connection))
+				{
+					cmd.ExecuteNonQuery();
+				}
+			#endif
+
 				if (Import.USE_ME == 1)
 				{
-					if (Import.ME_TRUSTED != 1)
-					{
-						connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.ME_SERVER},{Import.ME_PORT};Initial Catalog={Import.ME_DB};Uid={Import.ME_DB_USER};Pwd={Import.ME_DB_PASS}";
-					}
-					else
-					{
-						connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.ME_SERVER};Initial Catalog={Import.ME_DB};Integrated Security=SSPI;";
-					}
+				#if MYSQL
+					connection_string = $"SERVER={Import.ME_SERVER};PORT={Import.ME_PORT};DATABASE={Import.ME_DB};UID={Import.ME_DB_USER};PASSWORD={Import.ME_DB_PASS};";
+
+					Import.Me_Connection = new MySqlConnection(connection_string);
+				#else
+					connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.ME_SERVER},{Import.ME_PORT};Initial Catalog={Import.ME_DB};Uid={Import.ME_DB_USER};Pwd={Import.ME_DB_PASS}";
 
 					Import.Me_Connection = new OleDbConnection(connection_string);
-
+				#endif
 					Import.Me_Connection.Open();
+
+				#if MYSQL
+					// Set ANSI_QUOTES mode
+					using (MySqlCommand cmd = new MySqlCommand("SET SESSION sql_mode = 'ANSI_QUOTES'", Import.Me_Connection))
+					{
+						cmd.ExecuteNonQuery();
+					}
+				#endif
 				}
 				else
 				{
@@ -60,7 +77,11 @@ namespace kayito_Editor
 
 			try
 			{
+			#if MYSQL
+				MySqlCommand cmd = new MySqlCommand(query, Import.Mu_Connection);
+			#else
 				OleDbCommand cmd = new OleDbCommand(query, Import.Mu_Connection);
+			#endif
 
 				cmd.ExecuteNonQuery();
 
@@ -84,7 +105,11 @@ namespace kayito_Editor
 
 			try
 			{
+			#if MYSQL
+				MySqlCommand cmd = new MySqlCommand(query, Import.Me_Connection);
+			#else
 				OleDbCommand cmd = new OleDbCommand(query, Import.Me_Connection);
+			#endif
 
 				cmd.ExecuteNonQuery();
 

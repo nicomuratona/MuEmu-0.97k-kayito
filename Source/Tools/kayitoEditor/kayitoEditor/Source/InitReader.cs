@@ -37,7 +37,6 @@ namespace kayito_Editor.Source
 					throw new NullReferenceException("Config.ini not found.");
 				}
 
-				Import.MU_TRUSTED = GetPrivateProfileInt("MuOnline", "EnableTrusted", 1, path);
 				Import.MU_SERVER = ReadString("MuOnline", "DataBaseHost", "localhost");
 				Import.MU_PORT = ReadString("MuOnline", "DataBasePort", "1433");
 				Import.MU_DB = ReadString("MuOnline", "DataBaseName", "MuOnline");
@@ -45,7 +44,6 @@ namespace kayito_Editor.Source
 				Import.MU_DB_PASS = ReadString("MuOnline", "DataBasePass", "");
 
 				Import.USE_ME = GetPrivateProfileInt("Me_MuOnline", "USE_ME", 0, path);
-				Import.ME_TRUSTED = GetPrivateProfileInt("Me_MuOnline", "EnableTrusted", 1, path);
 				Import.ME_SERVER = ReadString("Me_MuOnline", "DataBaseHost", "localhost");
 				Import.ME_PORT = ReadString("Me_MuOnline", "DataBasePort", "1433");
 				Import.ME_DB = ReadString("Me_MuOnline", "DataBaseName", "MuOnline");
