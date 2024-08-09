@@ -198,8 +198,8 @@ struct ITEM_INFO
 	int DefenseSuccessRate;
 	int AttackSpeed;
 	int WalkSpeed;
-	int Durability;
-	int MagicDurability;
+	BYTE Durability;
+	BYTE MagicDurability;
 	int Value;
 	int BuyMoney;
 	int Resistance[MAX_RESISTANCE_TYPE];

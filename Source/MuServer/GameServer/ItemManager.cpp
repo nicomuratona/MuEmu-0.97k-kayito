@@ -131,8 +131,6 @@ void CItemManager::Load(char* path)
 					info.RequireVitality = lpMemScript->GetAsNumber();
 
 					info.TwoHand = ((info.Width >= 2) ? 1 : 0);
-
-					info.Durability += info.MagicDurability;
 				}
 				else if (section >= 6 && section <= 11)
 				{
@@ -317,26 +315,33 @@ int CItemManager::GetItemDurability(int index, int level, int ExceOption)
 		return 1;
 	}
 
+	int ItemDurability = ItemInfo.Durability;
+
+	if (index >= GET_ITEM(5, 0) && index < GET_ITEM(6, 0)) // Staffs
+	{
+		ItemDurability = ItemInfo.MagicDurability;
+	}
+
 	int dur = 0;
 
 	if (level >= 5)
 	{
 		if (level == 10)
 		{
-			dur = ItemInfo.Durability + ((level * 2) - 3);
+			dur = ItemDurability + ((level * 2) - 3);
 		}
 		else if (level == 11)
 		{
-			dur = ItemInfo.Durability + ((level * 2) - 1);
+			dur = ItemDurability + ((level * 2) - 1);
 		}
 		else
 		{
-			dur = ItemInfo.Durability + ((level * 2) - 4);
+			dur = ItemDurability + ((level * 2) - 4);
 		}
 	}
 	else
 	{
-		dur = ItemInfo.Durability + level;
+		dur = ItemDurability + level;
 	}
 
 	if (index != GET_ITEM(0, 19) && index != GET_ITEM(2, 13) && index != GET_ITEM(4, 18) && index != GET_ITEM(5, 10) && ItemInfo.Slot != 7) // Sword of Archangel,Scepter of Archangel,Crossbow of Archangel,Staff of Archangel

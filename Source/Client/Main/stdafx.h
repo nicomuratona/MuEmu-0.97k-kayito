@@ -23,6 +23,7 @@
 #include <control.h>
 #include <mbstring.h>
 #include <fstream>
+#include <deque>
 
 // General Includes
 #include "Console.h"

@@ -467,22 +467,9 @@ void CItem::Convert(int index, BYTE SkillOption, BYTE LuckOption, BYTE AddOption
 
 	if (gItemOption.GetItemOption(SPECIAL_SKILL_OPTION, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
 	{
-		if (this->m_OptionsQuant < MAX_SPECIAL_OPTION)
+		if (pItemOption != SKILL_NONE || (pItemOption = ItemInfo.Skill) != SKILL_NONE)
 		{
-			if (pItemOption != SKILL_NONE || (pItemOption = ItemInfo.Skill) != SKILL_NONE)
-			{
-				this->m_SkillOption = ((this->m_SkillOption == 0) ? 1 : this->m_SkillOption);
-
-				this->m_SpecialIndex[this->m_OptionsQuant] = pItemOption;
-
-				this->m_SpecialValue[this->m_OptionsQuant] = pItemValue;
-
-				this->m_OptionsQuant++;
-			}
-			else
-			{
-				this->m_SkillOption = 0;
-			}
+			this->m_SkillOption = ((this->m_SkillOption == 0) ? 1 : this->m_SkillOption);
 		}
 		else
 		{
@@ -861,6 +848,11 @@ void CItem::Value()
 				}
 			}
 
+			if (this->m_SkillOption != 0)
+			{
+				price += (price * 25) / 100;
+			}
+
 			if (this->m_LuckOption != 0)
 			{
 				price += (price * 25) / 100;
@@ -958,10 +950,6 @@ int CItem::GetItemSkill()
 		if (pItemOption != SKILL_NONE || (pItemOption = ItemInfo.Skill) != SKILL_NONE)
 		{
 			return pItemOption;
-		}
-		else
-		{
-			return 0;
 		}
 	}
 

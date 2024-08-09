@@ -371,6 +371,10 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 
 	memset(ip->SpecialValue, 0, sizeof(ip->SpecialValue));
 
+	std::deque<std::pair<int, int>> ToInsertLuckOption;
+
+	std::deque<std::pair<int, int>> ToInsertOptions;
+
 	BYTE SkillOption = (Attribute1 / 128) & 1;
 
 	BYTE LuckOption = (Attribute1 / 4) & 1;
@@ -381,20 +385,13 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 
 	BYTE pItemValue = 0;
 
-	/************************** INSERT SKILL OPTION **************************/
+	/************************** INSERT EXCELLENT OPTIONS **************************/
 
-	if (gItemOption.GetItemOption(SPECIAL_SKILL_OPTION, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
+	for (int i = SPECIAL_EXCELLENT1; i <= SPECIAL_EXCELLENT6; i++)
 	{
-		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
+		if (gItemOption.GetItemOption(i, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
 		{
-			if (pItemOption != SKILL_NONE || (pItemOption = gCustomItem.GetCustomItemSkill(ip->Type)) != SKILL_NONE)
-			{
-				ip->Special[ip->SpecialNum] = pItemOption;
-
-				ip->SpecialValue[ip->SpecialNum] = pItemValue;
-
-				ip->SpecialNum++;
-			}
+			ToInsertOptions.push_back({ pItemOption, gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level) });
 		}
 	}
 
@@ -402,167 +399,97 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 
 	if (gItemOption.GetItemOption(SPECIAL_LUCK_OPTION, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
 	{
-		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
-		{
-			ip->Special[ip->SpecialNum] = pItemOption;
-
-			ip->SpecialValue[ip->SpecialNum] = pItemValue;
-
-			ip->SpecialNum++;
-		}
+		ToInsertLuckOption.push_back({ pItemOption, pItemValue });
 	}
 
 	/************************** INSERT ADDITIONAL OPTION **************************/
 
 	if (gItemOption.GetItemOption(SPECIAL_ADDITIONAL_OPTION, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
 	{
-		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
+		ToInsertLuckOption.push_back({ pItemOption, pItemValue * AdditionalOption });
+
+		switch (ip->Type)
 		{
-			ip->Special[ip->SpecialNum] = pItemOption;
-
-			ip->SpecialValue[ip->SpecialNum] = pItemValue * AdditionalOption;
-
-			switch (ip->Type)
+			case GET_ITEM(12, 1): // Wings of Angel
 			{
-				case GET_ITEM(12, 1): // Wings of Angel
-				{
-					ip->RequireStrength += (AdditionalOption * 4);
+				ip->RequireStrength += (AdditionalOption * 4);
 
-					break;
-				}
-
-				case GET_ITEM(12, 2): // Wings of Satan
-				{
-					ip->RequireStrength += (AdditionalOption * 4);
-
-					break;
-				}
-
-				case GET_ITEM(12, 3): // Wings of Spirit
-				{
-					ip->RequireStrength += (AdditionalOption * 4);
-
-					break;
-				}
-
-				case GET_ITEM(12, 4): // Wings of Soul
-				{
-					ip->RequireStrength += (AdditionalOption * 4);
-
-					break;
-				}
-
-				case GET_ITEM(12, 5): // Wings of Devil
-				{
-					ip->RequireStrength += (AdditionalOption * 4);
-
-					break;
-				}
-
-				case GET_ITEM(12, 6): // Wings of Darkness
-				{
-					ip->RequireStrength += (AdditionalOption * 4);
-
-					break;
-				}
-
-				default:
-				{
-					ip->RequireStrength += ((ip->Type < GET_ITEM(12, 0)) ? (AdditionalOption * 4) : 0);
-
-					break;
-				}
+				break;
 			}
 
-			ip->SpecialNum++;
+			case GET_ITEM(12, 2): // Wings of Satan
+			{
+				ip->RequireStrength += (AdditionalOption * 4);
+
+				break;
+			}
+
+			case GET_ITEM(12, 3): // Wings of Spirit
+			{
+				ip->RequireStrength += (AdditionalOption * 4);
+
+				break;
+			}
+
+			case GET_ITEM(12, 4): // Wings of Soul
+			{
+				ip->RequireStrength += (AdditionalOption * 4);
+
+				break;
+			}
+
+			case GET_ITEM(12, 5): // Wings of Devil
+			{
+				ip->RequireStrength += (AdditionalOption * 4);
+
+				break;
+			}
+
+			case GET_ITEM(12, 6): // Wings of Darkness
+			{
+				ip->RequireStrength += (AdditionalOption * 4);
+
+				break;
+			}
+
+			default:
+			{
+				ip->RequireStrength += ((ip->Type < GET_ITEM(12, 0)) ? (AdditionalOption * 4) : 0);
+
+				break;
+			}
 		}
 	}
 
-	/************************** INSERT EXCELLENT OPTION 1 **************************/
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT1, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
+	if (ip->Type >= GET_ITEM(12, 0) && ip->Type <= GET_ITEM(12, 6))
 	{
-		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
-		{
-			ip->Special[ip->SpecialNum] = pItemOption;
-
-			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
-
-			ip->SpecialNum++;
-		}
+		ToInsertOptions.insert(ToInsertOptions.end(), ToInsertLuckOption.begin(), ToInsertLuckOption.end());
 	}
-
-	/************************** INSERT EXCELLENT OPTION 2 **************************/
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT2, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
+	else
 	{
-		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
-		{
-			ip->Special[ip->SpecialNum] = pItemOption;
-
-			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
-
-			ip->SpecialNum++;
-		}
+		ToInsertOptions.insert(ToInsertOptions.begin(), ToInsertLuckOption.begin(), ToInsertLuckOption.end());
 	}
 
-	/************************** INSERT EXCELLENT OPTION 3 **************************/
+	/************************** INSERT SKILL OPTION **************************/
 
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT3, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
+	/*
+	if (gItemOption.GetItemOption(SPECIAL_SKILL_OPTION, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
 	{
-		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
+		if (pItemOption != SKILL_NONE || (pItemOption = gCustomItem.GetCustomItemSkill(ip->Type)) != SKILL_NONE)
 		{
-			ip->Special[ip->SpecialNum] = pItemOption;
-
-			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
-
-			ip->SpecialNum++;
+			ToInsertOptions.insert(ToInsertOptions.begin(), { pItemOption, pItemValue });
 		}
 	}
+	*/
 
-	/************************** INSERT EXCELLENT OPTION 4 **************************/
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT4, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
+	for (const auto& InsertOpt : ToInsertOptions)
 	{
-		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
-		{
-			ip->Special[ip->SpecialNum] = pItemOption;
+		ip->Special[ip->SpecialNum] = InsertOpt.first;
 
-			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
+		ip->SpecialValue[ip->SpecialNum] = InsertOpt.second;
 
-			ip->SpecialNum++;
-		}
+		ip->SpecialNum++;
 	}
-
-	/************************** INSERT EXCELLENT OPTION 5 **************************/
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT5, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
-	{
-		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
-		{
-			ip->Special[ip->SpecialNum] = pItemOption;
-
-			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
-
-			ip->SpecialNum++;
-		}
-	}
-
-	/************************** INSERT EXCELLENT OPTION 6 **************************/
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT6, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
-	{
-		if (ip->SpecialNum < MAX_SPECIAL_OPTION)
-		{
-			ip->Special[ip->SpecialNum] = pItemOption;
-
-			ip->SpecialValue[ip->SpecialNum] = gItemOption.GetItemOptionValue(pItemOption, pItemValue, m_Level);
-
-			ip->SpecialNum++;
-		}
-	}
-
-	ip->SpecialNum = (ip->SpecialNum > MAX_SPECIAL_OPTION) ? MAX_SPECIAL_OPTION : ip->SpecialNum;
 }
 
 _declspec(naked) void CItem::InsertOptionText()
@@ -572,131 +499,152 @@ _declspec(naked) void CItem::InsertOptionText()
 	static ITEM* ip;
 	static int iMana;
 
+	static BYTE SkillOption;
+	static BYTE LuckOption;
+	static BYTE AdditionalOption;
+	static int m_Excellent;
+	static BYTE pItemOption = 0;
+	static BYTE pItemValue = 0;
+
 	_asm
 	{
 		Pushad;
 		Mov ip, Ebx;
 	}
 
+	SkillOption = (ip->Level / 128) & 1;
+	LuckOption = (ip->Level / 4) & 1;
+	AdditionalOption = (ip->Level & 3) + ((ip->Option1 & 64) / 16);
+	m_Excellent = (ip->Option1 & 63);
+
+	/************************** INSERT SKILL OPTION **************************/
+
+	if (gItemOption.GetItemOption(SPECIAL_SKILL_OPTION, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
+	{
+		if (pItemOption != SKILL_NONE || (pItemOption = gCustomItem.GetCustomItemSkill(ip->Type)) != SKILL_NONE)
+		{
+			if (pItemOption == SKILL_DEFENSE)
+			{
+				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
+
+				wsprintf(TextList[TextNum], GlobalText[80], iMana);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+			else if (pItemOption == SKILL_FALLING_SLASH)
+			{
+				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
+
+				wsprintf(TextList[TextNum], GlobalText[81], iMana);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+			else if (pItemOption == SKILL_LUNGE)
+			{
+				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
+
+				wsprintf(TextList[TextNum], GlobalText[82], iMana);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+			else if (pItemOption == SKILL_UPPERCUT)
+			{
+				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
+
+				wsprintf(TextList[TextNum], GlobalText[83], iMana);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+			else if (pItemOption == SKILL_CYCLONE)
+			{
+				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
+
+				wsprintf(TextList[TextNum], GlobalText[84], iMana);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+			else if (pItemOption == SKILL_SLASH)
+			{
+				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
+
+				wsprintf(TextList[TextNum], GlobalText[85], iMana);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+			else if (pItemOption == SKILL_TRIPLE_SHOT)
+			{
+				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
+
+				wsprintf(TextList[TextNum], GlobalText[86], iMana);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+			else if (pItemOption == SKILL_FIRE_BREATH)
+			{
+				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
+
+				wsprintf(TextList[TextNum], GlobalText[745], iMana);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+
+				wsprintf(TextList[TextNum], GlobalText[179]);
+
+				TextListColor[TextNum] = TEXT_COLOR_DARKRED;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+			else if (pItemOption == SKILL_POWER_SLASH)
+			{
+				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
+
+				wsprintf(TextList[TextNum], GlobalText[98], iMana);
+
+				TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+				TextBold[TextNum] = false;
+
+				TextNum += 1;
+			}
+		}
+	}
+
 	for (i = 0; i < ip->SpecialNum; i++)
 	{
-		if (ip->Special[i] == SKILL_DEFENSE)
-		{
-			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
-
-			wsprintf(TextList[TextNum], GlobalText[80], iMana);
-
-			TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-		}
-		else if (ip->Special[i] == SKILL_FALLING_SLASH)
-		{
-			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
-
-			wsprintf(TextList[TextNum], GlobalText[81], iMana);
-
-			TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-		}
-		else if (ip->Special[i] == SKILL_LUNGE)
-		{
-			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
-
-			wsprintf(TextList[TextNum], GlobalText[82], iMana);
-
-			TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-		}
-		else if (ip->Special[i] == SKILL_UPPERCUT)
-		{
-			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
-
-			wsprintf(TextList[TextNum], GlobalText[83], iMana);
-
-			TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-		}
-		else if (ip->Special[i] == SKILL_CYCLONE)
-		{
-			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
-
-			wsprintf(TextList[TextNum], GlobalText[84], iMana);
-
-			TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-		}
-		else if (ip->Special[i] == SKILL_SLASH)
-		{
-			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
-
-			wsprintf(TextList[TextNum], GlobalText[85], iMana);
-
-			TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-		}
-		else if (ip->Special[i] == SKILL_TRIPLE_SHOT)
-		{
-			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
-
-			wsprintf(TextList[TextNum], GlobalText[86], iMana);
-
-			TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-		}
-		else if (ip->Special[i] == SKILL_FIRE_BREATH)
-		{
-			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
-
-			wsprintf(TextList[TextNum], GlobalText[745], iMana);
-
-			TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-
-			wsprintf(TextList[TextNum], GlobalText[179]);
-
-			TextListColor[TextNum] = TEXT_COLOR_DARKRED;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-		}
-		else if (ip->Special[i] == SKILL_POWER_SLASH)
-		{
-			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
-
-			wsprintf(TextList[TextNum], GlobalText[98], iMana);
-
-			TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-			TextBold[TextNum] = false;
-
-			TextNum += 1;
-		}
-		else if (ip->Special[i] == ITEM_OPTION_ADD_PHYSI_DAMAGE)
+		if (ip->Special[i] == ITEM_OPTION_ADD_PHYSI_DAMAGE)
 		{
 			wsprintf(TextList[TextNum], GlobalText[88], ip->SpecialValue[i]);
 
@@ -1260,6 +1208,11 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 				{
 					price = (price * 80) / 100;
 				}
+			}
+
+			if (m_ItemSkill != 0)
+			{
+				price += (price * 25) / 100;
 			}
 
 			if (m_ItemLuck != 0)
