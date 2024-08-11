@@ -65,6 +65,18 @@ void cWindow::WindowModeLoad(HINSTANCE hins)
 	SetCompleteHook(0xE9, 0x0041DFF0, &this->StartWindow);
 
 	SetCompleteHook(0xE9, 0x0041F617, 0x00421B0B);
+
+	SetCompleteHook(0xE8, 0x00412BC4, &this->FixDisplaySettingsOnClose);
+}
+
+LONG WINAPI cWindow::FixDisplaySettingsOnClose(DEVMODEA* lpDevMode, DWORD dwFlags)
+{
+	if (gWindow.m_WindowMode == FULL_SCREEN)
+	{
+		return ChangeDisplaySettings(NULL, 0);
+	}
+
+	return 0;
 }
 
 HWND cWindow::StartWindow(HINSTANCE hCurrentInst, int nCmdShow)
@@ -335,18 +347,32 @@ void cWindow::SetResolution(int res)
 	}
 }
 
-void cWindow::ChangeWindowState()
+void cWindow::ChangeWindowState(int windowMode, int resolution)
 {
-	RECT rc = { 0, 0, WindowWidth, WindowHeight };
+	if (windowMode != this->m_WindowMode)
+	{
+		if (windowMode == FULL_SCREEN)
+		{
+			this->ChangeDisplaySettingsFunction();
+		}
+		else if (windowMode == WINDOW_MODE && this->m_WindowMode != BORDERLESS)
+		{
+			ChangeDisplaySettings(NULL, 0);
+		}
 
-	if (this->m_WindowMode)
-	{
-		ChangeDisplaySettings(NULL, 0);
+		this->SetWindowMode(windowMode);
 	}
-	else
+	else if (resolution != m_Resolution)
 	{
-		this->ChangeDisplaySettingsFunction();
+		this->SetResolution(resolution);
+
+		if (this->m_WindowMode == FULL_SCREEN)
+		{
+			this->ChangeDisplaySettingsFunction();
+		}
 	}
+
+	RECT rc = { 0, 0, WindowWidth, WindowHeight };
 
 	LONG PosX = ((GetSystemMetrics(SM_CXSCREEN)) / 2) - (WindowWidth / 2);
 
@@ -354,7 +380,7 @@ void cWindow::ChangeWindowState()
 
 	if (this->m_WindowMode)
 	{
-		LONG STYLE = (gWindow.m_WindowMode == 2) // Borderless
+		LONG STYLE = (this->m_WindowMode == 2) // Borderless
 			? WS_POPUP | WS_VISIBLE
 			: WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
 

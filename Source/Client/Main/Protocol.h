@@ -333,13 +333,13 @@ struct PMSG_CONNECT_ACCOUNT_SEND
 
 struct PMSG_SET_LANG_SEND
 {
-	PSBMSG_HEAD header; // C1:F1:03
+	PSBMSG_HEAD header; // C1:F1:04
 	int lang;
 };
 
 struct PMSG_SET_HWID_SEND
 {
-	PSBMSG_HEAD header; // C1:F1:04
+	PSBMSG_HEAD header; // C1:F1:05
 	char HardwareId[36];
 };
 

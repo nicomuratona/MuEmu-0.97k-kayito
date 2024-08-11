@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace kayitoTools.Forms
 {
 	partial class MonsterEditor
@@ -47,6 +49,7 @@ namespace kayitoTools.Forms
 			this.Goto_Text_Box = new System.Windows.Forms.NumericUpDown();
 			this.Monster_List_Box = new System.Windows.Forms.DataGridView();
 			this.Row_Col = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Type_Col = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Name_Col = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Level_Col = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.MaxLife_Col = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -228,6 +231,7 @@ namespace kayitoTools.Forms
 			this.Monster_List_Box.ColumnHeadersHeight = 50;
 			this.Monster_List_Box.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Row_Col,
+	    this.Type_Col,
             this.Name_Col,
             this.Level_Col,
             this.MaxLife_Col,
@@ -299,6 +303,15 @@ namespace kayitoTools.Forms
 			this.Row_Col.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			this.Row_Col.ToolTipText = "Number of Row";
 			this.Row_Col.Width = 60;
+			// 
+			// Type_Col
+			// 
+			this.Type_Col.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+			this.Type_Col.HeaderText = "Type";
+			this.Type_Col.Name = "Type_Col";
+			this.Type_Col.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			this.Type_Col.ToolTipText = "0 = NPC / 1 = Monster";
+			this.Type_Col.Width = 60;
 			// 
 			// Name_Col
 			// 
@@ -564,6 +577,7 @@ namespace kayitoTools.Forms
 		private System.Windows.Forms.SaveFileDialog SaveMonsterFile;
 		private System.Windows.Forms.ToolStripMenuItem Load_Monstertxt_AV;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Row_Col;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Type_Col;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Name_Col;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Level_Col;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MaxLife_Col;

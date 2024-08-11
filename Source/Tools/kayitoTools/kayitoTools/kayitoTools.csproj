@@ -136,7 +136,7 @@
     <Compile Include="Source Files\BMDFileOpen.cs" />
     <Compile Include="Source Files\Globals.cs" />
     <Compile Include="Forms\Item\ItemManager.cs" />
-    <Compile Include="Source Files\MemScript.cs" />
+    <Compile Include="Source Files\ReadScript.cs" />
     <Compile Include="Source Files\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\Skill\SkillManager.cs" />

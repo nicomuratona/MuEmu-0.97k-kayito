@@ -7,7 +7,7 @@
 struct MONSTER_INFO
 {
 	int Index;
-	int Rate;
+	int Type;
 	char Name[32];
 	int Level;
 	int AINumber;

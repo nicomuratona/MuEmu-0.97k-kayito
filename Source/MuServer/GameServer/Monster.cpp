@@ -227,11 +227,6 @@ bool gObjSetMonster(int aIndex, int MonsterClass)
 		}
 	}
 
-	if ((MonsterClass >= 230 && MonsterClass <= 255) || lpObj->ShopNumber != -1)
-	{
-		lpObj->Type = OBJECT_NPC;
-	}
-
 	MONSTER_INFO* lpInfo = gMonsterManager.GetInfo(MonsterClass);
 
 	if (lpInfo == 0)
@@ -240,6 +235,11 @@ bool gObjSetMonster(int aIndex, int MonsterClass)
 	}
 
 	memcpy(lpObj->Name, lpInfo->Name, sizeof(lpObj->Name));
+
+	if (lpInfo->Type == 0 || lpObj->ShopNumber != -1)
+	{
+		lpObj->Type = OBJECT_NPC;
+	}
 
 	lpObj->Level = lpInfo->Level;
 	lpObj->PhysiSpeed = lpInfo->AttackSpeed;

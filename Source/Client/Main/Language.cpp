@@ -80,7 +80,7 @@ void Language::SendLanguage()
 {
 	PMSG_SET_LANG_SEND pMsg;
 
-	pMsg.header.setE(0xF1, 0x03, sizeof(pMsg));
+	pMsg.header.setE(0xF1, 0x04, sizeof(pMsg));
 
 	pMsg.lang = this->LangNum;
 

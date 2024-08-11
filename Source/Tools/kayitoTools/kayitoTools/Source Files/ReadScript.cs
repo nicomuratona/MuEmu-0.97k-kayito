@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
-namespace kayito_Editor.Source
+namespace kayitoTools.Source_Files
 {
 	class ReadScript
 	{
@@ -17,7 +18,7 @@ namespace kayito_Editor.Source
 
 		private float m_number;
 
-		private char[] m_string = new char[256];
+		private char[] m_string;
 
 		private int m_line;
 

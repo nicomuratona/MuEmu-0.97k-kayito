@@ -461,14 +461,119 @@ void CItem::Convert(int index, BYTE SkillOption, BYTE LuckOption, BYTE AddOption
 
 	memset(this->m_SpecialValue, 0, sizeof(this->m_SpecialValue));
 
+	std::deque<std::pair<int, int>> ToInsertLuckOption;
+
+	std::deque<std::pair<int, int>> ToInsertOptions;
+
 	BYTE pItemOption = 0;
 
 	BYTE pItemValue = 0;
+
+	/************************** INSERT EXCELLENT OPTIONS **************************/
+
+	for (int i = SPECIAL_EXCELLENT1; i <= SPECIAL_EXCELLENT6; i++)
+	{
+		if (gItemOption.GetItemOption(i, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
+		{
+			ToInsertOptions.push_back({ pItemOption, pItemValue });
+		}
+	}
+
+	/************************** INSERT LUCK OPTION **************************/
+
+	if (gItemOption.GetItemOption(SPECIAL_LUCK_OPTION, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
+	{
+		ToInsertLuckOption.push_back({ pItemOption, pItemValue });
+
+		this->m_LuckOption = ((this->m_LuckOption == 0) ? 1 : this->m_LuckOption);
+	}
+	else
+	{
+		this->m_LuckOption = 0;
+	}
+
+	/************************** INSERT ADDITIONAL OPTION **************************/
+
+	if (gItemOption.GetItemOption(SPECIAL_ADDITIONAL_OPTION, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
+	{
+		this->m_AddOption = ((this->m_AddOption == 0) ? 1 : this->m_AddOption);
+
+		ToInsertLuckOption.push_back({ pItemOption, pItemValue * this->m_AddOption });
+
+		switch (this->m_Index)
+		{
+			case GET_ITEM(12, 1): // Wings of Angel
+			{
+				this->m_RequireStrength += (this->m_AddOption * 4);
+
+				break;
+			}
+
+			case GET_ITEM(12, 2): // Wings of Satan
+			{
+				this->m_RequireStrength += (this->m_AddOption * 4);
+
+				break;
+			}
+
+			case GET_ITEM(12, 3): // Wings of Spirit
+			{
+				this->m_RequireStrength += (this->m_AddOption * 4);
+
+				break;
+			}
+
+			case GET_ITEM(12, 4): // Wings of Soul
+			{
+				this->m_RequireStrength += (this->m_AddOption * 4);
+
+				break;
+			}
+
+			case GET_ITEM(12, 5): // Wings of Devil
+			{
+				this->m_RequireStrength += (this->m_AddOption * 4);
+
+				break;
+			}
+
+			case GET_ITEM(12, 6): // Wings of Darkness
+			{
+				this->m_RequireStrength += (this->m_AddOption * 4);
+
+				break;
+			}
+
+			default:
+			{
+				this->m_RequireStrength += ((this->m_Index < GET_ITEM(12, 0)) ? (this->m_AddOption * 4) : 0);
+
+				break;
+			}
+		}
+	}
+	else
+	{
+		this->m_AddOption = 0;
+	}
+
+	if (this->m_Index >= GET_ITEM(12, 0) && this->m_Index <= GET_ITEM(12, 6))
+	{
+		ToInsertOptions.insert(ToInsertOptions.end(), ToInsertLuckOption.begin(), ToInsertLuckOption.end());
+	}
+	else
+	{
+		ToInsertOptions.insert(ToInsertOptions.begin(), ToInsertLuckOption.begin(), ToInsertLuckOption.end());
+	}
+
+	/************************** INSERT SKILL OPTION **************************/
 
 	if (gItemOption.GetItemOption(SPECIAL_SKILL_OPTION, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
 	{
 		if (pItemOption != SKILL_NONE || (pItemOption = ItemInfo.Skill) != SKILL_NONE)
 		{
+			ToInsertOptions.insert(ToInsertOptions.begin(), { pItemOption, pItemValue });
+
 			this->m_SkillOption = ((this->m_SkillOption == 0) ? 1 : this->m_SkillOption);
 		}
 		else
@@ -481,175 +586,14 @@ void CItem::Convert(int index, BYTE SkillOption, BYTE LuckOption, BYTE AddOption
 		this->m_SkillOption = 0;
 	}
 
-	if (gItemOption.GetItemOption(SPECIAL_LUCK_OPTION, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
+	for (const auto& InsertOpt : ToInsertOptions)
 	{
-		if (this->m_OptionsQuant < MAX_SPECIAL_OPTION)
-		{
-			this->m_LuckOption = ((this->m_LuckOption == 0) ? 1 : this->m_LuckOption);
+		this->m_SpecialIndex[this->m_OptionsQuant] = InsertOpt.first;
 
-			this->m_SpecialIndex[this->m_OptionsQuant] = pItemOption;
+		this->m_SpecialValue[this->m_OptionsQuant] = InsertOpt.second;
 
-			this->m_SpecialValue[this->m_OptionsQuant] = pItemValue;
-
-			this->m_OptionsQuant++;
-		}
-		else
-		{
-			this->m_LuckOption = 0;
-		}
+		this->m_OptionsQuant++;
 	}
-	else
-	{
-		this->m_LuckOption = 0;
-	}
-
-	if (gItemOption.GetItemOption(SPECIAL_ADDITIONAL_OPTION, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
-	{
-		if (this->m_OptionsQuant < MAX_SPECIAL_OPTION)
-		{
-			this->m_AddOption = ((this->m_AddOption == 0) ? 1 : this->m_AddOption);
-
-			this->m_SpecialIndex[this->m_OptionsQuant] = pItemOption;
-
-			this->m_SpecialValue[this->m_OptionsQuant] = pItemValue * this->m_AddOption;
-
-			switch (this->m_Index)
-			{
-				case GET_ITEM(12, 1): // Wings of Angel
-				{
-					this->m_RequireStrength += (this->m_AddOption * 4);
-
-					break;
-				}
-
-				case GET_ITEM(12, 2): // Wings of Satan
-				{
-					this->m_RequireStrength += (this->m_AddOption * 4);
-
-					break;
-				}
-
-				case GET_ITEM(12, 3): // Wings of Spirit
-				{
-					this->m_RequireStrength += (this->m_AddOption * 4);
-
-					break;
-				}
-
-				case GET_ITEM(12, 4): // Wings of Soul
-				{
-					this->m_RequireStrength += (this->m_AddOption * 4);
-
-					break;
-				}
-
-				case GET_ITEM(12, 5): // Wings of Devil
-				{
-					this->m_RequireStrength += (this->m_AddOption * 4);
-
-					break;
-				}
-
-				case GET_ITEM(12, 6): // Wings of Darkness
-				{
-					this->m_RequireStrength += (this->m_AddOption * 4);
-
-					break;
-				}
-
-				default:
-				{
-					this->m_RequireStrength += ((this->m_Index < GET_ITEM(12, 0)) ? (this->m_AddOption * 4) : 0);
-
-					break;
-				}
-			}
-
-			this->m_OptionsQuant++;
-		}
-		else
-		{
-			this->m_AddOption = 0;
-		}
-	}
-	else
-	{
-		this->m_AddOption = 0;
-	}
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT1, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
-	{
-		if (this->m_OptionsQuant < MAX_SPECIAL_OPTION)
-		{
-			this->m_SpecialIndex[this->m_OptionsQuant] = pItemOption;
-
-			this->m_SpecialValue[this->m_OptionsQuant] = pItemValue;
-
-			this->m_OptionsQuant++;
-		}
-	}
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT2, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
-	{
-		if (this->m_OptionsQuant < MAX_SPECIAL_OPTION)
-		{
-			this->m_SpecialIndex[this->m_OptionsQuant] = pItemOption;
-
-			this->m_SpecialValue[this->m_OptionsQuant] = pItemValue;
-
-			this->m_OptionsQuant++;
-		}
-	}
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT3, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
-	{
-		if (this->m_OptionsQuant < MAX_SPECIAL_OPTION)
-		{
-			this->m_SpecialIndex[this->m_OptionsQuant] = pItemOption;
-
-			this->m_SpecialValue[this->m_OptionsQuant] = pItemValue;
-
-			this->m_OptionsQuant++;
-		}
-	}
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT4, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
-	{
-		if (this->m_OptionsQuant < MAX_SPECIAL_OPTION)
-		{
-			this->m_SpecialIndex[this->m_OptionsQuant] = pItemOption;
-
-			this->m_SpecialValue[this->m_OptionsQuant] = pItemValue;
-
-			this->m_OptionsQuant++;
-		}
-	}
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT5, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
-	{
-		if (this->m_OptionsQuant < MAX_SPECIAL_OPTION)
-		{
-			this->m_SpecialIndex[this->m_OptionsQuant] = pItemOption;
-
-			this->m_SpecialValue[this->m_OptionsQuant] = pItemValue;
-
-			this->m_OptionsQuant++;
-		}
-	}
-
-	if (gItemOption.GetItemOption(SPECIAL_EXCELLENT6, this->m_Index, this->m_SkillOption, this->m_LuckOption, this->m_AddOption, this->m_ExceOption, &pItemOption, &pItemValue))
-	{
-		if (this->m_OptionsQuant < MAX_SPECIAL_OPTION)
-		{
-			this->m_SpecialIndex[this->m_OptionsQuant] = pItemOption;
-
-			this->m_SpecialValue[this->m_OptionsQuant] = pItemValue;
-
-			this->m_OptionsQuant++;
-		}
-	}
-
-	this->m_OptionsQuant = (this->m_OptionsQuant > MAX_SPECIAL_OPTION) ? MAX_SPECIAL_OPTION : this->m_OptionsQuant;
 
 	this->Value();
 

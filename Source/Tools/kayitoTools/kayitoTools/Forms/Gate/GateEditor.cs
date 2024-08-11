@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using kayitoTools.Source_Files;
+using static kayitoTools.Source_Files.ReadScript;
 
 namespace kayitoTools.Forms
 {
@@ -92,61 +93,60 @@ namespace kayitoTools.Forms
 
 		private bool ReadGateTXT(string path)
 		{
-			MemScript lpMemScript = new MemScript();
+			ReadScript lpReadScript = new ReadScript();
 
-			if (lpMemScript.SetBuffer(path) == false)
+			if (lpReadScript.SetBuffer(path) == false)
 			{
-				Console.WriteLine("Error 1: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 1: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}
 
 			try
 			{
+				eTokenResult token;
+
 				while (true)
 				{
-					if (lpMemScript.GetToken() == MemScript.eTokenResult.TOKEN_END)
+					token = lpReadScript.GetToken();
+
+					if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 					{
 						break;
 					}
 
-					if (String.Compare(lpMemScript.GetString(), "end") == 0)
-					{
-						break;
-					}
+					int GateIndex = lpReadScript.GetNumber();
 
-					int GateIndex = lpMemScript.GetNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["Flag_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["Flag_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["Map_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["Map_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["StartX_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["StartX_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["StartY_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["StartY_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["EndX_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["EndX_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["EndY_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["EndY_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["Target_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["Target_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["Direction_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["Direction_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["MinLevel_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["MinLevel_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["MaxLevel_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["MaxLevel_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["MinReset_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["MinReset_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["MaxReset_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Gate_List_Box.Rows[GateIndex].Cells["MaxReset_Col"].Value = lpMemScript.GetAsNumber();
-
-					this.Gate_List_Box.Rows[GateIndex].Cells["AccountLevel_Col"].Value = lpMemScript.GetAsNumber();
+					this.Gate_List_Box.Rows[GateIndex].Cells["AccountLevel_Col"].Value = lpReadScript.GetAsNumber();
 				}
 			}
 			catch
 			{
-				Console.WriteLine("Error 2: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 2: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}

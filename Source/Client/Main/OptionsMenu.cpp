@@ -937,9 +937,7 @@ bool COptionsMenu::CheckWindowMode(int PosX, int PosY)
 
 				PlayBuffer(25, 0, 0);
 
-				gWindow.SetWindowMode(gWindow.m_WindowMode - 1);
-
-				gWindow.ChangeWindowState();
+				gWindow.ChangeWindowState(gWindow.m_WindowMode - 1, m_Resolution);
 			}
 
 			return true;
@@ -960,9 +958,7 @@ bool COptionsMenu::CheckWindowMode(int PosX, int PosY)
 
 				PlayBuffer(25, 0, 0);
 
-				gWindow.SetWindowMode(gWindow.m_WindowMode + 1);
-
-				gWindow.ChangeWindowState();
+				gWindow.ChangeWindowState(gWindow.m_WindowMode + 1, m_Resolution);
 			}
 
 			return true;
@@ -1042,9 +1038,7 @@ bool COptionsMenu::CheckResolutions(int PosX, int& PosY)
 
 				this->Resolutions[m_Resolution] = 0;
 
-				gWindow.SetResolution(i);
-
-				gWindow.ChangeWindowState();
+				gWindow.ChangeWindowState(gWindow.m_WindowMode, i);
 			}
 
 			return true;

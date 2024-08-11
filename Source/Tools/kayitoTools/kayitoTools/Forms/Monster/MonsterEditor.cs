@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using kayitoTools.Source_Files;
+using static kayitoTools.Source_Files.ReadScript;
 
 namespace kayitoTools.Forms
 {
@@ -101,89 +102,88 @@ namespace kayitoTools.Forms
 
 		private bool ReadMonsterTXT(string path)
 		{
-			MemScript lpMemScript = new MemScript();
+			ReadScript lpReadScript = new ReadScript();
 
-			if (lpMemScript.SetBuffer(path) == false)
+			if (lpReadScript.SetBuffer(path) == false)
 			{
-				Console.WriteLine("Error 1: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 1: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}
 
 			try
 			{
+				eTokenResult token;
+
 				while (true)
 				{
-					if (lpMemScript.GetToken() == MemScript.eTokenResult.TOKEN_END)
+					token = lpReadScript.GetToken();
+
+					if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 					{
 						break;
 					}
 
-					if (String.Compare(lpMemScript.GetString(), "end") == 0)
-					{
-						break;
-					}
+					int MonsterIndex = lpReadScript.GetNumber();
 
-					int MonsterIndex = lpMemScript.GetNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["Type_Col"].Value = lpReadScript.GetAsNumber();
 
-					lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["Name_Col"].Value = lpReadScript.GetAsString();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["Name_Col"].Value = lpMemScript.GetAsString();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["Level_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["Level_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["MaxLife_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["MaxLife_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["MaxMana_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["MaxMana_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["MinDamage_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["MinDamage_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["MaxDamage_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["MaxDamage_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["Defense_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["Defense_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["MagicDefense_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["MagicDefense_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["AttackRate_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["AttackRate_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["DefenseRate_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["DefenseRate_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["MoveRange_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["MoveRange_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["AttackType_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["AttackType_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["AttackRange_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["AttackRange_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["ViewRange_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["ViewRange_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["MoveSpeed_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["MoveSpeed_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["AttackSpeed_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["AttackSpeed_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["RegenTime_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["RegenTime_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["Attribute_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["Attribute_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["ItemRate_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["ItemRate_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["Money_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["Money_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["MaxItemLevel_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["MaxItemLevel_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["MonsterSkill_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["MonsterSkill_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["ResistanceIce_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["ResistanceIce_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["ResistancePoison_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["ResistancePoison_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["ResistanceLightning_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["ResistanceLightning_Col"].Value = lpMemScript.GetAsNumber();
-
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["ResistanceFire_Col"].Value = lpMemScript.GetAsNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["ResistanceFire_Col"].Value = lpReadScript.GetAsNumber();
 				}
 			}
 			catch
 			{
-				Console.WriteLine("Error 2: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 2: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}
@@ -219,7 +219,7 @@ namespace kayitoTools.Forms
 
 							sw.WriteLine(@"{0}	{1}	""{2}""					{3}	{4}	{5}	{6}	{7}	{8}	{9}	{10}	{11}	{12}	{13}	{14}	{15}	{16}	{17}	{18}	{19}	{20}	{21}	{22}	{23}	{24}	{25}	{26}	{27}",
 								row.Index,
-								1,
+								Convert.ToInt32(row.Cells["Type_Col"].Value),
 								Globals.GetMaxStringLength(row.Cells["Name_Col"].Value.ToString(), 24),
 								Convert.ToInt32(row.Cells["Level_Col"].Value),
 								Convert.ToInt32(row.Cells["MaxLife_Col"].Value),
@@ -258,39 +258,38 @@ namespace kayitoTools.Forms
 
 		private bool ReadNPCNameTXT(string path)
 		{
-			MemScript lpMemScript = new MemScript();
+			ReadScript lpReadScript = new ReadScript();
 
-			if (lpMemScript.SetBuffer(path) == false)
+			if (lpReadScript.SetBuffer(path) == false)
 			{
-				Console.WriteLine("Error 1: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 1: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}
 
 			try
 			{
+				eTokenResult token;
+
 				while (true)
 				{
-					if (lpMemScript.GetToken() == MemScript.eTokenResult.TOKEN_END)
+					token = lpReadScript.GetToken();
+
+					if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 					{
 						break;
 					}
 
-					if (String.Compare(lpMemScript.GetString(), "end") == 0)
-					{
-						break;
-					}
+					int MonsterIndex = lpReadScript.GetNumber();
 
-					int MonsterIndex = lpMemScript.GetNumber();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["Type_Col"].Value = lpReadScript.GetAsNumber();
 
-					lpMemScript.GetAsNumber();
-
-					this.Monster_List_Box.Rows[MonsterIndex].Cells["Name_Col"].Value = lpMemScript.GetAsString();
+					this.Monster_List_Box.Rows[MonsterIndex].Cells["Name_Col"].Value = lpReadScript.GetAsString();
 				}
 			}
 			catch
 			{
-				Console.WriteLine("Error 2: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 2: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}
@@ -326,7 +325,7 @@ namespace kayitoTools.Forms
 
 							sw.WriteLine(@"{0}	{1}	""{2}""",
 								row.Index,
-								1,
+								Convert.ToInt32(row.Cells["Type_Col"].Value),
 								Globals.GetMaxStringLength(row.Cells["Name_Col"].Value.ToString(), 24));
 						}
 

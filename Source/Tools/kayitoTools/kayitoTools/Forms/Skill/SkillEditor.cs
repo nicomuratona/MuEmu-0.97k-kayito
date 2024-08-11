@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using kayitoTools.Source_Files;
+using static kayitoTools.Source_Files.ReadScript;
 
 namespace kayitoTools.Forms
 {
@@ -101,65 +102,64 @@ namespace kayitoTools.Forms
 
 		private bool ReadSkillTXT(string path)
 		{
-			MemScript lpMemScript = new MemScript();
+			ReadScript lpReadScript = new ReadScript();
 
-			if (lpMemScript.SetBuffer(path) == false)
+			if (lpReadScript.SetBuffer(path) == false)
 			{
-				Console.WriteLine("Error 1: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 1: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}
 
 			try
 			{
+				eTokenResult token;
+
 				while (true)
 				{
-					if (lpMemScript.GetToken() == MemScript.eTokenResult.TOKEN_END)
+					token = lpReadScript.GetToken();
+
+					if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 					{
 						break;
 					}
 
-					if (String.Compare(lpMemScript.GetString(), "end") == 0)
-					{
-						break;
-					}
+					int SkillIndex = lpReadScript.GetNumber();
 
-					int SkillIndex = lpMemScript.GetNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["Name_Col"].Value = lpReadScript.GetAsString();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["Name_Col"].Value = lpMemScript.GetAsString();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["Damage_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["Damage_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["Mana_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["Mana_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["Stamina_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["Stamina_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["Range_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["Range_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["Radio_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["Radio_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["Delay_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["Delay_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["Attribute_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["Attribute_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["Effect_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["Effect_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireLevel_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireLevel_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireEnergy_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireEnergy_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireDW_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireDW_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireDK_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireDK_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireELF_Col"].Value = lpReadScript.GetAsNumber();
 
-					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireELF_Col"].Value = lpMemScript.GetAsNumber();
-
-					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireMG_Col"].Value = lpMemScript.GetAsNumber();
+					this.Skill_List_Box.Rows[SkillIndex].Cells["RequireMG_Col"].Value = lpReadScript.GetAsNumber();
 				}
 			}
 			catch
 			{
-				Console.WriteLine("Error 2: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 2: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}

@@ -82,7 +82,7 @@ void CMonsterManager::Load(char* path)
 
 			info.Index = lpMemScript->GetNumber();
 
-			info.Rate = lpMemScript->GetAsNumber();
+			info.Type = lpMemScript->GetAsNumber();
 
 			strcpy_s(info.Name, lpMemScript->GetAsString());
 

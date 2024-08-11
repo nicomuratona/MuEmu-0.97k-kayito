@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using kayitoTools.Source_Files;
+using static kayitoTools.Source_Files.ReadScript;
 
 namespace kayitoTools.Forms
 {
@@ -113,184 +114,190 @@ namespace kayitoTools.Forms
 
 		private bool ReadItemTXT(string path)
 		{
-			MemScript lpMemScript = new MemScript();
+			ReadScript lpReadScript = new ReadScript();
 
-			if (lpMemScript.SetBuffer(path) == false)
+			if (!lpReadScript.SetBuffer(path))
 			{
-				Console.WriteLine("Error 1: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 1: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}
 
 			try
 			{
+				eTokenResult token;
+
 				while (true)
 				{
-					if (lpMemScript.GetToken() == MemScript.eTokenResult.TOKEN_END)
+					token = lpReadScript.GetToken();
+
+					if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 					{
 						break;
 					}
 
-					int Section = lpMemScript.GetNumber();
+					int Section = lpReadScript.GetNumber();
 
 					while (true)
 					{
-						if (String.Compare(lpMemScript.GetAsString(), "end") == 0)
+						token = lpReadScript.GetToken();
+
+						if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 						{
 							break;
 						}
 
-						int ItemIndex = (ItemManager.MAX_ITEM_INDEX * Section + lpMemScript.GetNumber());
+						int ItemIndex = (ItemManager.MAX_ITEM_INDEX * Section + lpReadScript.GetNumber());
 
-						this.Item_List_Box.Rows[ItemIndex].Cells["Slot_Col"].Value = lpMemScript.GetAsNumber();
+						this.Item_List_Box.Rows[ItemIndex].Cells["Slot_Col"].Value = lpReadScript.GetAsNumber();
 
-						this.Item_List_Box.Rows[ItemIndex].Cells["Skill_Col"].Value = lpMemScript.GetAsNumber();
+						this.Item_List_Box.Rows[ItemIndex].Cells["Skill_Col"].Value = lpReadScript.GetAsNumber();
 
-						this.Item_List_Box.Rows[ItemIndex].Cells["Width_Col"].Value = lpMemScript.GetAsNumber();
+						this.Item_List_Box.Rows[ItemIndex].Cells["Width_Col"].Value = lpReadScript.GetAsNumber();
 
-						this.Item_List_Box.Rows[ItemIndex].Cells["Height_Col"].Value = lpMemScript.GetAsNumber();
+						this.Item_List_Box.Rows[ItemIndex].Cells["Height_Col"].Value = lpReadScript.GetAsNumber();
 
-						this.Item_List_Box.Rows[ItemIndex].Cells["Serial_Col"].Value = lpMemScript.GetAsNumber();
+						this.Item_List_Box.Rows[ItemIndex].Cells["Serial_Col"].Value = lpReadScript.GetAsNumber();
 
-						this.Item_List_Box.Rows[ItemIndex].Cells["Option_Col"].Value = lpMemScript.GetAsNumber();
+						this.Item_List_Box.Rows[ItemIndex].Cells["Option_Col"].Value = lpReadScript.GetAsNumber();
 
-						this.Item_List_Box.Rows[ItemIndex].Cells["Drop_Col"].Value = lpMemScript.GetAsNumber();
+						this.Item_List_Box.Rows[ItemIndex].Cells["Drop_Col"].Value = lpReadScript.GetAsNumber();
 
-						this.Item_List_Box.Rows[ItemIndex].Cells["Name_Col"].Value = lpMemScript.GetAsString();
+						this.Item_List_Box.Rows[ItemIndex].Cells["Name_Col"].Value = lpReadScript.GetAsString();
 
 						if (Section >= 0 && Section <= 5)
 						{
-							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["DamageMin_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["DamageMin_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["DamageMax_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["DamageMax_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["AttackSpeed_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["AttackSpeed_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["Durability_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Durability_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["MagicDurability_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["MagicDurability_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["MagicPower_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["MagicPower_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireLevel_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireLevel_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireStrength_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireStrength_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireAgility_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireAgility_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireEnergy_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireEnergy_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireVitality_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireVitality_Col"].Value = lpReadScript.GetAsNumber();
 						}
 						else if (Section >= 6 && Section <= 11)
 						{
-							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["Defense_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Defense_Col"].Value = lpReadScript.GetAsNumber();
 
 							if (Section == 6)
 							{
-								this.Item_List_Box.Rows[ItemIndex].Cells["DefenseRate_Col"].Value = lpMemScript.GetAsNumber();
+								this.Item_List_Box.Rows[ItemIndex].Cells["DefenseRate_Col"].Value = lpReadScript.GetAsNumber();
 							}
 							else if (Section >= 7 && Section <= 9)
 							{
-								this.Item_List_Box.Rows[ItemIndex].Cells["MagicDefense_Col"].Value = lpMemScript.GetAsNumber();
+								this.Item_List_Box.Rows[ItemIndex].Cells["MagicDefense_Col"].Value = lpReadScript.GetAsNumber();
 							}
 							else if (Section == 10)
 							{
-								this.Item_List_Box.Rows[ItemIndex].Cells["AttackSpeed_Col"].Value = lpMemScript.GetAsNumber();
+								this.Item_List_Box.Rows[ItemIndex].Cells["AttackSpeed_Col"].Value = lpReadScript.GetAsNumber();
 							}
 							else if (Section == 11)
 							{
-								this.Item_List_Box.Rows[ItemIndex].Cells["WalkSpeed_Col"].Value = lpMemScript.GetAsNumber();
+								this.Item_List_Box.Rows[ItemIndex].Cells["WalkSpeed_Col"].Value = lpReadScript.GetAsNumber();
 							}
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["Durability_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Durability_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireLevel_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireLevel_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireStrength_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireStrength_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireAgility_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireAgility_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireEnergy_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireEnergy_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireVitality_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireVitality_Col"].Value = lpReadScript.GetAsNumber();
 						}
 						else if (Section == 12)
 						{
-							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["Defense_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Defense_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["Durability_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Durability_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireLevel_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireLevel_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireEnergy_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireEnergy_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireStrength_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireStrength_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireAgility_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireAgility_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["Money_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Money_Col"].Value = lpReadScript.GetAsNumber();
 						}
 						else if (Section == 13)
 						{
-							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["Durability_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Durability_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["ResistanceIce_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["ResistanceIce_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["ResistancePoison_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["ResistancePoison_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["ResistanceLightning_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["ResistanceLightning_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["ResistanceFire_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["ResistanceFire_Col"].Value = lpReadScript.GetAsNumber();
 
 							this.Item_List_Box.Rows[ItemIndex].Cells["RequireLevel_Col"].Value = this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value;
 						}
 						else if (Section == 14)
 						{
-							this.Item_List_Box.Rows[ItemIndex].Cells["Value_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Value_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpReadScript.GetAsNumber();
 						}
 						else if (Section == 15)
 						{
-							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Level_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireLevel_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireLevel_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireEnergy_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireEnergy_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["Money_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Money_Col"].Value = lpReadScript.GetAsNumber();
 						}
 
 						if (Section <= 11 || Section == 13)
 						{
-							this.Item_List_Box.Rows[ItemIndex].Cells["Attribute_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["Attribute_Col"].Value = lpReadScript.GetAsNumber();
 						}
 
 						if (Section != 14)
 						{
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireDW_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireDW_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireDK_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireDK_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireELF_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireELF_Col"].Value = lpReadScript.GetAsNumber();
 
-							this.Item_List_Box.Rows[ItemIndex].Cells["RequireMG_Col"].Value = lpMemScript.GetAsNumber();
+							this.Item_List_Box.Rows[ItemIndex].Cells["RequireMG_Col"].Value = lpReadScript.GetAsNumber();
 						}
 					}
 				}
 			}
 			catch
 			{
-				Console.WriteLine("Error 2: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 2: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}

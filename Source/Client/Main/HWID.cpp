@@ -69,7 +69,7 @@ void cHwid::SendHwid()
 {
 	PMSG_SET_HWID_SEND pMsg;
 
-	pMsg.header.setE(0xF1, 0x04, sizeof(pMsg));
+	pMsg.header.setE(0xF1, 0x05, sizeof(pMsg));
 
 	memcpy(pMsg.HardwareId, this->m_ComputerHardwareId, sizeof(pMsg.HardwareId));
 

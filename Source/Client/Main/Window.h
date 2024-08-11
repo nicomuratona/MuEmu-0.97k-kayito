@@ -16,13 +16,15 @@ public:
 
 	void SetResolution(int res);
 
-	void ChangeWindowState();
+	void ChangeWindowState(int windowMode, int resolution);
 
 	void ToggleTrayMode();
 
 	void ShowTrayMessage(char* Title, char* Message);
 
 private:
+
+	static LONG WINAPI FixDisplaySettingsOnClose(DEVMODEA* lpDevMode, DWORD dwFlags);
 
 	static HWND StartWindow(HINSTANCE hCurrentInst, int nCmdShow);
 

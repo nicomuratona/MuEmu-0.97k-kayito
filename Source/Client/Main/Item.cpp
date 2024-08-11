@@ -472,7 +472,6 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 
 	/************************** INSERT SKILL OPTION **************************/
 
-	/*
 	if (gItemOption.GetItemOption(SPECIAL_SKILL_OPTION, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
 	{
 		if (pItemOption != SKILL_NONE || (pItemOption = gCustomItem.GetCustomItemSkill(ip->Type)) != SKILL_NONE)
@@ -480,7 +479,6 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 			ToInsertOptions.insert(ToInsertOptions.begin(), { pItemOption, pItemValue });
 		}
 	}
-	*/
 
 	for (const auto& InsertOpt : ToInsertOptions)
 	{
@@ -499,152 +497,131 @@ _declspec(naked) void CItem::InsertOptionText()
 	static ITEM* ip;
 	static int iMana;
 
-	static BYTE SkillOption;
-	static BYTE LuckOption;
-	static BYTE AdditionalOption;
-	static int m_Excellent;
-	static BYTE pItemOption = 0;
-	static BYTE pItemValue = 0;
-
 	_asm
 	{
 		Pushad;
 		Mov ip, Ebx;
 	}
 
-	SkillOption = (ip->Level / 128) & 1;
-	LuckOption = (ip->Level / 4) & 1;
-	AdditionalOption = (ip->Level & 3) + ((ip->Option1 & 64) / 16);
-	m_Excellent = (ip->Option1 & 63);
-
-	/************************** INSERT SKILL OPTION **************************/
-
-	if (gItemOption.GetItemOption(SPECIAL_SKILL_OPTION, ip->Type, SkillOption, LuckOption, AdditionalOption, m_Excellent, &pItemOption, &pItemValue))
-	{
-		if (pItemOption != SKILL_NONE || (pItemOption = gCustomItem.GetCustomItemSkill(ip->Type)) != SKILL_NONE)
-		{
-			if (pItemOption == SKILL_DEFENSE)
-			{
-				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
-
-				wsprintf(TextList[TextNum], GlobalText[80], iMana);
-
-				TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-			}
-			else if (pItemOption == SKILL_FALLING_SLASH)
-			{
-				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
-
-				wsprintf(TextList[TextNum], GlobalText[81], iMana);
-
-				TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-			}
-			else if (pItemOption == SKILL_LUNGE)
-			{
-				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
-
-				wsprintf(TextList[TextNum], GlobalText[82], iMana);
-
-				TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-			}
-			else if (pItemOption == SKILL_UPPERCUT)
-			{
-				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
-
-				wsprintf(TextList[TextNum], GlobalText[83], iMana);
-
-				TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-			}
-			else if (pItemOption == SKILL_CYCLONE)
-			{
-				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
-
-				wsprintf(TextList[TextNum], GlobalText[84], iMana);
-
-				TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-			}
-			else if (pItemOption == SKILL_SLASH)
-			{
-				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
-
-				wsprintf(TextList[TextNum], GlobalText[85], iMana);
-
-				TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-			}
-			else if (pItemOption == SKILL_TRIPLE_SHOT)
-			{
-				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
-
-				wsprintf(TextList[TextNum], GlobalText[86], iMana);
-
-				TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-			}
-			else if (pItemOption == SKILL_FIRE_BREATH)
-			{
-				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
-
-				wsprintf(TextList[TextNum], GlobalText[745], iMana);
-
-				TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-
-				wsprintf(TextList[TextNum], GlobalText[179]);
-
-				TextListColor[TextNum] = TEXT_COLOR_DARKRED;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-			}
-			else if (pItemOption == SKILL_POWER_SLASH)
-			{
-				GetSkillInformation(pItemOption, 1, NULL, &iMana, NULL, NULL);
-
-				wsprintf(TextList[TextNum], GlobalText[98], iMana);
-
-				TextListColor[TextNum] = TEXT_COLOR_BLUE;
-
-				TextBold[TextNum] = false;
-
-				TextNum += 1;
-			}
-		}
-	}
-
 	for (i = 0; i < ip->SpecialNum; i++)
 	{
-		if (ip->Special[i] == ITEM_OPTION_ADD_PHYSI_DAMAGE)
+		if (ip->Special[i] == SKILL_DEFENSE)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[80], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_FALLING_SLASH)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[81], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_LUNGE)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[82], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_UPPERCUT)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[83], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_CYCLONE)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[84], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_SLASH)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[85], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_TRIPLE_SHOT)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[86], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_FIRE_BREATH)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[745], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+
+			wsprintf(TextList[TextNum], GlobalText[179]);
+
+			TextListColor[TextNum] = TEXT_COLOR_DARKRED;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == SKILL_POWER_SLASH)
+		{
+			GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL, NULL);
+
+			wsprintf(TextList[TextNum], GlobalText[98], iMana);
+
+			TextListColor[TextNum] = TEXT_COLOR_BLUE;
+
+			TextBold[TextNum] = false;
+
+			TextNum += 1;
+		}
+		else if (ip->Special[i] == ITEM_OPTION_ADD_PHYSI_DAMAGE)
 		{
 			wsprintf(TextList[TextNum], GlobalText[88], ip->SpecialValue[i]);
 

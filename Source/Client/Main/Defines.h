@@ -20,7 +20,7 @@
 #define GET_ITEM(x,y) (((x) * MAX_ITEM_TYPE) + (y))
 #define GET_ITEM_MODEL(x,y) ((((x) * MAX_ITEM_TYPE) + (y)) + ITEM_BASE_MODEL)
 
-#define MAX_SPECIAL_OPTION 8
+#define MAX_SPECIAL_OPTION 9
 
 #define MAX_ITEM_PRICE 2000000000
 

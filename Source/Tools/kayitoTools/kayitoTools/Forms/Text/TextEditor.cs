@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using kayitoTools.Source_Files;
+using static kayitoTools.Source_Files.ReadScript;
 
 namespace kayitoTools.Forms
 {
@@ -94,37 +95,36 @@ namespace kayitoTools.Forms
 
 		private bool ReadMessageTXT(string path)
 		{
-			MemScript lpMemScript = new MemScript();
+			ReadScript lpReadScript = new ReadScript();
 
-			if (lpMemScript.SetBuffer(path) == false)
+			if (lpReadScript.SetBuffer(path) == false)
 			{
-				Console.WriteLine("Error 1: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 1: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}
 
 			try
 			{
+				eTokenResult token;
+
 				while (true)
 				{
-					if (lpMemScript.GetToken() == MemScript.eTokenResult.TOKEN_END)
+					token = lpReadScript.GetToken();
+
+					if (token == eTokenResult.TOKEN_END || token == eTokenResult.TOKEN_END_SECTION)
 					{
 						break;
 					}
 
-					if (String.Compare(lpMemScript.GetString(), "end") == 0)
-					{
-						break;
-					}
+					int TextIndex = lpReadScript.GetNumber();
 
-					int TextIndex = lpMemScript.GetNumber();
-
-					this.Text_List_Box.Rows[TextIndex].Cells["Text_Col"].Value = lpMemScript.GetAsString();
+					this.Text_List_Box.Rows[TextIndex].Cells["Text_Col"].Value = lpReadScript.GetAsString();
 				}
 			}
 			catch
 			{
-				Console.WriteLine("Error 2: {0}", lpMemScript.GetLastError());
+				Console.WriteLine("Error 2: {0}", lpReadScript.GetLastError());
 
 				return false;
 			}

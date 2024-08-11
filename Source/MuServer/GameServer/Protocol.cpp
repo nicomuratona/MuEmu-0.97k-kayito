@@ -461,14 +461,14 @@ void ProtocolCore(BYTE head, BYTE* lpMsg, int size, int aIndex, int encrypt, int
 					break;
 				}
 
-				case 0x03:
+				case 0x04:
 				{
 					CGSetLangRecv((PMSG_SET_LANG_RECV*)lpMsg, aIndex);
 
 					break;
 				}
 
-				case 0x04:
+				case 0x05:
 				{
 					CGSetHwidRecv((PMSG_SET_HWID_RECV*)lpMsg, aIndex);
 
@@ -1220,6 +1220,11 @@ void CGCloseClientRecv(PMSG_CLOSE_CLIENT_RECV* lpMsg, int aIndex)
 void CGSetLangRecv(PMSG_SET_LANG_RECV* lpMsg, int aIndex)
 {
 	if (gObj[aIndex].Connected < OBJECT_CONNECTED)
+	{
+		return;
+	}
+
+	if (lpMsg->lang < LANGUAGE_ENGLISH || lpMsg->lang > LANGUAGE_PORTUGUESE)
 	{
 		return;
 	}
