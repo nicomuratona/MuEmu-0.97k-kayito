@@ -43,6 +43,8 @@ private:
 
 	HFONT m_font;
 
+	HFONT m_logfont;
+
 	HBRUSH m_brush[2];
 
 	LOG_DISPLAY_INFO m_log[MAX_LOG_TEXT_LINE];

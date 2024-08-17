@@ -62,7 +62,7 @@
     <ClInclude Include="ClientManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MemScript.h">
+    <ClInclude Include="ReadScript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ServerList.h">
@@ -115,7 +115,7 @@
     <ClCompile Include="ClientManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MemScript.cpp">
+    <ClCompile Include="ReadScript.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServerList.cpp">

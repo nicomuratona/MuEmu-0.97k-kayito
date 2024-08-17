@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ServerList.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CServerList gServerList;
@@ -23,20 +23,20 @@ CServerList::~CServerList()
 
 void CServerList::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -49,7 +49,7 @@ void CServerList::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -58,15 +58,15 @@ void CServerList::Load(char* path)
 
 			SERVER_LIST_INFO info;
 
-			info.ServerCode = lpMemScript->GetNumber();
+			info.ServerCode = lpReadScript->GetNumber();
 
-			strcpy_s(info.ServerName, lpMemScript->GetAsString());
+			strcpy_s(info.ServerName, lpReadScript->GetAsString());
 
-			strcpy_s(info.ServerAddress, lpMemScript->GetAsString());
+			strcpy_s(info.ServerAddress, lpReadScript->GetAsString());
 
-			info.ServerPort = lpMemScript->GetAsNumber();
+			info.ServerPort = lpReadScript->GetAsNumber();
 
-			info.ServerShow = ((strcmp(lpMemScript->GetAsString(), "SHOW") == 0) ? true : false);
+			info.ServerShow = ((strcmp(lpReadScript->GetAsString(), "SHOW") == 0) ? true : false);
 
 			info.ServerState = false;
 
@@ -85,12 +85,12 @@ void CServerList::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	LogAdd(LOG_BLUE, "[ServerList] ServerList loaded successfully");
+	delete lpReadScript;
 
-	delete lpMemScript;
+	LogAdd(LOG_BLUE, "[ServerList] ServerList loaded successfully");
 }
 
 void CServerList::MainProc()

@@ -129,7 +129,6 @@
     <ClInclude Include="LoadModels.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="MathLib.h" />
-    <ClInclude Include="MemScript.h" />
     <ClInclude Include="MoveList.h" />
     <ClInclude Include="MP3.h" />
     <ClInclude Include="Offsets.h" />
@@ -140,6 +139,8 @@
     <ClInclude Include="Protect.h" />
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="ProtocolDefines.h" />
+    <ClInclude Include="ReadScript.h" />
+    <ClInclude Include="ReadScript2.h" />
     <ClInclude Include="Reconnect.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RightClickMove.h" />
@@ -181,7 +182,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="MathLib.cpp" />
-    <ClCompile Include="MemScript.cpp" />
     <ClCompile Include="MoveList.cpp" />
     <ClCompile Include="MP3.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
@@ -190,6 +190,7 @@
     <ClCompile Include="PrintPlayer.cpp" />
     <ClCompile Include="Protect.cpp" />
     <ClCompile Include="Protocol.cpp" />
+    <ClCompile Include="ReadScript.cpp" />
     <ClCompile Include="Reconnect.cpp" />
     <ClCompile Include="RightClickMove.cpp" />
     <ClCompile Include="ServerList.cpp" />

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "QuestReward.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "ObjectManager.h"
 #include "Quest.h"
 #include "ServerInfo.h"
@@ -21,20 +21,20 @@ CQuestReward::~CQuestReward()
 
 void CQuestReward::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -47,7 +47,7 @@ void CQuestReward::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -58,31 +58,31 @@ void CQuestReward::Load(char* path)
 
 			memset(&info, 0, sizeof(info));
 
-			info.Number = lpMemScript->GetNumber();
+			info.Number = lpReadScript->GetNumber();
 
-			info.Type = lpMemScript->GetAsNumber();
+			info.Type = lpReadScript->GetAsNumber();
 
-			info.Index = lpMemScript->GetAsNumber();
+			info.Index = lpReadScript->GetAsNumber();
 
-			info.Value = lpMemScript->GetAsNumber();
+			info.Value = lpReadScript->GetAsNumber();
 
-			info.Level = lpMemScript->GetAsNumber();
+			info.Level = lpReadScript->GetAsNumber();
 
-			info.Option1 = lpMemScript->GetAsNumber();
+			info.Option1 = lpReadScript->GetAsNumber();
 
-			info.Option2 = lpMemScript->GetAsNumber();
+			info.Option2 = lpReadScript->GetAsNumber();
 
-			info.Option3 = lpMemScript->GetAsNumber();
+			info.Option3 = lpReadScript->GetAsNumber();
 
-			info.NewOption = lpMemScript->GetAsNumber();
+			info.NewOption = lpReadScript->GetAsNumber();
 
-			info.RequireIndex = lpMemScript->GetAsNumber();
+			info.RequireIndex = lpReadScript->GetAsNumber();
 
-			info.RequireState = lpMemScript->GetAsNumber();
+			info.RequireState = lpReadScript->GetAsNumber();
 
 			for (int n = 0; n < MAX_CLASS; n++)
 			{
-				info.RequireClass[n] = lpMemScript->GetAsNumber();
+				info.RequireClass[n] = lpReadScript->GetAsNumber();
 			}
 
 			this->SetInfo(info);
@@ -90,10 +90,10 @@ void CQuestReward::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CQuestReward::SetInfo(QUEST_REWARD_INFO info)

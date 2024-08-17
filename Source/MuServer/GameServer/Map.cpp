@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Map.h"
 #include "BloodCastle.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Message.h"
 #include "Notice.h"
 #include "ServerInfo.h"
@@ -52,7 +52,7 @@ void CMap::Load(char* path, int map)
 
 	if (file == INVALID_HANDLE_VALUE)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE0, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
@@ -63,7 +63,7 @@ void CMap::Load(char* path, int map)
 
 	if (ReadFile(file, &head, sizeof(head), &BytesRead, 0) == 0)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE2, path);
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
 		CloseHandle(file);
 
@@ -74,7 +74,7 @@ void CMap::Load(char* path, int map)
 
 	if (ReadFile(file, &width, sizeof(width), &BytesRead, 0) == 0)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE2, path);
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
 		CloseHandle(file);
 
@@ -85,7 +85,7 @@ void CMap::Load(char* path, int map)
 
 	if (ReadFile(file, &height, sizeof(height), &BytesRead, 0) == 0)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE2, path);
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
 		CloseHandle(file);
 
@@ -94,7 +94,7 @@ void CMap::Load(char* path, int map)
 
 	if (width < 0 || width >= MAX_MAP_WIDTH || height < 0 || height >= MAX_MAP_HEIGHT)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE4, path);
+		ErrorMessageBox(READ_SCRIPT_UNKNOWN_ERROR, path);
 
 		CloseHandle(file);
 
@@ -118,7 +118,7 @@ void CMap::Load(char* path, int map)
 
 	if (this->m_MapAttr == 0)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE1, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		CloseHandle(file);
 
@@ -127,7 +127,7 @@ void CMap::Load(char* path, int map)
 
 	if (ReadFile(file, this->m_MapAttr, size, &BytesRead, 0) == 0)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE2, path);
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
 		CloseHandle(file);
 

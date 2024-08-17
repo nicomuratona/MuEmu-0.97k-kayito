@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ExperienceTable.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CExperienceTable gExperienceTable;
@@ -17,20 +17,20 @@ CExperienceTable::~CExperienceTable()
 
 void CExperienceTable::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -43,7 +43,7 @@ void CExperienceTable::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -52,29 +52,29 @@ void CExperienceTable::Load(char* path)
 
 			EXPERIENCE_TABLE_INFO info;
 
-			info.MinLevel = lpMemScript->GetNumber();
+			info.MinLevel = lpReadScript->GetNumber();
 
-			info.MaxLevel = lpMemScript->GetAsNumber();
+			info.MaxLevel = lpReadScript->GetAsNumber();
 
-			info.MinReset = lpMemScript->GetAsNumber();
+			info.MinReset = lpReadScript->GetAsNumber();
 
-			info.MaxReset = lpMemScript->GetAsNumber();
+			info.MaxReset = lpReadScript->GetAsNumber();
 
-			info.MinGrandReset = lpMemScript->GetAsNumber();
+			info.MinGrandReset = lpReadScript->GetAsNumber();
 
-			info.MaxGrandReset = lpMemScript->GetAsNumber();
+			info.MaxGrandReset = lpReadScript->GetAsNumber();
 
-			info.ExperienceRate = lpMemScript->GetAsNumber();
+			info.ExperienceRate = lpReadScript->GetAsNumber();
 
 			this->m_ExperienceTableInfo.push_back(info);
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 int CExperienceTable::GetExperienceRate(LPOBJ lpObj)

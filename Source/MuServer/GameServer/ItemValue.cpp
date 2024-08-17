@@ -2,7 +2,7 @@
 #include "ItemValue.h"
 #include "ItemManager.h"
 #include "ItemStack.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CItemValue gItemValue;
@@ -19,20 +19,20 @@ CItemValue::~CItemValue()
 
 void CItemValue::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -45,7 +45,7 @@ void CItemValue::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -54,25 +54,25 @@ void CItemValue::Load(char* path)
 
 			ITEM_VALUE_INFO info;
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			info.Index = SafeGetItem(GET_ITEM(info.Index, lpMemScript->GetAsNumber()));
+			info.Index = SafeGetItem(GET_ITEM(info.Index, lpReadScript->GetAsNumber()));
 
-			info.Level = lpMemScript->GetAsNumber();
+			info.Level = lpReadScript->GetAsNumber();
 
-			info.Grade = lpMemScript->GetAsNumber();
+			info.Grade = lpReadScript->GetAsNumber();
 
-			info.Value = lpMemScript->GetAsNumber();
+			info.Value = lpReadScript->GetAsNumber();
 
 			this->m_ItemValueInfo.push_back(info);
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CItemValue::GetItemValue(CItem* lpItem, int* value)

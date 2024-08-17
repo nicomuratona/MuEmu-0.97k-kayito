@@ -88,7 +88,7 @@
 			this.Point_Box = new System.Windows.Forms.TextBox();
 			this.Type_Box = new System.Windows.Forms.ComboBox();
 			this.Class_Box = new System.Windows.Forms.ComboBox();
-			this.Level_Box = new System.Windows.Forms.TextBox();
+			this.Level_Box = new System.Windows.Forms.NumericUpDown();
 			this.Ubication_txt = new System.Windows.Forms.Label();
 			this.Type_txt = new System.Windows.Forms.Label();
 			this.Energy_txt = new System.Windows.Forms.Label();
@@ -120,6 +120,7 @@
 			this.AccountInfo.SuspendLayout();
 			this.CharacterInfo.SuspendLayout();
 			this.Character_Info_Box.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.Level_Box)).BeginInit();
 			this.Menu_Bar.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -796,10 +797,24 @@
 			// Level_Box
 			// 
 			this.Level_Box.Location = new System.Drawing.Point(149, 21);
-			this.Level_Box.MaxLength = 10;
+			this.Level_Box.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+			this.Level_Box.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			this.Level_Box.Name = "Level_Box";
 			this.Level_Box.Size = new System.Drawing.Size(170, 20);
 			this.Level_Box.TabIndex = 22;
+			this.Level_Box.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			// 
 			// Ubication_txt
 			// 
@@ -921,11 +936,11 @@
 			this.Btn_File.AutoToolTip = false;
 			this.Btn_File.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.Btn_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-	    this.Btn_CreateAccount,
-	    this.toolStripSeparator2,
-	    this.Btn_ServerStats,
-	    this.toolStripSeparator5,
-	    this.Btn_Exit});
+            this.Btn_CreateAccount,
+            this.toolStripSeparator2,
+            this.Btn_ServerStats,
+            this.toolStripSeparator5,
+            this.Btn_Exit});
 			this.Btn_File.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.Btn_File.Margin = new System.Windows.Forms.Padding(10, 1, 10, 2);
 			this.Btn_File.Name = "Btn_File";
@@ -935,31 +950,31 @@
 			// Btn_CreateAccount
 			// 
 			this.Btn_CreateAccount.Name = "Btn_CreateAccount";
-			this.Btn_CreateAccount.Size = new System.Drawing.Size(180, 22);
+			this.Btn_CreateAccount.Size = new System.Drawing.Size(156, 22);
 			this.Btn_CreateAccount.Text = "Create Account";
 			this.Btn_CreateAccount.Click += new System.EventHandler(this.Btn_CreateAccount_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(153, 6);
 			// 
 			// Btn_ServerStats
 			// 
 			this.Btn_ServerStats.Name = "Btn_ServerStats";
-			this.Btn_ServerStats.Size = new System.Drawing.Size(180, 22);
+			this.Btn_ServerStats.Size = new System.Drawing.Size(156, 22);
 			this.Btn_ServerStats.Text = "Server Stats";
 			this.Btn_ServerStats.Click += new System.EventHandler(this.Btn_ServerStats_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(153, 6);
 			// 
 			// Btn_Exit
 			// 
 			this.Btn_Exit.Name = "Btn_Exit";
-			this.Btn_Exit.Size = new System.Drawing.Size(180, 22);
+			this.Btn_Exit.Size = new System.Drawing.Size(156, 22);
 			this.Btn_Exit.Text = "Exit";
 			this.Btn_Exit.Click += new System.EventHandler(this.Btn_Exit_Click);
 			// 
@@ -989,11 +1004,11 @@
 			// 
 			this.Menu_Bar.BackColor = System.Drawing.Color.LightGray;
 			this.Menu_Bar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-	    this.Btn_File,
-	    this.toolStripSeparator1,
-	    this.Btn_DeleteAll,
-	    this.toolStripSeparator7,
-	    this.Btn_About});
+            this.Btn_File,
+            this.toolStripSeparator1,
+            this.Btn_DeleteAll,
+            this.toolStripSeparator7,
+            this.Btn_About});
 			this.Menu_Bar.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.Menu_Bar.Location = new System.Drawing.Point(0, 0);
 			this.Menu_Bar.Name = "Menu_Bar";
@@ -1057,6 +1072,7 @@
 			this.CharacterInfo.PerformLayout();
 			this.Character_Info_Box.ResumeLayout(false);
 			this.Character_Info_Box.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.Level_Box)).EndInit();
 			this.Menu_Bar.ResumeLayout(false);
 			this.Menu_Bar.PerformLayout();
 			this.ResumeLayout(false);
@@ -1102,7 +1118,7 @@
         private System.Windows.Forms.TextBox Point_Box;
         private System.Windows.Forms.ComboBox Type_Box;
         private System.Windows.Forms.ComboBox Class_Box;
-        private System.Windows.Forms.TextBox Level_Box;
+        private System.Windows.Forms.NumericUpDown Level_Box;
         private System.Windows.Forms.TextBox PosY_Box;
         private System.Windows.Forms.TextBox PosX_Box;
         private System.Windows.Forms.ComboBox Map_Box;

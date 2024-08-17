@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Message.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CMessage gMessage;
@@ -29,20 +29,20 @@ void CMessage::Load(char* path, int lang)
 		return;
 	}
 
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -55,7 +55,7 @@ void CMessage::Load(char* path, int lang)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -64,19 +64,19 @@ void CMessage::Load(char* path, int lang)
 
 			MESSAGE_INFO info;
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			strcpy_s(info.Message, lpMemScript->GetAsString());
+			strcpy_s(info.Message, lpReadScript->GetAsString());
 
 			this->m_MessageInfo[lang].insert(std::pair<int, MESSAGE_INFO>(info.Index, info));
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 char* CMessage::GetTextMessage(int index, int lang)

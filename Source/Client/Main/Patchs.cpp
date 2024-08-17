@@ -3,7 +3,7 @@
 #include "PrintPlayer.h"
 #include "Protect.h"
 #include "Protocol.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 
 CPatchs gPatchs;
 
@@ -19,8 +19,6 @@ CPatchs::~CPatchs()
 
 void CPatchs::Init()
 {
-	SetByte(0x00558EA8, 0xA0); // Accent
-
 	SetByte(0x00406F36, 0xEB); // Crack npGameGuard::init
 
 	SetByte(0x00406F5F, 0xEB); // Crack error messagebox
@@ -59,7 +57,7 @@ void CPatchs::Init()
 
 	SetDword(0x0047FB96, 0x190); // Expand global message size before newline jump
 
-	SetByte(0x00526AE5, 0xEB); // Skip Select Server Music
+	MemoryCpy(0x005616D0, "data\\music\\mutheme.mp3", 24); // Correct login music
 
 	SetCompleteHook(0xE9, 0x00524146, 0x00524231); // Remove Select Character Texts
 
@@ -85,14 +83,11 @@ void CPatchs::Init()
 	SetByte(0x00492EBD, 0x90);
 	MemorySet(0x00492EDB, 0x90, 0x7);
 
-	// Fix Shop NPC Closing send to server
-	SetCompleteHook(0xE9, 0x004CBB15, &this->FixShopNpcClose);
+	SetCompleteHook(0xE9, 0x004CBB15, &this->FixShopNpcClose); // Fix Shop NPC Closing send to server
 
-	// Fix Drop Zen
-	MemorySet(0x0042F2DF, 0x90, 0x7);
+	MemorySet(0x0042F2DF, 0x90, 0x7); // Fix Drop Zen
 
-	// Fix Trade Zen Over 50000000
-	SetByte(0x00515BF7, 0xEB);
+	SetByte(0x00515BF7, 0xEB); // Fix Trade Zen Over 50000000
 
 	// Remove JPG size limit
 	MemorySet(0x005299E7, 0x90, 11);
@@ -112,8 +107,7 @@ void CPatchs::Init()
 
 	SetCompleteHook(0xE9, 0x00483AC5, &this->FixChasingAttackMovement);
 
-	// Decrypt BMD
-	SetCompleteHook(0xE9, 0x004424B4, &this->DecBMD);
+	SetCompleteHook(0xE9, 0x004424B4, &this->DecBMD); // Decrypt BMD
 
 	// EncTerrain%d.map
 	SetByte(0x0050E5F9, 0xEB);
@@ -124,14 +118,9 @@ void CPatchs::Init()
 	SetByte(0x0050E663, 0xEB);
 	SetDword(0x0050E68E, (DWORD)"Data\\%s\\EncTerrain%d.obj");
 
-	// Decrypt MAP
-	SetCompleteHook(0xE8, 0x0050E636, &this->OpenTerrainMapping);
-
-	// Decrypt ATT
-	SetCompleteHook(0xE8, 0x0050E658, &this->OpenTerrainAttribute);
-
-	// Decrypt OBJ
-	SetCompleteHook(0xE8, 0x0050E6A0, &this->OpenObjectsEnc);
+	SetCompleteHook(0xE8, 0x0050E636, &this->OpenTerrainMapping); // Decrypt MAP
+	SetCompleteHook(0xE8, 0x0050E658, &this->OpenTerrainAttribute); // Decrypt ATT
+	SetCompleteHook(0xE8, 0x0050E6A0, &this->OpenObjectsEnc); // Decrypt OBJ
 
 	SetCompleteHook(0xE8, 0x0041ED4C, &this->ReadMainVersion);
 
@@ -739,20 +728,28 @@ void CPatchs::OpenMonsterScript(char* path)
 {
 	memset(MonsterScript, 0, sizeof(MONSTER_SCRIPT) * 256);
 
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		printf(MEM_SCRIPT_ALLOC_ERROR, path);
+		char Text[256];
+
+		wsprintf(Text, READ_SCRIPT_ALLOC_ERROR, path);
+
+		MessageBox(g_hWnd, Text, "Error", MB_OK);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		printf(lpMemScript->GetLastError());
+		char Text[256];
 
-		delete lpMemScript;
+		wsprintf(Text, READ_SCRIPT_FILE_ERROR, path);
+
+		MessageBox(g_hWnd, Text, "Error", MB_OK);
+
+		delete lpReadScript;
 
 		return;
 	}
@@ -763,7 +760,7 @@ void CPatchs::OpenMonsterScript(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -772,23 +769,23 @@ void CPatchs::OpenMonsterScript(char* path)
 
 			*(int*)0x07D78078 += 1;
 
-			BYTE Type = lpMemScript->GetNumber();
+			BYTE Type = lpReadScript->GetNumber();
 
 			MONSTER_SCRIPT* m = &MonsterScript[Type];
 
 			m->Type = Type;
 
-			lpMemScript->GetAsNumber();
+			lpReadScript->GetAsNumber();
 
-			strcpy_s(m->Name, lpMemScript->GetAsString());
+			strcpy_s(m->Name, lpReadScript->GetAsString());
 		}
 	}
 	catch (...)
 	{
-		printf(lpMemScript->GetLastError());
+		MessageBox(g_hWnd, lpReadScript->GetError(), "Error", MB_OK);
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CPatchs::RenderNumArrow()
@@ -2175,9 +2172,10 @@ _declspec(naked) void CPatchs::FixMoveWhileAttacking()
 	}
 
 	if (PathFinding2(PosX, PosY, TargetX, TargetY, (c + 0x354), 0.0f)
-	    &&
-	    // if (o->PriorAction >= PLAYER_ATTACK_FIST && o->PriorAction <= PLAYER_RIDE_SKILL)
-	    !(*(BYTE*)(c + 262) >= 34 && *(BYTE*)(c + 262) <= 91)
+	    // if (o->PriorAction >= PLAYER_ATTACK_FIST && o->PriorAction <= PLAYER_ATTACK_ONETOONE)
+	    && !(*(BYTE*)(c + 262) >= 34 && *(BYTE*)(c + 262) <= 67)
+	    // if (o->PriorAction >= PLAYER_ATTACK_TWO_HAND_SWORD_TWO && o->PriorAction <= PLAYER_RIDE_SKILL)
+	    && !(*(BYTE*)(c + 262) >= 81 && *(BYTE*)(c + 262) <= 91)
 	    )
 	{
 		goto EXIT;

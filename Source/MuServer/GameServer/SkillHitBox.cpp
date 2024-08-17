@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SkillHitBox.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CSkillHitBox gSkillHitBox;
@@ -28,14 +28,14 @@ void CSkillHitBox::Load(char* path)
 
 	if (file == INVALID_HANDLE_VALUE)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE0, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
 	if (GetFileSize(file, 0) != sizeof(this->m_table))
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE4, path);
+		ErrorMessageBox(READ_SCRIPT_UNKNOWN_ERROR, path);
 
 		CloseHandle(file);
 
@@ -46,7 +46,7 @@ void CSkillHitBox::Load(char* path)
 
 	if (ReadFile(file, this->m_table, sizeof(this->m_table), &OutSize, 0) == 0)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ERROR_CODE2, path);
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
 		CloseHandle(file);
 

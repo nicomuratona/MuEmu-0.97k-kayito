@@ -11,9 +11,15 @@ private:
 
 public:
 
-//---------------------------------------------
-//	MD5 added methods
-//---------------------------------------------
+	//---------------------------------------------
+	//	MD5 added methods
+	//---------------------------------------------
+
+		// Generate 128 bits (16 bytes) MD5 key value using the input string
+	bool MD5_EncodeKey(
+		char* lpszInputStr, // input string
+		char* lpszOutputKeyVal // output buffer
+	);
 
 	// Generate 128 bits (16 bytes) MD5 key value using the input string and key index (0~255)
 	bool MD5_EncodeKeyVal(
@@ -29,6 +35,12 @@ public:
 		int iKeyIndex // key index (0~255)
 	);
 
+	// Authenticate key value by inputting string and MD5 key value (true: correct / false: incorrect)
+	bool MD5_CheckValue(
+		char* lpszInputStr, // input string
+		char* lpszOutputKeyVal // output buffer
+	);
+
 	// Authenticate key value by inputting string, MD5 key value and key index (0~255) (true: correct / false: incorrect)
 	// P.S.> The key value must be a 128 bits MD5 key, not a string (256 bits).
 	bool MD5_CheckValue(
@@ -37,11 +49,11 @@ public:
 		int iKeyIndex // key index (0~255)
 	);
 
-//---------------------------------------------
-//	MD5 existing methods
-//---------------------------------------------
+	//---------------------------------------------
+	//	MD5 existing methods
+	//---------------------------------------------
 
-	// methods for controlled operation:
+		// methods for controlled operation:
 	MD5(); // simple initializer
 	void update(uint1* input, uint4 input_length);
 	void update(std::istream& stream);
@@ -62,9 +74,9 @@ public:
 
 private:
 
-//---------------------------------------------
-//	MD5 added methods
-//---------------------------------------------
+	//---------------------------------------------
+	//	MD5 added methods
+	//---------------------------------------------
 	void setmagicnum(int keyindex);
 
 	//---------------------------------------------

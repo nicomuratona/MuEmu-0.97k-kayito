@@ -638,7 +638,7 @@ namespace kayito_Editor
 
 				if (reader.Read())
 				{
-					this.Level_Box.Text = Convert.ToString(reader.GetInt32(0));
+					this.Level_Box.Value = reader.GetInt32(0);
 
 					this.Reset_Box.Text = Convert.ToString(reader.GetInt32(1));
 
@@ -710,11 +710,7 @@ namespace kayito_Editor
 
 			try
 			{
-				if (!Validator.Number(this.Level_Box.Text.Trim()))
-				{
-					MessageBox.Show($"Error: Level must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				}
-				else if (!Validator.Number(this.Reset_Box.Text.Trim()))
+				if (!Validator.Number(this.Reset_Box.Text.Trim()))
 				{
 					MessageBox.Show($"Error: Reset must be numbers only.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
@@ -784,7 +780,23 @@ namespace kayito_Editor
 
 					reader.Close();
 
-					query = $"UPDATE \"Character\" SET cLevel = {this.Level_Box.Text.Trim()}, ResetCount = {this.Reset_Box.Text.Trim()}, GrandResetCount = {this.GrandReset_Box.Text.Trim()}, Class = {this.Class_Box.SelectedValue}, CtlCode = {this.Type_Box.SelectedValue}, LevelUpPoint = {this.Point_Box.Text.Trim()}, Strength = {this.Strength_Box.Text.Trim()}, Dexterity = {this.Dexterity_Box.Text.Trim()}, Vitality = {this.Vitality_Box.Text.Trim()}, Energy = {this.Energy_Box.Text.Trim()}, MapNumber = {this.Map_Box.SelectedValue}, MapPosX = {this.PosX_Box.Text.Trim()}, MapPosY = {this.PosY_Box.Text.Trim()} WHERE AccountID = '{this.User_Box.Text.Trim()}' AND Name = '{this.Name_Box.Text.Trim()}'";
+					uint m_Level = (uint)(this.Level_Box.Value - 1);
+
+					uint dwExperience = 0;
+
+					if (m_Level > 0)
+					{
+						dwExperience = (((m_Level + 9) * m_Level) * m_Level) * 2;
+
+						if (m_Level > 255)
+						{
+							uint iLevelOverN = m_Level - 255;
+
+							dwExperience += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 5;
+						}
+					}
+
+					query = $"UPDATE \"Character\" SET cLevel = {this.Level_Box.Value}, Experience = {dwExperience}, ResetCount = {this.Reset_Box.Text.Trim()}, GrandResetCount = {this.GrandReset_Box.Text.Trim()}, Class = {this.Class_Box.SelectedValue}, CtlCode = {this.Type_Box.SelectedValue}, LevelUpPoint = {this.Point_Box.Text.Trim()}, Strength = {this.Strength_Box.Text.Trim()}, Dexterity = {this.Dexterity_Box.Text.Trim()}, Vitality = {this.Vitality_Box.Text.Trim()}, Energy = {this.Energy_Box.Text.Trim()}, MapNumber = {this.Map_Box.SelectedValue}, MapPosX = {this.PosX_Box.Text.Trim()}, MapPosY = {this.PosY_Box.Text.Trim()} WHERE AccountID = '{this.User_Box.Text.Trim()}' AND Name = '{this.Name_Box.Text.Trim()}'";
 
 					if (MuOnline.Mu_ExecuteSQL(query))
 					{

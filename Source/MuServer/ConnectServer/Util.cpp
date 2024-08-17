@@ -26,13 +26,23 @@ void ErrorMessageBox(char* message, ...)
 
 void LogAdd(eLogColor color, char* text, ...)
 {
-	SYSTEMTIME now;
+	tm today;
 
-	GetLocalTime(&now);
+	time_t ltime;
 
-	char time[10];
+	time(&ltime);
 
-	wsprintf(time, "%02d:%02d:%02d", now.wHour, now.wMinute, now.wSecond);
+	if (localtime_s(&today, &ltime) != 0)
+	{
+		return;
+	}
+
+	char time[32];
+
+	if (asctime_s(time, sizeof(time), &today) != 0)
+	{
+		return;
+	}
 
 	char temp[1024];
 
@@ -46,7 +56,7 @@ void LogAdd(eLogColor color, char* text, ...)
 
 	char log[1024];
 
-	wsprintf(log, "[%s] %s", time, temp);
+	wsprintf(log, "%.8s %s", &time[11], temp);
 
 	gServerDisplayer.LogAddText(color, log, strlen(log));
 }

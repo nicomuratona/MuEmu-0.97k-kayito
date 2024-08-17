@@ -4,7 +4,7 @@
 #include "ItemOptionRate.h"
 #include "ItemManager.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Protocol.h"
 #include "ServerInfo.h"
 #include "Util.h"
@@ -38,20 +38,20 @@ void CItemBag::Init()
 
 void CItemBag::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -64,18 +64,18 @@ void CItemBag::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -84,17 +84,17 @@ void CItemBag::Load(char* path)
 
 				if (section == 0)
 				{
-					strcpy_s(this->m_EventName, lpMemScript->GetString());
+					strcpy_s(this->m_EventName, lpReadScript->GetString());
 
-					this->m_DropZen = lpMemScript->GetAsNumber();
+					this->m_DropZen = lpReadScript->GetAsNumber();
 
-					this->m_ItemDropRate = lpMemScript->GetAsNumber();
+					this->m_ItemDropRate = lpReadScript->GetAsNumber();
 
-					this->m_ItemDropCount = lpMemScript->GetAsNumber();
+					this->m_ItemDropCount = lpReadScript->GetAsNumber();
 
-					this->m_ItemDropType = lpMemScript->GetAsNumber();
+					this->m_ItemDropType = lpReadScript->GetAsNumber();
 
-					this->m_SendFirework = lpMemScript->GetAsNumber();
+					this->m_SendFirework = lpReadScript->GetAsNumber();
 				}
 				else if (section == 1)
 				{
@@ -102,21 +102,21 @@ void CItemBag::Load(char* path)
 
 					memset(&info, 0, sizeof(info));
 
-					info.Index = lpMemScript->GetNumber();
+					info.Index = lpReadScript->GetNumber();
 
-					info.Index = SafeGetItem(GET_ITEM(info.Index, lpMemScript->GetAsNumber()));
+					info.Index = SafeGetItem(GET_ITEM(info.Index, lpReadScript->GetAsNumber()));
 
-					info.MinLevel = lpMemScript->GetAsNumber();
+					info.MinLevel = lpReadScript->GetAsNumber();
 
-					info.MaxLevel = lpMemScript->GetAsNumber();
+					info.MaxLevel = lpReadScript->GetAsNumber();
 
-					info.SkillOption = lpMemScript->GetAsNumber();
+					info.SkillOption = lpReadScript->GetAsNumber();
 
-					info.LuckOption = lpMemScript->GetAsNumber();
+					info.LuckOption = lpReadScript->GetAsNumber();
 
-					info.AddOption = lpMemScript->GetAsNumber();
+					info.AddOption = lpReadScript->GetAsNumber();
 
-					info.ExceOption = lpMemScript->GetAsNumber();
+					info.ExceOption = lpReadScript->GetAsNumber();
 
 					this->SetInfo(info);
 				}
@@ -125,12 +125,12 @@ void CItemBag::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	this->m_ItemBagEx.Load(path);
+	delete lpReadScript;
 
-	delete lpMemScript;
+	this->m_ItemBagEx.Load(path);
 }
 
 void CItemBag::SetInfo(ITEM_BAG_INFO info)

@@ -23,20 +23,20 @@ void CItemOption::Init()
 
 void CItemOption::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		printf(MEM_SCRIPT_ALLOC_ERROR, path);
+		printf(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		printf(lpMemScript->GetLastError());
+		printf(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -51,7 +51,7 @@ void CItemOption::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -60,23 +60,23 @@ void CItemOption::Load(char* path)
 
 			ITEM_OPTION_INFO info;
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			info.OptionIndex = lpMemScript->GetAsNumber();
+			info.OptionIndex = lpReadScript->GetAsNumber();
 
-			info.OptionValue = lpMemScript->GetAsNumber();
+			info.OptionValue = lpReadScript->GetAsNumber();
 
-			info.ItemMinIndex = GET_ITEM(lpMemScript->GetAsNumber(), lpMemScript->GetAsNumber());
+			info.ItemMinIndex = GET_ITEM(lpReadScript->GetAsNumber(), lpReadScript->GetAsNumber());
 
-			info.ItemMaxIndex = GET_ITEM(lpMemScript->GetAsNumber(), lpMemScript->GetAsNumber());
+			info.ItemMaxIndex = GET_ITEM(lpReadScript->GetAsNumber(), lpReadScript->GetAsNumber());
 
-			info.ItemSkillOption = lpMemScript->GetAsNumber();
+			info.ItemSkillOption = lpReadScript->GetAsNumber();
 
-			info.ItemLuckOption = lpMemScript->GetAsNumber();
+			info.ItemLuckOption = lpReadScript->GetAsNumber();
 
-			info.ItemAddOption = lpMemScript->GetAsNumber();
+			info.ItemAddOption = lpReadScript->GetAsNumber();
 
-			info.ItemExceOption = lpMemScript->GetAsNumber();
+			info.ItemExceOption = lpReadScript->GetAsNumber();
 
 			this->SetInfo(info, index);
 
@@ -85,10 +85,10 @@ void CItemOption::Load(char* path)
 	}
 	catch (...)
 	{
-		printf(lpMemScript->GetLastError());
+		printf(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CItemOption::SetInfo(ITEM_OPTION_INFO info, int index)

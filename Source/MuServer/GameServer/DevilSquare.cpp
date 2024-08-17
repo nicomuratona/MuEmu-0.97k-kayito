@@ -3,7 +3,7 @@
 #include "DSProtocol.h"
 #include "EventSpawnMonster.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Message.h"
 #include "Monster.h"
 #include "MonsterSetBase.h"
@@ -74,20 +74,20 @@ void CDevilSquare::Init()
 
 void CDevilSquare::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -104,18 +104,18 @@ void CDevilSquare::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -124,50 +124,50 @@ void CDevilSquare::Load(char* path)
 
 				if (section == 0)
 				{
-					this->m_WarningTime = lpMemScript->GetNumber();
+					this->m_WarningTime = lpReadScript->GetNumber();
 
-					this->m_NotifyTime = lpMemScript->GetAsNumber();
+					this->m_NotifyTime = lpReadScript->GetAsNumber();
 
-					this->m_EventTime = lpMemScript->GetAsNumber();
+					this->m_EventTime = lpReadScript->GetAsNumber();
 
-					this->m_CloseTime = lpMemScript->GetAsNumber();
+					this->m_CloseTime = lpReadScript->GetAsNumber();
 				}
 				else if (section == 1)
 				{
 					DEVIL_SQUARE_START_TIME info;
 
-					info.Year = lpMemScript->GetNumber();
+					info.Year = lpReadScript->GetNumber();
 
-					info.Month = lpMemScript->GetAsNumber();
+					info.Month = lpReadScript->GetAsNumber();
 
-					info.Day = lpMemScript->GetAsNumber();
+					info.Day = lpReadScript->GetAsNumber();
 
-					info.DayOfWeek = lpMemScript->GetAsNumber();
+					info.DayOfWeek = lpReadScript->GetAsNumber();
 
-					info.Hour = lpMemScript->GetAsNumber();
+					info.Hour = lpReadScript->GetAsNumber();
 
-					info.Minute = lpMemScript->GetAsNumber();
+					info.Minute = lpReadScript->GetAsNumber();
 
-					info.Second = lpMemScript->GetAsNumber();
+					info.Second = lpReadScript->GetAsNumber();
 
 					this->m_DevilSquareStartTime.push_back(info);
 				}
 				else if (section == 2)
 				{
-					int level = lpMemScript->GetNumber();
+					int level = lpReadScript->GetNumber();
 
 					for (int n = 0; n < MAX_DS_RANK; n++)
 					{
-						this->m_DevilSquareRewardExperience[level][n] = lpMemScript->GetAsNumber();
+						this->m_DevilSquareRewardExperience[level][n] = lpReadScript->GetAsNumber();
 					}
 				}
 				else if (section == 3)
 				{
-					int level = lpMemScript->GetNumber();
+					int level = lpReadScript->GetNumber();
 
 					for (int n = 0; n < MAX_DS_RANK; n++)
 					{
-						this->m_DevilSquareRewardMoney[level][n] = lpMemScript->GetAsNumber();
+						this->m_DevilSquareRewardMoney[level][n] = lpReadScript->GetAsNumber();
 					}
 				}
 			}
@@ -175,10 +175,10 @@ void CDevilSquare::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CDevilSquare::MainProc()

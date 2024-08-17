@@ -10,6 +10,7 @@
 #include <winsock2.h>
 #include <queue>
 #include <map>
+#include <time.h>
 #include <iostream>
 #include <string>
 #include <WS2tcpip.h>

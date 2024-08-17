@@ -189,7 +189,10 @@ void GJConnectAccountRecv(SDHP_CONNECT_ACCOUNT_RECV* lpMsg, int index)
 
 		MD5 MD5Hash;
 
-		if (MD5Hash.MD5_CheckValue(lpMsg->password, (char*)password, MakeAccountKey(lpMsg->account)) == false && strcmp(lpMsg->password, GlobalPassword) != 0)
+		if (((MD5Encryption == 1)
+		    ? MD5Hash.MD5_CheckValue(lpMsg->password, (char*)password, MakeAccountKey(lpMsg->account)) == false
+		    : MD5Hash.MD5_CheckValue(lpMsg->password, (char*)password) == false)
+		    && strcmp(lpMsg->password, GlobalPassword) != 0)
 		{
 			gQueryManager.Close();
 

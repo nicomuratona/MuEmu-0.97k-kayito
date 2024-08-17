@@ -107,7 +107,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <AdditionalDependencies>User32.lib;Gdi32.lib;odbc32.lib;Advapi32.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>
@@ -125,7 +125,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <AdditionalDependencies>User32.lib;Gdi32.lib;odbc32.lib;Advapi32.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\mysql-connector-8.0.33\Debug\lib\;</AdditionalLibraryDirectories>
@@ -145,7 +145,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
@@ -168,7 +168,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
@@ -191,7 +191,7 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="MD5.h" />
     <ClInclude Include="MD5_KEYVAL.H" />
-    <ClInclude Include="MemScript.h" />
+    <ClInclude Include="ReadScript.h" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="ProtocolDefines.h" />
     <ClInclude Include="QueryManager.h" />
@@ -213,7 +213,7 @@
     <ClCompile Include="JoinServerProtocol.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="MD5.cpp" />
-    <ClCompile Include="MemScript.cpp" />
+    <ClCompile Include="ReadScript.cpp" />
     <ClCompile Include="MiniDump.cpp" />
     <ClCompile Include="QueryManager.cpp" />
     <ClCompile Include="Queue.cpp" />

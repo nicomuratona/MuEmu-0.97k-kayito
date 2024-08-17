@@ -17,6 +17,8 @@ CServerDisplayer::CServerDisplayer()
 
 	this->m_font = CreateFont(70, 0, 0, 0, FW_THIN, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Tahoma");
 
+	this->m_logfont = CreateFont(15, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, NONANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Verdana");
+
 	this->m_brush[0] = CreateSolidBrush(RGB(105, 105, 105)); //Offline - Standby
 
 	strcpy_s(this->m_DisplayerText[0], "STANDBY MODE");
@@ -30,6 +32,8 @@ CServerDisplayer::~CServerDisplayer()
 {
 	DeleteObject(this->m_font);
 
+	DeleteObject(this->m_logfont);
+
 	DeleteObject(this->m_brush[0]);
 
 	DeleteObject(this->m_brush[1]);
@@ -39,13 +43,9 @@ void CServerDisplayer::Init(HWND hWnd)
 {
 	this->m_hwnd = hWnd;
 
-#ifndef MYSQL
-
 	gLog.AddLog(GetPrivateProfileInt("Log", "LOG", 1, ".\\DataServer.ini") != 0, "LOG");
 
-#else
-
-	gLog.AddLog(GetPrivateProfileInt("Log", "LOG", 1, ".\\DataServer.ini") != 0, "LOG");
+#ifdef MYSQL
 
 	gLog.AddLog(GetPrivateProfileInt("Log", "LOG_QUERY", 1, ".\\DataServer.ini") != 0, "LOG_QUERY");
 
@@ -140,6 +140,14 @@ void CServerDisplayer::LogTextPaint()
 
 	HDC hdc = GetDC(this->m_hwnd);
 
+	int OldBkMode = SetBkMode(hdc, TRANSPARENT);
+
+	COLORREF OldTextColor = SetTextColor(hdc, RGB(255, 255, 255));
+
+	COLORREF OldBkColor = SetBkColor(hdc, RGB(0, 0, 0));
+
+	HFONT OldFont = (HFONT)SelectObject(hdc, this->m_logfont);
+
 	FillRect(hdc, &rect, (HBRUSH)COLOR_CAPTIONTEXT);
 
 	int line = MAX_LOG_TEXT_LINE;
@@ -199,6 +207,14 @@ void CServerDisplayer::LogTextPaint()
 		count = (((--count) >= 0) ? count : (MAX_LOG_TEXT_LINE - 1));
 	}
 
+	SelectObject(hdc, OldFont);
+
+	SetBkColor(hdc, OldBkColor);
+
+	SetTextColor(hdc, OldTextColor);
+
+	SetBkMode(hdc, OldBkMode);
+
 	ReleaseDC(this->m_hwnd, hdc);
 }
 
@@ -214,7 +230,7 @@ void CServerDisplayer::LogAddText(eLogColor color, char* text, int size)
 
 	this->m_count = (((++this->m_count) >= MAX_LOG_TEXT_LINE) ? 0 : this->m_count);
 
-	gLog.Output(LOG_GENERAL, "%s", &text[11]);
+	gLog.Output(LOG_GENERAL, "%s", &text[9]);
 
 	this->Run();
 }

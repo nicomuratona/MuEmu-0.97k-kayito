@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Blacklist.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CBlackList gBlackList;
@@ -19,20 +19,20 @@ CBlackList::~CBlackList()
 
 void CBlackList::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -47,18 +47,18 @@ void CBlackList::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -69,7 +69,7 @@ void CBlackList::Load(char* path)
 				{
 					BLACK_LIST_IP_INFO info;
 
-					memcpy(info.IpAddr, lpMemScript->GetString(), sizeof(info.IpAddr));
+					memcpy(info.IpAddr, lpReadScript->GetString(), sizeof(info.IpAddr));
 
 					this->m_BlacklistIP.push_back(info);
 				}
@@ -77,7 +77,7 @@ void CBlackList::Load(char* path)
 				{
 					BLACK_LIST_HWID_INFO info;
 
-					memcpy(info.HardwareId, lpMemScript->GetString(), sizeof(info.HardwareId));
+					memcpy(info.HardwareId, lpReadScript->GetString(), sizeof(info.HardwareId));
 
 					this->m_BlacklistHWID.push_back(info);
 				}
@@ -86,10 +86,11 @@ void CBlackList::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+
+	delete lpReadScript;
 }
 
 int CBlackList::CheckIpAddress(char* Ip)

@@ -23,20 +23,20 @@ void CCustomGlow::Init()
 
 void CCustomGlow::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		printf(MEM_SCRIPT_ALLOC_ERROR, path);
+		printf(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		printf(lpMemScript->GetLastError());
+		printf(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -47,7 +47,7 @@ void CCustomGlow::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -56,23 +56,23 @@ void CCustomGlow::Load(char* path)
 
 			CUSTOM_GLOW_INFO info;
 
-			info.ItemIndex = GET_ITEM(lpMemScript->GetNumber(), lpMemScript->GetAsNumber());
+			info.ItemIndex = GET_ITEM(lpReadScript->GetNumber(), lpReadScript->GetAsNumber());
 
-			info.ColorR = lpMemScript->GetAsNumber();
+			info.ColorR = lpReadScript->GetAsNumber();
 
-			info.ColorG = lpMemScript->GetAsNumber();
+			info.ColorG = lpReadScript->GetAsNumber();
 
-			info.ColorB = lpMemScript->GetAsNumber();
+			info.ColorB = lpReadScript->GetAsNumber();
 
 			this->SetInfo(info);
 		}
 	}
 	catch (...)
 	{
-		printf(lpMemScript->GetLastError());
+		printf(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CCustomGlow::SetInfo(CUSTOM_GLOW_INFO info)

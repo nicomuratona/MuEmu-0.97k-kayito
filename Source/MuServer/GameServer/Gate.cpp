@@ -2,7 +2,7 @@
 #include "Gate.h"
 #include "DefaultClassInfo.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CGate gGate;
@@ -19,20 +19,20 @@ CGate::~CGate()
 
 void CGate::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -45,7 +45,7 @@ void CGate::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -54,43 +54,43 @@ void CGate::Load(char* path)
 
 			GATE_INFO info;
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			info.Flag = lpMemScript->GetAsNumber();
+			info.Flag = lpReadScript->GetAsNumber();
 
-			info.Map = lpMemScript->GetAsNumber();
+			info.Map = lpReadScript->GetAsNumber();
 
-			info.X = lpMemScript->GetAsNumber();
+			info.X = lpReadScript->GetAsNumber();
 
-			info.Y = lpMemScript->GetAsNumber();
+			info.Y = lpReadScript->GetAsNumber();
 
-			info.TX = lpMemScript->GetAsNumber();
+			info.TX = lpReadScript->GetAsNumber();
 
-			info.TY = lpMemScript->GetAsNumber();
+			info.TY = lpReadScript->GetAsNumber();
 
-			info.TargetGate = lpMemScript->GetAsNumber();
+			info.TargetGate = lpReadScript->GetAsNumber();
 
-			info.Dir = lpMemScript->GetAsNumber();
+			info.Dir = lpReadScript->GetAsNumber();
 
-			info.MinLevel = lpMemScript->GetAsNumber();
+			info.MinLevel = lpReadScript->GetAsNumber();
 
-			info.MaxLevel = lpMemScript->GetAsNumber();
+			info.MaxLevel = lpReadScript->GetAsNumber();
 
-			info.MinReset = lpMemScript->GetAsNumber();
+			info.MinReset = lpReadScript->GetAsNumber();
 
-			info.MaxReset = lpMemScript->GetAsNumber();
+			info.MaxReset = lpReadScript->GetAsNumber();
 
-			info.AccountLevel = lpMemScript->GetAsNumber();
+			info.AccountLevel = lpReadScript->GetAsNumber();
 
 			this->m_GateInfo.insert(std::pair<int, GATE_INFO>(info.Index, info));
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CGate::GetInfo(int index, GATE_INFO* lpInfo)

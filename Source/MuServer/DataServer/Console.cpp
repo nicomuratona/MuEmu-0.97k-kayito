@@ -4,6 +4,8 @@ CConsole gConsole;
 
 CConsole::CConsole()
 {
+	SetConsoleOutputCP(1252);
+
 	this->HideConsole = true;
 
 	for (int i = 0; i < MAX_CONSOLE_OUTPUT; i++)

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ItemOptionRate.h"
 #include "ItemManager.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "RandomManager.h"
 #include "Util.h"
 
@@ -27,20 +27,20 @@ CItemOptionRate::~CItemOptionRate()
 
 void CItemOptionRate::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -61,18 +61,18 @@ void CItemOptionRate::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -83,11 +83,11 @@ void CItemOptionRate::Load(char* path)
 				{
 					ITEM_LEVEL_OPTION_RATE_INFO info;
 
-					info.Index = lpMemScript->GetNumber();
+					info.Index = lpReadScript->GetNumber();
 
 					for (int n = 0; n < MAX_ITEM_LEVEL_OPTION_RATE; n++)
 					{
-						info.Rate[n] = lpMemScript->GetAsNumber();
+						info.Rate[n] = lpReadScript->GetAsNumber();
 					}
 
 					this->m_ItemLevelOptionRateInfo.insert(std::pair<int, ITEM_LEVEL_OPTION_RATE_INFO>(info.Index, info));
@@ -96,11 +96,11 @@ void CItemOptionRate::Load(char* path)
 				{
 					ITEM_SKILL_OPTION_RATE_INFO info;
 
-					info.Index = lpMemScript->GetNumber();
+					info.Index = lpReadScript->GetNumber();
 
 					for (int n = 0; n < MAX_ITEM_SKILL_OPTION_RATE; n++)
 					{
-						info.Rate[n] = lpMemScript->GetAsNumber();
+						info.Rate[n] = lpReadScript->GetAsNumber();
 					}
 
 					this->m_ItemSkillOptionRateInfo.insert(std::pair<int, ITEM_SKILL_OPTION_RATE_INFO>(info.Index, info));
@@ -109,11 +109,11 @@ void CItemOptionRate::Load(char* path)
 				{
 					ITEM_LUCK_OPTION_RATE_INFO info;
 
-					info.Index = lpMemScript->GetNumber();
+					info.Index = lpReadScript->GetNumber();
 
 					for (int n = 0; n < MAX_LUCK_ITEM_OPTION_RATE; n++)
 					{
-						info.Rate[n] = lpMemScript->GetAsNumber();
+						info.Rate[n] = lpReadScript->GetAsNumber();
 					}
 
 					this->m_ItemLuckOptionRateInfo.insert(std::pair<int, ITEM_LUCK_OPTION_RATE_INFO>(info.Index, info));
@@ -122,11 +122,11 @@ void CItemOptionRate::Load(char* path)
 				{
 					ITEM_ADD_OPTION_RATE_INFO info;
 
-					info.Index = lpMemScript->GetNumber();
+					info.Index = lpReadScript->GetNumber();
 
 					for (int n = 0; n < MAX_ITEM_ADD_OPTION_RATE; n++)
 					{
-						info.Rate[n] = lpMemScript->GetAsNumber();
+						info.Rate[n] = lpReadScript->GetAsNumber();
 					}
 
 					this->m_ItemAddOptionRateInfo.insert(std::pair<int, ITEM_ADD_OPTION_RATE_INFO>(info.Index, info));
@@ -135,11 +135,11 @@ void CItemOptionRate::Load(char* path)
 				{
 					ITEM_EXCE_OPTION_RATE_INFO info;
 
-					info.Index = lpMemScript->GetNumber();
+					info.Index = lpReadScript->GetNumber();
 
 					for (int n = 0; n < MAX_ITEM_EXCE_OPTION_RATE; n++)
 					{
-						info.Rate[n] = lpMemScript->GetAsNumber();
+						info.Rate[n] = lpReadScript->GetAsNumber();
 					}
 
 					this->m_ItemExceOptionRateInfo.insert(std::pair<int, ITEM_EXCE_OPTION_RATE_INFO>(info.Index, info));
@@ -149,10 +149,10 @@ void CItemOptionRate::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CItemOptionRate::GetItemLevelOption(int index, BYTE* option)

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Shop.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "User.h"
 #include "Util.h"
 
@@ -26,20 +26,20 @@ void CShop::Init()
 
 void CShop::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -52,32 +52,32 @@ void CShop::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int ItemIndex = lpMemScript->GetNumber();
+			int ItemIndex = lpReadScript->GetNumber();
 
-			ItemIndex = SafeGetItem(GET_ITEM(ItemIndex, lpMemScript->GetAsNumber()));
+			ItemIndex = SafeGetItem(GET_ITEM(ItemIndex, lpReadScript->GetAsNumber()));
 
-			int ItemLevel = lpMemScript->GetAsNumber();
+			int ItemLevel = lpReadScript->GetAsNumber();
 
-			int ItemDurability = lpMemScript->GetAsNumber();
+			int ItemDurability = lpReadScript->GetAsNumber();
 
-			int ItemSkillOption = lpMemScript->GetAsNumber();
+			int ItemSkillOption = lpReadScript->GetAsNumber();
 
-			int ItemLuckOption = lpMemScript->GetAsNumber();
+			int ItemLuckOption = lpReadScript->GetAsNumber();
 
-			int ItemAddOption = lpMemScript->GetAsNumber();
+			int ItemAddOption = lpReadScript->GetAsNumber();
 
-			int ItemExceOption = lpMemScript->GetAsNumber();
+			int ItemExceOption = lpReadScript->GetAsNumber();
 
-			int ItemSlotX = lpMemScript->GetAsNumber();
+			int ItemSlotX = lpReadScript->GetAsNumber();
 
-			int ItemSlotY = lpMemScript->GetAsNumber();
+			int ItemSlotY = lpReadScript->GetAsNumber();
 
 			if (ItemSlotX == -1 || ItemSlotY == -1)
 			{
@@ -91,10 +91,10 @@ void CShop::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CShop::ShopItemSet(int slot, BYTE type)

@@ -67,6 +67,7 @@ void cWindow::WindowModeLoad(HINSTANCE hins)
 	SetCompleteHook(0xE9, 0x0041F617, 0x00421B0B);
 
 	SetCompleteHook(0xE8, 0x00412BC4, &this->FixDisplaySettingsOnClose);
+	SetByte(0x00412BC4 + 5, 0x90);
 }
 
 LONG WINAPI cWindow::FixDisplaySettingsOnClose(DEVMODEA* lpDevMode, DWORD dwFlags)

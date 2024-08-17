@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "AllowableIpList.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CAllowableIpList gAllowableIpList;
@@ -17,20 +17,20 @@ CAllowableIpList::~CAllowableIpList()
 
 void CAllowableIpList::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -43,18 +43,18 @@ void CAllowableIpList::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -65,7 +65,7 @@ void CAllowableIpList::Load(char* path)
 				{
 					ALLOWABLE_IP_INFO info;
 
-					strcpy_s(info.IpAddr, lpMemScript->GetString());
+					strcpy_s(info.IpAddr, lpReadScript->GetString());
 
 					this->m_AllowableIpInfo.insert(std::pair<std::string, ALLOWABLE_IP_INFO>(std::string(info.IpAddr), info));
 				}
@@ -78,10 +78,10 @@ void CAllowableIpList::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CAllowableIpList::CheckAllowableIp(char* ip)

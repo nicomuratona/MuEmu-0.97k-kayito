@@ -7,7 +7,7 @@
 #include "Guild.h"
 #include "ItemManager.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Message.h"
 #include "Monster.h"
 #include "Move.h"
@@ -34,20 +34,20 @@ CSkillManager::~CSkillManager()
 
 void CSkillManager::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -60,7 +60,7 @@ void CSkillManager::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -69,33 +69,33 @@ void CSkillManager::Load(char* path)
 
 			SKILL_INFO info;
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			strcpy_s(info.Name, lpMemScript->GetAsString());
+			strcpy_s(info.Name, lpReadScript->GetAsString());
 
-			info.Damage = lpMemScript->GetAsNumber();
+			info.Damage = lpReadScript->GetAsNumber();
 
-			info.Mana = lpMemScript->GetAsNumber();
+			info.Mana = lpReadScript->GetAsNumber();
 
-			info.BP = lpMemScript->GetAsNumber();
+			info.BP = lpReadScript->GetAsNumber();
 
-			info.Range = lpMemScript->GetAsNumber();
+			info.Range = lpReadScript->GetAsNumber();
 
-			info.Radio = lpMemScript->GetAsNumber();
+			info.Radio = lpReadScript->GetAsNumber();
 
-			info.Delay = lpMemScript->GetAsNumber();
+			info.Delay = lpReadScript->GetAsNumber();
 
-			info.Type = lpMemScript->GetAsNumber();
+			info.Type = lpReadScript->GetAsNumber();
 
-			info.Effect = lpMemScript->GetAsNumber();
+			info.Effect = lpReadScript->GetAsNumber();
 
-			info.RequireLevel = lpMemScript->GetAsNumber();
+			info.RequireLevel = lpReadScript->GetAsNumber();
 
-			info.RequireEnergy = lpMemScript->GetAsNumber();
+			info.RequireEnergy = lpReadScript->GetAsNumber();
 
 			for (int n = 0; n < MAX_CLASS; n++)
 			{
-				info.RequireClass[n] = lpMemScript->GetAsNumber();
+				info.RequireClass[n] = lpReadScript->GetAsNumber();
 			}
 
 			this->m_SkillInfo.insert(std::pair<int, SKILL_INFO>(info.Index, info));
@@ -103,10 +103,10 @@ void CSkillManager::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CSkillManager::GetInfo(int index, SKILL_INFO* lpInfo)

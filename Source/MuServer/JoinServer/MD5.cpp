@@ -6,6 +6,25 @@
 //	MD5 added methods
 //---------------------------------------------
 
+// Generate 128 bits (16 bytes) MD5 key value using the input string
+bool MD5::MD5_EncodeKey(char* lpszInputStr, char* lpszOutputKeyVal)
+{
+	unsigned int inputlen = strlen((char*)lpszInputStr);
+
+	update((unsigned char*)lpszInputStr, inputlen);
+
+	finalize();
+
+	for (int i = 0; i < 16; i++)
+	{
+		lpszOutputKeyVal[i] = digest[i];
+	}
+
+	init();
+
+	return true;
+}
+
 // Generate 128 bits (16 bytes) MD5 key value using the input string and key index (0~65535)
 bool MD5::MD5_EncodeKeyVal(char* lpszInputStr, char* lpszOutputKeyVal, int iKeyIndex)
 {
@@ -51,6 +70,24 @@ bool MD5::MD5_EncodeString(char* lpszInputStr, char* lpszOutputStr, int iKeyInde
 	strcpy_s(lpszOutputStr, 33, hex_digest());
 
 	init();
+
+	return true;
+}
+
+// Authenticate key value by inputting string and MD5 key value (true: correct / false: incorrect)
+bool MD5::MD5_CheckValue(char* lpszInputStr, char* szKeyVal)
+{
+	char szBUF[16] = { 0 };
+
+	MD5_EncodeKey(lpszInputStr, szBUF);
+
+	for (int i = 0; i < 16; i++)
+	{
+		if (szKeyVal[i] != szBUF[i])
+		{
+			return false;
+		}
+	}
 
 	return true;
 }
@@ -362,7 +399,7 @@ void MD5::transform(uint1 block[64])
 	FF(c, d, a, b, x[14], S13, 0xA679438E); /* 15 */
 	FF(b, c, d, a, x[15], S14, 0x49B40821); /* 16 */
 
-       /* Round 2 */
+	/* Round 2 */
 	GG(a, b, c, d, x[1], S21, 0xF61E2562); /* 17 */
 	GG(d, a, b, c, x[6], S22, 0xC040B340); /* 18 */
 	GG(c, d, a, b, x[11], S23, 0x265E5A51); /* 19 */

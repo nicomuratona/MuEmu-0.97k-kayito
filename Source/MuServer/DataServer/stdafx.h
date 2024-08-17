@@ -13,6 +13,7 @@
 #include <sstream>
 #include <queue>
 #include <map>
+#include <time.h>
 #include <sql.h>
 #include <sqlext.h>
 #include <mbstring.h>

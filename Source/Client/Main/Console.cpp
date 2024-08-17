@@ -4,6 +4,8 @@ Console gConsole;
 
 Console::Console()
 {
+	SetConsoleOutputCP(1252);
+
 	this->inUse = false;
 
 	this->m_OutputType[CON_GENERAL] = "General";

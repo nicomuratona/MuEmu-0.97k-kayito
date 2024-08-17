@@ -21,12 +21,14 @@ TCHAR szWindowClass[MAX_LOADSTRING] = "JOINSERVER";
 
 BOOL CaseSensitive;
 
-BOOL MD5Encryption;
+int MD5Encryption;
 
 char GlobalPassword[11];
 
 int main()
 {
+	setlocale(LC_ALL, "en_US.1252");
+
 	CMiniDump::Start();
 
 	hInst = GetModuleHandle(NULL);

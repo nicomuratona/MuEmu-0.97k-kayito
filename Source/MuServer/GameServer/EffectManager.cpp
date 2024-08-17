@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "EffectManager.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "ObjectManager.h"
 #include "Util.h"
 
@@ -26,20 +26,20 @@ void CEffectManager::Init()
 
 void CEffectManager::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -52,7 +52,7 @@ void CEffectManager::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -61,39 +61,39 @@ void CEffectManager::Load(char* path)
 
 			EFFECT_INFO info;
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			info.Group = lpMemScript->GetAsNumber();
+			info.Group = lpReadScript->GetAsNumber();
 
-			info.ItemIndex = lpMemScript->GetAsNumber();
+			info.ItemIndex = lpReadScript->GetAsNumber();
 
-			strcpy_s(info.Name, lpMemScript->GetAsString());
+			strcpy_s(info.Name, lpReadScript->GetAsString());
 
-			info.Save = lpMemScript->GetAsNumber();
+			info.Save = lpReadScript->GetAsNumber();
 
-			info.Type = lpMemScript->GetAsNumber();
+			info.Type = lpReadScript->GetAsNumber();
 
-			info.Flag = lpMemScript->GetAsNumber();
+			info.Flag = lpReadScript->GetAsNumber();
 
-			info.Count = lpMemScript->GetAsNumber();
+			info.Count = lpReadScript->GetAsNumber();
 
-			info.Value[0] = lpMemScript->GetAsNumber();
+			info.Value[0] = lpReadScript->GetAsNumber();
 
-			info.Value[1] = lpMemScript->GetAsNumber();
+			info.Value[1] = lpReadScript->GetAsNumber();
 
-			info.Value[2] = lpMemScript->GetAsNumber();
+			info.Value[2] = lpReadScript->GetAsNumber();
 
-			info.Value[3] = lpMemScript->GetAsNumber();
+			info.Value[3] = lpReadScript->GetAsNumber();
 
 			this->SetInfo(info);
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CEffectManager::SetInfo(EFFECT_INFO info)

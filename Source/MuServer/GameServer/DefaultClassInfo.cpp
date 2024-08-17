@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DefaultClassInfo.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CDefaultClassInfo gDefaultClassInfo;
@@ -22,20 +22,20 @@ void CDefaultClassInfo::Init()
 
 void CDefaultClassInfo::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -48,7 +48,7 @@ void CDefaultClassInfo::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -57,37 +57,37 @@ void CDefaultClassInfo::Load(char* path)
 
 			DEFAULT_CLASS_INFO info;
 
-			info.Class = lpMemScript->GetNumber();
+			info.Class = lpReadScript->GetNumber();
 
-			info.Strength = lpMemScript->GetAsNumber();
+			info.Strength = lpReadScript->GetAsNumber();
 
-			info.Dexterity = lpMemScript->GetAsNumber();
+			info.Dexterity = lpReadScript->GetAsNumber();
 
-			info.Vitality = lpMemScript->GetAsNumber();
+			info.Vitality = lpReadScript->GetAsNumber();
 
-			info.Energy = lpMemScript->GetAsNumber();
+			info.Energy = lpReadScript->GetAsNumber();
 
-			info.MaxLife = lpMemScript->GetAsFloatNumber();
+			info.MaxLife = lpReadScript->GetAsFloatNumber();
 
-			info.MaxMana = lpMemScript->GetAsFloatNumber();
+			info.MaxMana = lpReadScript->GetAsFloatNumber();
 
-			info.LevelLife = lpMemScript->GetAsFloatNumber();
+			info.LevelLife = lpReadScript->GetAsFloatNumber();
 
-			info.LevelMana = lpMemScript->GetAsFloatNumber();
+			info.LevelMana = lpReadScript->GetAsFloatNumber();
 
-			info.VitalityToLife = lpMemScript->GetAsFloatNumber();
+			info.VitalityToLife = lpReadScript->GetAsFloatNumber();
 
-			info.EnergyToMana = lpMemScript->GetAsFloatNumber();
+			info.EnergyToMana = lpReadScript->GetAsFloatNumber();
 
 			this->SetInfo(info);
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CDefaultClassInfo::SetInfo(DEFAULT_CLASS_INFO info)

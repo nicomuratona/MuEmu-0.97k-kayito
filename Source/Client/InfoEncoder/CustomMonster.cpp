@@ -23,20 +23,20 @@ void CCustomMonster::Init()
 
 void CCustomMonster::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		printf(MEM_SCRIPT_ALLOC_ERROR, path);
+		printf(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		printf(lpMemScript->GetLastError());
+		printf(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -47,7 +47,7 @@ void CCustomMonster::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -56,27 +56,27 @@ void CCustomMonster::Load(char* path)
 
 			CUSTOM_MONSTER_INFO info;
 
-			info.MonsterIndex = lpMemScript->GetNumber();
+			info.MonsterIndex = lpReadScript->GetNumber();
 
-			info.MonsterType = lpMemScript->GetAsNumber();
+			info.MonsterType = lpReadScript->GetAsNumber();
 
-			info.GoldenType = lpMemScript->GetAsNumber();
+			info.GoldenType = lpReadScript->GetAsNumber();
 
-			info.Scale = lpMemScript->GetAsFloatNumber();
+			info.Scale = lpReadScript->GetAsFloatNumber();
 
-			strcpy_s(info.FolderName, lpMemScript->GetAsString());
+			strcpy_s(info.FolderName, lpReadScript->GetAsString());
 
-			strcpy_s(info.ModelName, lpMemScript->GetAsString());
+			strcpy_s(info.ModelName, lpReadScript->GetAsString());
 
 			this->SetInfo(info);
 		}
 	}
 	catch (...)
 	{
-		printf(lpMemScript->GetLastError());
+		printf(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CCustomMonster::SetInfo(CUSTOM_MONSTER_INFO info)

@@ -100,7 +100,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="ItemOption.h" />
     <ClInclude Include="MapManager.h" />
-    <ClInclude Include="MemScript.h" />
+    <ClInclude Include="ReadScript.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -112,7 +112,7 @@
     <ClCompile Include="InfoEncoder.cpp" />
     <ClCompile Include="ItemOption.cpp" />
     <ClCompile Include="MapManager.cpp" />
-    <ClCompile Include="MemScript.cpp" />
+    <ClCompile Include="ReadScript.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

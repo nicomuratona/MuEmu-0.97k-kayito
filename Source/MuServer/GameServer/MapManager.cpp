@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "MapManager.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "ServerInfo.h"
 #include "Util.h"
 
@@ -18,20 +18,20 @@ CMapManager::~CMapManager()
 
 void CMapManager::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -44,7 +44,7 @@ void CMapManager::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -55,35 +55,35 @@ void CMapManager::Load(char* path)
 
 			memset(&info, 0, sizeof(info));
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			info.NonPK = lpMemScript->GetAsNumber();
+			info.NonPK = lpReadScript->GetAsNumber();
 
-			info.ViewRange = lpMemScript->GetAsNumber();
+			info.ViewRange = lpReadScript->GetAsNumber();
 
-			info.ExperienceRate = lpMemScript->GetAsNumber();
+			info.ExperienceRate = lpReadScript->GetAsNumber();
 
-			info.ItemDropRate = lpMemScript->GetAsNumber();
+			info.ItemDropRate = lpReadScript->GetAsNumber();
 
-			info.ExcItemDropRate = lpMemScript->GetAsNumber();
+			info.ExcItemDropRate = lpReadScript->GetAsNumber();
 
-			info.DeadGate = lpMemScript->GetAsNumber();
+			info.DeadGate = lpReadScript->GetAsNumber();
 
-			info.RespawnInPlace = lpMemScript->GetAsNumber();
+			info.RespawnInPlace = lpReadScript->GetAsNumber();
 
-			info.FlyingDragons = lpMemScript->GetAsNumber();
+			info.FlyingDragons = lpReadScript->GetAsNumber();
 
-			strcpy_s(info.MapName, lpMemScript->GetAsString());
+			strcpy_s(info.MapName, lpReadScript->GetAsString());
 
 			this->m_MapManagerInfo.insert(std::pair<int, MAP_MANAGER_INFO>(info.Index, info));
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 int CMapManager::GetMapNonPK(int index)

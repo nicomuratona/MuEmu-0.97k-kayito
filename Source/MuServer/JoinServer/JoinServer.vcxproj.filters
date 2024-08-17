@@ -44,7 +44,7 @@
     <ClInclude Include="JoinServerProtocol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MemScript.h">
+    <ClInclude Include="ReadScript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QueryManager.h">
@@ -106,7 +106,7 @@
     <ClCompile Include="JoinServerProtocol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MemScript.cpp">
+    <ClCompile Include="ReadScript.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QueryManager.cpp">

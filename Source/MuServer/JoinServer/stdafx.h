@@ -10,6 +10,7 @@
 #include <winsock2.h>
 #include <queue>
 #include <map>
+#include <time.h>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -28,5 +29,5 @@
 #pragma comment(lib,"ws2_32.lib")
 
 extern BOOL CaseSensitive;
-extern BOOL MD5Encryption;
+extern int MD5Encryption;
 extern char GlobalPassword[11];

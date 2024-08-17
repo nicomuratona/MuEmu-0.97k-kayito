@@ -10,7 +10,7 @@
 #include "ItemStack.h"
 #include "Log.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Message.h"
 #include "Notice.h"
 #include "ObjectManager.h"
@@ -38,20 +38,20 @@ CItemManager::~CItemManager()
 
 void CItemManager::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -64,18 +64,18 @@ void CItemManager::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -86,141 +86,141 @@ void CItemManager::Load(char* path)
 
 				memset(&info, 0, sizeof(info));
 
-				info.Index = SafeGetItem(GET_ITEM(section, lpMemScript->GetNumber()));
+				info.Index = SafeGetItem(GET_ITEM(section, lpReadScript->GetNumber()));
 
-				info.Slot = lpMemScript->GetAsNumber();
+				info.Slot = lpReadScript->GetAsNumber();
 
-				info.Skill = lpMemScript->GetAsNumber();
+				info.Skill = lpReadScript->GetAsNumber();
 
-				info.Width = lpMemScript->GetAsNumber();
+				info.Width = lpReadScript->GetAsNumber();
 
-				info.Height = lpMemScript->GetAsNumber();
+				info.Height = lpReadScript->GetAsNumber();
 
-				info.HaveSerial = lpMemScript->GetAsNumber();
+				info.HaveSerial = lpReadScript->GetAsNumber();
 
-				info.HaveOption = lpMemScript->GetAsNumber();
+				info.HaveOption = lpReadScript->GetAsNumber();
 
-				info.DropItem = lpMemScript->GetAsNumber();
+				info.DropItem = lpReadScript->GetAsNumber();
 
-				strcpy_s(info.Name, lpMemScript->GetAsString());
+				strcpy_s(info.Name, lpReadScript->GetAsString());
 
 				if (section >= 0 && section <= 5)
 				{
-					info.Level = lpMemScript->GetAsNumber();
+					info.Level = lpReadScript->GetAsNumber();
 
-					info.DamageMin = lpMemScript->GetAsNumber();
+					info.DamageMin = lpReadScript->GetAsNumber();
 
-					info.DamageMax = lpMemScript->GetAsNumber();
+					info.DamageMax = lpReadScript->GetAsNumber();
 
-					info.AttackSpeed = lpMemScript->GetAsNumber();
+					info.AttackSpeed = lpReadScript->GetAsNumber();
 
-					info.Durability = lpMemScript->GetAsNumber();
+					info.Durability = lpReadScript->GetAsNumber();
 
-					info.MagicDurability = lpMemScript->GetAsNumber();
+					info.MagicDurability = lpReadScript->GetAsNumber();
 
-					info.MagicDamageRate = lpMemScript->GetAsNumber();
+					info.MagicDamageRate = lpReadScript->GetAsNumber();
 
-					info.RequireLevel = lpMemScript->GetAsNumber();
+					info.RequireLevel = lpReadScript->GetAsNumber();
 
-					info.RequireStrength = lpMemScript->GetAsNumber();
+					info.RequireStrength = lpReadScript->GetAsNumber();
 
-					info.RequireDexterity = lpMemScript->GetAsNumber();
+					info.RequireDexterity = lpReadScript->GetAsNumber();
 
-					info.RequireEnergy = lpMemScript->GetAsNumber();
+					info.RequireEnergy = lpReadScript->GetAsNumber();
 
-					info.RequireVitality = lpMemScript->GetAsNumber();
+					info.RequireVitality = lpReadScript->GetAsNumber();
 
 					info.TwoHand = ((info.Width >= 2) ? 1 : 0);
 				}
 				else if (section >= 6 && section <= 11)
 				{
-					info.Level = lpMemScript->GetAsNumber();
+					info.Level = lpReadScript->GetAsNumber();
 
 					if (section == 6)
 					{
-						info.Defense = lpMemScript->GetAsNumber();
+						info.Defense = lpReadScript->GetAsNumber();
 
-						info.DefenseSuccessRate = lpMemScript->GetAsNumber();
+						info.DefenseSuccessRate = lpReadScript->GetAsNumber();
 					}
 					else if (section >= 7 && section <= 9)
 					{
-						info.Defense = lpMemScript->GetAsNumber();
+						info.Defense = lpReadScript->GetAsNumber();
 
-						info.MagicDefense = lpMemScript->GetAsNumber();
+						info.MagicDefense = lpReadScript->GetAsNumber();
 					}
 					else if (section == 10)
 					{
-						info.Defense = lpMemScript->GetAsNumber();
+						info.Defense = lpReadScript->GetAsNumber();
 
-						info.AttackSpeed = lpMemScript->GetAsNumber();
+						info.AttackSpeed = lpReadScript->GetAsNumber();
 					}
 					else if (section == 11)
 					{
-						info.Defense = lpMemScript->GetAsNumber();
+						info.Defense = lpReadScript->GetAsNumber();
 
-						info.WalkSpeed = lpMemScript->GetAsNumber();
+						info.WalkSpeed = lpReadScript->GetAsNumber();
 					}
 
-					info.Durability = lpMemScript->GetAsNumber();
+					info.Durability = lpReadScript->GetAsNumber();
 
-					info.RequireLevel = lpMemScript->GetAsNumber();
+					info.RequireLevel = lpReadScript->GetAsNumber();
 
-					info.RequireStrength = lpMemScript->GetAsNumber();
+					info.RequireStrength = lpReadScript->GetAsNumber();
 
-					info.RequireDexterity = lpMemScript->GetAsNumber();
+					info.RequireDexterity = lpReadScript->GetAsNumber();
 
-					info.RequireEnergy = lpMemScript->GetAsNumber();
+					info.RequireEnergy = lpReadScript->GetAsNumber();
 
-					info.RequireVitality = lpMemScript->GetAsNumber();
+					info.RequireVitality = lpReadScript->GetAsNumber();
 				}
 				else if (section == 12)
 				{
-					info.Level = lpMemScript->GetAsNumber();
+					info.Level = lpReadScript->GetAsNumber();
 
-					info.Defense = lpMemScript->GetAsNumber();
+					info.Defense = lpReadScript->GetAsNumber();
 
-					info.Durability = lpMemScript->GetAsNumber();
+					info.Durability = lpReadScript->GetAsNumber();
 
-					info.RequireLevel = lpMemScript->GetAsNumber();
+					info.RequireLevel = lpReadScript->GetAsNumber();
 
-					info.RequireEnergy = lpMemScript->GetAsNumber();
+					info.RequireEnergy = lpReadScript->GetAsNumber();
 
-					info.RequireStrength = lpMemScript->GetAsNumber();
+					info.RequireStrength = lpReadScript->GetAsNumber();
 
-					info.RequireDexterity = lpMemScript->GetAsNumber();
+					info.RequireDexterity = lpReadScript->GetAsNumber();
 
-					info.BuyMoney = lpMemScript->GetAsNumber();
+					info.BuyMoney = lpReadScript->GetAsNumber();
 				}
 				else if (section == 13)
 				{
-					info.Level = lpMemScript->GetAsNumber();
+					info.Level = lpReadScript->GetAsNumber();
 
-					info.Durability = lpMemScript->GetAsNumber();
+					info.Durability = lpReadScript->GetAsNumber();
 
 					for (int n = 0; n < MAX_RESISTANCE_TYPE; n++)
 					{
-						info.Resistance[n] = lpMemScript->GetAsNumber();
+						info.Resistance[n] = lpReadScript->GetAsNumber();
 					}
 
 					info.RequireLevel = info.Level;
 				}
 				else if (section == 14)
 				{
-					info.Value = lpMemScript->GetAsNumber();
+					info.Value = lpReadScript->GetAsNumber();
 
-					info.Level = lpMemScript->GetAsNumber();
+					info.Level = lpReadScript->GetAsNumber();
 
 					info.Durability = 1;
 				}
 				else if (section == 15)
 				{
-					info.Level = lpMemScript->GetAsNumber();
+					info.Level = lpReadScript->GetAsNumber();
 
-					info.RequireLevel = lpMemScript->GetAsNumber();
+					info.RequireLevel = lpReadScript->GetAsNumber();
 
-					info.RequireEnergy = lpMemScript->GetAsNumber();
+					info.RequireEnergy = lpReadScript->GetAsNumber();
 
-					info.BuyMoney = lpMemScript->GetAsNumber();
+					info.BuyMoney = lpReadScript->GetAsNumber();
 
 					info.DamageMin = info.Level;
 
@@ -229,14 +229,14 @@ void CItemManager::Load(char* path)
 
 				if (section <= 11 || section == 13)
 				{
-					lpMemScript->GetAsNumber();
+					lpReadScript->GetAsNumber();
 				}
 
 				if (section != 14)
 				{
 					for (int n = 0; n < MAX_CLASS; n++)
 					{
-						info.RequireClass[n] = lpMemScript->GetAsNumber();
+						info.RequireClass[n] = lpReadScript->GetAsNumber();
 					}
 				}
 
@@ -246,10 +246,10 @@ void CItemManager::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CItemManager::GetInfo(int index, ITEM_INFO* lpInfo)

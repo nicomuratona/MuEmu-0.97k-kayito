@@ -6,7 +6,7 @@
 #include "InvasionManager.h"
 #include "ItemManager.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Monster.h"
 #include "MonsterSetBase.h"
 #include "ObjectManager.h"
@@ -43,20 +43,20 @@ void CMonsterManager::Init()
 
 void CMonsterManager::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -69,7 +69,7 @@ void CMonsterManager::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -80,57 +80,57 @@ void CMonsterManager::Load(char* path)
 
 			memset(&info, 0, sizeof(info));
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			info.Type = lpMemScript->GetAsNumber();
+			info.Type = lpReadScript->GetAsNumber();
 
-			strcpy_s(info.Name, lpMemScript->GetAsString());
+			strcpy_s(info.Name, lpReadScript->GetAsString());
 
-			info.Level = lpMemScript->GetAsNumber();
+			info.Level = lpReadScript->GetAsNumber();
 
-			info.Life = lpMemScript->GetAsNumber();
+			info.Life = lpReadScript->GetAsNumber();
 
-			info.Mana = lpMemScript->GetAsNumber();
+			info.Mana = lpReadScript->GetAsNumber();
 
-			info.DamageMin = lpMemScript->GetAsNumber();
+			info.DamageMin = lpReadScript->GetAsNumber();
 
-			info.DamageMax = lpMemScript->GetAsNumber();
+			info.DamageMax = lpReadScript->GetAsNumber();
 
-			info.Defense = lpMemScript->GetAsNumber();
+			info.Defense = lpReadScript->GetAsNumber();
 
-			info.MagicDefense = lpMemScript->GetAsNumber();
+			info.MagicDefense = lpReadScript->GetAsNumber();
 
-			info.AttackRate = lpMemScript->GetAsNumber();
+			info.AttackRate = lpReadScript->GetAsNumber();
 
-			info.DefenseRate = lpMemScript->GetAsNumber();
+			info.DefenseRate = lpReadScript->GetAsNumber();
 
-			info.MoveRange = lpMemScript->GetAsNumber();
+			info.MoveRange = lpReadScript->GetAsNumber();
 
-			info.AttackType = lpMemScript->GetAsNumber();
+			info.AttackType = lpReadScript->GetAsNumber();
 
-			info.AttackRange = lpMemScript->GetAsNumber();
+			info.AttackRange = lpReadScript->GetAsNumber();
 
-			info.ViewRange = lpMemScript->GetAsNumber();
+			info.ViewRange = lpReadScript->GetAsNumber();
 
-			info.MoveSpeed = lpMemScript->GetAsNumber();
+			info.MoveSpeed = lpReadScript->GetAsNumber();
 
-			info.AttackSpeed = lpMemScript->GetAsNumber();
+			info.AttackSpeed = lpReadScript->GetAsNumber();
 
-			info.RegenTime = lpMemScript->GetAsNumber();
+			info.RegenTime = lpReadScript->GetAsNumber();
 
-			info.Attribute = lpMemScript->GetAsNumber();
+			info.Attribute = lpReadScript->GetAsNumber();
 
-			info.ItemRate = lpMemScript->GetAsNumber();
+			info.ItemRate = lpReadScript->GetAsNumber();
 
-			info.MoneyRate = lpMemScript->GetAsNumber();
+			info.MoneyRate = lpReadScript->GetAsNumber();
 
-			info.MaxItemLevel = lpMemScript->GetAsNumber();
+			info.MaxItemLevel = lpReadScript->GetAsNumber();
 
-			info.MonsterSkill = lpMemScript->GetAsNumber();
+			info.MonsterSkill = lpReadScript->GetAsNumber();
 
 			for (int n = 0; n < MAX_RESISTANCE_TYPE; n++)
 			{
-				info.Resistance[n] = lpMemScript->GetAsNumber();
+				info.Resistance[n] = lpReadScript->GetAsNumber();
 			}
 
 			this->SetInfo(info);
@@ -138,12 +138,12 @@ void CMonsterManager::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	this->InitMonsterItem();
+	delete lpReadScript;
 
-	delete lpMemScript;
+	this->InitMonsterItem();
 }
 
 void CMonsterManager::SetInfo(MONSTER_INFO info)

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CustomNpcMove.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Message.h"
 #include "Notice.h"
 #include "Util.h"
@@ -20,20 +20,20 @@ CCustomNpcMove::~CCustomNpcMove()
 
 void CCustomNpcMove::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -48,7 +48,7 @@ void CCustomNpcMove::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -57,31 +57,31 @@ void CCustomNpcMove::Load(char* path)
 
 			NPC_MOVE_INFO info;
 
-			info.MonsterClass = lpMemScript->GetNumber();
+			info.MonsterClass = lpReadScript->GetNumber();
 
-			info.Map = lpMemScript->GetAsNumber();
+			info.Map = lpReadScript->GetAsNumber();
 
-			info.X = lpMemScript->GetAsNumber();
+			info.X = lpReadScript->GetAsNumber();
 
-			info.Y = lpMemScript->GetAsNumber();
+			info.Y = lpReadScript->GetAsNumber();
 
-			info.MoveMap = lpMemScript->GetAsNumber();
+			info.MoveMap = lpReadScript->GetAsNumber();
 
-			info.MoveX = lpMemScript->GetAsNumber();
+			info.MoveX = lpReadScript->GetAsNumber();
 
-			info.MoveY = lpMemScript->GetAsNumber();
+			info.MoveY = lpReadScript->GetAsNumber();
 
-			info.MinLevel = lpMemScript->GetAsNumber();
+			info.MinLevel = lpReadScript->GetAsNumber();
 
-			info.MaxLevel = lpMemScript->GetAsNumber();
+			info.MaxLevel = lpReadScript->GetAsNumber();
 
-			info.MinReset = lpMemScript->GetAsNumber();
+			info.MinReset = lpReadScript->GetAsNumber();
 
-			info.MaxReset = lpMemScript->GetAsNumber();
+			info.MaxReset = lpReadScript->GetAsNumber();
 
-			info.AccountLevel = lpMemScript->GetAsNumber();
+			info.AccountLevel = lpReadScript->GetAsNumber();
 
-			info.PkMove = lpMemScript->GetAsNumber();
+			info.PkMove = lpReadScript->GetAsNumber();
 
 			this->m_CustomNpcMove.insert(std::pair<int, NPC_MOVE_INFO>(Index, info));
 
@@ -90,10 +90,10 @@ void CCustomNpcMove::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CCustomNpcMove::GetNpcMove(LPOBJ lpObj, int MonsterClass, int Map, int X, int Y)

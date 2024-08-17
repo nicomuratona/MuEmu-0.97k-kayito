@@ -4,7 +4,7 @@
 #include "DSProtocol.h"
 #include "ItemManager.h"
 #include "ItemOptionRate.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Monster.h"
 #include "RandomManager.h"
 #include "Util.h"
@@ -23,20 +23,20 @@ CItemDrop::~CItemDrop()
 
 void CItemDrop::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -49,7 +49,7 @@ void CItemDrop::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -58,43 +58,43 @@ void CItemDrop::Load(char* path)
 
 			ITEM_DROP_INFO info;
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			info.Index = SafeGetItem(GET_ITEM(info.Index, lpMemScript->GetAsNumber()));
+			info.Index = SafeGetItem(GET_ITEM(info.Index, lpReadScript->GetAsNumber()));
 
-			info.Level = lpMemScript->GetAsNumber();
+			info.Level = lpReadScript->GetAsNumber();
 
-			info.Grade = lpMemScript->GetAsNumber();
+			info.Grade = lpReadScript->GetAsNumber();
 
-			info.LevelOptionRate = lpMemScript->GetAsNumber();
+			info.LevelOptionRate = lpReadScript->GetAsNumber();
 
-			info.SkillOptionRate = lpMemScript->GetAsNumber();
+			info.SkillOptionRate = lpReadScript->GetAsNumber();
 
-			info.LuckOptionRate = lpMemScript->GetAsNumber();
+			info.LuckOptionRate = lpReadScript->GetAsNumber();
 
-			info.AddOptionRate = lpMemScript->GetAsNumber();
+			info.AddOptionRate = lpReadScript->GetAsNumber();
 
-			info.ExceOptionRate = lpMemScript->GetAsNumber();
+			info.ExceOptionRate = lpReadScript->GetAsNumber();
 
-			info.MapNumber = lpMemScript->GetAsNumber();
+			info.MapNumber = lpReadScript->GetAsNumber();
 
-			info.MonsterClass = lpMemScript->GetAsNumber();
+			info.MonsterClass = lpReadScript->GetAsNumber();
 
-			info.MonsterLevelMin = lpMemScript->GetAsNumber();
+			info.MonsterLevelMin = lpReadScript->GetAsNumber();
 
-			info.MonsterLevelMax = lpMemScript->GetAsNumber();
+			info.MonsterLevelMax = lpReadScript->GetAsNumber();
 
-			info.DropRate = lpMemScript->GetAsNumber();
+			info.DropRate = lpReadScript->GetAsNumber();
 
 			this->m_ItemDropInfo.push_back(info);
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 int CItemDrop::DropItem(LPOBJ lpObj, LPOBJ lpTarget)

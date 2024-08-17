@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ItemStack.h"
 #include "ItemManager.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CItemStack gItemStack;
@@ -18,20 +18,20 @@ CItemStack::~CItemStack()
 
 void CItemStack::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -44,7 +44,7 @@ void CItemStack::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -53,19 +53,19 @@ void CItemStack::Load(char* path)
 
 			ITEM_STACK_INFO info;
 
-			info.ItemIndex = lpMemScript->GetNumber();
+			info.ItemIndex = lpReadScript->GetNumber();
 
-			info.ItemIndex = SafeGetItem(GET_ITEM(info.ItemIndex, lpMemScript->GetAsNumber()));
+			info.ItemIndex = SafeGetItem(GET_ITEM(info.ItemIndex, lpReadScript->GetAsNumber()));
 
-			info.Level = lpMemScript->GetAsNumber();
+			info.Level = lpReadScript->GetAsNumber();
 
-			info.MaxStack = lpMemScript->GetAsNumber();
+			info.MaxStack = lpReadScript->GetAsNumber();
 
-			info.CreateItemIndex = lpMemScript->GetAsNumber();
+			info.CreateItemIndex = lpReadScript->GetAsNumber();
 
 			if (info.CreateItemIndex != -1)
 			{
-				info.CreateItemIndex = SafeGetItem(GET_ITEM(info.CreateItemIndex, lpMemScript->GetAsNumber()));
+				info.CreateItemIndex = SafeGetItem(GET_ITEM(info.CreateItemIndex, lpReadScript->GetAsNumber()));
 			}
 
 			this->m_ItemStackInfo.push_back(info);
@@ -73,10 +73,10 @@ void CItemStack::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 int CItemStack::GetItemMaxStack(int index, int level)

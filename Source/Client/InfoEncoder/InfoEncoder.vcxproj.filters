@@ -42,7 +42,7 @@
     <ClInclude Include="CustomGlow.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="MemScript.h">
+    <ClInclude Include="ReadScript.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -74,7 +74,7 @@
     <ClCompile Include="CustomGlow.cpp">
       <Filter>Item</Filter>
     </ClCompile>
-    <ClCompile Include="MemScript.cpp">
+    <ClCompile Include="ReadScript.cpp">
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="InfoEncoder.cpp">

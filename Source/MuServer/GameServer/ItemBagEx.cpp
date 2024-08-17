@@ -3,7 +3,7 @@
 #include "DSProtocol.h"
 #include "ItemOptionRate.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Party.h"
 #include "RandomManager.h"
 #include "Util.h"
@@ -22,20 +22,20 @@ CItemBagEx::~CItemBagEx()
 
 void CItemBagEx::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -50,18 +50,18 @@ void CItemBagEx::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -72,9 +72,9 @@ void CItemBagEx::Load(char* path)
 				{
 					ITEM_BAG_EX_INFO info;
 
-					info.Index = lpMemScript->GetNumber();
+					info.Index = lpReadScript->GetNumber();
 
-					info.DropRate = lpMemScript->GetAsNumber();
+					info.DropRate = lpReadScript->GetAsNumber();
 
 					this->m_ItemBagInfo.insert(std::pair<int, ITEM_BAG_EX_INFO>(info.Index, info));
 				}
@@ -82,19 +82,19 @@ void CItemBagEx::Load(char* path)
 				{
 					ITEM_BAG_EX_DROP_INFO info;
 
-					info.Index = lpMemScript->GetNumber();
+					info.Index = lpReadScript->GetNumber();
 
-					info.Section = lpMemScript->GetAsNumber();
+					info.Section = lpReadScript->GetAsNumber();
 
-					info.SectionRate = lpMemScript->GetAsNumber();
+					info.SectionRate = lpReadScript->GetAsNumber();
 
-					info.MoneyAmount = lpMemScript->GetAsNumber();
+					info.MoneyAmount = lpReadScript->GetAsNumber();
 
-					info.OptionValue = lpMemScript->GetAsNumber();
+					info.OptionValue = lpReadScript->GetAsNumber();
 
 					for (int n = 0; n < MAX_CLASS; n++)
 					{
-						info.RequireClass[n] = lpMemScript->GetAsNumber();
+						info.RequireClass[n] = lpReadScript->GetAsNumber();
 					}
 
 					std::map<int, ITEM_BAG_EX_INFO>::iterator it = this->m_ItemBagInfo.find(info.Index);
@@ -108,23 +108,23 @@ void CItemBagEx::Load(char* path)
 				{
 					ITEM_BAG_EX_ITEM_INFO info;
 
-					info.Index = lpMemScript->GetNumber();
+					info.Index = lpReadScript->GetNumber();
 
-					info.Index = SafeGetItem(GET_ITEM(info.Index, lpMemScript->GetAsNumber()));
+					info.Index = SafeGetItem(GET_ITEM(info.Index, lpReadScript->GetAsNumber()));
 
-					info.Level = lpMemScript->GetAsNumber();
+					info.Level = lpReadScript->GetAsNumber();
 
-					info.Grade = lpMemScript->GetAsNumber();
+					info.Grade = lpReadScript->GetAsNumber();
 
-					info.LevelOptionRate = lpMemScript->GetAsNumber();
+					info.LevelOptionRate = lpReadScript->GetAsNumber();
 
-					info.SkillOptionRate = lpMemScript->GetAsNumber();
+					info.SkillOptionRate = lpReadScript->GetAsNumber();
 
-					info.LuckOptionRate = lpMemScript->GetAsNumber();
+					info.LuckOptionRate = lpReadScript->GetAsNumber();
 
-					info.AddOptionRate = lpMemScript->GetAsNumber();
+					info.AddOptionRate = lpReadScript->GetAsNumber();
 
-					info.ExceOptionRate = lpMemScript->GetAsNumber();
+					info.ExceOptionRate = lpReadScript->GetAsNumber();
 
 					std::map<int, std::vector<ITEM_BAG_EX_ITEM_INFO>>::iterator it = this->m_ItemBagItemInfo.find(section);
 
@@ -142,10 +142,10 @@ void CItemBagEx::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CItemBagEx::GetItem(LPOBJ lpObj, CItem* lpItem)

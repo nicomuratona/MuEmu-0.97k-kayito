@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GameMaster.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CGameMaster gGameMaster;
@@ -17,20 +17,20 @@ CGameMaster::~CGameMaster()
 
 void CGameMaster::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -43,7 +43,7 @@ void CGameMaster::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -54,21 +54,21 @@ void CGameMaster::Load(char* path)
 
 			memset(&info, 0, sizeof(info));
 
-			strcpy_s(info.Account, lpMemScript->GetString());
+			strcpy_s(info.Account, lpReadScript->GetString());
 
-			strcpy_s(info.Name, lpMemScript->GetAsString());
+			strcpy_s(info.Name, lpReadScript->GetAsString());
 
-			info.Level = lpMemScript->GetAsNumber();
+			info.Level = lpReadScript->GetAsNumber();
 
 			this->SetInfo(info);
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CGameMaster::SetInfo(GAME_MASTER_INFO info)

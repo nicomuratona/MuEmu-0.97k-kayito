@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "InvasionManager.h"
 #include "FlyingDragons.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Monster.h"
 #include "MonsterSetBase.h"
 #include "Notice.h"
@@ -65,20 +65,20 @@ void CInvasionManager::Init()
 
 void CInvasionManager::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -150,18 +150,18 @@ void CInvasionManager::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -172,57 +172,57 @@ void CInvasionManager::Load(char* path)
 				{
 					INVASION_START_TIME info;
 
-					int index = lpMemScript->GetNumber();
+					int index = lpReadScript->GetNumber();
 
-					info.Year = lpMemScript->GetAsNumber();
+					info.Year = lpReadScript->GetAsNumber();
 
-					info.Month = lpMemScript->GetAsNumber();
+					info.Month = lpReadScript->GetAsNumber();
 
-					info.Day = lpMemScript->GetAsNumber();
+					info.Day = lpReadScript->GetAsNumber();
 
-					info.DayOfWeek = lpMemScript->GetAsNumber();
+					info.DayOfWeek = lpReadScript->GetAsNumber();
 
-					info.Hour = lpMemScript->GetAsNumber();
+					info.Hour = lpReadScript->GetAsNumber();
 
-					info.Minute = lpMemScript->GetAsNumber();
+					info.Minute = lpReadScript->GetAsNumber();
 
-					info.Second = lpMemScript->GetAsNumber();
+					info.Second = lpReadScript->GetAsNumber();
 
 					this->m_InvasionInfo[index].StartTime.push_back(info);
 				}
 				else if (section == 1)
 				{
-					int index = lpMemScript->GetNumber();
+					int index = lpReadScript->GetNumber();
 
-					this->m_InvasionInfo[index].RespawnMessage = lpMemScript->GetAsNumber();
+					this->m_InvasionInfo[index].RespawnMessage = lpReadScript->GetAsNumber();
 
-					this->m_InvasionInfo[index].DespawnMessage = lpMemScript->GetAsNumber();
+					this->m_InvasionInfo[index].DespawnMessage = lpReadScript->GetAsNumber();
 
-					this->m_InvasionInfo[index].BossIndex = lpMemScript->GetAsNumber();
+					this->m_InvasionInfo[index].BossIndex = lpReadScript->GetAsNumber();
 
-					this->m_InvasionInfo[index].BossMessage = lpMemScript->GetAsNumber();
+					this->m_InvasionInfo[index].BossMessage = lpReadScript->GetAsNumber();
 
-					this->m_InvasionInfo[index].InvasionTime = lpMemScript->GetAsNumber();
+					this->m_InvasionInfo[index].InvasionTime = lpReadScript->GetAsNumber();
 
-					this->m_InvasionInfo[index].AlarmTime = lpMemScript->GetAsNumber();
+					this->m_InvasionInfo[index].AlarmTime = lpReadScript->GetAsNumber();
 
-					this->m_InvasionInfo[index].AlarmMsg = lpMemScript->GetAsNumber();
+					this->m_InvasionInfo[index].AlarmMsg = lpReadScript->GetAsNumber();
 
-					this->m_InvasionInfo[index].InvasionEffect = lpMemScript->GetAsNumber();
+					this->m_InvasionInfo[index].InvasionEffect = lpReadScript->GetAsNumber();
 
-					strcpy_s(this->m_InvasionInfo[index].InvasionName, lpMemScript->GetAsString());
+					strcpy_s(this->m_InvasionInfo[index].InvasionName, lpReadScript->GetAsString());
 				}
 				else if (section == 2)
 				{
 					INVASION_RESPWAN_INFO info;
 
-					int index = lpMemScript->GetNumber();
+					int index = lpReadScript->GetNumber();
 
-					info.Group = lpMemScript->GetAsNumber();
+					info.Group = lpReadScript->GetAsNumber();
 
-					info.Map = lpMemScript->GetAsNumber();
+					info.Map = lpReadScript->GetAsNumber();
 
-					info.Value = lpMemScript->GetAsNumber();
+					info.Value = lpReadScript->GetAsNumber();
 
 					this->m_InvasionInfo[index].RespawnInfo[info.Group].push_back(info);
 				}
@@ -230,15 +230,15 @@ void CInvasionManager::Load(char* path)
 				{
 					INVASION_MONSTER_INFO info;
 
-					int index = lpMemScript->GetNumber();
+					int index = lpReadScript->GetNumber();
 
-					info.Group = lpMemScript->GetAsNumber();
+					info.Group = lpReadScript->GetAsNumber();
 
-					info.MonsterClass = lpMemScript->GetAsNumber();
+					info.MonsterClass = lpReadScript->GetAsNumber();
 
-					info.RegenType = lpMemScript->GetAsNumber();
+					info.RegenType = lpReadScript->GetAsNumber();
 
-					info.RegenTime = lpMemScript->GetAsNumber();
+					info.RegenTime = lpReadScript->GetAsNumber();
 
 					this->m_InvasionInfo[index].MonsterInfo.push_back(info);
 				}
@@ -247,10 +247,10 @@ void CInvasionManager::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CInvasionManager::MainProc()

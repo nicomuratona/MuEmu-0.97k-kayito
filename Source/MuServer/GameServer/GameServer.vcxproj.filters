@@ -132,9 +132,6 @@
     <ClInclude Include="Log.h">
       <Filter>Util Files</Filter>
     </ClInclude>
-    <ClInclude Include="MemScript.h">
-      <Filter>Util Files</Filter>
-    </ClInclude>
     <ClInclude Include="MiniDump.h">
       <Filter>Util Files</Filter>
     </ClInclude>
@@ -360,6 +357,9 @@
     <ClInclude Include="Resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReadScript.h">
+      <Filter>Util Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math.cpp">
@@ -423,9 +423,6 @@
       <Filter>Monsters</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
-      <Filter>Util Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MemScript.cpp">
       <Filter>Util Files</Filter>
     </ClCompile>
     <ClCompile Include="MiniDump.cpp">
@@ -646,6 +643,9 @@
     </ClCompile>
     <ClCompile Include="EventTimeManager.cpp">
       <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadScript.cpp">
+      <Filter>Util Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

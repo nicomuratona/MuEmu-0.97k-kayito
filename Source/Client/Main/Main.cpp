@@ -31,6 +31,8 @@ HINSTANCE hins;
 
 extern "C" _declspec(dllexport) void _cdecl EntryProc()
 {
+	setlocale(LC_ALL, "en_US.1252");
+
 	if (gProtect.ReadMainFile("Data\\Local\\ClientInfo.bmd") == false)
 	{
 		MessageBoxA(NULL, "Read file incorrect or not exists", "Error", MB_OK);

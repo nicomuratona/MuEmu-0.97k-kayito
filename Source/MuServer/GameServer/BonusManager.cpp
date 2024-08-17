@@ -4,7 +4,7 @@
 #include "ItemDrop.h"
 #include "ItemManager.h"
 #include "ItemOptionRate.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Message.h"
 #include "Monster.h"
 #include "Notice.h"
@@ -59,20 +59,20 @@ void CBonusManager::Init()
 
 void CBonusManager::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -100,18 +100,18 @@ void CBonusManager::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -122,72 +122,72 @@ void CBonusManager::Load(char* path)
 				{
 					BONUS_START_TIME info;
 
-					int index = lpMemScript->GetNumber();
+					int index = lpReadScript->GetNumber();
 
-					info.Year = lpMemScript->GetAsNumber();
+					info.Year = lpReadScript->GetAsNumber();
 
-					info.Month = lpMemScript->GetAsNumber();
+					info.Month = lpReadScript->GetAsNumber();
 
-					info.Day = lpMemScript->GetAsNumber();
+					info.Day = lpReadScript->GetAsNumber();
 
-					info.DayOfWeek = lpMemScript->GetAsNumber();
+					info.DayOfWeek = lpReadScript->GetAsNumber();
 
-					info.Hour = lpMemScript->GetAsNumber();
+					info.Hour = lpReadScript->GetAsNumber();
 
-					info.Minute = lpMemScript->GetAsNumber();
+					info.Minute = lpReadScript->GetAsNumber();
 
-					info.Second = lpMemScript->GetAsNumber();
+					info.Second = lpReadScript->GetAsNumber();
 
 					this->m_BonusInfo[index].StartTime.push_back(info);
 				}
 				else if (section == 1)
 				{
-					int index = lpMemScript->GetNumber();
+					int index = lpReadScript->GetNumber();
 
-					this->m_BonusInfo[index].StartMessage = lpMemScript->GetAsNumber();
+					this->m_BonusInfo[index].StartMessage = lpReadScript->GetAsNumber();
 
-					this->m_BonusInfo[index].FinalMessage = lpMemScript->GetAsNumber();
+					this->m_BonusInfo[index].FinalMessage = lpReadScript->GetAsNumber();
 
-					this->m_BonusInfo[index].BonusTime = lpMemScript->GetAsNumber();
+					this->m_BonusInfo[index].BonusTime = lpReadScript->GetAsNumber();
 
-					this->m_BonusInfo[index].AlarmTime = lpMemScript->GetAsNumber();
+					this->m_BonusInfo[index].AlarmTime = lpReadScript->GetAsNumber();
 
-					this->m_BonusInfo[index].AlarmMsg = lpMemScript->GetAsNumber();
+					this->m_BonusInfo[index].AlarmMsg = lpReadScript->GetAsNumber();
 
-					strcpy_s(this->m_BonusInfo[index].BonusName, lpMemScript->GetAsString());
+					strcpy_s(this->m_BonusInfo[index].BonusName, lpReadScript->GetAsString());
 				}
 				else if (section == 2)
 				{
 					BONUS_VALUE_INFO info;
 
-					int index = lpMemScript->GetNumber();
+					int index = lpReadScript->GetNumber();
 
-					info.BonusIndex = lpMemScript->GetAsNumber();
+					info.BonusIndex = lpReadScript->GetAsNumber();
 
-					info.BonusValue[0] = lpMemScript->GetAsNumber();
+					info.BonusValue[0] = lpReadScript->GetAsNumber();
 
-					info.BonusValue[1] = lpMemScript->GetAsNumber();
+					info.BonusValue[1] = lpReadScript->GetAsNumber();
 
-					info.BonusValue[2] = lpMemScript->GetAsNumber();
+					info.BonusValue[2] = lpReadScript->GetAsNumber();
 
-					info.BonusValue[3] = lpMemScript->GetAsNumber();
+					info.BonusValue[3] = lpReadScript->GetAsNumber();
 
-					info.ItemIndex = lpMemScript->GetAsNumber();
+					info.ItemIndex = lpReadScript->GetAsNumber();
 
 					if (info.ItemIndex != -1)
 					{
-						info.ItemIndex = SafeGetItem(GET_ITEM(info.ItemIndex, lpMemScript->GetAsNumber()));
+						info.ItemIndex = SafeGetItem(GET_ITEM(info.ItemIndex, lpReadScript->GetAsNumber()));
 					}
 
-					info.ItemLevel = lpMemScript->GetAsNumber();
+					info.ItemLevel = lpReadScript->GetAsNumber();
 
-					info.MapNumber = lpMemScript->GetAsNumber();
+					info.MapNumber = lpReadScript->GetAsNumber();
 
-					info.MonsterClass = lpMemScript->GetAsNumber();
+					info.MonsterClass = lpReadScript->GetAsNumber();
 
-					info.MonsterLevelMin = lpMemScript->GetAsNumber();
+					info.MonsterLevelMin = lpReadScript->GetAsNumber();
 
-					info.MonsterLevelMax = lpMemScript->GetAsNumber();
+					info.MonsterLevelMax = lpReadScript->GetAsNumber();
 
 					this->m_BonusInfo[index].ValueInfo.push_back(info);
 				}
@@ -196,10 +196,10 @@ void CBonusManager::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CBonusManager::MainProc()

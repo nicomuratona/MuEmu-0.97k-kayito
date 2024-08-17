@@ -1,15 +1,16 @@
-@Echo Off
-Title Kayito ShutDown Server
+@echo off
+title Kayito MuServer ShutDown
 color A
 
-taskkill /F /IM ConnectServer.exe
-timeout 1 > nul
-taskkill /F /IM JoinServer.exe
-timeout 1 > nul
-taskkill /F /IM DataServer.exe
-timeout 1 > nul
-taskkill /F /IM GameServer.exe
-timeout 1 > nul
+echo Closing MuServer Executables. . .
+
+set servers=ConnectServer JoinServer DataServer GameServer
+
+for %%s in (%servers%) do (
+    echo.
+    taskkill /F /IM %%s.exe
+    timeout 2 > nul
+)
 
 cls
 exit

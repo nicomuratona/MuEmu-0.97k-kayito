@@ -23,20 +23,20 @@ void CMapManager::Init()
 
 void CMapManager::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		printf(MEM_SCRIPT_ALLOC_ERROR, path);
+		printf(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		printf(lpMemScript->GetLastError());
+		printf(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -47,7 +47,7 @@ void CMapManager::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -56,25 +56,25 @@ void CMapManager::Load(char* path)
 
 			MAP_MANAGER_INFO info;
 
-			info.MapNumber = lpMemScript->GetNumber();
+			info.MapNumber = lpReadScript->GetNumber();
 
-			info.SwimableMap = lpMemScript->GetAsNumber();
+			info.SwimableMap = lpReadScript->GetAsNumber();
 
-			info.MapMovement = lpMemScript->GetAsNumber();
+			info.MapMovement = lpReadScript->GetAsNumber();
 
-			strcpy_s(info.MapName, lpMemScript->GetAsString());
+			strcpy_s(info.MapName, lpReadScript->GetAsString());
 
-			strcpy_s(info.SongName, lpMemScript->GetAsString());
+			strcpy_s(info.SongName, lpReadScript->GetAsString());
 
 			this->SetInfo(info);
 		}
 	}
 	catch (...)
 	{
-		printf(lpMemScript->GetLastError());
+		printf(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CMapManager::SetInfo(MAP_MANAGER_INFO info)

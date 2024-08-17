@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "EventSpawnMonster.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Util.h"
 
 CEventSpawnMonster gEventSpawnMonster;
@@ -17,20 +17,20 @@ CEventSpawnMonster::~CEventSpawnMonster()
 
 void CEventSpawnMonster::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -43,18 +43,18 @@ void CEventSpawnMonster::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int Event = lpMemScript->GetNumber();
+			int Event = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -65,13 +65,13 @@ void CEventSpawnMonster::Load(char* path)
 
 				info.Event = Event;
 
-				info.Level = lpMemScript->GetNumber();
+				info.Level = lpReadScript->GetNumber();
 
-				info.Stage = lpMemScript->GetAsNumber();
+				info.Stage = lpReadScript->GetAsNumber();
 
-				info.Monster = lpMemScript->GetAsNumber();
+				info.Monster = lpReadScript->GetAsNumber();
 
-				info.MaxRegenTime = lpMemScript->GetAsNumber();
+				info.MaxRegenTime = lpReadScript->GetAsNumber();
 
 				this->m_EventSpawnMonsterInfo.push_back(info);
 			}
@@ -79,8 +79,8 @@ void CEventSpawnMonster::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }

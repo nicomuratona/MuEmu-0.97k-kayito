@@ -120,7 +120,7 @@ void CFont::GetFonts()
 
 	LOGFONT lf = { 0 };
 
-	lf.lfCharSet = ANSI_CHARSET;
+	lf.lfCharSet = this->Charset;
 
 	lf.lfFaceName[0] = '\0';
 

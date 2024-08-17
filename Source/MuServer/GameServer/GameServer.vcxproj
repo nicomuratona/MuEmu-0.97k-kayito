@@ -110,6 +110,9 @@
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
+    <ResourceCompile>
+      <Culture>0x2c0a</Culture>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_MySQL|Win32'">
     <ClCompile>
@@ -130,6 +133,9 @@
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
+    <ResourceCompile>
+      <Culture>0x2c0a</Culture>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -150,6 +156,9 @@
       <GenerateMapFile>false</GenerateMapFile>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
+    <ResourceCompile>
+      <Culture>0x2c0a</Culture>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_MySQL|Win32'">
     <ClCompile>
@@ -170,6 +179,9 @@
       <GenerateMapFile>false</GenerateMapFile>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
+    <ResourceCompile>
+      <Culture>0x2c0a</Culture>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="GameServer.ico" />
@@ -232,7 +244,6 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="MemoryAllocator.h" />
     <ClInclude Include="MemoryAllocatorInfo.h" />
-    <ClInclude Include="MemScript.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="Monster.h" />
@@ -253,6 +264,7 @@
     <ClInclude Include="Queue.h" />
     <ClInclude Include="QueueTimer.h" />
     <ClInclude Include="RandomManager.h" />
+    <ClInclude Include="ReadScript.h" />
     <ClInclude Include="Reconnect.h" />
     <ClInclude Include="ResetTable.h" />
     <ClInclude Include="Resource.h" />
@@ -331,7 +343,6 @@
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="MemoryAllocator.cpp" />
     <ClCompile Include="MemoryAllocatorInfo.cpp" />
-    <ClCompile Include="MemScript.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="MiniDump.cpp" />
     <ClCompile Include="Monster.cpp" />
@@ -351,6 +362,7 @@
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="QueueTimer.cpp" />
     <ClCompile Include="RandomManager.cpp" />
+    <ClCompile Include="ReadScript.cpp" />
     <ClCompile Include="Reconnect.cpp" />
     <ClCompile Include="ResetTable.cpp" />
     <ClCompile Include="ScheduleManager.cpp" />

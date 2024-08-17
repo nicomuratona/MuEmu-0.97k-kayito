@@ -3,7 +3,7 @@
 #include "EffectManager.h"
 #include "Gate.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Message.h"
 #include "Notice.h"
 #include "ObjectManager.h"
@@ -25,20 +25,20 @@ CMove::~CMove()
 
 void CMove::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -51,7 +51,7 @@ void CMove::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -60,33 +60,33 @@ void CMove::Load(char* path)
 
 			MOVE_INFO info;
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			strcpy_s(info.Name, lpMemScript->GetAsString());
+			strcpy_s(info.Name, lpReadScript->GetAsString());
 
-			info.Money = lpMemScript->GetAsNumber();
+			info.Money = lpReadScript->GetAsNumber();
 
-			info.MinLevel = lpMemScript->GetAsNumber();
+			info.MinLevel = lpReadScript->GetAsNumber();
 
-			info.MaxLevel = lpMemScript->GetAsNumber();
+			info.MaxLevel = lpReadScript->GetAsNumber();
 
-			info.MinReset = lpMemScript->GetAsNumber();
+			info.MinReset = lpReadScript->GetAsNumber();
 
-			info.MaxReset = lpMemScript->GetAsNumber();
+			info.MaxReset = lpReadScript->GetAsNumber();
 
-			info.AccountLevel = lpMemScript->GetAsNumber();
+			info.AccountLevel = lpReadScript->GetAsNumber();
 
-			info.Gate = lpMemScript->GetAsNumber();
+			info.Gate = lpReadScript->GetAsNumber();
 
 			this->m_MoveInfo.insert(std::pair<int, MOVE_INFO>(info.Index, info));
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 bool CMove::GetInfo(int index, MOVE_INFO* lpInfo)

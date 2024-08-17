@@ -7,7 +7,7 @@
 #include "Guild.h"
 #include "ItemManager.h"
 #include "Log.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Message.h"
 #include "Move.h"
 #include "Notice.h"
@@ -34,20 +34,20 @@ CCommandManager::~CCommandManager()
 
 void CCommandManager::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -62,7 +62,7 @@ void CCommandManager::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -73,69 +73,69 @@ void CCommandManager::Load(char* path)
 
 			info.Index = index++;
 
-			strcpy_s(info.Command, lpMemScript->GetString());
+			strcpy_s(info.Command, lpReadScript->GetString());
 
-			info.Enable[0] = lpMemScript->GetAsNumber();
+			info.Enable[0] = lpReadScript->GetAsNumber();
 
-			info.Enable[1] = lpMemScript->GetAsNumber();
+			info.Enable[1] = lpReadScript->GetAsNumber();
 
-			info.Enable[2] = lpMemScript->GetAsNumber();
+			info.Enable[2] = lpReadScript->GetAsNumber();
 
-			info.Enable[3] = lpMemScript->GetAsNumber();
+			info.Enable[3] = lpReadScript->GetAsNumber();
 
-			info.Money[0] = lpMemScript->GetAsNumber();
+			info.Money[0] = lpReadScript->GetAsNumber();
 
-			info.Money[1] = lpMemScript->GetAsNumber();
+			info.Money[1] = lpReadScript->GetAsNumber();
 
-			info.Money[2] = lpMemScript->GetAsNumber();
+			info.Money[2] = lpReadScript->GetAsNumber();
 
-			info.Money[3] = lpMemScript->GetAsNumber();
+			info.Money[3] = lpReadScript->GetAsNumber();
 
-			info.MinLevel[0] = lpMemScript->GetAsNumber();
+			info.MinLevel[0] = lpReadScript->GetAsNumber();
 
-			info.MinLevel[1] = lpMemScript->GetAsNumber();
+			info.MinLevel[1] = lpReadScript->GetAsNumber();
 
-			info.MinLevel[2] = lpMemScript->GetAsNumber();
+			info.MinLevel[2] = lpReadScript->GetAsNumber();
 
-			info.MinLevel[3] = lpMemScript->GetAsNumber();
+			info.MinLevel[3] = lpReadScript->GetAsNumber();
 
-			info.MaxLevel[0] = lpMemScript->GetAsNumber();
+			info.MaxLevel[0] = lpReadScript->GetAsNumber();
 
-			info.MaxLevel[1] = lpMemScript->GetAsNumber();
+			info.MaxLevel[1] = lpReadScript->GetAsNumber();
 
-			info.MaxLevel[2] = lpMemScript->GetAsNumber();
+			info.MaxLevel[2] = lpReadScript->GetAsNumber();
 
-			info.MaxLevel[3] = lpMemScript->GetAsNumber();
+			info.MaxLevel[3] = lpReadScript->GetAsNumber();
 
-			info.MinReset[0] = lpMemScript->GetAsNumber();
+			info.MinReset[0] = lpReadScript->GetAsNumber();
 
-			info.MinReset[1] = lpMemScript->GetAsNumber();
+			info.MinReset[1] = lpReadScript->GetAsNumber();
 
-			info.MinReset[2] = lpMemScript->GetAsNumber();
+			info.MinReset[2] = lpReadScript->GetAsNumber();
 
-			info.MinReset[3] = lpMemScript->GetAsNumber();
+			info.MinReset[3] = lpReadScript->GetAsNumber();
 
-			info.MaxReset[0] = lpMemScript->GetAsNumber();
+			info.MaxReset[0] = lpReadScript->GetAsNumber();
 
-			info.MaxReset[1] = lpMemScript->GetAsNumber();
+			info.MaxReset[1] = lpReadScript->GetAsNumber();
 
-			info.MaxReset[2] = lpMemScript->GetAsNumber();
+			info.MaxReset[2] = lpReadScript->GetAsNumber();
 
-			info.MaxReset[3] = lpMemScript->GetAsNumber();
+			info.MaxReset[3] = lpReadScript->GetAsNumber();
 
-			info.Delay = lpMemScript->GetAsNumber();
+			info.Delay = lpReadScript->GetAsNumber();
 
-			info.GameMaster = lpMemScript->GetAsNumber();
+			info.GameMaster = lpReadScript->GetAsNumber();
 
 			this->m_CommandInfo.insert(std::pair<int, COMMAND_LIST>(info.Index, info));
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CCommandManager::MainProc()

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ResetTable.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "ServerInfo.h"
 #include "Util.h"
 
@@ -18,20 +18,20 @@ CResetTable::~CResetTable()
 
 void CResetTable::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -44,7 +44,7 @@ void CResetTable::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -53,43 +53,43 @@ void CResetTable::Load(char* path)
 
 			RESET_TABLE_INFO info;
 
-			info.MinReset = lpMemScript->GetNumber();
+			info.MinReset = lpReadScript->GetNumber();
 
-			info.MaxReset = lpMemScript->GetAsNumber();
+			info.MaxReset = lpReadScript->GetAsNumber();
 
-			info.Level[0] = lpMemScript->GetAsNumber();
+			info.Level[0] = lpReadScript->GetAsNumber();
 
-			info.Level[1] = lpMemScript->GetAsNumber();
+			info.Level[1] = lpReadScript->GetAsNumber();
 
-			info.Level[2] = lpMemScript->GetAsNumber();
+			info.Level[2] = lpReadScript->GetAsNumber();
 
-			info.Level[3] = lpMemScript->GetAsNumber();
+			info.Level[3] = lpReadScript->GetAsNumber();
 
-			info.Money[0] = lpMemScript->GetAsNumber();
+			info.Money[0] = lpReadScript->GetAsNumber();
 
-			info.Money[1] = lpMemScript->GetAsNumber();
+			info.Money[1] = lpReadScript->GetAsNumber();
 
-			info.Money[2] = lpMemScript->GetAsNumber();
+			info.Money[2] = lpReadScript->GetAsNumber();
 
-			info.Money[3] = lpMemScript->GetAsNumber();
+			info.Money[3] = lpReadScript->GetAsNumber();
 
-			info.Point[0] = lpMemScript->GetAsNumber();
+			info.Point[0] = lpReadScript->GetAsNumber();
 
-			info.Point[1] = lpMemScript->GetAsNumber();
+			info.Point[1] = lpReadScript->GetAsNumber();
 
-			info.Point[2] = lpMemScript->GetAsNumber();
+			info.Point[2] = lpReadScript->GetAsNumber();
 
-			info.Point[3] = lpMemScript->GetAsNumber();
+			info.Point[3] = lpReadScript->GetAsNumber();
 
 			this->m_ResetTableInfo.push_back(info);
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 int CResetTable::GetResetLevel(LPOBJ lpObj)

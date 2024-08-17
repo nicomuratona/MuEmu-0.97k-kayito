@@ -37,6 +37,10 @@ struct MAIN_FILE_INFO
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	setlocale(LC_ALL, "en_US.1252");
+
+	SetConsoleOutputCP(1252);
+
 	MAIN_FILE_INFO info;
 
 	memset(&info, 0, sizeof(info));

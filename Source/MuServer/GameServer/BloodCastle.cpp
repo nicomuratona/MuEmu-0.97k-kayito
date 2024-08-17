@@ -4,7 +4,7 @@
 #include "EventSpawnMonster.h"
 #include "ItemBagManager.h"
 #include "Map.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Message.h"
 #include "Monster.h"
 #include "MonsterSetBase.h"
@@ -97,20 +97,20 @@ void CBloodCastle::Init()
 
 void CBloodCastle::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -129,18 +129,18 @@ void CBloodCastle::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
 				break;
 			}
 
-			int section = lpMemScript->GetNumber();
+			int section = lpReadScript->GetNumber();
 
 			while (true)
 			{
-				token = lpMemScript->GetToken();
+				token = lpReadScript->GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
 				{
@@ -149,67 +149,67 @@ void CBloodCastle::Load(char* path)
 
 				if (section == 0)
 				{
-					this->m_WarningTime = lpMemScript->GetNumber();
+					this->m_WarningTime = lpReadScript->GetNumber();
 
-					this->m_NotifyTime = lpMemScript->GetAsNumber();
+					this->m_NotifyTime = lpReadScript->GetAsNumber();
 
-					this->m_EventTime = lpMemScript->GetAsNumber();
+					this->m_EventTime = lpReadScript->GetAsNumber();
 
-					this->m_CloseTime = lpMemScript->GetAsNumber();
+					this->m_CloseTime = lpReadScript->GetAsNumber();
 				}
 				else if (section == 1)
 				{
 					BLOOD_CASTLE_START_TIME info;
 
-					info.Year = lpMemScript->GetNumber();
+					info.Year = lpReadScript->GetNumber();
 
-					info.Month = lpMemScript->GetAsNumber();
+					info.Month = lpReadScript->GetAsNumber();
 
-					info.Day = lpMemScript->GetAsNumber();
+					info.Day = lpReadScript->GetAsNumber();
 
-					info.DayOfWeek = lpMemScript->GetAsNumber();
+					info.DayOfWeek = lpReadScript->GetAsNumber();
 
-					info.Hour = lpMemScript->GetAsNumber();
+					info.Hour = lpReadScript->GetAsNumber();
 
-					info.Minute = lpMemScript->GetAsNumber();
+					info.Minute = lpReadScript->GetAsNumber();
 
-					info.Second = lpMemScript->GetAsNumber();
+					info.Second = lpReadScript->GetAsNumber();
 
 					this->m_BloodCastleStartTime.push_back(info);
 				}
 				else if (section == 2)
 				{
-					int level = lpMemScript->GetNumber();
+					int level = lpReadScript->GetNumber();
 
-					this->m_BloodCastleExperienceTable[level][0] = lpMemScript->GetAsNumber();
+					this->m_BloodCastleExperienceTable[level][0] = lpReadScript->GetAsNumber();
 
-					this->m_BloodCastleExperienceTable[level][1] = lpMemScript->GetAsNumber();
+					this->m_BloodCastleExperienceTable[level][1] = lpReadScript->GetAsNumber();
 				}
 				else if (section == 3)
 				{
-					int level = lpMemScript->GetNumber();
+					int level = lpReadScript->GetNumber();
 
-					this->m_BloodCastleMoneyTable[level][0] = lpMemScript->GetAsNumber();
+					this->m_BloodCastleMoneyTable[level][0] = lpReadScript->GetAsNumber();
 
-					this->m_BloodCastleMoneyTable[level][1] = lpMemScript->GetAsNumber();
+					this->m_BloodCastleMoneyTable[level][1] = lpReadScript->GetAsNumber();
 				}
 				else if (section == 4)
 				{
-					int level = lpMemScript->GetNumber();
+					int level = lpReadScript->GetNumber();
 
-					this->m_BloodCastleNpcLife[level][0] = lpMemScript->GetAsNumber();
+					this->m_BloodCastleNpcLife[level][0] = lpReadScript->GetAsNumber();
 
-					this->m_BloodCastleNpcLife[level][1] = lpMemScript->GetAsNumber();
+					this->m_BloodCastleNpcLife[level][1] = lpReadScript->GetAsNumber();
 				}
 			}
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CBloodCastle::MainProc()

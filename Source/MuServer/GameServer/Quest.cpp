@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Quest.h"
 #include "GameMain.h"
-#include "MemScript.h"
+#include "ReadScript.h"
 #include "Monster.h"
 #include "QuestObjective.h"
 #include "QuestReward.h"
@@ -22,20 +22,20 @@ CQuest::~CQuest()
 
 void CQuest::Load(char* path)
 {
-	CMemScript* lpMemScript = new CMemScript;
+	CReadScript* lpReadScript = new CReadScript;
 
-	if (lpMemScript == NULL)
+	if (lpReadScript == NULL)
 	{
-		ErrorMessageBox(MEM_SCRIPT_ALLOC_ERROR, path);
+		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
 
 		return;
 	}
 
-	if (!lpMemScript->SetBuffer(path))
+	if (!lpReadScript->Load(path))
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
 
-		delete lpMemScript;
+		delete lpReadScript;
 
 		return;
 	}
@@ -48,7 +48,7 @@ void CQuest::Load(char* path)
 
 		while (true)
 		{
-			token = lpMemScript->GetToken();
+			token = lpReadScript->GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
 			{
@@ -59,23 +59,23 @@ void CQuest::Load(char* path)
 
 			memset(&info, 0, sizeof(info));
 
-			info.Index = lpMemScript->GetNumber();
+			info.Index = lpReadScript->GetNumber();
 
-			info.MonsterClass = lpMemScript->GetAsNumber();
+			info.MonsterClass = lpReadScript->GetAsNumber();
 
-			info.CurrentState = lpMemScript->GetAsNumber();
+			info.CurrentState = lpReadScript->GetAsNumber();
 
-			info.RequireIndex = lpMemScript->GetAsNumber();
+			info.RequireIndex = lpReadScript->GetAsNumber();
 
-			info.RequireState = lpMemScript->GetAsNumber();
+			info.RequireState = lpReadScript->GetAsNumber();
 
-			info.RequireMinLevel = lpMemScript->GetAsNumber();
+			info.RequireMinLevel = lpReadScript->GetAsNumber();
 
-			info.RequireMaxLevel = lpMemScript->GetAsNumber();
+			info.RequireMaxLevel = lpReadScript->GetAsNumber();
 
 			for (int n = 0; n < MAX_CLASS; n++)
 			{
-				info.RequireClass[n] = lpMemScript->GetAsNumber();
+				info.RequireClass[n] = lpReadScript->GetAsNumber();
 			}
 
 			this->SetInfo(info);
@@ -83,10 +83,10 @@ void CQuest::Load(char* path)
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpMemScript->GetLastError());
+		ErrorMessageBox(lpReadScript->GetError());
 	}
 
-	delete lpMemScript;
+	delete lpReadScript;
 }
 
 void CQuest::SetInfo(QUEST_INFO info)

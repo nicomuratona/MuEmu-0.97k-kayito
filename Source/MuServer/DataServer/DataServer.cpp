@@ -20,6 +20,8 @@ TCHAR szWindowClass[MAX_LOADSTRING] = "DATASERVER";
 
 int main()
 {
+	setlocale(LC_ALL, "en_US.1252");
+
 	CMiniDump::Start();
 
 	hInst = GetModuleHandle(NULL);

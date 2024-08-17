@@ -208,11 +208,11 @@ void CPrintPlayer::RenderExperience()
 
 	DWORD ActualExp = gPrintPlayer.ViewExperience - dwPriorExperience;
 
-	float TotalBarRate = (float)ActualExp / (float)RequiredExp;
+	float NumberBarRate = (float)ActualExp / (float)RequiredExp * 10.0f;
 
-	float Width = TotalBarRate * 198.0f;
+	int Number = (int)NumberBarRate;
 
-	int Number = (int)((TotalBarRate * 100.0f) / 10.0f);
+	float Width = (NumberBarRate - (float)Number) * 198.0f;
 
 	int Height = 4;
 
