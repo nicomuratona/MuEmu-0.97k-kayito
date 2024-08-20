@@ -1184,7 +1184,7 @@ void CObjectManager::CharacterMakePreviewCharSet(int aIndex)
 
 	for (int n = 0; n < 7; n++)
 	{
-		if (TempInventory[n] != (MAX_ITEM_TYPE - 1) && TempInventory[n] != 0xFFFF)
+		if (((n == 0 || n == 1) ? (TempInventory[n] != 0xFFFF) : (TempInventory[n] != (MAX_ITEM_TYPE - 1))))
 		{
 			level |= LevelSmallConvert(lpObj->Inventory[n].m_Level) << (n * 3);
 

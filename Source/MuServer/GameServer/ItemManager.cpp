@@ -3247,7 +3247,7 @@ void CItemManager::GCItemChangeSend(int aIndex, BYTE slot)
 
 	pMsg.ItemInfo[1] = slot * 16;
 
-	pMsg.ItemInfo[1] |= ((lpObj->Inventory[slot].m_Level - 1) / 2) & 0x0F;
+	pMsg.ItemInfo[1] |= (LevelSmallConvert(lpObj->Inventory[slot].m_Level) & 0x0F);
 
 	MsgSendV2(lpObj, (BYTE*)&pMsg, pMsg.header.size);
 }
