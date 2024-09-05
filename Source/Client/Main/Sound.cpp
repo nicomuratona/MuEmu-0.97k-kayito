@@ -18,7 +18,7 @@ CSound::CSound()
 
 	this->MusicFileName.clear();
 
-	this->MusicPlaying = false;
+	this->MusicPlaying = true;
 }
 
 CSound::~CSound()
@@ -349,19 +349,26 @@ void CSound::MyPlayMP3(char* Name, BOOL bEnforce)
 	{
 		return;
 	}
-	else
+
+	gSound.MusicFileName = w_newest;
+
+	if (gMP3.Load(gSound.MusicFileName.c_str()))
 	{
-		gSound.MusicFileName = w_newest;
+		gConsole.Write("[Music] Now playing: %s", Name);
 
-		if (gMP3.Load(gSound.MusicFileName.c_str()))
+		gSound.UpdateMusicVolumeLevel(gSound.MusicVolumeLevel);
+
+		if (gSound.MusicPlaying)
 		{
-			gSound.UpdateMusicVolumeLevel(gSound.MusicVolumeLevel);
-
-			if (gMP3.Play())
+			if (!gMP3.Play())
 			{
-				gSound.MusicPlaying = true;
+				gConsole.Write("[Music] Failed to play: %s", Name);
 			}
 		}
+	}
+	else
+	{
+		gConsole.Write("[Music] Failed to load: %s", Name);
 	}
 }
 
@@ -372,20 +379,25 @@ void CSound::MyStopMP3(char* Name, BOOL bEnforce)
 		return;
 	}
 
-	if (!gSound.MusicFileName.empty())
+	if (gSound.MusicFileName.empty())
 	{
-		std::string newest(Name);
+		return;
+	}
 
-		std::wstring w_newest(newest.begin(), newest.end());
+	if (!gSound.MusicPlaying)
+	{
+		return;
+	}
 
-		if (w_newest.compare(gSound.MusicFileName) == 0)
+	std::string newest(Name);
+
+	std::wstring w_newest(newest.begin(), newest.end());
+
+	if (w_newest.compare(gSound.MusicFileName) == 0)
+	{
+		if (gMP3.Stop())
 		{
-			if (gMP3.Stop())
-			{
-				gSound.MusicPlaying = false;
-			}
-
-			gSound.MusicFileName.clear();
+			gConsole.Write("[Music] Stoped playing: %s", Name);
 		}
 	}
 }
@@ -395,11 +407,6 @@ void CSound::UpdateSoundVolumeLevel(int volumeLevel)
 	if (volumeLevel > MAX_SOUND_LEVEL)
 	{
 		volumeLevel = MAX_SOUND_LEVEL;
-	}
-
-	if (volumeLevel < 0)
-	{
-		volumeLevel = 0;
 	}
 
 	this->SoundVolumeLevel = volumeLevel;
@@ -423,11 +430,6 @@ void CSound::UpdateMusicVolumeLevel(int volumeLevel)
 		volumeLevel = MAX_MUSIC_LEVEL;
 	}
 
-	if (volumeLevel < 0)
-	{
-		volumeLevel = 0;
-	}
-
 	this->MusicVolumeLevel = volumeLevel;
 
 	if (volumeLevel == 0)
@@ -449,13 +451,17 @@ void CSound::ButtonStopMusic()
 		return;
 	}
 
-	if (!this->MusicFileName.empty())
+	if (this->MusicFileName.empty())
 	{
-		if (gMP3.Stop())
-		{
-			this->MusicPlaying = false;
-		}
+		return;
 	}
+
+	if (!this->MusicPlaying)
+	{
+		return;
+	}
+
+	this->MusicPlaying = !gMP3.Stop();
 }
 
 void CSound::ButtonPlayMusic()
@@ -465,13 +471,12 @@ void CSound::ButtonPlayMusic()
 		return;
 	}
 
-	if (!this->MusicPlaying)
+	if (this->MusicPlaying)
 	{
-		if (gMP3.Play())
-		{
-			this->MusicPlaying = true;
-		}
+		return;
 	}
+
+	this->MusicPlaying = gMP3.Play();
 }
 
 void CSound::SetMasterVolume(long vol)

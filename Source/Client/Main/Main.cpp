@@ -12,7 +12,7 @@
 #include "ItemValue.h"
 #include "Language.h"
 #include "LoadModels.h"
-#include "FullMap.h"
+#include "MiniMap.h"
 #include "MoveList.h"
 #include "OptionsMenu.h"
 #include "PacketManager.h"
@@ -83,7 +83,7 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 
 	gSkyDome.Init();
 
-	gFullMap.Init();
+	gMiniMap.Init();
 
 	gWeaponView.Init();
 

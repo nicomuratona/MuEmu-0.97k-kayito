@@ -405,7 +405,7 @@ void DGCharacterListRecv(SDHP_CHARACTER_LIST_RECV* lpMsg)
 
 		for (int i = 0; i < 7; i++)
 		{
-			if (TempInventory[i] != (MAX_ITEM_TYPE - 1) && TempInventory[i] != 0xFFFF)
+			if (((i == 0 || i == 1) ? (TempInventory[i] != 0xFFFF) : (TempInventory[i] != (MAX_ITEM_TYPE - 1))))
 			{
 				level |= LevelSmallConvert(((lpInfo->Inventory[1 + (i * 5)] / 8) & 0x0F)) << (i * 3);
 

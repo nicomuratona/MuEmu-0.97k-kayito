@@ -59,6 +59,26 @@ void CMapManager::Init()
 			FUNCIONES
 ==================================================================*/
 
+BYTE CMapManager::GetMiniMap(int map)
+{
+	if (map >= 0 && map < MAX_MAPS)
+	{
+		return this->m_MapManager[map].MiniMap;
+	}
+
+	return 0;
+}
+
+bool CMapManager::GetSkyDome(int map)
+{
+	if (map >= 0 && map < MAX_MAPS)
+	{
+		return this->m_MapManager[map].SkyDome;
+	}
+
+	return false;
+}
+
 char* CMapManager::GetMapName(int MapNumber)
 {
 	if (MapNumber >= 0 && MapNumber < MAX_MAPS)
@@ -112,7 +132,7 @@ __declspec(naked) void CMapManager::ApplyMapMovement()
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
-			if (gMapManager.m_MapManager[World].MapMovement != 0)
+			if (gMapManager.m_MapManager[World].MapMovement)
 			{
 				goto JUMP_OK;
 			}
@@ -166,7 +186,7 @@ __declspec(naked) void CMapManager::SwimAnimationStart()
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
-			if (gMapManager.m_MapManager[World].SwimableMap != 0)
+			if (gMapManager.m_MapManager[World].SwimableMap)
 			{
 				goto JUMP_OK;
 			}
@@ -202,7 +222,7 @@ __declspec(naked) void CMapManager::SwimAnimationStop()
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
-			if (gMapManager.m_MapManager[World].SwimableMap != 0)
+			if (gMapManager.m_MapManager[World].SwimableMap)
 			{
 				goto JUMP_OK;
 			}
@@ -238,7 +258,7 @@ __declspec(naked) void CMapManager::SwimSoundPlay()
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
-			if (gMapManager.m_MapManager[World].SwimableMap != 0)
+			if (gMapManager.m_MapManager[World].SwimableMap)
 			{
 				goto JUMP_OK;
 			}
@@ -274,7 +294,7 @@ __declspec(naked) void CMapManager::SwimBackItemRender()
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
-			if (gMapManager.m_MapManager[World].SwimableMap != 0)
+			if (gMapManager.m_MapManager[World].SwimableMap)
 			{
 				goto JUMP_OK;
 			}

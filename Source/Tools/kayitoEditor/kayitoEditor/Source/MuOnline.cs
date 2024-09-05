@@ -24,6 +24,11 @@ namespace kayito_Editor
 			#else
 				connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.MU_SERVER},{Import.MU_PORT};Initial Catalog={Import.MU_DB};Uid={Import.MU_DB_USER};Pwd={Import.MU_DB_PASS}";
 
+				if (Import.MU_TRUSTED != 0)
+				{
+					connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.MU_SERVER};Initial Catalog={Import.MU_DB};Integrated Security=SSPI;";
+				}
+
 				Import.Mu_Connection = new OleDbConnection(connection_string);
 			#endif
 
@@ -45,6 +50,11 @@ namespace kayito_Editor
 					Import.Me_Connection = new MySqlConnection(connection_string);
 				#else
 					connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.ME_SERVER},{Import.ME_PORT};Initial Catalog={Import.ME_DB};Uid={Import.ME_DB_USER};Pwd={Import.ME_DB_PASS}";
+
+					if (Import.ME_TRUSTED != 0)
+					{
+						connection_string = $"Provider=SQLOLEDB.1;Data Source={Import.MU_SERVER};Initial Catalog={Import.MU_DB};Integrated Security=SSPI;";
+					}
 
 					Import.Me_Connection = new OleDbConnection(connection_string);
 				#endif

@@ -10,17 +10,16 @@
 #include <MMSystem.h>
 #include <math.h>
 #include <vector>
+#include <set>
 #include <map>
 #include <cstdio>
 #include <iostream>
 #include <time.h>
 #include <Shellapi.h>
 #include <Rpc.h>
-#include <gl\GL.h>
+#include <gl/glew.h>
+#include <GL/wglew.h>
 #include <dsound.h>
-#include <uuids.h>
-#include <strmif.h>
-#include <control.h>
 #include <mbstring.h>
 #include <fstream>
 #include <deque>
@@ -40,4 +39,5 @@
 #pragma comment(lib,"version.lib")
 #pragma comment(lib,"Rpcrt4.lib")
 #pragma comment(lib,"Opengl32.lib")
-#pragma comment(lib,"strmiids.lib")
+#pragma comment(lib,"glu32.lib")
+#pragma comment(lib,"glew32s.lib")

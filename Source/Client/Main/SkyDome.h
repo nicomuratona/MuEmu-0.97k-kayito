@@ -38,9 +38,9 @@ public:
 
 	void Init();
 
-	void GenerateSkyDome(float radius, float dtheta, float dphi, float hTile, float vTile);
+	void GenerateSkyDomeStructure(float radius, float dtheta, float dphi, float hTile, float vTile);
 
-	void LoadSkyDome();
+	void LoadImages();
 
 	GLuint LoadTexture(BYTE* imageBytes, int imageWidth, int imageHeight, int colorChannel);
 
@@ -50,9 +50,7 @@ public:
 
 public:
 
-	bool SkyDomeSwitch;
-
-	bool SkyDisplayInitialized;
+	bool SkyDomeTable[MAX_MAPS];
 
 	char TexturePath[256];
 

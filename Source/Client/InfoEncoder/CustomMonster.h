@@ -2,9 +2,10 @@
 
 struct CUSTOM_MONSTER_INFO
 {
+	int Index;
 	short MonsterIndex;
 	BYTE MonsterType;
-	BYTE GoldenType;
+	bool GoldenType;
 	float Scale;
 	char FolderName[128];
 	char ModelName[128];

@@ -39,6 +39,8 @@ public:
 
 	virtual ~CEventTimer();
 
+	bool GetEventTimerState();
+
 	void Toggle();
 
 	void Render();
@@ -48,8 +50,6 @@ public:
 	void GCEventTimeRecv(PMSG_EVENT_TIME_RECV* lpMsg);
 
 private:
-
-	bool CheckInterfaces();
 
 	void RenderFrame();
 

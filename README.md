@@ -208,3 +208,43 @@ hacia otro archivo separado en
 - Se corrigió un error que al colocarse un item con skill, no lo asignaba correctamente a la primera vez [GameServer]
 - Se implementó el Custom Monster con la posibilidad de agregar Monsters y NPCs tanto normales como Goldens [Encoder][Main.dll]
 - Se corrigió un error que al atacar y moverse sin parar de atacar, podía bugearse visualmente de tal modo que las demás personas te veían saltando por todos lados [Main.dll]
+
+## Fixes varios:
+- Se corrigió el rango de ataque de los skills Triple Shot y Power Slash (ahora pueden ser manipulados desde skill.txt con range y radio) [GameServer]
+- Se integró la función GetItemName para que al juntar los items, muestre correctamente el nombre de los items que según su nivel son otro item [Main.dll]
+- Se corrigió un error en el dinorant mientras vuela que se reiniciaba la animación constantemente [Main.dll]
+- Se corrigió un error que al desconectarse algunos miembros del guild, no se reflejaba correctamente su estado [DataServer]
+
+- Se corrigió los items que no podían ser vendidos en los shops (Fairy, Satan, Uniria, Dinorant) [GameServer.exe]
+- Se corrigió la visualización de todas las opciones en los items full option [GameServer.exe][Main.dll]
+- Se corrigió el orden de las opciones Luck y Additional en las Alas [Main.dll]
+
+- Se corrigió poder usar los skills de los items equipados [GameServer.exe][Main.dll]
+- Se mejoró el manejo del modo ventana y modo full screen al cambiar las "Display Settings" [Main.dll]
+- Se corrigió que los custom monsters no sean detectados como NPC (ahora deberán utilizar la segunda columna del Monster.txt donde 0 = NPC y 1 = Monster) [GameServer.exe]
+- Se añadió al Kayito Tools la columna Type al leer y guardar Monster.txt y NpcName.txt [KayitoTools.exe]
+- Se corrigió un error que hacía que se lean mal los nombres rellenándolos con espacios [KayitoTools.exe][KayitoEditor.exe]
+
+- Se tradujeron los textos del servidor [Message_por.txt][Message_spn.txt]
+- Se tradujeron los textos del cliente [Dialog_por.bmd][Dialog_spn.bmd][Text_por.bmd][Text_Spn.bmd]
+- Se corrigieron los lectores de texto que no permitían caracteres especiales [GameServer.exe][Main.dll][Encoder.exe]
+- Se añadió la música de login. El archivo deberá ser el siguiente: "Cliente\\Data\\Music\\MuTheme.mp3" [Main.dll]
+- Se corrigieron las animaciones del MG con Rune Blade [Player.bmd][Main.dll]
+- Se corrigió la barra de experiencia que no mostraba correctamente el progreso de las 10 partes [Main.dll]
+- Se añadió la encriptación default MD5 sin necesidad de usar el usuario como key [JoinServer.exe]
+- Se corrigió que el editor al guardar los cambios en un personaje, le actualiza la experiencia correctamente [KayitoEditor.exe]
+- Se corrigió un error que generaba un lenguaje al azar y enviaba mensajes incorrectos [GameServer.exe][Main.dll]
+
+### Update 24:
+- Se upgradeó la versión de OpenGL a 3.3 [Main.dll]
+- Se añadió nuevamente la opción EnableTrusted al editor para SQL para utilizar las credenciales de Windows [kayitoTools.exe]
+- Se corrigió un error en el envío de datos del item 31 de cada sección [GameServer.exe]
+- Se mejoró el sistema de ventana sin bordes y la forma de cambiarlo en el menu de opciones [Main.dll]
+- Se mejoró el reproductor de música integrado [Main.dll]
+- Se optimizó la carga y manejo del SkyDome [Main.dll]
+- Se añadió un fix al glow de todas las armas de la primer mano [Main.dll]
+- Se modificó la forma de leer la carpeta de screenshots y se añadió un sistema que crea automáticamente la carpeta al tomar una captura [Main.dll]
+- Se aplicó una mejora a la carga de fuentes para poder elegir [Main.dll]
+- Se agregó nuevamente el sistema de minimap junto con el sistema de Fullmap [Main.dll]
+- Se modificó el MapManager para poder elegir por cada mapa FullMap/MiniMap o ninguno y mostrar o no el SkyDome [Encoder.exe][Main.dll]
+- Se modificó el sistema de carga de modelos y texturas para intentar solucionar el problema de texturas del main [Main.dll]

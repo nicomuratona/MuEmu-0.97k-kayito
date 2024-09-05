@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "EventTimer.h"
+#include "MiniMap.h"
+#include "MoveList.h"
 
 CEventTimer gEventTimer;
 
@@ -11,9 +13,9 @@ CEventTimer::CEventTimer()
 
 	this->MainBaseHeight = 60.0f;
 
-	this->MainPosX = 455.0f;
+	this->MainPosX = 5.0f;
 
-	this->MainPosY = 30.0f;
+	this->MainPosY = 5.0f;
 
 	this->MainEndX = (this->MainPosX + 5.0f) + (this->MainWidth - 10.0f);
 
@@ -25,14 +27,29 @@ CEventTimer::~CEventTimer()
 
 }
 
+bool CEventTimer::GetEventTimerState()
+{
+	return this->EventTimerSwitch;
+}
+
 void CEventTimer::Toggle()
 {
-	if (InputEnable || TabInputEnable || GoldInputEnable || GuildInputEnable)
+	if (CheckInputInterfaces())
 	{
 		return;
 	}
 
-	if (!this->CheckInterfaces())
+	if (gMoveList.GetMoveListState())
+	{
+		return;
+	}
+
+	if (gMiniMap.GetMiniMapState())
+	{
+		return;
+	}
+
+	if (CheckRightInterfaces())
 	{
 		this->EventTimerSwitch = false;
 
@@ -46,19 +63,14 @@ void CEventTimer::Toggle()
 
 void CEventTimer::Render()
 {
-	if (this->EventTimerSwitch)
+	if (!this->EventTimerSwitch)
 	{
-		if (!this->CheckInterfaces())
-		{
-			this->EventTimerSwitch ^= 1;
-		}
-		else
-		{
-			this->RenderFrame();
-
-			this->RenderEventsTime();
-		}
+		return;
 	}
+
+	this->RenderFrame();
+
+	this->RenderEventsTime();
 }
 
 void CEventTimer::UpdateMouse()
@@ -68,7 +80,7 @@ void CEventTimer::UpdateMouse()
 		return;
 	}
 
-	if (!this->CheckInterfaces())
+	if (CheckRightInterfaces())
 	{
 		this->EventTimerSwitch = false;
 
@@ -93,16 +105,6 @@ void CEventTimer::UpdateMouse()
 			MouseUpdateTimeMax = 6;
 		}
 	}
-}
-
-bool CEventTimer::CheckInterfaces()
-{
-	if (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpened || GuildCreatorOpened)
-	{
-		return false;
-	}
-
-	return true;
 }
 
 void CEventTimer::RenderFrame()

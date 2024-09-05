@@ -1,38 +1,44 @@
-// Map Manager
-// Developer: kayito
-// MAX_MAPS = 32 (0 ~ 31)
-//===================================================================================================================================================================
-// Map		-> Number of the map
-// --
-// SwimableMap	-> 0 = Walk normal // 1 = Swim
-// --
-// MapMovement	-> 0 = No Movement // 1 = Map Movement
-// --
-// MapName	-> Name of the map in the chat "Welcome to ..." (Max 32 letters)
-// --
-// MapSongName	-> Music file when you enter to the map. Ex:"Data\\Music\\Lorencia.mp3" (Max 64 letters)
-// --
-// CLARIFICATION: THE LOGIN MUSIC IS "Data\\Music\\MuTheme.mp3"
-//===================================================================================================================================================================
-//===================================================================================================================================================================
-//===================================================================================================================================================================
-//Map	|	SwimableMap	|	MapMovement	|	MapName			|	MapSongName
-//===================================================================================================================================================================
-0		0			0			"Lorencia"			"Data\\Music\\Lorencia.mp3"
-1		0			0			"Dungeon"			"Data\\Music\\Dungeon.mp3"
-2		0			0			"Devias"			"Data\\Music\\Devias.mp3"
-3		0			0			"Noria"				"Data\\Music\\Noria.mp3"
-4		0			0			"LostTower"			"Data\\Music\\LostTower.mp3"
-5		0			1			"Dare Devil"			"Data\\Music\\DareDevil.mp3"
-6		0			0			"Stadium"			"Data\\Music\\Stadium.mp3"
-7		1			0			"Atlans"			"Data\\Music\\Atlans.mp3"
-8		0			0			"Tarkan"			"Data\\Music\\Tarkan.mp3"
-9		0			0			"Devil Square"			"Data\\Music\\DevilSquare.mp3"
-10		0			0			"Icarus"			"Data\\Music\\Icarus.mp3"
-11		0			0			"Blood Castle 1"		"Data\\Music\\BloodCastle.mp3"
-12		0			0			"Blood Castle 2"		"Data\\Music\\BloodCastle.mp3"
-13		0			0			"Blood Castle 3"		"Data\\Music\\BloodCastle.mp3"
-14		0			0			"Blood Castle 4"		"Data\\Music\\BloodCastle.mp3"
-15		0			0			"Blood Castle 5"		"Data\\Music\\BloodCastle.mp3"
-16		0			0			"Blood Castle 6"		"Data\\Music\\BloodCastle.mp3"
+//********************************************************************************************************//
+//********************************************************************************************************//
+//********************************************************************************************************//
+//******** MAP MANAGER
+//******** Developer: Nico
+//********
+//******** MapNumber -> Number of the map (Range 0~31)
+//******** SwimableMap -> 0 = Walk normal // 1 = Swim
+//******** MapMovement -> 0 = No Movement // 1 = Map Movement
+//******** MiniMap -> 0 = No Minimap // 1 = Minimap // 2 = Fullmap
+//******** SkyDome -> 0 = No SkyDome // 1 = Enable SkyDome
+//******** MapName -> Name of the map in the chat "Welcome to ..." (Max 32 letters)
+//******** MapMusic -> Music file when you enter to the map (Max 64 letters)
+//********
+//******** CLARIFICATION: THE LOGIN MUSIC IS "Data\\Music\\MuTheme.mp3"
+//********
+//******** Example
+//******** MapNumber	SwimableMap	MapMovement	MiniMap		SkyDome		MapName				MapMusic
+//******** 40		0		1		1		1		"Silent Map"			"Data\\Music\\Silent Map.mp3"
+//********************************************************************************************************//
+//********************************************************************************************************//
+//********************************************************************************************************//
+
+// MapNumber	SwimableMap	MapMovement	MiniMap		SkyDome		MapName				MapMusic
+
+0		0		0		1		1		"Lorencia"			"Data\\Music\\Lorencia.mp3"
+1		0		0		1		1		"Dungeon"			"Data\\Music\\Dungeon.mp3"
+2		0		0		1		1		"Devias"			"Data\\Music\\Devias.mp3"
+3		0		0		1		1		"Noria"				"Data\\Music\\Noria.mp3"
+4		0		0		1		1		"LostTower"			"Data\\Music\\LostTower.mp3"
+5		0		1		1		1		"Dare Devil"			"Data\\Music\\DareDevil.mp3"
+6		0		0		1		1		"Stadium"			"Data\\Music\\Stadium.mp3"
+7		1		0		1		1		"Atlans"			"Data\\Music\\Atlans.mp3"
+8		0		0		1		1		"Tarkan"			"Data\\Music\\Tarkan.mp3"
+9		0		0		1		1		"Devil Square"			"Data\\Music\\DevilSquare.mp3"
+10		0		0		1		1		"Icarus"			"Data\\Music\\Icarus.mp3"
+11		0		0		1		1		"Blood Castle 1"		"Data\\Music\\BloodCastle.mp3"
+12		0		0		1		1		"Blood Castle 2"		"Data\\Music\\BloodCastle.mp3"
+13		0		0		1		1		"Blood Castle 3"		"Data\\Music\\BloodCastle.mp3"
+14		0		0		1		1		"Blood Castle 4"		"Data\\Music\\BloodCastle.mp3"
+15		0		0		1		1		"Blood Castle 5"		"Data\\Music\\BloodCastle.mp3"
+16		0		0		1		1		"Blood Castle 6"		"Data\\Music\\BloodCastle.mp3"
+
 end

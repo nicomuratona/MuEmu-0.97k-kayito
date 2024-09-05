@@ -1,52 +1,54 @@
 #pragma once
 
-class cWindow
+class CWindow
 {
 public:
 
-	cWindow();
+	CWindow();
 
-	virtual ~cWindow();
+	virtual ~CWindow();
 
 	void WindowModeLoad(HINSTANCE hins);
-
-	void ChangeWindowText();
-
-	void SetWindowMode(int mode);
-
-	void SetResolution(int res);
-
-	void ChangeWindowState(int windowMode, int resolution);
 
 	void ToggleTrayMode();
 
 	void ShowTrayMessage(char* Title, char* Message);
 
+	void ChangeWindowText();
+
+	void SetWindowMode(bool windowMode, bool borderless);
+
+	void SetResolution(int res);
+
+	void ChangeWindowState(bool windowMode, bool borderless, int resolution);
+
 private:
 
 	static LONG WINAPI FixDisplaySettingsOnClose(DEVMODEA* lpDevMode, DWORD dwFlags);
+
+	static LONG WINAPI MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	static HWND StartWindow(HINSTANCE hCurrentInst, int nCmdShow);
 
 	void ChangeDisplaySettingsFunction();
 
-	void ShowTrayNotify(bool mode);
+	static bool CreateOpenglWindow();
 
-	static LONG WINAPI MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	void ShowTrayNotify(bool mode);
 
 private:
 
 	HINSTANCE Instance;
 
-	HICON m_TrayIcon;
+	HICON m_WindowIcon;
 
 public:
 
-	int m_WindowMode;
+	bool m_WindowMode;
+
+	bool m_Borderless;
 
 	std::pair<WORD, WORD> iResolutionValues[MAX_RESOLUTION_VALUE];
-
-	std::string iWindowValues[MAX_WINDOW_MODE];
 };
 
-extern cWindow gWindow;
+extern CWindow gWindow;

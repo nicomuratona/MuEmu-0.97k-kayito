@@ -2,7 +2,7 @@
 #include "Camera.h"
 #include "Controller.h"
 #include "EventTimer.h"
-#include "FullMap.h"
+#include "MiniMap.h"
 #include "MoveList.h"
 #include "resource.h"
 #include "Window.h"
@@ -93,11 +93,6 @@ LRESULT Controller::Mouse(int nCode, WPARAM wParam, LPARAM lParam)
 
 				break;
 			}
-
-			default:
-			{
-				break;
-			}
 		}
 	}
 
@@ -168,11 +163,6 @@ LRESULT Controller::Keyboard(int nCode, WPARAM wParam, LPARAM lParam)
 
 					break;
 				}
-
-				default:
-				{
-					break;
-				}
 			}
 		}
 	}
@@ -226,7 +216,7 @@ void Controller::CheckKeyboardKeys()
 		{
 			KeyState[VK_TAB] = 1;
 
-			gFullMap.Toggle();
+			gMiniMap.Toggle();
 		}
 	}
 	else

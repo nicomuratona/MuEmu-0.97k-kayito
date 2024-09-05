@@ -1,5 +1,11 @@
 #pragma once
 
+#include <uuids.h>
+#include <strmif.h>
+#include <control.h>
+
+#pragma comment(lib,"strmiids.lib")
+
 class Mp3
 {
 public:

@@ -1,14 +1,12 @@
 #include "stdafx.h"
 #include "SkyDome.h"
-#include "Protect.h"
+#include "MapManager.h"
 
 CSkyDome gSkyDome;
 
 CSkyDome::CSkyDome()
 {
-	this->SkyDomeSwitch = true;
-
-	this->SkyDisplayInitialized = false;
+	memset(this->SkyDomeTable, 0, sizeof(this->SkyDomeTable));
 
 	this->SkyColor.R = 1.0f;
 	this->SkyColor.G = 1.0f;
@@ -27,17 +25,12 @@ CSkyDome::~CSkyDome()
 
 void CSkyDome::Init()
 {
-	if (gProtect.m_MainInfo.EnableSky == 0)
-	{
-		return;
-	}
-
-	this->GenerateSkyDome(600.0f, 5.0f, 5.0f, 1.0f, 1.0f);
+	this->GenerateSkyDomeStructure(600.0f, 5.0f, 5.0f, 1.0f, 1.0f);
 
 	SetCompleteHook(0xE8, 0x00525C5F, &this->DrawSkyDome);
 }
 
-void CSkyDome::GenerateSkyDome(float radius, float dtheta, float dphi, float hTile, float vTile)
+void CSkyDome::GenerateSkyDomeStructure(float radius, float dtheta, float dphi, float hTile, float vTile)
 {
 	int theta, phi;
 
@@ -252,14 +245,23 @@ void CSkyDome::GenerateSkyDome(float radius, float dtheta, float dphi, float hTi
 	}
 }
 
-void CSkyDome::LoadSkyDome()
+void CSkyDome::LoadImages()
 {
 	for (int i = 0; i < MAX_MAPS; i++)
 	{
+		if (!gMapManager.GetSkyDome(i))
+		{
+			this->SkyDomeTable[i] = false;
+
+			continue;
+		}
+
 		sprintf_s(this->TexturePath, SKY_TOP_TEXTURE, i + 1);
 
 		if (!FileExists(this->TexturePath))
 		{
+			this->SkyDomeTable[i] = false;
+
 			continue;
 		}
 
@@ -274,9 +276,9 @@ void CSkyDome::LoadSkyDome()
 		stbi_image_free(SkyImage->data);
 
 		delete SkyImage;
-	}
 
-	this->SkyDisplayInitialized = true;
+		this->SkyDomeTable[i] = true;
+	}
 }
 
 GLuint CSkyDome::LoadTexture(BYTE* imageBytes, int imageWidth, int imageHeight, int colorChannel)
@@ -323,20 +325,13 @@ void CSkyDome::DrawSkyDome()
 {
 	((void(__cdecl*)()) 0x0046C3E0)();
 
-	if (!gSkyDome.SkyDomeSwitch)
+	if (World >= 0 && World < MAX_MAPS)
 	{
-		return;
-	}
+		if (!gSkyDome.SkyDomeTable[World])
+		{
+			return;
+		}
 
-	if (!gSkyDome.SkyDisplayInitialized)
-	{
-		gSkyDome.LoadSkyDome();
-	}
-
-	sprintf_s(gSkyDome.TexturePath, SKY_TOP_TEXTURE, World + 1);
-
-	if (FileExists(gSkyDome.TexturePath))
-	{
 		gSkyDome.RenderSkyDome();
 	}
 }
@@ -351,7 +346,7 @@ void CSkyDome::RenderSkyDome()
 
 	glTranslatef(x_char, y_char, z_char);
 
-	glRotatef(*(float*)0x05826E08 * 0.001f, 0.0f, 0.0f, 1.0f);
+	glRotatef(WorldTime * 0.001f, 0.0f, 0.0f, 1.0f);
 
 	glScalef(4.0f, 4.0f, 3.0f);
 
@@ -363,17 +358,17 @@ void CSkyDome::RenderSkyDome()
 
 	GLfloat LightPosition[] = { 0.0f, 0.0f, 2.0f, 1.0f };
 
-	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);		// Setup The Ambient Light
+	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient); // Setup The Ambient Light
 
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);		// Setup The Diffuse Light
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse); // Setup The Diffuse Light
 
-	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);	// Position The Light
+	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition); // Position The Light
 
-	glEnable(GL_LIGHT1);					// Enable Light One
+	glEnable(GL_LIGHT1); // Enable Light One
 
-	glColor4f(this->SkyColor.R, this->SkyColor.G, this->SkyColor.B, 0.5f);	// Full Brightness. 50% Alpha
+	glColor4f(this->SkyColor.R, this->SkyColor.G, this->SkyColor.B, 0.5f); // Full Brightness. 50% Alpha
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);			// Set The Blending Function For Translucency
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE); // Set The Blending Function For Translucency
 
 	glColor3d(this->SkyColor.R, this->SkyColor.G, this->SkyColor.B);
 

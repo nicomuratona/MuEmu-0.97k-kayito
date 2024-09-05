@@ -8,14 +8,14 @@
 
 struct MAIN_FILE_INFO
 {
-	BYTE MultiInstance;
+	char CustomerName[32];
 	BYTE LauncherType;
 	char LauncherName[32];
-	char CustomerName[32];
 	char IpAddress[32];
 	WORD IpAddressPort;
-	char ClientVersion[8];
 	char ClientSerial[17];
+	char ClientVersion[8];
+	BYTE MultiInstanceBlock;
 	char WindowName[32];
 	char ScreenShotPath[50];
 	char ClientName[32];
@@ -24,8 +24,6 @@ struct MAIN_FILE_INFO
 	DWORD PluginCRC32;
 	DWORD ReconnectTime;
 	BYTE HealthBarType;
-	BYTE EnableSky;
-	BYTE EnableMinimap;
 	BYTE EnableMoveList;
 	BYTE EnableSpecialCharacters;
 	MAP_MANAGER_INFO MapManager[MAX_MAPS];
@@ -49,39 +47,28 @@ int _tmain(int argc, _TCHAR* argv[])
 	/********************* Read .ini file values *********************/
 	/*****************************************************************/
 
-	info.MultiInstance = GetPrivateProfileInt("MainInfo", "BlockMultiInstance", 0, ".\\MainInfo.ini");
+	GetPrivateProfileString("Licence", "CustomerName", "", info.CustomerName, sizeof(info.CustomerName), ".\\MainInfo.ini");
 
-	info.LauncherType = GetPrivateProfileInt("MainInfo", "LauncherType", 0, ".\\MainInfo.ini");
+	info.LauncherType = GetPrivateProfileInt("Launcher", "LauncherType", 0, ".\\MainInfo.ini");
+	GetPrivateProfileString("Launcher", "LauncherName", "XTLauncherExecutable", info.LauncherName, sizeof(info.LauncherName), ".\\MainInfo.ini");
 
-	GetPrivateProfileString("MainInfo", "LauncherName", "XTLauncherExecutable", info.LauncherName, sizeof(info.LauncherName), ".\\MainInfo.ini");
+	GetPrivateProfileString("Connection", "IpAddress", "", info.IpAddress, sizeof(info.IpAddress), ".\\MainInfo.ini");
+	info.IpAddressPort = GetPrivateProfileInt("Connection", "IpAddressPort", 44405, ".\\MainInfo.ini");
+	GetPrivateProfileString("Connection", "ClientSerial", "", info.ClientSerial, sizeof(info.ClientSerial), ".\\MainInfo.ini");
+	GetPrivateProfileString("Connection", "ClientVersion", "", info.ClientVersion, sizeof(info.ClientVersion), ".\\MainInfo.ini");
 
-	info.IpAddressPort = GetPrivateProfileInt("MainInfo", "IpAddressPort", 44405, ".\\MainInfo.ini");
+	info.MultiInstanceBlock = GetPrivateProfileInt("ClientInfo", "BlockMultiInstance", 0, ".\\MainInfo.ini");
+	GetPrivateProfileString("ClientInfo", "WindowName", "", info.WindowName, sizeof(info.WindowName), ".\\MainInfo.ini");
+	GetPrivateProfileString("ClientInfo", "ScreenShotPath", "", info.ScreenShotPath, sizeof(info.ScreenShotPath), ".\\MainInfo.ini");
 
-	GetPrivateProfileString("MainInfo", "CustomerName", "", info.CustomerName, sizeof(info.CustomerName), ".\\MainInfo.ini");
-
-	GetPrivateProfileString("MainInfo", "IpAddress", "", info.IpAddress, sizeof(info.IpAddress), ".\\MainInfo.ini");
-
-	GetPrivateProfileString("MainInfo", "ClientVersion", "", info.ClientVersion, sizeof(info.ClientVersion), ".\\MainInfo.ini");
-
-	GetPrivateProfileString("MainInfo", "ClientSerial", "", info.ClientSerial, sizeof(info.ClientSerial), ".\\MainInfo.ini");
-
-	GetPrivateProfileString("MainInfo", "WindowName", "", info.WindowName, sizeof(info.WindowName), ".\\MainInfo.ini");
-
-	GetPrivateProfileString("MainInfo", "ScreenShotPath", "", info.ScreenShotPath, sizeof(info.ScreenShotPath), ".\\MainInfo.ini");
-
-	GetPrivateProfileString("MainInfo", "ClientName", "", info.ClientName, sizeof(info.ClientName), ".\\MainInfo.ini");
-
-	GetPrivateProfileString("MainInfo", "PluginName", "", info.PluginName, sizeof(info.PluginName), ".\\MainInfo.ini");
-
-	info.ReconnectTime = GetPrivateProfileInt("ReconnectInfo", "ReconnectTime", 0, ".\\MainInfo.ini");
+	GetPrivateProfileString("CheckCRC", "ClientName", "", info.ClientName, sizeof(info.ClientName), ".\\MainInfo.ini");
+	GetPrivateProfileString("CheckCRC", "PluginName", "", info.PluginName, sizeof(info.PluginName), ".\\MainInfo.ini");
 
 	/*================================================================*/
 
+	info.ReconnectTime = GetPrivateProfileInt("Systems", "ReconnectTime", 0, ".\\MainInfo.ini");
+
 	info.HealthBarType = GetPrivateProfileInt("Systems", "HealthBarType", 0, ".\\MainInfo.ini");
-
-	info.EnableSky = GetPrivateProfileInt("Systems", "EnableSky", 0, ".\\MainInfo.ini");
-
-	info.EnableMinimap = GetPrivateProfileInt("Systems", "EnableMinimap", 0, ".\\MainInfo.ini");
 
 	info.EnableMoveList = GetPrivateProfileInt("Systems", "EnableMoveList", 0, ".\\MainInfo.ini");
 

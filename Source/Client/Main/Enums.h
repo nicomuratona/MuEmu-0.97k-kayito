@@ -146,7 +146,6 @@ enum eWindowModes
 {
 	FULL_SCREEN = 0,
 	WINDOW_MODE,
-	BORDERLESS,
 	MAX_WINDOW_MODE
 };
 

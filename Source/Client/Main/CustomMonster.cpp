@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CustomMonster.h"
+#include "LoadModels.h"
 
 CCustomMonster gCustomMonster;
 
@@ -7,7 +8,7 @@ CCustomMonster::CCustomMonster()
 {
 	for (int n = 0; n < MAX_MONSTER; n++)
 	{
-		this->m_CustomMonsterInfo[n].MonsterIndex = -1;
+		this->m_CustomMonsterInfo[n].Index = -1;
 	}
 
 	this->Init();
@@ -28,27 +29,47 @@ void CCustomMonster::Load(CUSTOM_MONSTER_INFO* info)
 
 void CCustomMonster::SetInfo(CUSTOM_MONSTER_INFO info)
 {
-	if (info.MonsterIndex < 0 || info.MonsterIndex >= MAX_MONSTER)
+	if (info.Index < 0 || info.Index >= MAX_MONSTER)
 	{
 		return;
 	}
 
-	this->m_CustomMonsterInfo[info.MonsterIndex] = info;
+	this->m_CustomMonsterInfo[info.Index] = info;
 }
 
-CUSTOM_MONSTER_INFO* CCustomMonster::GetInfoByIndex(int Index)
+CUSTOM_MONSTER_INFO* CCustomMonster::GetInfo(int index)
 {
-	if (Index < 0 || Index >= MAX_MONSTER)
+	if (index < 0 || index >= MAX_MONSTER)
 	{
 		return NULL;
 	}
 
-	if (this->m_CustomMonsterInfo[Index].MonsterIndex != Index)
+	if (this->m_CustomMonsterInfo[index].Index != index)
 	{
 		return NULL;
 	}
 
-	return &this->m_CustomMonsterInfo[Index];
+	return &this->m_CustomMonsterInfo[index];
+}
+
+CUSTOM_MONSTER_INFO* CCustomMonster::GetInfoByIndex(int index)
+{
+	for (int n = 0; n < MAX_MONSTER; n++)
+	{
+		CUSTOM_MONSTER_INFO* lpInfo = this->GetInfo(n);
+
+		if (lpInfo == NULL)
+		{
+			continue;
+		}
+
+		if (lpInfo->MonsterIndex == index)
+		{
+			return lpInfo;
+		}
+	}
+
+	return NULL;
 }
 
 void CCustomMonster::Init()
@@ -86,11 +107,11 @@ DWORD CCustomMonster::CreateCustomMonster(int Type, int PositionX, int PositionY
 
 			wsprintf(path, "Data\\%s", lpInfo->FolderName);
 
-			AccessModel(Index, path, lpInfo->ModelName, -1);
+			gLoadModels.MyAccessModel(Index, path, lpInfo->ModelName);
 
-			if (*(short*)(b + 0x24) > 0)
+			if (*(short*)(b + 0x24) > 0) // if (b->NumMeshs != 0)
 			{
-				OpenTexture(Index, lpInfo->FolderName, GL_NEAREST, true);
+				gLoadModels.MyOpenTexture(Index, lpInfo->FolderName);
 			}
 
 			if (lpInfo->MonsterType != 0) // Is Monster
@@ -124,7 +145,7 @@ DWORD CCustomMonster::CreateCustomMonster(int Type, int PositionX, int PositionY
 
 		*(float*)(c + 0xC) = lpInfo->Scale; // c->Object.Scale
 
-		memcpy((char*)(c + 0x1C1), MonsterScript[Type].Name, 24); // c->ID -> Max 24 characters
+		memcpy((char*)(c + 0x1C1), getMonsterName(Type), 24); // c->ID -> Max 24 characters
 
 		*(BYTE*)(c + 0x2EB) = Type; // c->MonsterIndex
 

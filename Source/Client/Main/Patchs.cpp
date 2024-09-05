@@ -3,7 +3,6 @@
 #include "PrintPlayer.h"
 #include "Protect.h"
 #include "Protocol.h"
-#include "ReadScript.h"
 
 CPatchs gPatchs;
 
@@ -107,6 +106,8 @@ void CPatchs::Init()
 
 	SetCompleteHook(0xE9, 0x00483AC5, &this->FixChasingAttackMovement);
 
+	SetCompleteHook(0xE9, 0x004292BC, &this->FixWeaponGlow);
+
 	SetCompleteHook(0xE9, 0x004424B4, &this->DecBMD); // Decrypt BMD
 
 	// EncTerrain%d.map
@@ -124,7 +125,9 @@ void CPatchs::Init()
 
 	SetCompleteHook(0xE8, 0x0041ED4C, &this->ReadMainVersion);
 
-	SetCompleteHook(0xE9, 0x0047D120, &this->OpenMonsterScript);
+	SetCompleteHook(0xE8, 0x005269EC, &this->MySaveScreen);
+
+	SetCompleteHook(0xE9, 0x005123C0, &this->MyBeginBitmap);
 
 	SetCompleteHook(0xE8, 0x004BC0B3, &this->RenderNumArrow);
 
@@ -255,6 +258,33 @@ _declspec(naked) void CPatchs::FixChasingAttackMovement()
 		Call[SendMove];
 		Add Esp, 0x8;
 		Jmp jmpBack;
+	}
+}
+
+_declspec(naked) void CPatchs::FixWeaponGlow()
+{
+	static DWORD jmpBack = 0x00429338;
+	static DWORD LevelConvert = 0x0045C850;
+	static DWORD SetCharacterScale = 0x0045C050;
+
+	_asm
+	{
+		Mov Ecx, Dword Ptr[Esp + 0x14];
+		Add Eax, 0x190;
+		Push Ecx;
+		Mov[Esi + 0x270], Ax;
+		Call[LevelConvert];
+		Add Esp, 4;
+		Mov[Esi + 0x272], Al;
+		Mov[Esi + 0x273], Bl;
+		Push Esi;
+		Call[SetCharacterScale];
+		Add Esp, 4;
+		Pop Edi;
+		Pop Esi;
+		Pop Ebp;
+		Pop Ebx;
+		Jmp[jmpBack];
 	}
 }
 
@@ -724,68 +754,46 @@ BOOL CPatchs::ReadMainVersion()
 	return TRUE;
 }
 
-void CPatchs::OpenMonsterScript(char* path)
+void CPatchs::MySaveScreen()
 {
-	memset(MonsterScript, 0, sizeof(MONSTER_SCRIPT) * 256);
+	CreateDirectory(gProtect.m_MainInfo.ScreenShotPath, 0);
 
-	CReadScript* lpReadScript = new CReadScript;
+	SYSTEMTIME st;
 
-	if (lpReadScript == NULL)
-	{
-		char Text[256];
+	GetLocalTime(&st);
 
-		wsprintf(Text, READ_SCRIPT_ALLOC_ERROR, path);
+	char GFName[MAX_PATH] = { 0 };
 
-		MessageBox(g_hWnd, Text, "Error", MB_OK);
+	sprintf_s(GFName, "%s\\[%02d-%02d]-%02d_%02d_%02d.jpg", gProtect.m_MainInfo.ScreenShotPath, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
 
-		return;
-	}
+	memcpy(GrabFileName, GFName, MAX_PATH);
 
-	if (!lpReadScript->Load(path))
-	{
-		char Text[256];
+	SaveScreen();
+}
 
-		wsprintf(Text, READ_SCRIPT_FILE_ERROR, path);
+void CPatchs::MyBeginBitmap()
+{
+	glMatrixMode(GL_PROJECTION);
 
-		MessageBox(g_hWnd, Text, "Error", MB_OK);
+	glPushMatrix();
 
-		delete lpReadScript;
+	glLoadIdentity();
 
-		return;
-	}
+	glViewport(0, 0, WindowWidth, WindowHeight);
 
-	try
-	{
-		eTokenResult token;
+	gluPerspective(CameraFOV, (WindowWidth) / ((float)WindowHeight), CameraViewNear, CameraViewFar);
 
-		while (true)
-		{
-			token = lpReadScript->GetToken();
+	glLoadIdentity();
 
-			if (token == TOKEN_END || token == TOKEN_END_SECTION)
-			{
-				break;
-			}
+	gluOrtho2D(0, WindowWidth, 0, WindowHeight);
 
-			*(int*)0x07D78078 += 1;
+	glMatrixMode(GL_MODELVIEW);
 
-			BYTE Type = lpReadScript->GetNumber();
+	glPushMatrix();
 
-			MONSTER_SCRIPT* m = &MonsterScript[Type];
+	glLoadIdentity();
 
-			m->Type = Type;
-
-			lpReadScript->GetAsNumber();
-
-			strcpy_s(m->Name, lpReadScript->GetAsString());
-		}
-	}
-	catch (...)
-	{
-		MessageBox(g_hWnd, lpReadScript->GetError(), "Error", MB_OK);
-	}
-
-	delete lpReadScript;
+	DisableDepthTest();
 }
 
 bool CPatchs::RenderNumArrow()

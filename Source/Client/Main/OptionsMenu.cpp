@@ -193,7 +193,7 @@ void COptionsMenu::RenderAllOptions()
 	/* OPTIONS */
 	DisableAlphaBlend();
 	glColor3f(0.8f, 0.6f, 0.4f);
-	RenderBitmap(240, PosX, PosY, Width, Height, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+	RenderBitmap(240, PosX, PosY, Width, Height, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 	sprintf_s(Text, "%s", GetTextLine(385));
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
@@ -299,8 +299,11 @@ void COptionsMenu::RenderGeneral()
 	this->RenderMusicVolume(PosX, PosY);
 	PosY += ((float)this->BoxHeight + 7.0f);
 
-	this->RenderMusicControls(PosX, PosY);
-	PosY += ((float)this->BoxHeight + 7.0f);
+	if (m_MusicOnOff)
+	{
+		this->RenderMusicControls(PosX, PosY);
+		PosY += ((float)this->BoxHeight + 7.0f);
+	}
 
 	this->RenderBack(PosX, PosY);
 }
@@ -349,12 +352,15 @@ bool COptionsMenu::CheckGeneral()
 
 	PosY += (this->BoxHeight + 7);
 
-	if (this->CheckMusicControls(PosX, PosY))
+	if (m_MusicOnOff)
 	{
-		return true;
-	}
+		if (this->CheckMusicControls(PosX, PosY))
+		{
+			return true;
+		}
 
-	PosY += (this->BoxHeight + 7);
+		PosY += (this->BoxHeight + 7);
+	}
 
 	if (this->CheckBack(PosX, PosY))
 	{
@@ -370,7 +376,7 @@ void COptionsMenu::RenderGeneralTitle(float PosX, float PosY)
 
 	glColor3f(0.8f, 0.6f, 0.4f);
 
-	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 	char Text[64] = { 0 };
 
@@ -387,7 +393,7 @@ void COptionsMenu::RenderLanguage(float PosX, float PosY)
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 	char Text[64] = { 0 };
 
@@ -399,39 +405,39 @@ void COptionsMenu::RenderLanguage(float PosX, float PosY)
 
 	if (gLanguage.LangNum > LANGUAGE_ENGLISH)
 	{
-		if (IsWorkZone((int)PosX + 2, (int)PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone((int)PosX, (int)PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButtonPush)
 			{
-				RenderBitmap(0x100, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
+				RenderBitmap(0x100, PosX, PosY, (float)this->BoxHeight, (float)this->BoxHeight, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 			else
 			{
-				RenderBitmap(0xFF, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
+				RenderBitmap(0xFF, PosX, PosY, (float)this->BoxHeight, (float)this->BoxHeight, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 		}
 		else
 		{
-			RenderBitmap(0xFE, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
+			RenderBitmap(0xFE, PosX, PosY, (float)this->BoxHeight, (float)this->BoxHeight, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
 		}
 	}
 
 	if (gLanguage.LangNum < LANGUAGE_PORTUGUESE)
 	{
-		if (IsWorkZone((int)PosX + (this->BoxWidth - this->BoxHeight) - 2, (int)PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone((int)PosX + (this->BoxWidth - this->BoxHeight), (int)PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButtonPush)
 			{
-				MyRenderBitmapRotate(0x100, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				RenderBitmap(0x100, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 			else
 			{
-				MyRenderBitmapRotate(0xFF, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				RenderBitmap(0xFF, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 		}
 		else
 		{
-			MyRenderBitmapRotate(0xFE, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+			RenderBitmap(0xFE, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 		}
 	}
 }
@@ -440,7 +446,7 @@ bool COptionsMenu::CheckLanguage(int PosX, int PosY)
 {
 	if (gLanguage.LangNum > LANGUAGE_ENGLISH)
 	{
-		if (IsWorkZone(PosX + 2, PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone(PosX, PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButton && MouseLButtonPush)
 			{
@@ -463,7 +469,7 @@ bool COptionsMenu::CheckLanguage(int PosX, int PosY)
 
 	if (gLanguage.LangNum < LANGUAGE_PORTUGUESE)
 	{
-		if (IsWorkZone(PosX + (this->BoxWidth - this->BoxHeight) - 2, PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone(PosX + (this->BoxWidth - this->BoxHeight), PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButton && MouseLButtonPush)
 			{
@@ -563,61 +569,79 @@ void COptionsMenu::RenderSoundVolume(float PosX, float PosY)
 {
 	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
 
-	float Width = (float)this->BoxWidth / 3.0f;
-
-	char Text[64] = { 0 };
-
-	sprintf_s(Text, "%s", GetTextLine(913));
-
-	EnableAlphaTest(true);
-
-	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
-
-	PosX += Width;
-
-	Width *= 2.0f;
-
-	Width -= 8.0f;
-
-	float Height = 8.0f;
-
-	PosY += (((float)this->BoxHeight - Height) / 2.0f);
-
-	EnableAlphaTest(true);
-
-	glColor3f(0.2f, 0.2f, 0.2f);
-
-	RenderColor(PosX, PosY, Width + 2.0f, Height);
-
-	glColor3f(0.0f, 0.0f, 0.0f);
-
-	RenderColor(PosX + 1, PosY + 1.0f, Width, Height - 2.0f);
-
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-	for (int i = 0; i < MAX_SOUND_LEVEL; i++)
+	if (!m_SoundOnOff)
 	{
-		if (i >= gSound.SoundVolumeLevel)
-		{
-			glColor3f(0.0f, 0.0f, 0.0f);
-		}
-		else
-		{
-			glColor3f(1.0f, 1.0f, 1.0f);
-		}
+		char Text[64] = { 0 };
 
-		RenderColor(PosX + 1, PosY + 1.0f, (Width / MAX_SOUND_LEVEL), Height - 2.0f);
+		sprintf_s(Text, "%s: Off", GetTextLine(913));
 
-		PosX += (Width / MAX_SOUND_LEVEL);
+		EnableAlphaTest(true);
+
+		RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
 	}
+	else
+	{
+		float Width = (float)this->BoxWidth / 3.0f;
 
-	DisableAlphaBlend();
+		char Text[64] = { 0 };
 
-	glColor3f(1.0f, 1.0f, 1.0f);
+		sprintf_s(Text, "%s", GetTextLine(913));
+
+		EnableAlphaTest(true);
+
+		RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
+
+		PosX += Width;
+
+		Width *= 2.0f;
+
+		Width -= 8.0f;
+
+		float Height = 8.0f;
+
+		PosY += (((float)this->BoxHeight - Height) / 2.0f);
+
+		EnableAlphaTest(true);
+
+		glColor3f(0.2f, 0.2f, 0.2f);
+
+		RenderColor(PosX, PosY, Width + 2.0f, Height);
+
+		glColor3f(0.0f, 0.0f, 0.0f);
+
+		RenderColor(PosX + 1, PosY + 1.0f, Width, Height - 2.0f);
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+
+		for (int i = 0; i < MAX_SOUND_LEVEL; i++)
+		{
+			if (i >= gSound.SoundVolumeLevel)
+			{
+				glColor3f(0.0f, 0.0f, 0.0f);
+			}
+			else
+			{
+				glColor3f(1.0f, 1.0f, 1.0f);
+			}
+
+			RenderColor(PosX + 1, PosY + 1.0f, (Width / MAX_SOUND_LEVEL), Height - 2.0f);
+
+			PosX += (Width / MAX_SOUND_LEVEL);
+		}
+
+		DisableAlphaBlend();
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+	}
 }
 
 bool COptionsMenu::CheckSoundVolume(int PosX, int PosY)
 {
+	if (!m_SoundOnOff)
+	{
+		return false;
+	}
+
 	float Width = ((float)this->BoxWidth / 3.0f * 2.0f) - 8.0f;
 
 	float Height = 8.0f;
@@ -651,61 +675,79 @@ void COptionsMenu::RenderMusicVolume(float PosX, float PosY)
 {
 	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
 
-	float Width = (float)this->BoxWidth / 3.0f;
-
-	char Text[64] = { 0 };
-
-	sprintf_s(Text, "%s", GetTextLine(914));
-
-	EnableAlphaTest(true);
-
-	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
-
-	PosX += Width;
-
-	Width *= 2.0f;
-
-	Width -= 8.0f;
-
-	float Height = 8.0f;
-
-	PosY += (((float)this->BoxHeight - Height) / 2.0f);
-
-	EnableAlphaTest(true);
-
-	glColor3f(0.2f, 0.2f, 0.2f);
-
-	RenderColor(PosX, PosY, Width + 2.0f, Height);
-
-	glColor3f(0.0f, 0.0f, 0.0f);
-
-	RenderColor(PosX + 1, PosY + 1.0f, Width, Height - 2.0f);
-
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-	for (int i = 0; i < MAX_MUSIC_LEVEL; i++)
+	if (!m_MusicOnOff)
 	{
-		if (i >= gSound.MusicVolumeLevel)
-		{
-			glColor3f(0.0f, 0.0f, 0.0f);
-		}
-		else
-		{
-			glColor3f(1.0f, 1.0f, 1.0f);
-		}
+		char Text[64] = { 0 };
 
-		RenderColor(PosX + 1, PosY + 1.0f, (Width / MAX_MUSIC_LEVEL), Height - 2.0f);
+		sprintf_s(Text, "%s: Off", GetTextLine(914));
 
-		PosX += (Width / MAX_MUSIC_LEVEL);
+		EnableAlphaTest(true);
+
+		RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
 	}
+	else
+	{
+		float Width = (float)this->BoxWidth / 3.0f;
 
-	DisableAlphaBlend();
+		char Text[64] = { 0 };
 
-	glColor3f(1.0f, 1.0f, 1.0f);
+		sprintf_s(Text, "%s", GetTextLine(914));
+
+		EnableAlphaTest(true);
+
+		RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
+
+		PosX += Width;
+
+		Width *= 2.0f;
+
+		Width -= 8.0f;
+
+		float Height = 8.0f;
+
+		PosY += (((float)this->BoxHeight - Height) / 2.0f);
+
+		EnableAlphaTest(true);
+
+		glColor3f(0.2f, 0.2f, 0.2f);
+
+		RenderColor(PosX, PosY, Width + 2.0f, Height);
+
+		glColor3f(0.0f, 0.0f, 0.0f);
+
+		RenderColor(PosX + 1, PosY + 1.0f, Width, Height - 2.0f);
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+
+		for (int i = 0; i < MAX_MUSIC_LEVEL; i++)
+		{
+			if (i >= gSound.MusicVolumeLevel)
+			{
+				glColor3f(0.0f, 0.0f, 0.0f);
+			}
+			else
+			{
+				glColor3f(1.0f, 1.0f, 1.0f);
+			}
+
+			RenderColor(PosX + 1, PosY + 1.0f, (Width / MAX_MUSIC_LEVEL), Height - 2.0f);
+
+			PosX += (Width / MAX_MUSIC_LEVEL);
+		}
+
+		DisableAlphaBlend();
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+	}
 }
 
 bool COptionsMenu::CheckMusicVolume(int PosX, int PosY)
 {
+	if (!m_MusicOnOff)
+	{
+		return false;
+	}
+
 	float Width = ((float)this->BoxWidth / 3.0f * 2.0f) - 8.0f;
 
 	float Height = 8.0f;
@@ -818,6 +860,12 @@ void COptionsMenu::RenderScreen()
 	this->RenderWindowMode(PosX, PosY);
 	PosY += ((float)this->BoxHeight + 7.0f);
 
+	if (gWindow.m_WindowMode)
+	{
+		this->RenderBorderless(PosX, PosY);
+		PosY += ((float)this->BoxHeight + 7.0f);
+	}
+
 	this->RenderResolutions(PosX, PosY);
 
 	this->RenderBack(PosX, PosY);
@@ -835,6 +883,16 @@ bool COptionsMenu::CheckScreen()
 	}
 
 	PosY += (this->BoxHeight + 7);
+
+	if (gWindow.m_WindowMode)
+	{
+		if (this->CheckBorderless(PosX, PosY))
+		{
+			return true;
+		}
+
+		PosY += (this->BoxHeight + 7);
+	}
 
 	if (this->CheckResolutions(PosX, PosY))
 	{
@@ -855,7 +913,7 @@ void COptionsMenu::RenderScreenTitle(float PosX, float PosY)
 
 	glColor3f(0.8f, 0.6f, 0.4f);
 
-	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 	char Text[64] = { 0 };
 
@@ -868,101 +926,71 @@ void COptionsMenu::RenderScreenTitle(float PosX, float PosY)
 
 void COptionsMenu::RenderWindowMode(float PosX, float PosY)
 {
-	DisableAlphaBlend();
-
-	glColor3f(1.0f, 0.4f, 0.4f);
-
-	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", gWindow.iWindowValues[gWindow.m_WindowMode].c_str());
+	sprintf_s(Text, "%s", gWindow.m_WindowMode ? "Windowed" : "FullScreen");
 
 	EnableAlphaTest(true);
 
-	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
-
-	if (gWindow.m_WindowMode > FULL_SCREEN)
-	{
-		if (IsWorkZone((int)PosX + 2, (int)PosY + 2, this->BoxHeight, this->BoxHeight))
-		{
-			if (MouseLButtonPush)
-			{
-				RenderBitmap(0x100, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
-			}
-			else
-			{
-				RenderBitmap(0xFF, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
-			}
-		}
-		else
-		{
-			RenderBitmap(0xFE, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
-		}
-	}
-
-	if (gWindow.m_WindowMode < BORDERLESS)
-	{
-		if (IsWorkZone((int)PosX + (this->BoxWidth - this->BoxHeight) - 2, (int)PosY + 2, this->BoxHeight, this->BoxHeight))
-		{
-			if (MouseLButtonPush)
-			{
-				MyRenderBitmapRotate(0x100, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
-			}
-			else
-			{
-				MyRenderBitmapRotate(0xFF, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
-			}
-		}
-		else
-		{
-			MyRenderBitmapRotate(0xFE, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
-		}
-	}
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
 }
 
 bool COptionsMenu::CheckWindowMode(int PosX, int PosY)
 {
-	if (gWindow.m_WindowMode > FULL_SCREEN)
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
 	{
-		if (IsWorkZone(PosX + 2, PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (MouseLButton && MouseLButtonPush)
 		{
-			if (MouseLButton && MouseLButtonPush)
-			{
-				MouseLButtonPush = false;
+			MouseLButtonPush = false;
 
-				MouseUpdateTime = 0;
+			MouseUpdateTime = 0;
 
-				MouseUpdateTimeMax = 6;
+			MouseUpdateTimeMax = 6;
 
-				PlayBuffer(25, 0, 0);
+			PlayBuffer(25, 0, 0);
 
-				gWindow.ChangeWindowState(gWindow.m_WindowMode - 1, m_Resolution);
-			}
-
-			return true;
+			gWindow.ChangeWindowState(gWindow.m_WindowMode ^ 1, gWindow.m_Borderless, m_Resolution);
 		}
+
+		return true;
 	}
 
-	if (gWindow.m_WindowMode < BORDERLESS)
+	return false;
+}
+
+void COptionsMenu::RenderBorderless(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", "Borderless", gWindow.m_Borderless ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckBorderless(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
 	{
-		if (IsWorkZone(PosX + (this->BoxWidth - this->BoxHeight) - 2, PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (MouseLButton && MouseLButtonPush)
 		{
-			if (MouseLButton && MouseLButtonPush)
-			{
-				MouseLButtonPush = false;
+			MouseLButtonPush = false;
 
-				MouseUpdateTime = 0;
+			MouseUpdateTime = 0;
 
-				MouseUpdateTimeMax = 6;
+			MouseUpdateTimeMax = 6;
 
-				PlayBuffer(25, 0, 0);
+			PlayBuffer(25, 0, 0);
 
-				gWindow.ChangeWindowState(gWindow.m_WindowMode + 1, m_Resolution);
-			}
-
-			return true;
+			gWindow.ChangeWindowState(gWindow.m_WindowMode, gWindow.m_Borderless ^ 1, m_Resolution);
 		}
+
+		return true;
 	}
 
 	return false;
@@ -980,13 +1008,13 @@ void COptionsMenu::RenderResolutions(float PosX, float& PosY)
 
 		glColor3f(1.0f, 1.0f, 1.0f);
 
-		RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+		RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 		if (this->Resolutions[i])
 		{
 			glColor3f(1.0f, 1.0f, 0.0f);
 
-			RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+			RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 			glColor3f(1.0f, 1.0f, 1.0f);
 
@@ -998,7 +1026,7 @@ void COptionsMenu::RenderResolutions(float PosX, float& PosY)
 
 			glColor3f(0.8f, 0.6f, 0.4f);
 
-			RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+			RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 			glColor3f(1.0f, 1.0f, 1.0f);
 
@@ -1038,7 +1066,7 @@ bool COptionsMenu::CheckResolutions(int PosX, int& PosY)
 
 				this->Resolutions[m_Resolution] = 0;
 
-				gWindow.ChangeWindowState(gWindow.m_WindowMode, i);
+				gWindow.ChangeWindowState(gWindow.m_WindowMode, gWindow.m_Borderless, i);
 			}
 
 			return true;
@@ -1135,7 +1163,7 @@ void COptionsMenu::RenderFontTitle(float PosX, float PosY)
 
 	glColor3f(0.8f, 0.6f, 0.4f);
 
-	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 	char Text[64] = { 0 };
 
@@ -1152,9 +1180,7 @@ void COptionsMenu::RenderFontStyle(float PosX, float& PosY)
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
-
-	//GetTextFace(m_hFontDC, sizeof(gFont.MyFontFaceName), gFont.MyFontFaceName);
+	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 	char Text[64] = { 0 };
 
@@ -1173,39 +1199,39 @@ void COptionsMenu::RenderFontStyle(float PosX, float& PosY)
 
 	if (gFont.CurrentFontNumber > 0)
 	{
-		if (IsWorkZone((int)PosX + 2, (int)PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone((int)PosX, (int)PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButtonPush)
 			{
-				RenderBitmap(0x100, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
+				RenderBitmap(0x100, PosX, PosY, (float)this->BoxHeight, (float)this->BoxHeight, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 			else
 			{
-				RenderBitmap(0xFF, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
+				RenderBitmap(0xFF, PosX, PosY, (float)this->BoxHeight, (float)this->BoxHeight, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 		}
 		else
 		{
-			RenderBitmap(0xFE, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
+			RenderBitmap(0xFE, PosX, PosY, (float)this->BoxHeight, (float)this->BoxHeight, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
 		}
 	}
 
 	if (gFont.CurrentFontNumber < (int)gFont.AllFonts.size() - 1)
 	{
-		if (IsWorkZone((int)PosX + (this->BoxWidth - this->BoxHeight) - 2, (int)PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone((int)PosX + (this->BoxWidth - this->BoxHeight), (int)PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButtonPush)
 			{
-				MyRenderBitmapRotate(0x100, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				RenderBitmap(0x100, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 			else
 			{
-				MyRenderBitmapRotate(0xFF, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+				RenderBitmap(0xFF, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 		}
 		else
 		{
-			MyRenderBitmapRotate(0xFE, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+			RenderBitmap(0xFE, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 		}
 	}
 }
@@ -1214,7 +1240,7 @@ bool COptionsMenu::CheckFontStyle(int PosX, int PosY)
 {
 	if (gFont.CurrentFontNumber > 0)
 	{
-		if (IsWorkZone(PosX + 2, PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone(PosX, PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButton && MouseLButtonPush)
 			{
@@ -1246,7 +1272,7 @@ bool COptionsMenu::CheckFontStyle(int PosX, int PosY)
 
 	if (gFont.CurrentFontNumber < (int)gFont.AllFonts.size() - 1)
 	{
-		if (IsWorkZone(PosX + (this->BoxWidth - this->BoxHeight) - 2, PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone(PosX + (this->BoxWidth - this->BoxHeight), PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButton && MouseLButtonPush)
 			{
@@ -1361,7 +1387,7 @@ void COptionsMenu::RenderFontButtons(float PosX, float& PosY)
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 	char Text[3] = { 0 };
 
@@ -1373,37 +1399,37 @@ void COptionsMenu::RenderFontButtons(float PosX, float& PosY)
 
 	if (FontHeight > 1)
 	{
-		if (IsWorkZone((int)PosX + 2, (int)PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone((int)PosX, (int)PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButtonPush)
 			{
-				RenderBitmap(0x100, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
+				RenderBitmap(0x100, PosX, PosY, (float)this->BoxHeight, (float)this->BoxHeight, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 			else
 			{
-				RenderBitmap(0xFF, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
+				RenderBitmap(0xFF, PosX, PosY, (float)this->BoxHeight, (float)this->BoxHeight, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
 			}
 		}
 		else
 		{
-			RenderBitmap(0xFE, PosX + 2.0f, PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f, true, true);
+			RenderBitmap(0xFE, PosX, PosY, (float)this->BoxHeight, (float)this->BoxHeight, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
 		}
 	}
 
-	if (IsWorkZone((int)PosX + (this->BoxWidth - this->BoxHeight) - 2, (int)PosY + 2, this->BoxHeight, this->BoxHeight))
+	if (IsWorkZone((int)PosX + (this->BoxWidth - this->BoxHeight), (int)PosY, this->BoxHeight, this->BoxHeight))
 	{
 		if (MouseLButtonPush)
 		{
-			MyRenderBitmapRotate(0x100, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+			RenderBitmap(0x100, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 		}
 		else
 		{
-			MyRenderBitmapRotate(0xFF, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+			RenderBitmap(0xFF, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 		}
 	}
 	else
 	{
-		MyRenderBitmapRotate(0xFE, (PosX + 2.0f) + (float)(this->BoxWidth - this->BoxHeight), PosY + 2.0f, (float)this->BoxHeight - 4.0f, (float)this->BoxHeight - 4.0f, 180.0f, 0.0f, 0.0f, 32.0f / 32.0f, 32.0f / 32.0f);
+		RenderBitmap(0xFE, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 	}
 }
 
@@ -1411,7 +1437,7 @@ bool COptionsMenu::CheckFontButtons(int PosX, int& PosY)
 {
 	if (FontHeight > 1)
 	{
-		if (IsWorkZone(PosX + 2, PosY + 2, this->BoxHeight, this->BoxHeight))
+		if (IsWorkZone(PosX, PosY, this->BoxHeight, this->BoxHeight))
 		{
 			if (MouseLButton && MouseLButtonPush)
 			{
@@ -1432,7 +1458,7 @@ bool COptionsMenu::CheckFontButtons(int PosX, int& PosY)
 		}
 	}
 
-	if (IsWorkZone(PosX + (this->BoxWidth - this->BoxHeight) - 2, PosY + 2, this->BoxHeight, this->BoxHeight))
+	if (IsWorkZone(PosX + (this->BoxWidth - this->BoxHeight), PosY, this->BoxHeight, this->BoxHeight))
 	{
 		if (MouseLButton && MouseLButtonPush)
 		{
@@ -1583,7 +1609,7 @@ void COptionsMenu::RenderBox(float PosX, float PosY, float Width, float Height)
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	RenderBitmap(240, PosX, PosY, Width, Height, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+	RenderBitmap(240, PosX, PosY, Width, Height, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 	if (IsWorkZone((int)PosX, (int)PosY, (int)Width, (int)Height))
 	{
@@ -1591,7 +1617,7 @@ void COptionsMenu::RenderBox(float PosX, float PosY, float Width, float Height)
 
 		EnableAlphaBlend();
 
-		RenderBitmap(240, PosX, PosY, Width, Height, 0.0f, 0.0f, 213.0f / 256.0f, 64.0f / 64.0f, true, true);
+		RenderBitmap(240, PosX, PosY, Width, Height, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
 
 		glColor3f(1.0f, 1.0f, 1.0f);
 

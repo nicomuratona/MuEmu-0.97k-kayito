@@ -8,6 +8,8 @@ CLoadModels gLoadModels;
 CLoadModels::CLoadModels()
 {
 	memset(this->lpTextures, 0, sizeof(this->lpTextures));
+
+	this->TextureCount = MAX_TEXTURE - 1;
 }
 
 CLoadModels::~CLoadModels()
@@ -19,11 +21,7 @@ void CLoadModels::Init()
 {
 	this->SetTexturesOffset();
 
-	SetCompleteHook(0xE9, 0x005060B0, &this->MyAccessModel);
-
-	SetCompleteHook(0xE9, 0x00505C80, &this->MyOpenTexture);
-
-	SetCompleteHook(0xE8, 0x00510DD6, &this->OpenPlayerTexturesHook);
+	SetCompleteHook(0xE8, 0x00510DDB, &this->OpenItemsHook);
 
 	SetCompleteHook(0xE8, 0x00510DE0, &this->OpenItemTexturesHook);
 
@@ -134,11 +132,11 @@ void CLoadModels::MyAccessModel(int Type, char* Dir, char* FileName, int i)
 		wsprintf(Name, "%s%d.bmd", FileName, i);
 	}
 
-	gLoadModels.CheckModelExists(Type, Dir, Name);
+	this->CheckModelExists(Type, Dir, Name);
 
 	bool Success = ((bool(__thiscall*)(DWORD This, char* DirName, char* FileName))0x004423E0)(Models + 188 * Type, Dir, Name);
 
-	if (Success == false)
+	if (!Success)
 	{
 		if (strcmp(FileName, "Monster") == NULL || strcmp(FileName, "Player") == NULL || strcmp(FileName, "PlayerTest") == NULL || strcmp(FileName, "Angel") == NULL)
 		{
@@ -183,50 +181,34 @@ void CLoadModels::MyOpenTexture(int Model, char* SubFolder, int Type, bool Check
 	{
 		char* pTexture = (char*)(*(DWORD*)(pModel + 0x34) + 32 * i);
 
-		DWORD pBitmap = NULL;
+		char path[256] = { 0, };
 
-		short textureFound = FindTextureByName(pTexture, &pBitmap);
+		strcpy_s(path, SubFolder);
 
-		if (textureFound < 0)
+		strcat_s(path, pTexture);
+
+		char __filename[_MAX_FNAME] = { 0, };
+
+		char __ext[_MAX_EXT] = { 0, };
+
+		_splitpath_s(pTexture, NULL, NULL, NULL, NULL, __filename, _MAX_FNAME, __ext, _MAX_EXT);
+
+		this->CheckTextureExists(Model, SubFolder, __filename, __ext);
+
+		if (tolower(__ext[1]) == 't')
 		{
-			char path[256] = { 0, };
-
-			strcpy_s(path, SubFolder);
-
-			strcat_s(path, pTexture);
-
-			char __filename[_MAX_FNAME] = { 0, };
-
-			char __ext[_MAX_EXT] = { 0, };
-
-			_splitpath_s(pTexture, NULL, NULL, NULL, NULL, __filename, _MAX_FNAME, __ext, _MAX_EXT);
-
-			gLoadModels.CheckTextureExists(Model, SubFolder, __filename, __ext);
-
-			if (tolower(__ext[1]) == 't')
-			{
-				OpenTGA(path, TextureCurrent, GL_NEAREST, GL_REPEAT, (char*)(pModel + 0), Check);
-			}
-			else
-			{
-				OpenJPG(path, TextureCurrent, Type, GL_REPEAT, (char*)(pModel + 0), Check);
-			}
-
-			MemoryCpy(((DWORD)&gLoadModels.lpTextures + TextureCurrent * sizeof(BITMAP_t)), pTexture, 32);
-
-			*(short*)(*(DWORD*)(pModel + 0x38) + 2 * i) = TextureCurrent; // pModel->IndexTexture[i]
-
-			TextureCurrent += 1;
+			OpenTGA(path, this->TextureCount, GL_NEAREST, GL_REPEAT, (char*)(pModel + 0), true);
 		}
 		else
 		{
-			if (pBitmap)
-			{
-				*(BYTE*)(pBitmap + 0x30) += 1;
-			}
-
-			*(short*)(*(DWORD*)(pModel + 0x38) + 2 * i) = textureFound;
+			OpenJPG(path, this->TextureCount, Type, GL_REPEAT, (char*)(pModel + 0), true);
 		}
+
+		strcpy_s(this->lpTextures[this->TextureCount].FileName, pTexture);
+
+		*(short*)(*(DWORD*)(pModel + 0x38) + 2 * i) = this->TextureCount; // pModel->IndexTexture[i]
+
+		this->TextureCount++;
 
 		if (pTexture[0] == 's'
 		    && pTexture[1] == 'k'
@@ -280,22 +262,35 @@ void CLoadModels::CheckTextureExists(int Model, char* SubFolder, char* filename,
 	}
 }
 
-void CLoadModels::OpenPlayerTexturesHook()
+void CLoadModels::OpenItemsHook()
 {
-	TextureCurrent = 301;
+	OpenItems();
 
-	OpenPlayerTextures();
+	char modelFolder[MAX_PATH];
+
+	int n = 0;
+
+	for (n = 0; n < MAX_ITEM; n++)
+	{
+		if (gCustomItem.m_CustomItemInfo[n].ItemIndex != -1)
+		{
+			if (gCustomItem.m_CustomItemInfo[n].ItemIndex >= GET_ITEM(7, 0) && gCustomItem.m_CustomItemInfo[n].ItemIndex < GET_ITEM(12, 0))
+			{
+				wsprintf(modelFolder, "Data\\Player\\Custom\\%d\\", gCustomItem.m_CustomItemInfo[n].ItemIndex % MAX_ITEM_TYPE);
+			}
+			else
+			{
+				wsprintf(modelFolder, "Data\\Item\\Custom\\%d\\", gCustomItem.m_CustomItemInfo[n].ItemIndex);
+			}
+
+			gLoadModels.MyAccessModel((gCustomItem.m_CustomItemInfo[n].ItemIndex + ITEM_BASE_MODEL), modelFolder, gCustomItem.m_CustomItemInfo[n].ModelName);
+		}
+	}
 }
 
 void CLoadModels::OpenItemTexturesHook()
 {
-	TextureCurrent = 500;
-
 	OpenItemTextures();
-
-	TextureCurrent = MAX_TEXTURE;
-
-	char modelFolder[MAX_PATH];
 
 	char textureFolder[MAX_PATH];
 
@@ -307,18 +302,12 @@ void CLoadModels::OpenItemTexturesHook()
 		{
 			if (gCustomItem.m_CustomItemInfo[n].ItemIndex >= GET_ITEM(7, 0) && gCustomItem.m_CustomItemInfo[n].ItemIndex < GET_ITEM(12, 0))
 			{
-				wsprintf(modelFolder, "Data\\Player\\Custom\\%d\\", gCustomItem.m_CustomItemInfo[n].ItemIndex % MAX_ITEM_TYPE);
-
 				wsprintf(textureFolder, "Player\\Custom\\%d\\", gCustomItem.m_CustomItemInfo[n].ItemIndex % MAX_ITEM_TYPE);
 			}
 			else
 			{
-				wsprintf(modelFolder, "Data\\Item\\Custom\\%d\\", gCustomItem.m_CustomItemInfo[n].ItemIndex);
-
 				wsprintf(textureFolder, "Item\\Custom\\%d\\", gCustomItem.m_CustomItemInfo[n].ItemIndex);
 			}
-
-			gLoadModels.MyAccessModel((gCustomItem.m_CustomItemInfo[n].ItemIndex + ITEM_BASE_MODEL), modelFolder, gCustomItem.m_CustomItemInfo[n].ModelName);
 
 			gLoadModels.MyOpenTexture((gCustomItem.m_CustomItemInfo[n].ItemIndex + ITEM_BASE_MODEL), textureFolder);
 		}

@@ -8,14 +8,14 @@
 
 struct MAIN_FILE_INFO
 {
-	BYTE MultiInstance;
+	char CustomerName[32];
 	BYTE LauncherType;
 	char LauncherName[32];
-	char CustomerName[32];
 	char IpAddress[32];
 	WORD IpAddressPort;
-	char ClientVersion[8];
 	char ClientSerial[17];
+	char ClientVersion[8];
+	BYTE MultiInstanceBlock;
 	char WindowName[32];
 	char ScreenShotPath[50];
 	char ClientName[32];
@@ -24,8 +24,6 @@ struct MAIN_FILE_INFO
 	DWORD PluginCRC32;
 	DWORD ReconnectTime;
 	BYTE HealthBarType;
-	BYTE EnableSky;
-	BYTE EnableMinimap;
 	BYTE EnableMoveList;
 	BYTE EnableSpecialCharacters;
 	MAP_MANAGER_INFO MapManager[MAX_MAPS];

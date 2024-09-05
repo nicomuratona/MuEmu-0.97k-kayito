@@ -10,21 +10,21 @@ public:
 
 	void Init();
 
+	void MyAccessModel(int Type, char* Dir, char* FileName, int i = -1);
+
+	void MyOpenTexture(int Model, char* SubFolder, int Type = GL_NEAREST, bool Check = true);
+
 	BITMAP_t* GetBitmap(int uiTextureNumber);
 
 private:
 
 	void SetTexturesOffset();
 
-	static void MyAccessModel(int Type, char* Dir, char* FileName, int i = -1);
-
 	void CheckModelExists(int Model, char* SubFolder, char* filename);
-
-	static void MyOpenTexture(int Model, char* SubFolder, int Type = GL_NEAREST, bool Check = true);
 
 	void CheckTextureExists(int Model, char* SubFolder, char* filename, char* ext);
 
-	static void OpenPlayerTexturesHook();
+	static void OpenItemsHook();
 
 	static void OpenItemTexturesHook();
 
@@ -33,6 +33,8 @@ private:
 private:
 
 	BITMAP_t lpTextures[TOTAL_TEXTURE];
+
+	short TextureCount;
 };
 
 extern CLoadModels gLoadModels;

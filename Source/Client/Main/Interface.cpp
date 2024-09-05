@@ -2,9 +2,10 @@
 #include "Interface.h"
 #include "Camera.h"
 #include "EventTimer.h"
-#include "FullMap.h"
+#include "MiniMap.h"
 #include "MoveList.h"
 #include "Protect.h"
+#include "SkyDome.h"
 #include "Window.h"
 
 Interface gInterface;
@@ -32,6 +33,10 @@ void Interface::Init()
 	SetCompleteHook(0xE8, 0x005254B2, &this->MyUpdateWindowsMouse);
 
 	SetCompleteHook(0xE8, 0x00525CEC, &this->MyRenderWindows);
+
+	SetCompleteHook(0xE8, 0x004BD300, &this->RenderLeftDragon);
+
+	SetCompleteHook(0xE8, 0x004BD332, &this->RenderRightDragon);
 }
 
 void Interface::RenderLogInScene(HDC Hdc)
@@ -59,14 +64,16 @@ void Interface::LoadImages()
 {
 	((void(__cdecl*)()) 0x0050EB80)(); // OpenImages
 
-	gFullMap.LoadImages();
+	gMiniMap.LoadImages();
+
+	gSkyDome.LoadImages();
 }
 
 void Interface::MyUpdateWindowsMouse()
 {
 	UpdateWindowsMouse();
 
-	gFullMap.CheckZoomButton();
+	gMiniMap.UpdateMouse();
 
 	gMoveList.UpdateMouse();
 
@@ -77,9 +84,36 @@ void Interface::MyRenderWindows()
 {
 	((void(_cdecl*)()) 0x004C3530)();
 
+	gMiniMap.Render();
+
 	gMoveList.Render();
 
 	gEventTimer.Render();
+}
+
+void Interface::RenderLeftDragon(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
+{
+	if (gMiniMap.GetMiniMapState())
+	{
+		return;
+	}
+
+	RenderBitmap(Texture, x, y, Width, Height, u, v, uWidth, vHeight, Scale, StartScale);
+}
+
+void Interface::RenderRightDragon(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
+{
+	if (CheckRightInterfaces())
+	{
+		return;
+	}
+
+	if (gMiniMap.GetMiniMapState())
+	{
+		return;
+	}
+
+	RenderBitmap(Texture, x, y, Width, Height, u, v, uWidth, vHeight, Scale, StartScale);
 }
 
 void Interface::BindObject(short MonsterID, DWORD ModelID, float Width, float Height, float X, float Y)
@@ -136,7 +170,7 @@ void Interface::DrawIMG(short ObjectID, float PosX, float PosY, float u, float v
 		this->Data[ObjectID].MaxY = PosY + this->Data[ObjectID].Height;
 	}
 
-	RenderBitmap(this->Data[ObjectID].ModelID, PosX, PosY, this->Data[ObjectID].Width, this->Data[ObjectID].Height, u, v, ScaleX, ScaleY, 1, 1);
+	RenderBitmap(this->Data[ObjectID].ModelID, PosX, PosY, this->Data[ObjectID].Width, this->Data[ObjectID].Height, u, v, ScaleX, ScaleY, true, true);
 }
 
 bool Interface::IsWorkZone(short ObjectID)

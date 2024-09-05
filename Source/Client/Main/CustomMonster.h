@@ -2,6 +2,7 @@
 
 struct CUSTOM_MONSTER_INFO
 {
+	int Index;
 	short MonsterIndex;
 	BYTE MonsterType;
 	BYTE GoldenType;
@@ -23,6 +24,8 @@ public:
 private:
 
 	void SetInfo(CUSTOM_MONSTER_INFO info);
+
+	CUSTOM_MONSTER_INFO* GetInfo(int index);
 
 	CUSTOM_MONSTER_INFO* GetInfoByIndex(int Index);
 

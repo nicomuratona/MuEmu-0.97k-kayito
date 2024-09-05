@@ -17,7 +17,7 @@ void CCustomMonster::Init()
 {
 	for (int n = 0; n < MAX_MONSTER; n++)
 	{
-		this->m_CustomMonsterInfo[n].MonsterIndex = -1;
+		this->m_CustomMonsterInfo[n].Index = -1;
 	}
 }
 
@@ -41,6 +41,8 @@ void CCustomMonster::Load(char* path)
 		return;
 	}
 
+	int Index = 0;
+
 	try
 	{
 		eTokenResult token;
@@ -56,11 +58,13 @@ void CCustomMonster::Load(char* path)
 
 			CUSTOM_MONSTER_INFO info;
 
+			info.Index = Index++;
+
 			info.MonsterIndex = lpReadScript->GetNumber();
 
 			info.MonsterType = lpReadScript->GetAsNumber();
 
-			info.GoldenType = lpReadScript->GetAsNumber();
+			info.GoldenType = (lpReadScript->GetAsNumber() != 0);
 
 			info.Scale = lpReadScript->GetAsFloatNumber();
 
@@ -81,10 +85,10 @@ void CCustomMonster::Load(char* path)
 
 void CCustomMonster::SetInfo(CUSTOM_MONSTER_INFO info)
 {
-	if (info.MonsterIndex < 0 || info.MonsterIndex >= MAX_MONSTER)
+	if (info.Index < 0 || info.Index >= MAX_MONSTER)
 	{
 		return;
 	}
 
-	this->m_CustomMonsterInfo[info.MonsterIndex] = info;
+	this->m_CustomMonsterInfo[info.Index] = info;
 }

@@ -58,9 +58,13 @@ void CMapManager::Load(char* path)
 
 			info.MapNumber = lpReadScript->GetNumber();
 
-			info.SwimableMap = lpReadScript->GetAsNumber();
+			info.SwimableMap = (lpReadScript->GetAsNumber() != 0);
 
-			info.MapMovement = lpReadScript->GetAsNumber();
+			info.MapMovement = (lpReadScript->GetAsNumber() != 0);
+
+			info.MiniMap = lpReadScript->GetAsNumber();
+
+			info.SkyDome = (lpReadScript->GetAsNumber() != 0);
 
 			strcpy_s(info.MapName, lpReadScript->GetAsString());
 

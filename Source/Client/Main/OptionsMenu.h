@@ -55,6 +55,8 @@ private:
 	void RenderScreenTitle(float PosX, float PosY);
 	void RenderWindowMode(float PosX, float PosY);
 	bool CheckWindowMode(int PosX, int PosY);
+	void RenderBorderless(float PosX, float PosY);
+	bool CheckBorderless(int PosX, int PosY);
 	void RenderResolutions(float PosX, float& PosY);
 	bool CheckResolutions(int PosX, int& PosY);
 

@@ -97,7 +97,7 @@ void CProtect::CheckLauncher()
 
 void CProtect::CheckInstance()
 {
-	if ((this->m_MainInfo.MultiInstance & 1) == 0)
+	if (this->m_MainInfo.MultiInstanceBlock == 0)
 	{
 		return;
 	}

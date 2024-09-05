@@ -109,31 +109,39 @@ void CFont::ReloadFont()
 	DeleteObject((HGDIOBJ)g_hFontBig);
 	g_hFontBig = CreateFont(FontHeight * 2, this->Width, 0, 0, FW_BOLD, this->Italic, this->UnderLine, this->StrikeOut, this->Charset, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, this->Quality, DEFAULT_PITCH, this->MyFontFaceName);
 
-	((void(_cdecl*)())0x0050F690)(); // OpenFont();
+	OpenFont();
 }
 
 void CFont::GetFonts()
 {
-	std::string str = this->MyFontFaceName;
+	std::string str(this->MyFontFaceName);
 
-	this->AllFonts.push_back(str);
+	std::set<std::string> uniqueFonts;
+	uniqueFonts.insert(str);
+
+	this->AllFonts.clear();
 
 	LOGFONT lf = { 0 };
-
 	lf.lfCharSet = this->Charset;
-
 	lf.lfFaceName[0] = '\0';
-
 	lf.lfPitchAndFamily = DEFAULT_PITCH;
 
-	EnumFontFamiliesEx(g_hDC, &lf, &this->MyEnumFontFamExProc, NULL, 0);
+	EnumFontFamiliesEx(g_hDC, &lf, &this->MyEnumFontFamExProc, reinterpret_cast<LPARAM>(&uniqueFonts), 0);
+
+	uniqueFonts.erase(str);
+
+	this->AllFonts.assign(uniqueFonts.begin(), uniqueFonts.end());
+
+	this->AllFonts.emplace(this->AllFonts.begin(), str);
 }
 
 int CALLBACK CFont::MyEnumFontFamExProc(const LOGFONT* lpelfe, const TEXTMETRIC* lpntme, DWORD FontType, LPARAM lParam)
 {
+	std::set<std::string>* uniqueFonts = reinterpret_cast<std::set<std::string>*>(lParam);
+
 	std::string str = lpelfe->lfFaceName;
 
-	gFont.AllFonts.push_back(str);
+	uniqueFonts->insert(str);
 
 	return 1;
 }

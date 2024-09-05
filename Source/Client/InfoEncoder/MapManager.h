@@ -3,8 +3,10 @@
 struct MAP_MANAGER_INFO
 {
 	int MapNumber;
-	int SwimableMap;
-	int MapMovement;
+	bool SwimableMap;
+	bool MapMovement;
+	BYTE MiniMap;
+	bool SkyDome;
 	char MapName[32];
 	char SongName[64];
 };

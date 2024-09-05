@@ -203,7 +203,7 @@ namespace kayitoTools.Forms
 				{
 					using (StreamWriter sw = new StreamWriter(fs))
 					{
-						sw.WriteLine("//Index	Rate	Name					Level	MaxLife	MaxMan	MinDmg	MaxDmg	Defense	MagDef	AtkRate	DefRate	MovRang	AtkType	AtkRang	View	MovSped	AtkSped	Regen	Attrib	ItmRate	Money	ItmLvl	Skill	Ice	Poison	Lightin	Fire");
+						sw.WriteLine("//Index	Type	Name					Level	MaxLife	MaxMan	MinDmg	MaxDmg	Defense	MagDef	AtkRate	DefRate	MovRang	AtkType	AtkRang	View	MovSped	AtkSped	Regen	Attrib	ItmRate	Money	ItmLvl	Skill	Ice	Poison	Lightin	Fire");
 
 						foreach (DataGridViewRow row in this.Monster_List_Box.Rows)
 						{
@@ -309,7 +309,7 @@ namespace kayitoTools.Forms
 				{
 					using (StreamWriter sw = new StreamWriter(fs))
 					{
-						sw.WriteLine("//Index	Rate	Name");
+						sw.WriteLine("//Index	Type	Name");
 
 						foreach (DataGridViewRow row in this.Monster_List_Box.Rows)
 						{

@@ -1,12 +1,14 @@
 #include "stdafx.h"
 #include "MoveList.h"
+#include "EventTimer.h"
+#include "MiniMap.h"
 #include "Protect.h"
 
 CMoveList gMoveList;
 
 CMoveList::CMoveList()
 {
-	this->m_MoveListSwitch = false;
+	this->MoveListSwitch = false;
 
 	this->MainWidth = 180.0f;
 
@@ -32,6 +34,11 @@ CMoveList::~CMoveList()
 
 }
 
+bool CMoveList::GetMoveListState()
+{
+	return this->MoveListSwitch;
+}
+
 void CMoveList::Toggle()
 {
 	if (gProtect.m_MainInfo.EnableMoveList == 0)
@@ -39,38 +46,43 @@ void CMoveList::Toggle()
 		return;
 	}
 
-	if (InputEnable || TabInputEnable || GoldInputEnable || GuildInputEnable)
+	if (CheckInputInterfaces())
 	{
 		return;
 	}
 
-	if (!this->CheckInterfaces())
+	if (gEventTimer.GetEventTimerState())
 	{
-		this->m_MoveListSwitch = false;
+		return;
+	}
+
+	if (gMiniMap.GetMiniMapState())
+	{
+		return;
+	}
+
+	if (CheckRightInterfaces())
+	{
+		this->MoveListSwitch = false;
 
 		return;
 	}
 
-	this->m_MoveListSwitch ^= 1;
+	this->MoveListSwitch ^= 1;
 
 	PlayBuffer(25, 0, 0);
 }
 
 void CMoveList::Render()
 {
-	if (this->m_MoveListSwitch)
+	if (!this->MoveListSwitch)
 	{
-		if (!this->CheckInterfaces())
-		{
-			this->m_MoveListSwitch ^= 1;
-		}
-		else
-		{
-			this->RenderFrame();
-
-			this->RenderMapsList();
-		}
+		return;
 	}
+
+	this->RenderFrame();
+
+	this->RenderMapsList();
 }
 
 void CMoveList::UpdateMouse()
@@ -80,14 +92,14 @@ void CMoveList::UpdateMouse()
 		return;
 	}
 
-	if (!this->m_MoveListSwitch)
+	if (!this->MoveListSwitch)
 	{
 		return;
 	}
 
-	if (!this->CheckInterfaces())
+	if (CheckRightInterfaces())
 	{
-		this->m_MoveListSwitch = false;
+		this->MoveListSwitch = false;
 
 		return;
 	}
@@ -115,16 +127,6 @@ void CMoveList::UpdateMouse()
 			MouseUpdateTimeMax = 6;
 		}
 	}
-}
-
-bool CMoveList::CheckInterfaces()
-{
-	if (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpened || GuildCreatorOpened)
-	{
-		return false;
-	}
-
-	return true;
 }
 
 void CMoveList::RenderFrame()

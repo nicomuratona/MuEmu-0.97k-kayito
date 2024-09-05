@@ -60,10 +60,9 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;MAIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;GLEW_STATIC;_DEBUG;_WINDOWS;_USRDLL;MAIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GLEW\Include\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -73,7 +72,10 @@
       <MapFileName>$(TargetDir)$(TargetName).map</MapFileName>
       <AdditionalDependencies>User32.lib;Shell32.lib;Advapi32.lib;Gdi32.lib;Ole32.lib;</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
-      <AdditionalLibraryDirectories>C:\Program Files\Microsoft Visual Studio 10.0\VC\lib\;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Program Files\Microsoft Visual Studio 10.0\VC\lib\;$(ProjectDir)Dependencies\GLEW\lib\;</AdditionalLibraryDirectories>
+      <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProfileGuidedDatabase>$(TargetDir)$(TargetName).pgd</ProfileGuidedDatabase>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,10 +85,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;MAIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;GLEW_STATIC;NDEBUG;_WINDOWS;_USRDLL;MAIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GLEW\Include\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -96,8 +97,11 @@
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <AdditionalDependencies>User32.lib;Shell32.lib;Advapi32.lib;Gdi32.lib;Ole32.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\Microsoft Visual Studio 10.0\VC\lib\;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Program Files\Microsoft Visual Studio 10.0\VC\lib\;$(ProjectDir)Dependencies\GLEW\lib\;</AdditionalLibraryDirectories>
       <MapFileName>$(TargetDir)$(TargetName).map</MapFileName>
+      <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProfileGuidedDatabase>$(TargetDir)$(TargetName).pgd</ProfileGuidedDatabase>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -114,7 +118,7 @@
     <ClInclude Include="Enums.h" />
     <ClInclude Include="EventTimer.h" />
     <ClInclude Include="Font.h" />
-    <ClInclude Include="FullMap.h" />
+    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="GuildLogo.h" />
     <ClInclude Include="HackCheck.h" />
     <ClInclude Include="HealthBar.h" />
@@ -139,8 +143,6 @@
     <ClInclude Include="Protect.h" />
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="ProtocolDefines.h" />
-    <ClInclude Include="ReadScript.h" />
-    <ClInclude Include="ReadScript2.h" />
     <ClInclude Include="Reconnect.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RightClickMove.h" />
@@ -166,7 +168,7 @@
     <ClCompile Include="CustomMonster.cpp" />
     <ClCompile Include="EventTimer.cpp" />
     <ClCompile Include="Font.cpp" />
-    <ClCompile Include="FullMap.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="GuildLogo.cpp" />
     <ClCompile Include="HackCheck.cpp" />
     <ClCompile Include="HealthBar.cpp" />
@@ -190,7 +192,6 @@
     <ClCompile Include="PrintPlayer.cpp" />
     <ClCompile Include="Protect.cpp" />
     <ClCompile Include="Protocol.cpp" />
-    <ClCompile Include="ReadScript.cpp" />
     <ClCompile Include="Reconnect.cpp" />
     <ClCompile Include="RightClickMove.cpp" />
     <ClCompile Include="ServerList.cpp" />

@@ -1,20 +1,27 @@
-// CUSTOM MONSTER
-// Developer: Nico
-//
-// Index -> Index of the monster (0 ~ 255)
-// Type -> 0 = NPC / 1 = Monster
-// Golden -> 0 = Off / 1 = On
-// Scale -> Size of the monster
-// Folder -> Folder where it will be the model inside of Client/Data/
-// Model -> Name of the BMD without the .bmd
-//
-// The name of the Monster you'll have to set it in Client/Data/Local/NPCName(kor).txt
-//========================================================================================================
-//========================================================================================================
-//========================================================================================================
+//********************************************************************************************************//
+//********************************************************************************************************//
+//********************************************************************************************************//
+//******** CUSTOM MONSTER
+//******** Developer: Nico
+//********
+//******** Index -> Index of the monster
+//******** Type -> 0 = NPC / 1 = Monster
+//******** Golden -> 0 = Off / 1 = On
+//******** Scale -> Size of the monster (format 1.0)
+//******** Folder -> Folder where it will be the model inside of Client\\Data\\
+//******** Model -> Name of the BMD without the .bmd
+//********
+//******** CLARIFICATION: The name of the Monster you'll have to set it in Client/Data/Local/NPCName(kor).txt
+//********
+//******** Example
+//******** Index	Type		Golden		Scale		Folder				Model			Comment
+//******** 454		1		1		1.30		"Monster\\Anubis\\"		"Anubis"		// My monster Anubis
+//********************************************************************************************************//
+//********************************************************************************************************//
+//********************************************************************************************************//
 
-// Index	Type		Golden		Scale		FolderName		ModelName
+// Index	Type		Golden		Scale		Folder				Model			Comment
 
-152		1		1		2.0		"Monster//Pichula//"	"Pichula"
+152		1		1		2.0		"Monster\\Pichula\\"		"Pichula"		// Pichula
 
 end

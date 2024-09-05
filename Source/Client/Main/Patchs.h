@@ -22,6 +22,8 @@ private:
 
 	static void FixChasingAttackMovement();
 
+	static void FixWeaponGlow();
+
 	static void DecBMD();
 
 	static int OpenTerrainMapping(char* FileName);
@@ -32,7 +34,9 @@ private:
 
 	static BOOL ReadMainVersion();
 
-	static void OpenMonsterScript(char* path);
+	static void MySaveScreen();
+
+	static void MyBeginBitmap();
 
 	static bool RenderNumArrow();
 

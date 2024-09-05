@@ -52,6 +52,10 @@ private:
 
 	static void MyRenderWindows();
 
+	static void RenderLeftDragon(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale);
+
+	static void RenderRightDragon(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale);
+
 	void BindObject(short ObjectID, DWORD ModelID, float Width, float Height, float X, float Y);
 
 	void DrawIMG(short ObjectID, float PosX, float PosY, float ScaleX, float ScaleY);

@@ -81,6 +81,7 @@
 #define g_hFont *(HFONT*)0x055CA00C
 #define g_hFontBold *(HFONT*)0x055CA010
 #define g_hFontBig *(HFONT*)0x055CA014
+#define OpenFont ((void(_cdecl*)())0x0050F690)
 
 // Text
 #define SetTextColor *(DWORD*)0x00559C78
@@ -104,7 +105,9 @@
 
 // Monster
 #define MonsterScript (&*(MONSTER_SCRIPT*)0x07CF2000)
+#define EditMonsterNumber *(int*)0x07D78078
 #define SommonTable (&*(int*)0x00559FE4)
+#define getMonsterName ((char*(__cdecl*)(int Type)) 0x0047D200)
 
 // Character
 #define CharacterAttribute *(DWORD*)0x07CF1FF4
@@ -160,10 +163,17 @@
 #define EnableAlphaTest ((void(_cdecl*)(BYTE)) 0x00511680)
 #define EnableAlphaBlend ((void(_cdecl*)()) 0x00511710)
 #define DisableAlphaBlend ((void(_cdecl*)()) 0x00511600)
+#define DisableDepthTest ((void(__cdecl*)()) 0x005114F0)
 #define ConvertX ((float(_cdecl*)(float x)) 0x00511950)
 #define ConvertY ((float(_cdecl*)(float y)) 0x00511980)
 #define BindTexture ((void(_cdecl*)(int tex)) 0x00511480)
 #define DisableTexture ((void(_cdecl*)(bool AlphaTest)) 0x00511590)
+#define KillGLWindow ((void(__cdecl*)()) 0x00412AF0)
+#define SaveScreen ((void(__cdecl*)()) 0x00511140)
+#define GrabFileName (char*)0x083A4174
+#define CameraFOV *(float*)0x00561554
+#define CameraViewNear *(float*)0x0056154C
+#define CameraViewFar *(float*)0x00561550
 
 // Map
 #define TerrainWall (&*(BYTE*)0x0838BC70)
@@ -173,6 +183,7 @@
 #define InitTerrainMappingLayer ((void(_cdecl*)()) 0x004F6C60)
 #define GateAttribute (&*(GATE_ATTRIBUTE*)(*(DWORD*)0x07CF5600))
 #define RequestTerrainHeight ((float(_cdecl*)(float xf, float yf))0x004F7500)
+#define OpenTerrainLight ((void(_cdecl*)(char* FileName))0x004F7250)
 
 // Sound
 #define PlayBuffer ((int(_cdecl*)(int Buffer, DWORD Object, BOOL bLooped))0x00404BC0)
@@ -207,7 +218,7 @@
 #define OpenPlayerTextures ((void(_cdecl*)())0x00507610)
 #define OpenItems ((void(_cdecl*)()) 0x005079D0)
 #define OpenItemTextures ((void(_cdecl*)())0x00508D10)
-#define FindTextureByName ((short(_cdecl*)(char* Name, DWORD* Texture)) 0x00505BF0)
+#define FindTextureByName ((short(_cdecl*)(char* Name, BITMAP_t** Texture)) 0x00505BF0)
 #define AccessModel ((void(_cdecl*)(int Type, char *Dir, char *FileName, int i))0x005060B0)
 #define OpenTexture ((void(_cdecl*)(int Model, char *SubFolder, int Type, bool Check))0x00505C80)
 #define PartObjectColor ((void(_cdecl*)(int Type, float Alpha, float Bright, float Light[3], bool ExtraMon))0x00503CF0)

@@ -9,6 +9,9 @@ namespace kayito_Editor.Source
 {
 	class Import
 	{
+	#if !MYSQL
+		public static int MU_TRUSTED;
+	#endif
 		public static string MU_SERVER;
 		public static string MU_PORT;
 		public static string MU_DB;
@@ -17,6 +20,9 @@ namespace kayito_Editor.Source
 
 		public static int USE_ME;
 
+	#if !MYSQL
+		public static int ME_TRUSTED;
+	#endif
 		public static string ME_SERVER;
 		public static string ME_PORT;
 		public static string ME_DB;

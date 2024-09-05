@@ -70,3 +70,7 @@
 /* MAP */
 #define MAX_MAPS 32
 #define MAX_GATES 100
+
+/* Interfaces */
+#define CheckRightInterfaces() (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpened || GuildCreatorOpened)
+#define CheckInputInterfaces() (InputEnable || TabInputEnable || GoldInputEnable || GuildInputEnable)

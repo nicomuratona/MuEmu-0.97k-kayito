@@ -33,6 +33,8 @@ public:
 
 	virtual ~CMoveList();
 
+	bool GetMoveListState();
+
 	void Toggle();
 
 	void Render();
@@ -42,8 +44,6 @@ public:
 	void GCMoveListRecv(PMSG_MOVE_LIST_RECV* lpMsg);
 
 private:
-
-	bool CheckInterfaces();
 
 	void RenderFrame();
 
@@ -55,7 +55,7 @@ private:
 
 private:
 
-	bool m_MoveListSwitch;
+	bool MoveListSwitch;
 
 	float MainWidth;
 
