@@ -909,6 +909,7 @@ bool CSkillManager::RunningSkill(int aIndex, int bIndex, CSkill* lpSkill, BYTE x
 
 		case SKILL_FIRE_SLASH:
 		{
+			return this->MultiSkillAttack(aIndex, bIndex, lpSkill);
 			return this->SkillFireSlash(aIndex, bIndex, lpSkill);
 		}
 
@@ -972,6 +973,13 @@ bool CSkillManager::MultiSkillAttack(int aIndex, int bIndex, CSkill* lpSkill)
 			}
 
 			case SKILL_IMPALE:
+			{
+				this->BasicSkillAttack(aIndex, bIndex, lpSkill);
+
+				break;
+			}
+
+			case SKILL_FIRE_SLASH:
 			{
 				this->BasicSkillAttack(aIndex, bIndex, lpSkill);
 
@@ -2034,7 +2042,7 @@ void CSkillManager::CGDurationSkillAttackRecv(PMSG_DURATION_SKILL_ATTACK_RECV* l
 
 	lpObj->MultiSkillCount = 0;
 
-	int bIndex = MAKE_NUMBERW(lpMsg->index[0], lpMsg->index[1]);
+	short bIndex = MAKE_NUMBERW(lpMsg->index[0], lpMsg->index[1]);
 
 	this->UseDurationSkillAttack(lpObj->Index, bIndex, lpSkill, lpMsg->x, lpMsg->y, lpMsg->dir, lpMsg->angle);
 }

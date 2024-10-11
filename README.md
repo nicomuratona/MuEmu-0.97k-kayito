@@ -248,3 +248,10 @@ hacia otro archivo separado en
 - Se agregó nuevamente el sistema de minimap junto con el sistema de Fullmap [Main.dll]
 - Se modificó el MapManager para poder elegir por cada mapa FullMap/MiniMap o ninguno y mostrar o no el SkyDome [Encoder.exe][Main.dll]
 - Se modificó el sistema de carga de modelos y texturas para intentar solucionar el problema de texturas del main [Main.dll]
+
+### Mini-Update 25:
+- Se añadió CustomBow [Main.dll][Encoder.exe]
+- Se corrigió el skill Fire Slash con el skill Twisting Slash [Main.dll][GameServer.exe]
+- Se corrigió la apertura del minimapa con el movelist y el event timer [Main.dll]
+- Se corrigió la carga de modelos y texturas de items [Main.dll]
+- Se añadió un menu antilag [Main.dll]

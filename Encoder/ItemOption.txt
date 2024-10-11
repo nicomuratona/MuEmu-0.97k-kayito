@@ -84,7 +84,7 @@
 0	24		0		04,000		04,006		1		*		*		*		// Bows/Crossbows Skill
 0	24		0		04,008		04,014		1		*		*		*		// Bows/Crossbows Skill
 0	24		0		04,016		04,018		1		*		*		*		// Bows/Crossbows Skill
-0	0		0		04,019		04,031		1		*		*		*		// Bows/Crossbows With No Skill
+0	24		0		04,019		04,031		1		*		*		*		// Bows/Crossbows Customs
 
 0	0		0		05,000		05,031		1		*		*		*		// Staffs With No Skill
 

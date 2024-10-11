@@ -111,6 +111,7 @@
     <ClInclude Include="ChaosMix.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="CustomBow.h" />
     <ClInclude Include="CustomGlow.h" />
     <ClInclude Include="CustomItem.h" />
     <ClInclude Include="CustomMonster.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="ChaosMix.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="CustomBow.cpp" />
     <ClCompile Include="CustomGlow.cpp" />
     <ClCompile Include="CustomItem.cpp" />
     <ClCompile Include="CustomMonster.cpp" />

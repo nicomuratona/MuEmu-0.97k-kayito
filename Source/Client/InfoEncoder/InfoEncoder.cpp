@@ -5,6 +5,7 @@
 #include "CustomItem.h"
 #include "ItemOption.h"
 #include "CustomMonster.h"
+#include "CustomBow.h"
 
 struct MAIN_FILE_INFO
 {
@@ -29,13 +30,14 @@ struct MAIN_FILE_INFO
 	MAP_MANAGER_INFO MapManager[MAX_MAPS];
 	CUSTOM_GLOW_INFO CustomGlowInfo[MAX_ITEM];
 	CUSTOM_ITEM_INFO CustomItemInfo[MAX_ITEM];
+	CUSTOM_BOW_INFO CustomBowInfo[MAX_CUSTOM_BOW];
 	ITEM_OPTION_INFO ItemOptionInfo[MAX_ITEM_OPTION_INFO];
 	CUSTOM_MONSTER_INFO CustomMonsterInfo[MAX_MONSTER];
 };
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	setlocale(LC_ALL, "en_US.1252");
+	setlocale(LC_ALL, "es_ES.1252");
 
 	SetConsoleOutputCP(1252);
 
@@ -84,6 +86,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	gCustomItem.Load("CustomItem.txt");
 
+	gCustomBow.Load("CustomBow.txt");
+
 	gItemOption.Load("ItemOption.txt");
 
 	gCustomMonster.Load("CustomMonster.txt");
@@ -97,6 +101,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	memcpy(info.CustomGlowInfo, gCustomGlow.m_CustomGlowInfo, sizeof(info.CustomGlowInfo));
 
 	memcpy(info.CustomItemInfo, gCustomItem.m_CustomItemInfo, sizeof(info.CustomItemInfo));
+
+	memcpy(info.CustomBowInfo, gCustomBow.m_CustomBowInfo, sizeof(info.CustomBowInfo));
 
 	memcpy(info.ItemOptionInfo, gItemOption.m_ItemOptionInfo, sizeof(info.ItemOptionInfo));
 

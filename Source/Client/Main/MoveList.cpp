@@ -51,21 +51,21 @@ void CMoveList::Toggle()
 		return;
 	}
 
-	if (gEventTimer.GetEventTimerState())
-	{
-		return;
-	}
-
-	if (gMiniMap.GetMiniMapState())
-	{
-		return;
-	}
-
 	if (CheckRightInterfaces())
 	{
 		this->MoveListSwitch = false;
 
 		return;
+	}
+
+	if (gEventTimer.GetEventTimerState())
+	{
+		gEventTimer.Toggle();
+	}
+
+	if (gMiniMap.GetMiniMapState())
+	{
+		gMiniMap.Toggle();
 	}
 
 	this->MoveListSwitch ^= 1;

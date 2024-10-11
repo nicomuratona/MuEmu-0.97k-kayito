@@ -23,6 +23,10 @@ private:
 private:
 
 	BYTE SecondWeaponFixVal;
+
+public:
+
+	int DeleteWings;
 };
 
 extern CWeaponView gWeaponView;

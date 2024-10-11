@@ -205,6 +205,9 @@
     <ClInclude Include="CustomMonster.h">
       <Filter>Monster</Filter>
     </ClInclude>
+    <ClInclude Include="CustomBow.h">
+      <Filter>Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCRC32.Cpp">
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="CustomMonster.cpp">
       <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomBow.cpp">
+      <Filter>Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

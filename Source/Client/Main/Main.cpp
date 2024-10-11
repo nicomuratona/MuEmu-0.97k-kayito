@@ -31,7 +31,7 @@ HINSTANCE hins;
 
 extern "C" _declspec(dllexport) void _cdecl EntryProc()
 {
-	setlocale(LC_ALL, "en_US.1252");
+	setlocale(LC_ALL, "es_ES.1252");
 
 	if (gProtect.ReadMainFile("Data\\Local\\ClientInfo.bmd") == false)
 	{
@@ -106,6 +106,8 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 	gCustomGlow.Load(gProtect.m_MainInfo.CustomGlowInfo);
 
 	gCustomItem.Load(gProtect.m_MainInfo.CustomItemInfo);
+
+	gCustomBow.Load(gProtect.m_MainInfo.CustomBowInfo);
 
 	gCustomMonster.Load(gProtect.m_MainInfo.CustomMonsterInfo);
 

@@ -5,6 +5,7 @@
 #include "CustomItem.h"
 #include "ItemOption.h"
 #include "CustomMonster.h"
+#include "CustomBow.h"
 
 struct MAIN_FILE_INFO
 {
@@ -29,6 +30,7 @@ struct MAIN_FILE_INFO
 	MAP_MANAGER_INFO MapManager[MAX_MAPS];
 	CUSTOM_GLOW_INFO CustomGlowInfo[MAX_ITEM];
 	CUSTOM_ITEM_INFO CustomItemInfo[MAX_ITEM];
+	CUSTOM_BOW_INFO CustomBowInfo[MAX_CUSTOM_BOW];
 	ITEM_OPTION_INFO ItemOptionInfo[MAX_ITEM_OPTION_INFO];
 	CUSTOM_MONSTER_INFO CustomMonsterInfo[MAX_MONSTER];
 };

@@ -69,6 +69,7 @@
 
 /* MAP */
 #define MAX_MAPS 32
+#define MAP_RANGE(x) ((x < 0 || x >= MAX_MAPS) ? false : true)
 #define MAX_GATES 100
 
 /* Interfaces */

@@ -325,7 +325,7 @@ void CSkyDome::DrawSkyDome()
 {
 	((void(__cdecl*)()) 0x0046C3E0)();
 
-	if (World >= 0 && World < MAX_MAPS)
+	if (MAP_RANGE(World))
 	{
 		if (!gSkyDome.SkyDomeTable[World])
 		{

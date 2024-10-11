@@ -4,6 +4,7 @@
 #include "Language.h"
 #include "Sound.h"
 #include "Window.h"
+#include "WeaponView.h"
 
 COptionsMenu gOptionsMenu;
 
@@ -20,15 +21,46 @@ COptionsMenu::COptionsMenu()
 	this->MainPosX = ImgCenterScreenPosX((float)this->BoxWidth);
 
 	this->MainPosY = 60.0f;
+
+	this->DeleteShadows = GetPrivateProfileInt("Antilag", "DeleteShadows", 0, ".\\Config.ini");
+	this->DeleteObjects = GetPrivateProfileInt("Antilag", "DeleteObjects", 0, ".\\Config.ini");
+	this->DeleteFloor = GetPrivateProfileInt("Antilag", "DeleteFloor", 0, ".\\Config.ini");
+	this->DeleteSkills = GetPrivateProfileInt("Antilag", "DeleteSkills", 0, ".\\Config.ini");
+	this->DeleteStaticEffects = GetPrivateProfileInt("Antilag", "DeleteStaticEffects", 0, ".\\Config.ini");
+	this->DeleteDynamicEffects = GetPrivateProfileInt("Antilag", "DeleteDynamicEffects", 0, ".\\Config.ini");
+	this->DeleteInterface = GetPrivateProfileInt("Antilag", "DeleteInterface", 0, ".\\Config.ini");
 }
 
 COptionsMenu::~COptionsMenu()
 {
+	char Text[10] = { 0 };
 
+	wsprintf(Text, "%d", this->DeleteShadows);
+	WritePrivateProfileString("Antilag", "DeleteShadows", Text, ".\\Config.ini");
+
+	wsprintf(Text, "%d", this->DeleteObjects);
+	WritePrivateProfileString("Antilag", "DeleteObjects", Text, ".\\Config.ini");
+
+	wsprintf(Text, "%d", this->DeleteFloor);
+	WritePrivateProfileString("Antilag", "DeleteFloor", Text, ".\\Config.ini");
+
+	wsprintf(Text, "%d", this->DeleteSkills);
+	WritePrivateProfileString("Antilag", "DeleteSkills", Text, ".\\Config.ini");
+
+	wsprintf(Text, "%d", this->DeleteStaticEffects);
+	WritePrivateProfileString("Antilag", "DeleteStaticEffects", Text, ".\\Config.ini");
+
+	wsprintf(Text, "%d", this->DeleteDynamicEffects);
+	WritePrivateProfileString("Antilag", "DeleteDynamicEffects", Text, ".\\Config.ini");
+
+	wsprintf(Text, "%d", this->DeleteInterface);
+	WritePrivateProfileString("Antilag", "DeleteInterface", Text, ".\\Config.ini");
 }
 
 void COptionsMenu::Init()
 {
+	this->ApplyAntilagDefaults();
+
 	SetCompleteHook(0xE8, 0x0051AF65, &this->CheckErrorMessage);
 
 	SetCompleteHook(0xE9, 0x0051B3CA, &this->OptionsWindowUI);
@@ -99,15 +131,22 @@ EXIT:
 
 void COptionsMenu::RenderOptionsMenu()
 {
-	this->backupBgTextColor = SetBackgroundTextColor;
+	DWORD backupBgTextColor = SetBackgroundTextColor;
 
-	this->backupTextColor = SetTextColor;
+	DWORD backupTextColor = SetTextColor;
 
 	switch (this->CurrentOption)
 	{
 		case OPTION_GENERAL:
 		{
 			this->RenderGeneral();
+
+			break;
+		}
+
+		case OPTION_ANTILAG:
+		{
+			this->RenderAntilag();
 
 			break;
 		}
@@ -134,9 +173,9 @@ void COptionsMenu::RenderOptionsMenu()
 		}
 	}
 
-	SetBackgroundTextColor = this->backupBgTextColor;
+	SetBackgroundTextColor = backupBgTextColor;
 
-	SetTextColor = this->backupTextColor;
+	SetTextColor = backupTextColor;
 }
 
 bool COptionsMenu::CheckOptionsMenu()
@@ -146,29 +185,26 @@ bool COptionsMenu::CheckOptionsMenu()
 		case OPTION_GENERAL:
 		{
 			return this->CheckGeneral();
+		}
 
-			break;
+		case OPTION_ANTILAG:
+		{
+			return this->CheckAntilag();
 		}
 
 		case OPTION_WINDOW:
 		{
 			return this->CheckScreen();
-
-			break;
 		}
 
 		case OPTION_FONT:
 		{
 			return this->CheckFont();
-
-			break;
 		}
 
 		default:
 		{
 			return this->CheckAllOptions();
-
-			break;
 		}
 	}
 
@@ -202,6 +238,13 @@ void COptionsMenu::RenderAllOptions()
 	/* GENERAL */
 	this->RenderBox(PosX, PosY, Width, Height);
 	sprintf_s(Text, "%s", GetTextLine(910));
+	EnableAlphaTest(true);
+	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
+	PosY += (Height + 7.0f);
+
+	/* ANTILAG */
+	this->RenderBox(PosX, PosY, Width, Height);
+	sprintf_s(Text, "%s", GetTextLine(917));
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
@@ -642,31 +685,35 @@ bool COptionsMenu::CheckSoundVolume(int PosX, int PosY)
 		return false;
 	}
 
-	float Width = ((float)this->BoxWidth / 3.0f * 2.0f) - 8.0f;
+	int MaxWidth = (this->BoxWidth / 3 * 2) - 8;
 
-	float Height = 8.0f;
+	int Height = 8;
 
 	PosX += (this->BoxWidth / 3);
 
-	PosY += ((this->BoxHeight - (int)Height) / 2);
+	PosY += ((this->BoxHeight - Height) / 2);
 
-	int newVolumeLevel = 0;
+	int Width = ((MaxWidth - 2) / MAX_SOUND_LEVEL);
 
-	int cursorInicial = PosX;
+	MaxWidth -= Width;
 
-	while (MouseX < cursorInicial || MouseX > cursorInicial + (int)(Width / MAX_SOUND_LEVEL) || MouseY < PosY || MouseY > PosY + ((int)Height - 2) || !MouseLButtonPush)
+	int X = PosX + 1;
+
+	int volumeLevel = 0;
+
+	while (MouseX < X || MouseX > X + Width || MouseY < PosY + 2 || MouseY > PosY + (Height - 1) || !MouseLButtonPush)
 	{
-		cursorInicial += (int)(Width / MAX_SOUND_LEVEL);
+		X += Width;
 
-		newVolumeLevel++;
+		volumeLevel++;
 
-		if (cursorInicial >= (PosX + (int)Width + 2))
+		if (X >= (PosX + MaxWidth))
 		{
 			return false;
 		}
 	}
 
-	gSound.UpdateSoundVolumeLevel(newVolumeLevel);
+	gSound.UpdateSoundVolumeLevel(volumeLevel);
 
 	return true;
 }
@@ -748,31 +795,35 @@ bool COptionsMenu::CheckMusicVolume(int PosX, int PosY)
 		return false;
 	}
 
-	float Width = ((float)this->BoxWidth / 3.0f * 2.0f) - 8.0f;
+	int MaxWidth = (this->BoxWidth / 3 * 2) - 8;
 
-	float Height = 8.0f;
+	int Height = 8;
 
 	PosX += (this->BoxWidth / 3);
 
-	PosY += ((this->BoxHeight - (int)Height) / 2);
+	PosY += ((this->BoxHeight - Height) / 2);
 
-	int newVolumeLevel = 0;
+	int Width = ((MaxWidth - 2) / MAX_MUSIC_LEVEL);
 
-	int cursorInicial = PosX;
+	MaxWidth -= Width;
 
-	while (MouseX < cursorInicial || MouseX > cursorInicial + (int)(Width / MAX_MUSIC_LEVEL) || MouseY < PosY || MouseY > PosY + ((int)Height - 2) || !MouseLButtonPush)
+	int X = PosX + 1;
+
+	int volumeLevel = 0;
+
+	while (MouseX < X || MouseX > X + Width || MouseY < PosY + 2 || MouseY > PosY + (Height - 1) || !MouseLButtonPush)
 	{
-		cursorInicial += (int)(Width / MAX_MUSIC_LEVEL);
+		X += Width;
 
-		newVolumeLevel++;
+		volumeLevel++;
 
-		if (cursorInicial >= (PosX + (int)Width + 2))
+		if (X >= (PosX + MaxWidth))
 		{
 			return false;
 		}
 	}
 
-	gSound.UpdateMusicVolumeLevel(newVolumeLevel);
+	gSound.UpdateMusicVolumeLevel(volumeLevel);
 
 	return true;
 }
@@ -836,6 +887,606 @@ bool COptionsMenu::CheckMusicControls(int PosX, int PosY)
 			else
 			{
 				gSound.ButtonPlayMusic();
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void COptionsMenu::ApplyAntilagDefaults()
+{
+	/*
+	if (this->DeleteShadows)
+	{
+		SetByte(0x00441F00, 0xC3);
+	}
+	else
+	{
+		SetByte(0x00441F00, 0x83);
+	}
+
+	if (this->DeleteObjects)
+	{
+		SetByte(0x004FD800, 0xC3);
+	}
+	else
+	{
+		SetByte(0x004FD800, 0x83);
+	}
+
+	if (this->DeleteFloor)
+	{
+		SetByte(0x004F9A30, 0xC3);
+	}
+	else
+	{
+		SetByte(0x004F9A30, 0x8B);
+	}
+
+	if (this->DeleteSkills)
+	{
+		SetByte(0x00473710, 0xC3); // RenderJoints
+
+		SetByte(0x0046BBA0, 0xC3); // RenderEffects
+
+		SetByte(0x004F76C0, 0xC3); // AddTerrainLight
+	}
+	else
+	{
+		SetByte(0x00473710, 0x83); // RenderJoints
+
+		SetByte(0x0046BBA0, 0x83); // RenderEffects
+
+		SetByte(0x004F76C0, 0x83); // AddTerrainLight
+	}
+
+	if (this->DeleteStaticEffects)
+	{
+		SetByte(0x00479670, 0xC3); // RenderSprite
+	}
+	else
+	{
+		SetByte(0x00479670, 0x8B); // RenderSprite
+	}
+
+	if (this->DeleteDynamicEffects)
+	{
+		SetByte(0x00478C00, 0xC3); // RenderParticles
+	}
+	else
+	{
+		SetByte(0x00478C00, 0x83); // RenderParticles
+	}
+
+	if (this->DeleteWings)
+	{
+		SetCompleteHook(0xE9, 0x0045857F, 0x004585A8);
+	}
+	else
+	{
+		BYTE replace[5] = { 0x33, 0xC9, 0x6A, 0x00, 0x8A };
+
+		MemoryCpy(0x0045857F, replace, sizeof(replace));
+	}
+
+	if (this->DeleteInterface)
+	{
+		SetByte(0x00525483, 0x84); // Skip Move Interface
+
+		SetByte(0x00525CB5, 0x74); // Skip Render Interface
+
+		SetDword(0x00525B69, 0x1E0); // Height for BeginOpengl
+
+		SetByte(0x0047FCE0, 0xC3); // Skip Render Notices
+	}
+	else
+	{
+		SetByte(0x00525483, 0x85); // Skip Move Interface
+
+		SetByte(0x00525CB5, 0x75); // Skip Render Interface
+
+		SetDword(0x00525B69, 0x1B0); // Height for BeginOpengl
+
+		SetByte(0x0047FCE0, 0x83); // Skip Render Notices
+	}
+	*/
+}
+
+void COptionsMenu::RenderAntilag()
+{
+	float PosX = this->MainPosX;
+
+	float PosY = this->MainPosY;
+
+	SetBackgroundTextColor = Color4b(255, 255, 255, 0);
+	SetTextColor = Color4b(255, 255, 255, 255);
+
+	this->RenderAntilagTitle(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderDeleteShadows(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderDeleteObjects(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderDeleteFloor(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderDeleteSkills(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderDeleteStaticEffects(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderDeleteDynamicEffects(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderDeleteWings(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderDeleteInterface(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderBack(PosX, PosY);
+}
+
+bool COptionsMenu::CheckAntilag()
+{
+	int PosX = (int)this->MainPosX;
+
+	int PosY = (int)this->MainPosY + (this->BoxHeight + 7);
+
+	if (this->CheckDeleteShadows(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
+
+	if (this->CheckDeleteObjects(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
+
+	if (this->CheckDeleteFloor(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
+
+	if (this->CheckDeleteSkills(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
+
+	if (this->CheckDeleteStaticEffects(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
+
+	if (this->CheckDeleteDynamicEffects(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
+
+	if (this->CheckDeleteWings(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
+
+	if (this->CheckDeleteInterface(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
+
+	if (this->CheckBack(PosX, PosY))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void COptionsMenu::RenderAntilagTitle(float PosX, float PosY)
+{
+	DisableAlphaBlend();
+
+	glColor3f(0.8f, 0.6f, 0.4f);
+
+	RenderBitmap(240, PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s", GetTextLine(917));
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+void COptionsMenu::RenderDeleteShadows(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GetTextLine(919), this->DeleteShadows ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckDeleteShadows(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			this->DeleteShadows ^= 1;
+
+			if (this->DeleteShadows)
+			{
+				SetCompleteHook(0xE9, 0x00441F0D, 0x00442086);
+
+				SetByte(0x00441F0D + 5, 0x90);
+			}
+			else
+			{
+				BYTE replace[6] = { 0x0F, 0x84, 0x73, 0x01, 0x00, 0x00 };
+
+				MemoryCpy(0x00441F0D, replace, sizeof(replace));
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void COptionsMenu::RenderDeleteObjects(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GetTextLine(920), this->DeleteObjects ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckDeleteObjects(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			this->DeleteObjects ^= 1;
+
+			if (this->DeleteObjects)
+			{
+				SetByte(0x004FD800, 0xC3);
+			}
+			else
+			{
+				SetByte(0x004FD800, 0x83);
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void COptionsMenu::RenderDeleteFloor(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GetTextLine(921), this->DeleteFloor ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckDeleteFloor(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			this->DeleteFloor ^= 1;
+
+			if (this->DeleteFloor)
+			{
+				SetByte(0x004F9AC0, 0xC3);
+			}
+			else
+			{
+				SetByte(0x004F9AC0, 0x51);
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void COptionsMenu::RenderDeleteSkills(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GetTextLine(922), this->DeleteSkills ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckDeleteSkills(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			this->DeleteSkills ^= 1;
+
+			if (this->DeleteSkills)
+			{
+				SetByte(0x00473710, 0xC3); // RenderJoints
+
+				SetByte(0x0046BBA0, 0xC3); // RenderEffects
+
+				SetByte(0x004F76C0, 0xC3); // AddTerrainLight
+			}
+			else
+			{
+				SetByte(0x00473710, 0x83); // RenderJoints
+
+				SetByte(0x0046BBA0, 0x83); // RenderEffects
+
+				SetByte(0x004F76C0, 0x83); // AddTerrainLight
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void COptionsMenu::RenderDeleteStaticEffects(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GetTextLine(923), this->DeleteStaticEffects ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckDeleteStaticEffects(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			this->DeleteStaticEffects ^= 1;
+
+			if (this->DeleteStaticEffects)
+			{
+				SetByte(0x00479670, 0xC3); // RenderSprite
+			}
+			else
+			{
+				SetByte(0x00479670, 0x8B); // RenderSprite
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void COptionsMenu::RenderDeleteDynamicEffects(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GetTextLine(924), this->DeleteDynamicEffects ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckDeleteDynamicEffects(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			this->DeleteDynamicEffects ^= 1;
+
+			if (this->DeleteDynamicEffects)
+			{
+				SetByte(0x00478C00, 0xC3); // RenderParticles
+			}
+			else
+			{
+				SetByte(0x00478C00, 0x83); // RenderParticles
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void COptionsMenu::RenderDeleteWings(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GetTextLine(925), gWeaponView.DeleteWings ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckDeleteWings(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			gWeaponView.DeleteWings ^= 1;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void COptionsMenu::RenderDeleteInterface(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GetTextLine(926), this->DeleteInterface ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckDeleteInterface(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			this->DeleteInterface ^= 1;
+
+			if (this->DeleteInterface)
+			{
+				SetByte(0x00525483, 0x84); // Skip Move Interface
+
+				SetByte(0x00525CB5, 0x74); // Skip Render Interface
+
+				SetDword(0x00525B69, 0x1E0); // Height for BeginOpengl
+
+				SetByte(0x0047FCE0, 0xC3); // Skip Render Notices
+			}
+			else
+			{
+				SetByte(0x00525483, 0x85); // Skip Move Interface
+
+				SetByte(0x00525CB5, 0x75); // Skip Render Interface
+
+				SetDword(0x00525B69, 0x1B0); // Height for BeginOpengl
+
+				SetByte(0x0047FCE0, 0x83); // Skip Render Notices
 			}
 		}
 

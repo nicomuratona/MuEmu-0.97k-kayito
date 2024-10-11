@@ -93,7 +93,7 @@ void Interface::MyRenderWindows()
 
 void Interface::RenderLeftDragon(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
 {
-	if (gMiniMap.GetMiniMapState())
+	if (gMiniMap.GetMiniMapState() && gMapManager.GetMiniMap(World) == 2)
 	{
 		return;
 	}

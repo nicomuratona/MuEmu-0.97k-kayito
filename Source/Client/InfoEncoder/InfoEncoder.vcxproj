@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCRC32.h" />
+    <ClInclude Include="CustomBow.h" />
     <ClInclude Include="CustomGlow.h" />
     <ClInclude Include="CustomItem.h" />
     <ClInclude Include="CustomMonster.h" />
@@ -106,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCRC32.cpp" />
+    <ClCompile Include="CustomBow.cpp" />
     <ClCompile Include="CustomGlow.cpp" />
     <ClCompile Include="CustomItem.cpp" />
     <ClCompile Include="CustomMonster.cpp" />

@@ -28,7 +28,7 @@ void CMapManager::Load(MAP_MANAGER_INFO* info)
 
 void CMapManager::SetInfo(MAP_MANAGER_INFO info)
 {
-	if (info.MapNumber < 0 || info.MapNumber >= MAX_MAPS)
+	if (!MAP_RANGE(info.MapNumber))
 	{
 		return;
 	}
@@ -61,47 +61,49 @@ void CMapManager::Init()
 
 BYTE CMapManager::GetMiniMap(int map)
 {
-	if (map >= 0 && map < MAX_MAPS)
+	if (!MAP_RANGE(map))
 	{
-		return this->m_MapManager[map].MiniMap;
+		return 0;
 	}
 
-	return 0;
+	return this->m_MapManager[map].MiniMap;
 }
 
 bool CMapManager::GetSkyDome(int map)
 {
-	if (map >= 0 && map < MAX_MAPS)
+	if (!MAP_RANGE(map))
 	{
-		return this->m_MapManager[map].SkyDome;
+		return false;
 	}
 
-	return false;
+	return this->m_MapManager[map].SkyDome;
 }
 
 char* CMapManager::GetMapName(int MapNumber)
 {
-	if (MapNumber >= 0 && MapNumber < MAX_MAPS)
+	if (MAP_RANGE(MapNumber))
 	{
 		if (gMapManager.m_MapManager[MapNumber].MapNumber != -1)
 		{
 			return gMapManager.m_MapManager[MapNumber].MapName;
 		}
-	}
-	else if (MapNumber == 10)
-	{
-		return GetTextLine(55);
-	}
-	else if (MapNumber >= 11 && MapNumber <= 16)
-	{
-		return GetTextLine(56);
-	}
-	else if (MapNumber < 17)
-	{
-		return GetTextLine(MapNumber + 30);
-	}
+		else if (MapNumber == 10)
+		{
+			return GetTextLine(55);
+		}
+		else if (MapNumber >= 11 && MapNumber <= 16)
+		{
+			return GetTextLine(56);
+		}
+		else if (MapNumber < 17)
+		{
+			return GetTextLine(MapNumber + 30);
+		}
 
-	return GetTextLine(MapNumber + 40);
+		return GetTextLine(MapNumber + 40);
+	}
+	
+	return "";
 }
 
 __declspec(naked) void CMapManager::GetPartyMapName()
@@ -128,7 +130,7 @@ __declspec(naked) void CMapManager::ApplyMapMovement()
 		Pushad;
 	}
 
-	if (World >= 0 && World < MAX_MAPS)
+	if (MAP_RANGE(World))
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
@@ -158,7 +160,7 @@ __declspec(naked) void CMapManager::LoadMapMusic()
 {
 	static DWORD jmpBack = 0x00527475;
 
-	if (World >= 0 && World < MAX_MAPS)
+	if (MAP_RANGE(World))
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
@@ -182,7 +184,7 @@ __declspec(naked) void CMapManager::SwimAnimationStart()
 		Pushad;
 	}
 
-	if (World >= 0 && World < MAX_MAPS)
+	if (MAP_RANGE(World))
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
@@ -218,7 +220,7 @@ __declspec(naked) void CMapManager::SwimAnimationStop()
 		Pushad;
 	}
 
-	if (World >= 0 && World < MAX_MAPS)
+	if (MAP_RANGE(World))
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
@@ -254,7 +256,7 @@ __declspec(naked) void CMapManager::SwimSoundPlay()
 		Pushad;
 	}
 
-	if (World >= 0 && World < MAX_MAPS)
+	if (MAP_RANGE(World))
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
@@ -290,7 +292,7 @@ __declspec(naked) void CMapManager::SwimBackItemRender()
 		Pushad;
 	}
 
-	if (World >= 0 && World < MAX_MAPS)
+	if (MAP_RANGE(World))
 	{
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{

@@ -7,8 +7,9 @@ class COptionsMenu
 	{
 		OPTION_NONE = 0,
 		OPTION_GENERAL = 1,
-		OPTION_WINDOW = 2,
-		OPTION_FONT = 3,
+		OPTION_ANTILAG = 2,
+		OPTION_WINDOW = 3,
+		OPTION_FONT = 4,
 		MAX_OPTIONS,
 	};
 
@@ -50,6 +51,27 @@ private:
 	void RenderMusicControls(float PosX, float PosY);
 	bool CheckMusicControls(int PosX, int PosY);
 
+	void ApplyAntilagDefaults();
+	void RenderAntilag();
+	bool CheckAntilag();
+	void RenderAntilagTitle(float PosX, float PosY);
+	void RenderDeleteShadows(float PosX, float PosY);
+	bool CheckDeleteShadows(int PosX, int PosY);
+	void RenderDeleteObjects(float PosX, float PosY);
+	bool CheckDeleteObjects(int PosX, int PosY);
+	void RenderDeleteFloor(float PosX, float PosY);
+	bool CheckDeleteFloor(int PosX, int PosY);
+	void RenderDeleteSkills(float PosX, float PosY);
+	bool CheckDeleteSkills(int PosX, int PosY);
+	void RenderDeleteStaticEffects(float PosX, float PosY);
+	bool CheckDeleteStaticEffects(int PosX, int PosY);
+	void RenderDeleteDynamicEffects(float PosX, float PosY);
+	bool CheckDeleteDynamicEffects(int PosX, int PosY);
+	void RenderDeleteWings(float PosX, float PosY);
+	bool CheckDeleteWings(int PosX, int PosY);
+	void RenderDeleteInterface(float PosX, float PosY);
+	bool CheckDeleteInterface(int PosX, int PosY);
+
 	void RenderScreen();
 	bool CheckScreen();
 	void RenderScreenTitle(float PosX, float PosY);
@@ -86,10 +108,6 @@ private:
 
 	eMenuOptions CurrentOption;
 
-	/* Backup and Restore previous text color */
-	DWORD backupBgTextColor;
-	DWORD backupTextColor;
-
 	/* Main Pos */
 	float MainPosX;
 	float MainPosY;
@@ -97,6 +115,15 @@ private:
 	/* Box Max Sizes */
 	int BoxWidth;
 	int BoxHeight;
+
+	/* Antilag */
+	int DeleteShadows;
+	int DeleteObjects;
+	int DeleteFloor;
+	int DeleteSkills;
+	int DeleteStaticEffects;
+	int DeleteDynamicEffects;
+	int DeleteInterface;
 
 	/* Resolution */
 	int Resolutions[MAX_RESOLUTION_VALUE];

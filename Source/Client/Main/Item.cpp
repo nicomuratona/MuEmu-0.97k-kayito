@@ -3,6 +3,7 @@
 #include "ItemValue.h"
 #include "ItemOption.h"
 #include "CustomItem.h"
+#include "CustomBow.h"
 
 CItem gItem;
 
@@ -72,11 +73,11 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 	{
 		ip->Part = EQUIPMENT_WEAPON_RIGHT;
 	}
-	else if ((ip->Type >= GET_ITEM(4, 0) && ip->Type < GET_ITEM(4, 8)) || ip->Type == GET_ITEM(4, 17)) // Bows, Bolts
+	else if ((ip->Type >= GET_ITEM(4, 0) && ip->Type < GET_ITEM(4, 8)) || ip->Type == GET_ITEM(4, 17) || gCustomBow.IsCustomBow(ip->Type)) // Bows, Bolts
 	{
 		ip->Part = EQUIPMENT_WEAPON_LEFT;
 	}
-	else if ((ip->Type >= GET_ITEM(4, 8) && ip->Type < GET_ITEM(4, 19)) && ip->Type != GET_ITEM(4, 17)) // Crossbows, Arrows
+	else if ((ip->Type >= GET_ITEM(4, 8) && ip->Type < GET_ITEM(4, 19)) && ip->Type != GET_ITEM(4, 17) || gCustomBow.IsCustomCrossbow(ip->Type)) // Crossbows, Arrows
 	{
 		ip->Part = EQUIPMENT_WEAPON_RIGHT;
 	}

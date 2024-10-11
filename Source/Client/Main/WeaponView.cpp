@@ -6,11 +6,16 @@ CWeaponView gWeaponView;
 CWeaponView::CWeaponView()
 {
 	this->SecondWeaponFixVal = 1;
+
+	this->DeleteWings = GetPrivateProfileInt("Antilag", "DeleteWings", 0, ".\\Config.ini");
 }
 
 CWeaponView::~CWeaponView()
 {
+	char Text[10] = { 0 };
 
+	wsprintf(Text, "%d", this->DeleteWings);
+	WritePrivateProfileString("Antilag", "DeleteWings", Text, ".\\Config.ini");
 }
 
 void CWeaponView::Init()
@@ -215,7 +220,10 @@ BOOL CWeaponView::RenderCharacterBackItem(DWORD c, DWORD o)
 				*(float*)(c + 0x2B0) = 0.25f; // w->PlaySpeed = 0.25f;
 			}
 
-			RenderLinkObject(0.0f, 0.0f, 15.0f, c, (c + 672), *(short*)(c + 0x2A0), *(BYTE*)(c + 0x2A2), *(BYTE*)(c + 0x2A3), false, true, 0);
+			if (!this->DeleteWings)
+			{
+				RenderLinkObject(0.0f, 0.0f, 15.0f, c, (c + 672), *(short*)(c + 0x2A0), *(BYTE*)(c + 0x2A2), *(BYTE*)(c + 0x2A3), false, true, 0);
+			}
 		}
 
 		if (*(short*)(c + 0x2B8) == GET_ITEM_MODEL(13, 1)) // c->Helper.Type == MODEL_HELPER + 1

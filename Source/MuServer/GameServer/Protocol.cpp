@@ -34,7 +34,7 @@
 
 void ProtocolCore(BYTE head, BYTE* lpMsg, int size, int aIndex, int encrypt, int serial)
 {
-	ConsoleProtocolLog(CON_PROTO_TCP_RECV, lpMsg, size);
+	ConsoleProtocolLog(CON_PROTO_TCP_RECV, aIndex, lpMsg, size);
 
 	if (gObj[aIndex].Type == OBJECT_USER && gHackPacketCheck.CheckPacketHack(aIndex, head, ((lpMsg[0] == 0xC1) ? lpMsg[3] : lpMsg[4]), encrypt, serial) == 0)
 	{

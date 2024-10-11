@@ -69,7 +69,7 @@ void CMiniMap::MiniMapLoad(char* FileName)
 {
 	OpenTerrainLight(FileName);
 
-	if (World >= 0 && World < MAX_MAPS)
+	if (MAP_RANGE(World))
 	{
 		gMiniMap.MiniMapTable[World] = (gMapManager.GetMiniMap(World) != 0);
 
@@ -337,21 +337,21 @@ void CMiniMap::Toggle()
 		return;
 	}
 
-	if (gEventTimer.GetEventTimerState())
-	{
-		return;
-	}
-
-	if (gMoveList.GetMoveListState())
-	{
-		return;
-	}
-
 	if (CheckRightInterfaces())
 	{
 		this->MiniMapSwitch = false;
 
 		return;
+	}
+
+	if (gEventTimer.GetEventTimerState())
+	{
+		gEventTimer.Toggle();
+	}
+
+	if (gMoveList.GetMoveListState())
+	{
+		gMoveList.Toggle();
 	}
 
 	this->MiniMapSwitch ^= 1;

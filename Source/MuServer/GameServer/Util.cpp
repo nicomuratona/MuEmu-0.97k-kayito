@@ -252,7 +252,7 @@ void LogAdd(eLogColor color, char* text, ...)
 	gServerDisplayer.LogAddText(color, log, strlen(log));
 }
 
-void ConsoleProtocolLog(int type, BYTE* lpMsg, int size)
+void ConsoleProtocolLog(int type, int aIndex, BYTE* lpMsg, int size)
 {
 	BYTE head, subhead;
 
@@ -269,12 +269,12 @@ void ConsoleProtocolLog(int type, BYTE* lpMsg, int size)
 
 	subhead = ((header == 0xC1) ? lpMsg[3] : lpMsg[4]);
 
-	gConsole.Output(type, "[%s] Header: 0x%02X, Head: 0x%02X, SubHead: 0x%02X, Size: %d", (type == CON_PROTO_TCP_RECV) ? "RECV" : "SEND", header, head, subhead, size);
+	gConsole.Output(type, "[%s] Index: %d, Header: 0x%02X, Head: 0x%02X, SubHead: 0x%02X, Size: %d", (type == CON_PROTO_TCP_RECV) ? "RECV" : "SEND", aIndex, header, head, subhead, size);
 }
 
 bool DataSend(int aIndex, BYTE* lpMsg, DWORD size)
 {
-	ConsoleProtocolLog(CON_PROTO_TCP_SEND, lpMsg, size);
+	ConsoleProtocolLog(CON_PROTO_TCP_SEND, aIndex, lpMsg, size);
 
 	return gSocketManager.DataSend(aIndex, lpMsg, size);
 }

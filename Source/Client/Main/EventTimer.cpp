@@ -39,21 +39,21 @@ void CEventTimer::Toggle()
 		return;
 	}
 
-	if (gMoveList.GetMoveListState())
-	{
-		return;
-	}
-
-	if (gMiniMap.GetMiniMapState())
-	{
-		return;
-	}
-
 	if (CheckRightInterfaces())
 	{
 		this->EventTimerSwitch = false;
 
 		return;
+	}
+
+	if (gMoveList.GetMoveListState())
+	{
+		gMoveList.Toggle();
+	}
+
+	if (gMiniMap.GetMiniMapState())
+	{
+		gMiniMap.Toggle();
 	}
 
 	this->EventTimerSwitch ^= 1;

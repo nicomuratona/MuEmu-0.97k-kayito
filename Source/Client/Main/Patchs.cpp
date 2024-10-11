@@ -100,6 +100,10 @@ void CPatchs::Init()
 
 	SetByte(0x0042C417, 0xE8); // Fix autobuff view to others
 
+	// Remove Twisting Sparks (Fix Joints overflow)
+	MemorySet(0x00467222, 0x90, 5);
+	SetByte(0x00467254, 1);
+
 	SetCompleteHook(0xE9, 0x00443AAF, 0x00443D76); // Fix Dinorant Movement
 
 	SetCompleteHook(0xE8, 0x0042B33D, &this->IgnoreRandomStuck);
