@@ -88,6 +88,12 @@ private:
 	static void RenderPositionBow();
 	static void RenderPositionCrossbow();
 
+	static void CheckHandForBow();
+	static void CheckHandForCrossbow();
+
+	static void RenderBackPositionBow();
+	static void RenderBackPositionCrossbow();
+
 	static void SkillPenetrationBow();
 	static void SkillPenetrationCrossbow();
 

@@ -632,12 +632,14 @@ bool CItemManager::CheckItemMoveToInventory(LPOBJ lpObj, CItem* lpItem, int slot
 
 	if (lpObj->Class == CLASS_FE) // FE
 	{
-		if (slot == 0 && ((lpItem->m_Index >= GET_ITEM(4, 0) && lpItem->m_Index < GET_ITEM(4, 8)) || lpItem->m_Index == GET_ITEM(4, 17))) // BOWS
+		if (slot == 0 && ((lpItem->m_Index >= GET_ITEM(4, 0) && lpItem->m_Index < GET_ITEM(4, 8)) || lpItem->m_Index == GET_ITEM(4, 17) // BOWS
+		    || (lpItem->m_Index > GET_ITEM(4, 18) && lpItem->m_Slot == 1))) // Custom Bows
 		{
 			return 0;
 		}
 
-		if (slot == 1 && ((lpItem->m_Index >= GET_ITEM(4, 8) && lpItem->m_Index < GET_ITEM(4, 17)) || lpItem->m_Index == GET_ITEM(4, 18))) // CROSSBOWS
+		if (slot == 1 && ((lpItem->m_Index >= GET_ITEM(4, 8) && lpItem->m_Index < GET_ITEM(4, 17)) || lpItem->m_Index == GET_ITEM(4, 18) // CROSSBOWS
+		    || (lpItem->m_Index > GET_ITEM(4, 18) && lpItem->m_Slot == 0))) // Custom Crossbows
 		{
 			return 0;
 		}

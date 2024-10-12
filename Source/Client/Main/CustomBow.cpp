@@ -162,8 +162,14 @@ void CCustomBow::Init()
 	SetCompleteHook(0xE9, 0x004AEFDA, &this->AttackMovePositionBow); // Resolve the action of moving or attacking with Bow
 	SetCompleteHook(0xE9, 0x004AEFBA, &this->AttackMovePositionCrossbow); // Resolve the action of moving or attacking with Crossbow
 
-	SetCompleteHook(0xE9, 0x004E143D, &this->RenderPositionBow); // Position of rendering the Bow
-	SetCompleteHook(0xE9, 0x004E145E, &this->RenderPositionCrossbow); // Position of rendering Crossbow
+	SetCompleteHook(0xE9, 0x004E143D, &this->RenderPositionBow); // Position of rendering the Bow in the inventory
+	SetCompleteHook(0xE9, 0x004E145E, &this->RenderPositionCrossbow); // Position of rendering Crossbow in the inventory
+
+	SetCompleteHook(0xE9, 0x00458344, &this->CheckHandForBow); // Check the hand of the Bow
+	SetCompleteHook(0xE9, 0x00458375, &this->CheckHandForCrossbow); // Check the hand of the Crossbow
+
+	SetCompleteHook(0xE9, 0x00455683, &this->RenderBackPositionBow); // Position of rendering Bow on back
+	SetCompleteHook(0xE9, 0x00455591, &this->RenderBackPositionCrossbow); // Position of rendering Crossbow on back
 
 	SetCompleteHook(0xE9, 0x0049DA1D, &this->SkillPenetrationBow); // Enables the Penetration skill with Bow
 	SetCompleteHook(0xE9, 0x0049DA2E, &this->SkillPenetrationCrossbow); // Enables the Penetration skill with Crossbow
@@ -1218,6 +1224,138 @@ _declspec(naked) void CCustomBow::RenderPositionCrossbow()
 	if ((ItemID >= GET_ITEM_MODEL(4, 8) && ItemID < GET_ITEM_MODEL(4, 15)) // Original
 	    || ItemID == GET_ITEM_MODEL(4, 16) // Original
 	    || ItemID == GET_ITEM_MODEL(4, 18) // Original
+	    || gCustomBow.IsCustomCrossbow(ItemID - ITEM_BASE_MODEL))
+	{
+		goto EXIT;
+	}
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnNot];
+	}
+
+EXIT:
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnOk];
+	}
+}
+
+_declspec(naked) void CCustomBow::CheckHandForBow()
+{
+	static DWORD jmpOnOk = 0x0045834B;
+	static DWORD jmpOnNot = 0x00458352;
+	static WORD ItemID;
+
+	_asm
+	{
+		Mov ItemID, Bx;
+		Pushad;
+	}
+
+	if (ItemID == GET_ITEM_MODEL(4, 17) // Original
+	    || gCustomBow.IsCustomBow(ItemID - ITEM_BASE_MODEL))
+	{
+		goto EXIT;
+	}
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnNot];
+	}
+
+EXIT:
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnOk];
+	}
+}
+
+_declspec(naked) void CCustomBow::CheckHandForCrossbow()
+{
+	static DWORD jmpOnOk = 0x0045837C;
+	static DWORD jmpOnNot = 0x00458380;
+	static WORD ItemID;
+
+	_asm
+	{
+		Mov ItemID, Cx;
+		Pushad;
+	}
+
+	if (ItemID == GET_ITEM_MODEL(4, 18) // Original
+	    || gCustomBow.IsCustomCrossbow(ItemID - ITEM_BASE_MODEL))
+	{
+		goto EXIT;
+	}
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnNot];
+	}
+
+EXIT:
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnOk];
+	}
+}
+
+_declspec(naked) void CCustomBow::RenderBackPositionBow()
+{
+	static DWORD jmpOnOk = 0x00455666;
+	static DWORD jmpOnNot = 0x0045568B;
+	static DWORD ItemID;
+
+	_asm
+	{
+		Mov ItemID, Ebx;
+		Pushad;
+	}
+
+	if (ItemID == GET_ITEM_MODEL(5, 8) // Original
+	    || gCustomBow.IsCustomBow(ItemID - ITEM_BASE_MODEL))
+	{
+		goto EXIT;
+	}
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnNot];
+	}
+
+EXIT:
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnOk];
+	}
+}
+
+_declspec(naked) void CCustomBow::RenderBackPositionCrossbow()
+{
+	static DWORD jmpOnOk = 0x00455599;
+	static DWORD jmpOnNot = 0x004555DF;
+	static DWORD ItemID;
+
+	_asm
+	{
+		Mov ItemID, Ebx;
+		Pushad;
+	}
+
+	if (ItemID == GET_ITEM_MODEL(4, 18) // Original
 	    || gCustomBow.IsCustomCrossbow(ItemID - ITEM_BASE_MODEL))
 	{
 		goto EXIT;

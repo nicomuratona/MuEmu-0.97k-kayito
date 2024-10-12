@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ItemManager.h"
+#include "CustomBow.h"
 
 CItemManager gItemManager;
 
@@ -153,7 +154,10 @@ int CItemManager::GetTargetSlotEquiped(ITEM* lpItem, int slot)
 
 	if (slot == EQUIPMENT_WEAPON_RIGHT && PlayerRightHand->Type != -1 && PlayerLeftHand->Type == -1)
 	{
-		slot = EQUIPMENT_WEAPON_LEFT;
+		if (lpItem->Type >= GET_ITEM(0, 0) && lpItem->Type < GET_ITEM(4, 0)) // If its a sword, axe, mace or spear
+		{
+			slot = EQUIPMENT_WEAPON_LEFT;
+		}
 	}
 	else if (slot == EQUIPMENT_RING_RIGHT && PlayerRightRing->Type != -1 && PlayerLeftRing->Type == -1)
 	{
@@ -239,14 +243,14 @@ int CItemManager::GetTargetSlotEquiped(ITEM* lpItem, int slot)
 
 	if (PlayerClass == 2) // FE
 	{
-		if (slot == EQUIPMENT_WEAPON_RIGHT && ((lpItem->Type >= GET_ITEM(4, 0) && lpItem->Type < GET_ITEM(4, 8)) || lpItem->Type == GET_ITEM(4, 17))) // BOWS
+		if (slot == EQUIPMENT_WEAPON_RIGHT && ((lpItem->Type >= GET_ITEM(4, 0) && lpItem->Type < GET_ITEM(4, 8)) || lpItem->Type == GET_ITEM(4, 17) || gCustomBow.IsCustomBow(lpItem->Type))) // BOWS
 		{
 			slot = -1;
 
 			goto EXIT;
 		}
 
-		if (slot == EQUIPMENT_WEAPON_LEFT && ((lpItem->Type >= GET_ITEM(4, 8) && lpItem->Type < GET_ITEM(4, 17)) || lpItem->Type == GET_ITEM(4, 18))) // CROSSBOWS
+		if (slot == EQUIPMENT_WEAPON_LEFT && ((lpItem->Type >= GET_ITEM(4, 8) && lpItem->Type < GET_ITEM(4, 17)) || lpItem->Type == GET_ITEM(4, 18) || gCustomBow.IsCustomCrossbow(lpItem->Type))) // CROSSBOWS
 		{
 			slot = -1;
 
