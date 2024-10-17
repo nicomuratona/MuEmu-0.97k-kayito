@@ -189,7 +189,7 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 
 	if (damage == 0)
 	{
-		if ((lpObj->Type != OBJECT_USER || lpTarget->Type != OBJECT_USER) && this->MissCheck(lpObj, lpTarget, lpSkill, send, count, &miss) == false)
+		if (this->MissCheck(lpObj, lpTarget, lpSkill, send, count, &miss) == false)
 		{
 			return true;
 		}
