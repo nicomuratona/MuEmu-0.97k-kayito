@@ -23,6 +23,7 @@
 #include <mbstring.h>
 #include <fstream>
 #include <deque>
+#include <array>
 
 // General Includes
 #include "Console.h"

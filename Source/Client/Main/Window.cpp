@@ -445,15 +445,16 @@ void CWindow::ChangeWindowText()
 		return;
 	}
 
-	char text[256];
+	std::array<char, 256> text = { 0 };
 
 	STRUCT_DECRYPT;
 
-	sprintf_s(text, sizeof(text), "%s || Resets: %d || GrandResets: %d || Level: %d || PING: %u ms || FPS: %.0f", (char*)(CharacterAttribute + 0x00), gPrintPlayer.ViewReset, gPrintPlayer.ViewGrandReset, *(WORD*)(CharacterAttribute + 0x0E), gPrintPlayer.ViewPing, FPS);
+	sprintf_s(text.data(), sizeof(text), "%s || Resets: %d || GrandResets: %d || Level: %d || PING: %u ms || FPS: %.0f",
+							(char*)(CharacterAttribute + 0x00), gPrintPlayer.ViewReset, gPrintPlayer.ViewGrandReset, *(WORD*)(CharacterAttribute + 0x0E), gPrintPlayer.ViewPing, FPS);
 
 	STRUCT_ENCRYPT;
 
-	SetWindowText(g_hWnd, text);
+	SetWindowText(g_hWnd, text.data());
 }
 
 void CWindow::SetWindowMode(bool windowMode, bool borderless)
