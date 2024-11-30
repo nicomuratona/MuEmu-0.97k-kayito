@@ -5,41 +5,18 @@
 
 CBlackList gBlackList;
 
-CBlackList::CBlackList()
+void CBlackList::Load(const char* path)
 {
-	this->m_BlacklistIP.clear();
+	CReadScript lpReadScript;
 
-	this->m_BlacklistHWID.clear();
-}
-
-CBlackList::~CBlackList()
-{
-
-}
-
-void CBlackList::Load(char* path)
-{
-	CReadScript* lpReadScript = new CReadScript;
-
-	if (lpReadScript == NULL)
-	{
-		ErrorMessageBox(READ_SCRIPT_ALLOC_ERROR, path);
-
-		return;
-	}
-
-	if (!lpReadScript->Load(path))
+	if (!lpReadScript.Load(path))
 	{
 		ErrorMessageBox(READ_SCRIPT_FILE_ERROR, path);
-
-		delete lpReadScript;
-
 		return;
 	}
 
-	this->m_BlacklistIP.clear();
-
-	this->m_BlacklistHWID.clear();
+	m_BlacklistIP.clear();
+	m_BlacklistHWID.clear();
 
 	try
 	{
@@ -47,97 +24,43 @@ void CBlackList::Load(char* path)
 
 		while (true)
 		{
-			token = lpReadScript->GetToken();
+			token = lpReadScript.GetToken();
 
 			if (token == TOKEN_END || token == TOKEN_END_SECTION)
-			{
 				break;
-			}
 
-			int section = lpReadScript->GetNumber();
+			int section = lpReadScript.GetNumber();
 
 			while (true)
 			{
-				token = lpReadScript->GetToken();
+				token = lpReadScript.GetToken();
 
 				if (token == TOKEN_END || token == TOKEN_END_SECTION)
-				{
 					break;
-				}
 
 				if (section == 0)
 				{
-					BLACK_LIST_IP_INFO info;
-
-					memcpy(info.IpAddr, lpReadScript->GetString(), sizeof(info.IpAddr));
-
-					this->m_BlacklistIP.push_back(info);
+					m_BlacklistIP.push_back(lpReadScript.GetString());
 				}
 				else if (section == 1)
 				{
-					BLACK_LIST_HWID_INFO info;
-
-					memcpy(info.HardwareId, lpReadScript->GetString(), sizeof(info.HardwareId));
-
-					this->m_BlacklistHWID.push_back(info);
+					m_BlacklistHWID.push_back(lpReadScript.GetString());
 				}
 			}
 		}
 	}
 	catch (...)
 	{
-		ErrorMessageBox(lpReadScript->GetError());
+		ErrorMessageBox(lpReadScript.GetError());
 	}
-
-
-	delete lpReadScript;
 }
 
-int CBlackList::CheckIpAddress(char* Ip)
+bool CBlackList::CheckIpAddress(const char* Ip)
 {
-	for (std::vector<BLACK_LIST_IP_INFO>::iterator it = this->m_BlacklistIP.begin(); it != this->m_BlacklistIP.end(); it++)
-	{
-		if (_strcmpi(it->IpAddr, Ip) != 0)
-		{
-			continue;
-		}
-
-		if (it == this->m_BlacklistIP.end())
-		{
-			return 0;
-		}
-		else
-		{
-			return 1;
-		}
-	}
-
-	return 0;
+	return std::find(m_BlacklistIP.begin(), m_BlacklistIP.end(), Ip) != m_BlacklistIP.end();
 }
 
-int CBlackList::CheckHardwareID(char* Hwid)
+bool CBlackList::CheckHardwareID(const char* Hwid)
 {
-	if (strlen(Hwid) == 0)
-	{
-		return 1;
-	}
-
-	for (std::vector<BLACK_LIST_HWID_INFO>::iterator it = this->m_BlacklistHWID.begin(); it != this->m_BlacklistHWID.end(); it++)
-	{
-		if (_strcmpi(it->HardwareId, Hwid) != 0)
-		{
-			continue;
-		}
-
-		if (it == this->m_BlacklistHWID.end())
-		{
-			return 0;
-		}
-		else
-		{
-			return 1;
-		}
-	}
-
-	return 0;
+	return std::find(m_BlacklistHWID.begin(), m_BlacklistHWID.end(), Hwid) != m_BlacklistHWID.end();
 }

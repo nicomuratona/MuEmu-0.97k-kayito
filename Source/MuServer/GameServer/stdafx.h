@@ -24,6 +24,7 @@
 #include <WS2tcpip.h>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 
 // General includes
 #include "Console.h"
