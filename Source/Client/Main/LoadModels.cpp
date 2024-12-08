@@ -9,6 +9,8 @@ CLoadModels::CLoadModels()
 {
 	memset(this->lpTextures, 0, sizeof(this->lpTextures));
 
+	memset(this->lpModels, 0, sizeof(this->lpModels));
+
 	this->TextureCount = MAX_TEXTURE;
 }
 
@@ -20,6 +22,8 @@ CLoadModels::~CLoadModels()
 void CLoadModels::Init()
 {
 	this->SetTexturesOffset();
+
+	this->SetModelsOffset();
 
 	SetCompleteHook(0xE8, 0x00510DDB, &this->OpenItemsHook);
 
@@ -115,6 +119,253 @@ void CLoadModels::SetTexturesOffset()
 	SetDword(0x0050CBEF + 2, (DWORD)(&this->lpTextures) + 5432);
 }
 
+void CLoadModels::SetModelsOffset()
+{
+	SetDword(0x004083C1 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00408866 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00408EBF + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00409437 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004096A8 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0040B286 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0040B2B8 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0040B2DE + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0040B315 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0040BBBC + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0040BF57 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0041489F + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0043E830 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004438C8 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00443907 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004439B4 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004439CF + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004439FF + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00443A1A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00443E14 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00443E49 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0044419F + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004441CA + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004441E8 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004441FF + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00444219 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00444231 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00444246 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0044425E + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00444270 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00444281 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00444297 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004442AD + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004442BE + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004442D0 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004442E2 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004442F8 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0044431B + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0044433D + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00444364 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0044437E + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0044439F + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004443BB + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004443D7 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004443EE + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00444A08 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00444A3D + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00444C7D + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00444CB3 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00445179 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00445239 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0044860A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00448A28 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00448D38 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00449596 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00449919 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0044B11D + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004520C6 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0045543E + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0045572D + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004565D3 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00456665 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00456791 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00456D9C + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00457122 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0045715C + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00457290 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004572C2 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004572E7 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00457321 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00458028 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00458474 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0045863C + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00458BF4 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00458C12 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00458C30 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00458C50 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00458C7A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00458CA3 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00458E2D + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00459002 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00459067 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004590F6 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0045912A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004591C0 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00459259 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00459356 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004593FC + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004594AA + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00459546 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004595E3 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004596DD + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0045981B + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004598CA + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004599AC + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00459A8A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00459B21 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00459BE5 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00459D51 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0045BB70 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0045D2AA + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0045D2C3 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0045D2DD + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0045D2F7 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0045D310 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0045D366 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0046AA74 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0046B2B5 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0046B824 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0046B9B4 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0046BB27 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0046BC92 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0046C69A + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0046C77F + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0046DFE2 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00470FFE + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0047422C + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00475198 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00477324 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004C0418 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004C0467 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004E17CE + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004FA821 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004FAA96 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004FAE31 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004FC07A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004FDDA0 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004FE162 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x004FE489 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004FE4CA + 1, (DWORD)(&this->lpModels));
+	SetDword(0x004FFD56 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00500251 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00500B65 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00500B8A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00500C19 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050174B + 1, (DWORD)(&this->lpModels));
+	SetDword(0x005022AF + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005027AD + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00503979 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00504B7A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00504E0C + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00504E42 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00505A52 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00505C87 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00506110 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00506152 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x005061B6 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00506D49 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050738E + 1, (DWORD)(&this->lpModels));
+	SetDword(0x005073A5 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005073BA + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005073CA + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005073E4 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00507400 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050740F + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050741E + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00507431 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00507448 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00507462 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00507479 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00507495 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005074B9 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005074DD + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005074F7 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00507508 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050751A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050752C + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00507543 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00507555 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00507567 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00507579 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050758A + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050759B + 1, (DWORD)(&this->lpModels));
+	SetDword(0x005075AC + 1, (DWORD)(&this->lpModels));
+	SetDword(0x005075BD + 1, (DWORD)(&this->lpModels));
+	SetDword(0x005075D0 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005075E2 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005075F4 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00508CC4 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00508CD4 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00508CE2 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00508CF1 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00508D00 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00509196 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x005091D6 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509821 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509832 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509845 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509858 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050986B + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509886 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x005098C8 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509B4D + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509BE1 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00509C41 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509CFE + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509D18 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00509D2C + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509DC1 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00509E46 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509EE5 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x00509F6F + 1, (DWORD)(&this->lpModels));
+	SetDword(0x00509FF8 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A082 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A0E3 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050A224 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A285 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A31E + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A332 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A3B5 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050A48F + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A519 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A5A3 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050A62C + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A6B6 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A717 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050A7A0 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A7B3 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050A837 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050AA75 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050AAEC + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050AB01 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050ABCC + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050ACA2 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050AD28 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050AD97 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050AE07 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050AE5B + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050AEC1 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050AF2B + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050C100 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050C705 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050C82A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050E1B4 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050E1CE + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050E1DA + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050E1E7 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050E1F4 + 1, (DWORD)(&this->lpModels));
+	SetDword(0x0050E200 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0050E20D + 2, (DWORD)(&this->lpModels));
+	SetDword(0x0051028A + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005102A4 + 2, (DWORD)(&this->lpModels));
+	SetDword(0x005102F6 + 2, (DWORD)(&this->lpModels));
+}
+
 void CLoadModels::MyAccessModel(int Type, char* Dir, char* FileName, int i)
 {
 	char Name[64];
@@ -134,7 +385,7 @@ void CLoadModels::MyAccessModel(int Type, char* Dir, char* FileName, int i)
 
 	this->CheckModelExists(Type, Dir, Name);
 
-	bool Success = ((bool(__thiscall*)(DWORD This, char* DirName, char* FileName))0x004423E0)(Models + 188 * Type, Dir, Name);
+	bool Success = ((bool(__thiscall*)(DWORD This, char* DirName, char* FileName))0x004423E0)(gLoadModels.GetModels() + 188 * Type, Dir, Name);
 
 	if (!Success)
 	{
@@ -175,7 +426,7 @@ void CLoadModels::CheckModelExists(int Model, char* SubFolder, char* filename)
 
 void CLoadModels::MyOpenTexture(int Model, char* SubFolder, int Type, bool Check)
 {
-	DWORD pModel = Models + 188 * Model;
+	DWORD pModel = this->GetModels() + 188 * Model;
 
 	for (int i = 0; i < *(short*)(pModel + 0x24); i++) // pModel->NumMeshs
 	{
@@ -445,7 +696,7 @@ void CLoadModels::OpenItemsHook()
 	AccessModel(MODEL_EVENT + 0, "Data\\Item\\", "Event", 2); // Mu Coin
 	AccessModel(MODEL_EVENT + 1, "Data\\Item\\", "Event", 3); // Mu Scroll
 	AccessModel(MODEL_EVENT + 4, "Data\\Item\\", "MagicBox", 2); // Christmas Star
-	AccessModel(MODEL_EVENT + 5, "Data\\Item\\", "MagicBox", 4); // Magic pouch
+	AccessModel(MODEL_EVENT + 5, "Data\\Item\\", "MagicBox", 4); // Firecracker
 	AccessModel(MODEL_EVENT + 6, "Data\\Item\\", "MagicBox", 5); // Love Heart
 	AccessModel(MODEL_EVENT + 7, "Data\\Item\\", "Beer", 2); // Olive of Love
 	AccessModel(MODEL_EVENT + 8, "Data\\Item\\", "MagicBox", 6); // Silver medal
@@ -496,19 +747,17 @@ void CLoadModels::OpenItemsHook()
 
 	/************************** Blend mesh without chrome effects **************************/
 
-	*(BYTE*)(*(DWORD*)(Models + 93288) + 40) = 1; // Light stick.
-	*(BYTE*)(*(DWORD*)(Models + 77120) + 40) = 1; // Sword of light.
-	*(BYTE*)(*(DWORD*)(Models + 106448) + 80) = 1; // Staff of Resurrection.
-	*(BYTE*)(*(DWORD*)(Models + 88400) + 40) = 1; // Chaos Axe.
-	*(BYTE*)(*(DWORD*)(Models + 179768) + 40) = 1; // Gold Medal
+	*(BYTE*)(*(DWORD*)(gLoadModels.GetModels() + 93288) + 40) = 1; // Light stick.
+	*(BYTE*)(*(DWORD*)(gLoadModels.GetModels() + 77120) + 40) = 1; // Sword of light.
+	*(BYTE*)(*(DWORD*)(gLoadModels.GetModels() + 106448) + 80) = 1; // Staff of Resurrection.
+	*(BYTE*)(*(DWORD*)(gLoadModels.GetModels() + 88400) + 40) = 1; // Chaos Axe.
+	*(BYTE*)(*(DWORD*)(gLoadModels.GetModels() + 179768) + 40) = 1; // Gold Medal
 
 	/************************** Customs **************************/
 
-	int n = 0;
-
 	char modelFolder[MAX_PATH];
 
-	for (n = 0; n < MAX_ITEM; n++)
+	for (int n = 0; n < MAX_ITEM; n++)
 	{
 		if (gCustomItem.m_CustomItemInfo[n].ItemIndex != -1)
 		{
@@ -712,7 +961,7 @@ void CLoadModels::OpenItemTexturesHook()
 	OpenTexture(MODEL_EVENT + 0, "Item\\", GL_NEAREST, true); // Mu Coin
 	OpenTexture(MODEL_EVENT + 1, "Item\\", GL_NEAREST, true); // Mu Scroll
 	OpenTexture(MODEL_EVENT + 4, "Item\\", GL_NEAREST, true); // Christmas Star
-	OpenTexture(MODEL_EVENT + 5, "Item\\", GL_NEAREST, true); // Magic pouch
+	OpenTexture(MODEL_EVENT + 5, "Item\\", GL_NEAREST, true); // Firecracker
 	OpenTexture(MODEL_EVENT + 6, "Item\\", GL_NEAREST, true); // Love Heart
 	OpenTexture(MODEL_EVENT + 7, "Item\\", GL_NEAREST, true); // Olive of Love
 	OpenTexture(MODEL_EVENT + 8, "Item\\", GL_NEAREST, true); // Silver medal
@@ -765,9 +1014,7 @@ void CLoadModels::OpenItemTexturesHook()
 
 	char textureFolder[MAX_PATH];
 
-	int n = 0;
-
-	for (n = 0; n < MAX_ITEM; n++)
+	for (int n = 0; n < MAX_ITEM; n++)
 	{
 		if (gCustomItem.m_CustomItemInfo[n].ItemIndex != -1)
 		{
@@ -796,4 +1043,9 @@ void CLoadModels::PartObjectColorHook(int Type, float Alpha, float Bright, float
 BITMAP_t* CLoadModels::GetBitmap(int uiTextureNumber)
 {
 	return &this->lpTextures[uiTextureNumber];
+}
+
+DWORD CLoadModels::GetModels()
+{
+	return *(DWORD*)&this->lpModels;
 }

@@ -7,6 +7,7 @@
 #include "CustomNpcMove.h"
 #include "CustomPkFree.h"
 #include "CustomSafeZone.h"
+#include "CustomWing.h"
 #include "DefaultClassInfo.h"
 #include "DevilSquare.h"
 #include "EffectManager.h"
@@ -161,6 +162,8 @@ void CServerInfo::ReadCommonInfo()
 	gMessage.Load(gPath.GetFullPath("Message_Spn.txt"), LANGUAGE_SPANISH);
 	gMessage.Load(gPath.GetFullPath("Message_Por.txt"), LANGUAGE_PORTUGUESE);
 
+	gObjSetExperienceTable();
+
 	LogAdd(LOG_BLUE, "[ServerInfo] Common loaded successfully");
 }
 
@@ -231,6 +234,8 @@ void CServerInfo::ReadItemInfo()
 	gItemStack.Load(gPath.GetFullPath("Item\\ItemStack.txt"));
 
 	gItemValue.Load(gPath.GetFullPath("Item\\ItemValue.txt"));
+
+	gCustomWing.Load(gPath.GetFullPath("Item\\CustomWing.txt"));
 
 	for (int n = OBJECT_START_USER; n < MAX_OBJECT; n++)
 	{
@@ -1363,10 +1368,7 @@ void CServerInfo::ReadCommonInfo(char* section, char* path)
 
 	this->m_MaxCharacterLevel = GetPrivateProfileInt(section, "MaxCharacterLevel", 400, path);
 
-	if (this->m_MaxCharacterLevel > MAX_CHARACTER_LEVEL)
-	{
-		this->m_MaxCharacterLevel = MAX_CHARACTER_LEVEL;
-	}
+	this->m_MaxCharacterLevel = ((this->m_MaxCharacterLevel < 1) ? 1 : ((this->m_MaxCharacterLevel > MAX_CHARACTER_LEVEL) ? MAX_CHARACTER_LEVEL : this->m_MaxCharacterLevel));
 
 	this->m_MaxLevelUp = GetPrivateProfileInt(section, "MaxLevelUp", 0, path);
 

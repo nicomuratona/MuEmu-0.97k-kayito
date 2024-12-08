@@ -1164,6 +1164,23 @@ void CCommandManager::DGCommandResetRecv(SDHP_COMMAND_RESET_RECV* lpMsg)
 
 		point += lpObj->FruitAddPoint;
 
+		if (gServerInfo.m_CommandGrandResetStats[lpObj->AccountLevel] != 0)
+		{
+			int grpoint = gServerInfo.m_CommandGrandResetPoint[lpObj->AccountLevel] * lpObj->GrandReset;
+
+			grpoint = (grpoint * gServerInfo.m_CommandGrandResetPointRate[lpObj->Class]) / 100;
+
+			grpoint += (lpObj->Level - 1) * gServerInfo.m_LevelUpPoint[lpObj->Class];
+
+			grpoint += ((gQuest.CheckQuestListState(lpObj, 2, QUEST_FINISH) == 0) ? 0 : ((lpObj->Level > 220) ? ((lpObj->Level - 220) * gServerInfo.m_PlusStatPoint) : 0));
+
+			grpoint += gQuest.GetQuestRewardLevelUpPoint(lpObj);
+
+			grpoint += lpObj->FruitAddPoint;
+
+			point += grpoint;
+		}
+
 		lpObj->LevelUpPoint = point;
 
 		lpObj->Strength = gDefaultClassInfo.m_DefaultClassInfo[lpObj->Class].Strength;

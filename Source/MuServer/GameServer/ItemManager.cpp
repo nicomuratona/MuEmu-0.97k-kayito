@@ -2549,8 +2549,6 @@ void CItemManager::CGItemMoveRecv(PMSG_ITEM_MOVE_RECV* lpMsg, int aIndex)
 		return;
 	}
 
-	int index = lpMsg->ItemInfo[0] + ((lpMsg->ItemInfo[3] & 0x80) * 2);
-
 	if (lpMsg->SourceFlag == 1 || lpMsg->TargetFlag == 1) // Trade
 	{
 		if (lpObj->Interface.use == 0 || lpObj->Interface.type != INTERFACE_TRADE || lpObj->Interface.state == 0 || OBJECT_RANGE(lpObj->TargetNumber) == 0)

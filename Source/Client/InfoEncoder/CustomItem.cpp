@@ -56,7 +56,9 @@ void CCustomItem::Load(char* path)
 
 			CUSTOM_ITEM_INFO info;
 
-			info.ItemIndex = GET_ITEM(lpReadScript->GetNumber(), lpReadScript->GetAsNumber());
+			info.ItemIndex = lpReadScript->GetNumber();
+
+			info.ItemIndex = GET_ITEM(info.ItemIndex, lpReadScript->GetAsNumber());
 
 			info.SkillNumber = lpReadScript->GetAsNumber();
 

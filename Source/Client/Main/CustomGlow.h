@@ -20,7 +20,7 @@ public:
 
 	void SetInfo(CUSTOM_GLOW_INFO info);
 
-	CUSTOM_GLOW_INFO* GetInfoByItem(int ItemIndex);
+	CUSTOM_GLOW_INFO* GetInfoByIndex(int ItemIndex);
 
 	bool GetItemGlow(int ItemIndex, float* ItemColor);
 

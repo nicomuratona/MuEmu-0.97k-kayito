@@ -26,6 +26,7 @@
 #define MouseRButtonPush *(bool*)0x083A42D0
 #define MouseUpdateTime *(DWORD*)0x07E11D28
 #define MouseUpdateTimeMax *(DWORD*)0x00559BEC
+#define MousePosition (float*)0x083A4284
 #define ItemKey *(int*)0x07E109C8
 #define RepairEnable *(int*)0x07EAA138
 #define KeyState (&*(int*)0x07E118EC)
@@ -142,14 +143,23 @@
 #define SendGetItem *(int*)0x0055967C
 #define InsertInventoryItem ((void(_cdecl*)(ITEM *Inv, int Width, int Height, int Index, BYTE* Item, bool First)) 0x004CC660)
 #define ConvertItemType ((int(_cdecl*)(BYTE* Item)) 0x0047B110)
+#define ItemObjectAttribute ((void(_cdecl*)(DWORD o)) 0x00502BA0)
+
+#define ObjectSelect_Angle (&*(float*)0x07EA952C)
+#define ObjectSelect_HeadAngle (&*(float*)0x07EA9538)
+#define ObjectSelect_Type *(short*)0x07EA9512
+#define ObjectSelect_AnimationFrame *(float*)0x07EA9618
+#define ObjectSelect_PriorAnimationFrame *(float*)0x07EA961C
+#define ObjectSelect_PriorAction *(BYTE*)0x07EA9616
 
 // Connection
-#define g_byPacketSerialSend 0x05826CEB
+#define g_byPacketSerialSend *(BYTE*)0x05826CEB
+#define g_byPacketSerialRecv *(BYTE*)0x05826CEC
 #define CharacterMachine *(DWORD*)0x07CF1FFC
 #define MAIN_HASH_CLASS 0x055C9BC8
-#define g_bGameServerConnected 0x05826CF0
-#define PACKET_DECRYPT ((void(__thiscall*)(void*,int))0x00422DF0)((void*)MAIN_HASH_CLASS,g_byPacketSerialSend)
-#define PACKET_ENCRYPT ((void(__thiscall*)(void*,int))0x00404040)((void*)MAIN_HASH_CLASS,g_byPacketSerialSend)
+#define g_bGameServerConnected *(BOOL*)0x05826CF0
+#define PACKET_DECRYPT(packet) ((void(__thiscall*)(void*,void*))0x00422DF0)((void*)MAIN_HASH_CLASS,(void*)(packet))
+#define PACKET_ENCRYPT(packet) ((void(__thiscall*)(void*,void*))0x00404040)((void*)MAIN_HASH_CLASS,(void*)(packet))
 #define STRUCT_DECRYPT ((void(__thiscall*)(void*,void*))0x00423040)((void*)MAIN_HASH_CLASS,*(void**)(&CharacterMachine))
 #define STRUCT_ENCRYPT ((void(__thiscall*)(void*,void*))0x0043D1D0)((void*)MAIN_HASH_CLASS,*(void**)(&CharacterMachine))
 #define CreateSocket ((BOOL(_cdecl*)(char* IpAddr, unsigned short Port)) 0x00423920)
@@ -157,6 +167,7 @@
 #define SocketClient 0x055CA160
 #define pSocket	*(SOCKET*)(0x055CA168)
 #define ProtocolCore ((BOOL(*)(BYTE*))0x004389A0)
+#define TotalPacketSize *(int*)0x07E11DCC
 #define SendChat ((void(_cdecl*)(const char* Text)) 0x004C1B90)
 
 // OpenGL
@@ -184,6 +195,8 @@
 #define GateAttribute (&*(GATE_ATTRIBUTE*)(*(DWORD*)0x07CF5600))
 #define RequestTerrainHeight ((float(_cdecl*)(float xf, float yf))0x004F7500)
 #define OpenTerrainLight ((void(_cdecl*)(char* FileName))0x004F7250)
+#define m_iBloodCastleLimitLevel ((int(*)[2])0x00559F80)
+#define m_iDevilSquareLimitLevel ((int(*)[2])0x00559F60)
 
 // Sound
 #define PlayBuffer ((int(_cdecl*)(int Buffer, DWORD Object, BOOL bLooped))0x00404BC0)
@@ -197,7 +210,7 @@
 #define MaxBufferChannel (&*(int*)0x0058E1C4) // int MaxBufferChannel[420];
 #define Enable3DSound (&*(bool*)0x00590924) // bool Enable3DSound[420];
 #define BufferName 0x00585E7C // char BufferName[420][64];
-#define g_lpDSBuffer (&*(LPDIRECTSOUNDBUFFER*)0x0058C780) // LPDIRECTSOUNDBUFFER g_lpDSBuffer[420][4]
+#define g_lpDSBuffer ((LPDIRECTSOUNDBUFFER(*)[4])0x0058C780) // LPDIRECTSOUNDBUFFER g_lpDSBuffer[420][4]
 #define m_SoundOnOff *(int*)0x055C9FE8
 #define m_MusicOnOff *(int*)0x055C9E3C
 #define PlayMp3 ((void(_cdecl*)(char* Name, BOOL bEnforce))0x00412890)
@@ -210,6 +223,7 @@
 #define ItemAttribute *(DWORD*)0x07D78068
 #define CreateObject ((DWORD(_cdecl*)(int Type, float Position[3], float Angle[3], float Scale)) 0x004FF5A0)
 #define RenderLinkObject ((void(_cdecl*)(float x, float y, float z, DWORD c, DWORD f, int Type, int Level, int Option1, bool Link, bool Translate, int RenderType)) 0x00455430)
+#define RenderPartObject ((void(_cdecl*)(DWORD o, int Type, void *p2, float Light[3], float Alpha, int ItemLevel, int Option1, bool GlobalTransform, bool HideSkin, bool Translate, int Select, int RenderType)) 0x00505A10)
 #define TransformPosition ((void(__thiscall*)(DWORD This, float* Matrix, float Position[3], float WorldPosition[3], bool Translate)) 0x004409A0)
 #define CreateSprite ((int(_cdecl*)(int Type, float Position[3], float Scale, float Light[3], DWORD Owner, float Rotation, int SubType)) 0x004795C0)
 #define TextureBegin *(int*)0x083A4104
@@ -224,6 +238,10 @@
 #define PartObjectColor ((void(_cdecl*)(int Type, float Alpha, float Bright, float Light[3], bool ExtraMon))0x00503CF0)
 #define CreateMonster ((DWORD(_cdecl*)(int Type, int PositionX, int PositionY, int Key)) 0x0045CCF0)
 #define CreateCharacter ((DWORD(_cdecl*)(int Key, int Type, BYTE PositionX, BYTE PositionY, float Rotation)) 0x0045BFA0)
+#define CreateScreenVector ((void(_cdecl*)(int sx, int sy, float Target[3])) 0x005112F0)
+#define RenderObjectScreen ((void(_cdecl*)(int Type, int ItemLevel, int Option1, float Target[3], int Select, bool PickUp)) 0x004E13A0)
+#define BMD_Animation ((void(__thiscall*)(DWORD This, float (*BoneMatrix)[3][4], float AnimationFrame, float PriorFrame, unsigned __int8 PriorAction, float Angle[3], float HeadAngle[3], bool Parent, bool Translate)) 0x00440060)
+#define BoneTransform ((float(*)[3][4])0x06970A9C)
 
 /* Utils */
 #define operator_new ((void* (_cdecl*)(size_t Size)) 0x005416AE)

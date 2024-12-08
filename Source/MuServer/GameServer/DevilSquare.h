@@ -34,6 +34,12 @@ struct PMSG_DEVIL_SQUARE_ENTER_RECV
 //************ GameServer -> Client ************//
 //**********************************************//
 
+struct PMSG_DEVIL_SQUARE_REQ_LEVELS_SEND
+{
+	PBMSG_HEAD header; // C1:8E
+	int m_DevilSquareRequiredLevel[MAX_DS_LEVEL][2];
+};
+
 struct PMSG_DEVIL_SQUARE_ENTER_SEND
 {
 	PBMSG_HEAD header; // C1:90
@@ -205,6 +211,8 @@ public:
 
 	void StartDS();
 
+	void GCRequiredLevelsSend(int aIndex);
+
 private:
 
 	DEVIL_SQUARE_LEVEL m_DevilSquareLevel[MAX_DS_LEVEL];
@@ -222,6 +230,8 @@ private:
 	int m_DevilSquareRewardExperience[MAX_DS_LEVEL][MAX_DS_RANK];
 
 	int m_DevilSquareRewardMoney[MAX_DS_LEVEL][MAX_DS_RANK];
+
+	int m_DevilSquareRequiredLevel[MAX_DS_LEVEL][4];
 };
 
 extern CDevilSquare gDevilSquare;

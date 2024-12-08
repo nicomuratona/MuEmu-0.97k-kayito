@@ -227,20 +227,17 @@ void gObjAllDisconnect()
 
 void gObjSetExperienceTable()
 {
-	gLevelExperience[0] = 0;
+	memset(gLevelExperience, 0, sizeof(gLevelExperience));
 
-	DWORD over = 1;
+	// Parámetros ajustables
+	double maxExperience = DWORD_MAX * 0.95; // Aproximar al máximo seguro
 
-	for (int n = 1; n <= MAX_CHARACTER_LEVEL; n++)
+	// Ajustar el multiplicador dinámicamente
+	double scaleFactor = maxExperience / pow(gServerInfo.m_MaxCharacterLevel, 3);
+
+	for (int level = 1; level <= gServerInfo.m_MaxCharacterLevel; level++)
 	{
-		gLevelExperience[n] = (((n + 9) * n) * n) * 2;
-
-		if (n > 255)
-		{
-			gLevelExperience[n] += (((over + 9) * over) * over) * 5;
-
-			over++;
-		}
+		gLevelExperience[level] = (DWORD)(scaleFactor * pow(level, 3));
 	}
 }
 

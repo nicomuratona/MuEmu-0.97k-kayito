@@ -98,8 +98,10 @@
     <ClInclude Include="CustomGlow.h" />
     <ClInclude Include="CustomItem.h" />
     <ClInclude Include="CustomMonster.h" />
+    <ClInclude Include="CustomWing.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="ItemOption.h" />
+    <ClInclude Include="ItemPosition.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="ReadScript.h" />
     <ClInclude Include="resource.h" />
@@ -111,8 +113,10 @@
     <ClCompile Include="CustomGlow.cpp" />
     <ClCompile Include="CustomItem.cpp" />
     <ClCompile Include="CustomMonster.cpp" />
+    <ClCompile Include="CustomWing.cpp" />
     <ClCompile Include="InfoEncoder.cpp" />
     <ClCompile Include="ItemOption.cpp" />
+    <ClCompile Include="ItemPosition.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="ReadScript.cpp" />
     <ClCompile Include="stdafx.cpp">

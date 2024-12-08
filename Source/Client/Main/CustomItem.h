@@ -19,7 +19,7 @@ public:
 
 	void SetInfo(CUSTOM_ITEM_INFO info);
 
-	CUSTOM_ITEM_INFO* GetInfoByItem(int ItemIndex);
+	CUSTOM_ITEM_INFO* GetInfoByIndex(int ItemIndex);
 
 	BYTE GetCustomItemSkill(int ItemIndex);
 

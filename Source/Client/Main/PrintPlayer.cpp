@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PrintPlayer.h"
+#include "LoadModels.h"
 #include "Protect.h"
 
 CPrintPlayer gPrintPlayer;
@@ -46,7 +47,7 @@ CPrintPlayer::CPrintPlayer()
 
 	this->ViewMagicSpeed = 0;
 
-	this->ViewPing = 0;
+	this->MaxCharacterLevel = MAX_CHARACTER_LEVEL;
 }
 
 CPrintPlayer::~CPrintPlayer()
@@ -194,14 +195,11 @@ void CPrintPlayer::RenderExperience()
 
 	if (wPriorLevel > 0)
 	{
-		dwPriorExperience = (((wPriorLevel + 9) * wPriorLevel) * wPriorLevel) * 2;
+		double maxExperience = DWORD_MAX * 0.95;
 
-		if (wPriorLevel > 255)
-		{
-			int iLevelOverN = wPriorLevel - 255;
+		double scaleFactor = maxExperience / pow(gPrintPlayer.MaxCharacterLevel, 3);
 
-			dwPriorExperience += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 5;
-		}
+		dwPriorExperience = (DWORD)(scaleFactor * pow(wPriorLevel, 3));
 	}
 
 	DWORD RequiredExp = gPrintPlayer.ViewNextExperience - dwPriorExperience;
@@ -288,7 +286,7 @@ void CPrintPlayer::SetAttackSpeed()
 
 	float MagicSpeed2 = gPrintPlayer.ViewMagicSpeed * 0.002f; // Xuan
 
-	DWORD b = *(DWORD*)(Models + 73368); // &Models[MODEL_PLAYER]
+	DWORD b = *(DWORD*)(gLoadModels.GetModels() + 73368); // &Models[MODEL_PLAYER]
 
 	int i;
 

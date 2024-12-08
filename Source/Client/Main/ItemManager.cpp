@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ItemManager.h"
 #include "CustomBow.h"
+#include "CustomWing.h"
 
 CItemManager gItemManager;
 
@@ -517,7 +518,8 @@ void CItemManager::GetItemName(int iType, int iLevel, char* Text)
 	{
 		wsprintf(Text, "%s %s", MonsterScript[SommonTable[iLevel]].Name, GlobalText[103]);
 	}
-	else if (iType >= GET_ITEM(12, 3) && iType <= GET_ITEM(12, 6)) // Wings of Spirit ~ Wings of Darkness.
+	else if ((iType >= GET_ITEM(12, 3) && iType <= GET_ITEM(12, 6)) // Wings of Spirit ~ Wings of Darkness.
+		|| gCustomWing.GetInfoByIndex(iType) != NULL) // Custom Wings
 	{
 		if (iLevel == 0)
 		{

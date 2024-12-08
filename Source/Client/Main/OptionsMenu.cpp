@@ -237,28 +237,28 @@ void COptionsMenu::RenderAllOptions()
 
 	/* GENERAL */
 	this->RenderBox(PosX, PosY, Width, Height);
-	sprintf_s(Text, "%s", GetTextLine(910));
+	sprintf_s(Text, "%s", GetTextLine(919));
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
 
 	/* ANTILAG */
 	this->RenderBox(PosX, PosY, Width, Height);
-	sprintf_s(Text, "%s", GetTextLine(917));
+	sprintf_s(Text, "%s", GetTextLine(926));
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
 
 	/* SCREEN */
 	this->RenderBox(PosX, PosY, Width, Height);
-	sprintf_s(Text, "%s", GetTextLine(911));
+	sprintf_s(Text, "%s", GetTextLine(920));
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
 
 	/* FONT */
 	this->RenderBox(PosX, PosY, Width, Height);
-	sprintf_s(Text, "%s", GetTextLine(912));
+	sprintf_s(Text, "%s", GetTextLine(921));
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
@@ -423,7 +423,7 @@ void COptionsMenu::RenderGeneralTitle(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(910));
+	sprintf_s(Text, "%s", GetTextLine(919));
 
 	EnableAlphaTest(true);
 
@@ -616,7 +616,7 @@ void COptionsMenu::RenderSoundVolume(float PosX, float PosY)
 	{
 		char Text[64] = { 0 };
 
-		sprintf_s(Text, "%s: Off", GetTextLine(913));
+		sprintf_s(Text, "%s: Off", GetTextLine(922));
 
 		EnableAlphaTest(true);
 
@@ -628,7 +628,7 @@ void COptionsMenu::RenderSoundVolume(float PosX, float PosY)
 
 		char Text[64] = { 0 };
 
-		sprintf_s(Text, "%s", GetTextLine(913));
+		sprintf_s(Text, "%s:", GetTextLine(922));
 
 		EnableAlphaTest(true);
 
@@ -726,7 +726,7 @@ void COptionsMenu::RenderMusicVolume(float PosX, float PosY)
 	{
 		char Text[64] = { 0 };
 
-		sprintf_s(Text, "%s: Off", GetTextLine(914));
+		sprintf_s(Text, "%s: Off", GetTextLine(923));
 
 		EnableAlphaTest(true);
 
@@ -738,7 +738,7 @@ void COptionsMenu::RenderMusicVolume(float PosX, float PosY)
 
 		char Text[64] = { 0 };
 
-		sprintf_s(Text, "%s", GetTextLine(914));
+		sprintf_s(Text, "%s:", GetTextLine(923));
 
 		EnableAlphaTest(true);
 
@@ -1114,7 +1114,7 @@ void COptionsMenu::RenderAntilagTitle(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(917));
+	sprintf_s(Text, "%s", GetTextLine(926));
 
 	EnableAlphaTest(true);
 
@@ -1127,7 +1127,7 @@ void COptionsMenu::RenderDeleteShadows(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(919), this->DeleteShadows ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GetTextLine(927), this->DeleteShadows ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1176,7 +1176,7 @@ void COptionsMenu::RenderDeleteObjects(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(920), this->DeleteObjects ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GetTextLine(928), this->DeleteObjects ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1221,7 +1221,7 @@ void COptionsMenu::RenderDeleteFloor(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(921), this->DeleteFloor ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GetTextLine(929), this->DeleteFloor ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1266,7 +1266,7 @@ void COptionsMenu::RenderDeleteSkills(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(922), this->DeleteSkills ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GetTextLine(930), this->DeleteSkills ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1319,7 +1319,7 @@ void COptionsMenu::RenderDeleteStaticEffects(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(923), this->DeleteStaticEffects ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GetTextLine(931), this->DeleteStaticEffects ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1364,7 +1364,7 @@ void COptionsMenu::RenderDeleteDynamicEffects(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(924), this->DeleteDynamicEffects ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GetTextLine(932), this->DeleteDynamicEffects ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1409,7 +1409,7 @@ void COptionsMenu::RenderDeleteWings(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(925), gWeaponView.DeleteWings ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GetTextLine(933), gWeaponView.DeleteWings ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1445,7 +1445,7 @@ void COptionsMenu::RenderDeleteInterface(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(926), this->DeleteInterface ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GetTextLine(934), this->DeleteInterface ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1568,7 +1568,7 @@ void COptionsMenu::RenderScreenTitle(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(911));
+	sprintf_s(Text, "%s", GetTextLine(920));
 
 	EnableAlphaTest(true);
 
@@ -1818,7 +1818,7 @@ void COptionsMenu::RenderFontTitle(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(912));
+	sprintf_s(Text, "%s", GetTextLine(921));
 
 	EnableAlphaTest(true);
 
@@ -2067,20 +2067,23 @@ void COptionsMenu::RenderFontButtons(float PosX, float& PosY)
 		}
 	}
 
-	if (IsWorkZone((int)PosX + (this->BoxWidth - this->BoxHeight), (int)PosY, this->BoxHeight, this->BoxHeight))
+	if (FontHeight < 25)
 	{
-		if (MouseLButtonPush)
+		if (IsWorkZone((int)PosX + (this->BoxWidth - this->BoxHeight), (int)PosY, this->BoxHeight, this->BoxHeight))
 		{
-			RenderBitmap(0x100, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
+			if (MouseLButtonPush)
+			{
+				RenderBitmap(0x100, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
+			}
+			else
+			{
+				RenderBitmap(0xFF, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
+			}
 		}
 		else
 		{
-			RenderBitmap(0xFF, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
+			RenderBitmap(0xFE, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 		}
-	}
-	else
-	{
-		RenderBitmap(0xFE, PosX + (float)(this->BoxWidth - this->BoxHeight), PosY, (float)this->BoxHeight, (float)this->BoxHeight, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 	}
 }
 
@@ -2109,24 +2112,27 @@ bool COptionsMenu::CheckFontButtons(int PosX, int& PosY)
 		}
 	}
 
-	if (IsWorkZone(PosX + (this->BoxWidth - this->BoxHeight), PosY, this->BoxHeight, this->BoxHeight))
+	if (FontHeight < 25)
 	{
-		if (MouseLButton && MouseLButtonPush)
+		if (IsWorkZone(PosX + (this->BoxWidth - this->BoxHeight), PosY, this->BoxHeight, this->BoxHeight))
 		{
-			MouseLButtonPush = false;
+			if (MouseLButton && MouseLButtonPush)
+			{
+				MouseLButtonPush = false;
 
-			MouseUpdateTime = 0;
+				MouseUpdateTime = 0;
 
-			MouseUpdateTimeMax = 6;
+				MouseUpdateTimeMax = 6;
 
-			PlayBuffer(25, 0, 0);
+				PlayBuffer(25, 0, 0);
 
-			FontHeight += 1;
+				FontHeight += 1;
 
-			gFont.ReloadFont();
+				gFont.ReloadFont();
+			}
+
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;
@@ -2138,7 +2144,7 @@ void COptionsMenu::RenderResetFonts(float PosX, float& PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(915));
+	sprintf_s(Text, "%s", GetTextLine(924));
 
 	EnableAlphaTest(true);
 
@@ -2224,7 +2230,7 @@ void COptionsMenu::RenderBack(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(916));
+	sprintf_s(Text, "%s", GetTextLine(925));
 
 	EnableAlphaTest(true);
 

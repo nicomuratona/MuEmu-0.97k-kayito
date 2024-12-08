@@ -3,8 +3,10 @@
 #include "Camera.h"
 #include "Controller.h"
 #include "Font.h"
+#include "PingSystem.h"
 #include "PrintPlayer.h"
 #include "Protect.h"
+#include "Protocol.h"
 #include "resource.h"
 
 CWindow	gWindow;
@@ -19,6 +21,8 @@ CWindow::CWindow()
 	this->iResolutionValues[R1366x768] = std::make_pair<WORD, WORD>(1360, 768);
 	this->iResolutionValues[R1600x900] = std::make_pair<WORD, WORD>(1600, 900);
 	this->iResolutionValues[R1920x1080] = std::make_pair<WORD, WORD>(1920, 1080);
+
+	sprintf_s(this->m_WindowName, sizeof(this->m_WindowName), "%s", gProtect.m_MainInfo.WindowName);
 
 	this->m_WindowMode = WINDOW_MODE;
 
@@ -155,6 +159,16 @@ LRESULT WINAPI CWindow::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 				case WINDOWMINIMIZED_TIMER:
 				{
+					return 0;
+				}
+
+				case HACK_TIMER:
+				{
+					if (g_bGameServerConnected)
+					{
+						gProtocol.CGLiveClientSend();
+					}
+
 					return 0;
 				}
 			}
@@ -440,20 +454,20 @@ void CWindow::ShowTrayMessage(char* Title, char* Message)
 
 void CWindow::ChangeWindowText()
 {
-	if (SceneFlag != 5)
+	if (SceneFlag != MAIN_SCENE)
 	{
-		return;
+		sprintf_s(this->m_WindowName, sizeof(this->m_WindowName), "%s", gProtect.m_MainInfo.WindowName);
+	}
+	else
+	{
+		STRUCT_DECRYPT;
+
+		sprintf_s(this->m_WindowName, sizeof(this->m_WindowName), "%s || Resets: %d || GrandResets: %d || Level: %d || PING: %u ms || FPS: %.0f", (char*)(CharacterAttribute + 0x00), gPrintPlayer.ViewReset, gPrintPlayer.ViewGrandReset, *(WORD*)(CharacterAttribute + 0x0E), gPing.m_Ping, FPS);
+
+		STRUCT_ENCRYPT;
 	}
 
-	char text[256];
-
-	STRUCT_DECRYPT;
-
-	sprintf_s(text, sizeof(text), "%s || Resets: %d || GrandResets: %d || Level: %d || PING: %u ms || FPS: %.0f", (char*)(CharacterAttribute + 0x00), gPrintPlayer.ViewReset, gPrintPlayer.ViewGrandReset, *(WORD*)(CharacterAttribute + 0x0E), gPrintPlayer.ViewPing, FPS);
-
-	STRUCT_ENCRYPT;
-
-	SetWindowText(g_hWnd, text);
+	SetWindowText(g_hWnd, this->m_WindowName);
 }
 
 void CWindow::SetWindowMode(bool windowMode, bool borderless)
