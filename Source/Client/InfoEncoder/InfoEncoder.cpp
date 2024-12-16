@@ -6,6 +6,8 @@
 #include "ItemOption.h"
 #include "CustomMonster.h"
 #include "CustomBow.h"
+#include "CustomWing.h"
+#include "ItemPosition.h"
 
 struct MAIN_FILE_INFO
 {
@@ -31,8 +33,10 @@ struct MAIN_FILE_INFO
 	CUSTOM_GLOW_INFO CustomGlowInfo[MAX_ITEM];
 	CUSTOM_ITEM_INFO CustomItemInfo[MAX_ITEM];
 	CUSTOM_BOW_INFO CustomBowInfo[MAX_CUSTOM_BOW];
+	CUSTOM_WING_INFO CustomWingInfo[MAX_CUSTOM_WING];
 	ITEM_OPTION_INFO ItemOptionInfo[MAX_ITEM_OPTION_INFO];
 	CUSTOM_MONSTER_INFO CustomMonsterInfo[MAX_MONSTER];
+	ITEM_POSITION_INFO ItemPositionInfo[MAX_ITEM];
 };
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -88,9 +92,13 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	gCustomBow.Load("CustomBow.txt");
 
+	gCustomWing.Load("CustomWing.txt");
+
 	gItemOption.Load("ItemOption.txt");
 
 	gCustomMonster.Load("CustomMonster.txt");
+	
+	gItemPosition.Load("ItemPosition.txt");
 
 	/*****************************************************************/
 	/*********************** Load struct files ***********************/
@@ -104,9 +112,13 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	memcpy(info.CustomBowInfo, gCustomBow.m_CustomBowInfo, sizeof(info.CustomBowInfo));
 
+	memcpy(info.CustomWingInfo, gCustomWing.m_CustomWingInfo, sizeof(info.CustomWingInfo));
+
 	memcpy(info.ItemOptionInfo, gItemOption.m_ItemOptionInfo, sizeof(info.ItemOptionInfo));
 
 	memcpy(info.CustomMonsterInfo, gCustomMonster.m_CustomMonsterInfo, sizeof(info.CustomMonsterInfo));
+
+	memcpy(info.ItemPositionInfo, gItemPosition.m_ItemPositionInfo, sizeof(info.ItemPositionInfo));
 
 	/*=================================================================*/
 

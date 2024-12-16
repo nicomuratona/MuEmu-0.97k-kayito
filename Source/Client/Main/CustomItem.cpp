@@ -39,7 +39,7 @@ void CCustomItem::SetInfo(CUSTOM_ITEM_INFO info)
 	this->m_CustomItemInfo[info.ItemIndex] = info;
 }
 
-CUSTOM_ITEM_INFO* CCustomItem::GetInfoByItem(int ItemIndex)
+CUSTOM_ITEM_INFO* CCustomItem::GetInfoByIndex(int ItemIndex)
 {
 	if (ItemIndex < 0 || ItemIndex >= MAX_ITEM)
 	{
@@ -56,7 +56,7 @@ CUSTOM_ITEM_INFO* CCustomItem::GetInfoByItem(int ItemIndex)
 
 BYTE CCustomItem::GetCustomItemSkill(int ItemIndex)
 {
-	CUSTOM_ITEM_INFO* lpInfo = this->GetInfoByItem(ItemIndex);
+	CUSTOM_ITEM_INFO* lpInfo = this->GetInfoByIndex(ItemIndex);
 
 	if (lpInfo != 0)
 	{

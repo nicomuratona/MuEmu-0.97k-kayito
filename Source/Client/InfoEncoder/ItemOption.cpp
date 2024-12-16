@@ -66,9 +66,13 @@ void CItemOption::Load(char* path)
 
 			info.OptionValue = lpReadScript->GetAsNumber();
 
-			info.ItemMinIndex = GET_ITEM(lpReadScript->GetAsNumber(), lpReadScript->GetAsNumber());
+			info.ItemMinIndex = lpReadScript->GetAsNumber();
 
-			info.ItemMaxIndex = GET_ITEM(lpReadScript->GetAsNumber(), lpReadScript->GetAsNumber());
+			info.ItemMinIndex = GET_ITEM(info.ItemMinIndex, lpReadScript->GetAsNumber());
+
+			info.ItemMaxIndex = lpReadScript->GetAsNumber();
+
+			info.ItemMaxIndex = GET_ITEM(info.ItemMaxIndex, lpReadScript->GetAsNumber());
 
 			info.ItemSkillOption = lpReadScript->GetAsNumber();
 

@@ -8,6 +8,7 @@
 #include "HealthBar.h"
 #include "Interface.h"
 #include "Item.h"
+#include "ItemPosition.h"
 #include "ItemStack.h"
 #include "ItemValue.h"
 #include "Language.h"
@@ -17,6 +18,7 @@
 #include "OptionsMenu.h"
 #include "PacketManager.h"
 #include "Patchs.h"
+#include "PingSystem.h"
 #include "PrintPlayer.h"
 #include "Protect.h"
 #include "Protocol.h"
@@ -73,6 +75,8 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 
 	gReconnect.Init();
 
+	gPing.Init();
+
 	gSound.Init();
 
 	gOptionsMenu.Init();
@@ -109,7 +113,11 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 
 	gCustomBow.Load(gProtect.m_MainInfo.CustomBowInfo);
 
+	gCustomWing.Load(gProtect.m_MainInfo.CustomWingInfo);
+
 	gCustomMonster.Load(gProtect.m_MainInfo.CustomMonsterInfo);
+
+	gItemPosition.Load(gProtect.m_MainInfo.ItemPositionInfo);
 
 	gProtect.CheckClientFile();
 

@@ -7,7 +7,9 @@ CFont::CFont()
 {
 	GetPrivateProfileString("Font", "FontName", "Verdana", this->MyFontFaceName, 32, ".\\Config.ini");
 
-	FontHeight = GetPrivateProfileInt("Font", "FontHeight", 13, ".\\Config.ini");
+	int iFontHeight = GetPrivateProfileInt("Font", "FontHeight", 13, ".\\Config.ini");
+
+	FontHeight = (iFontHeight > 25) ? 25 : iFontHeight;
 
 	this->Bold = GetPrivateProfileInt("Font", "FontBold", 0, ".\\Config.ini");
 

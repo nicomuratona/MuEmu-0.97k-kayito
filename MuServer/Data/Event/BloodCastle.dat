@@ -49,3 +49,13 @@ end
 4	225000			400000
 5	265000			480000
 end
+
+5
+//Level	MinRequiredLevel	MaxRequiredLevel	MinRequiredMGLevel	MaxRequiredMGLevel
+0	15			80			10			60
+1	81			130			61			110
+2	131			180			111			160
+3	181			230			161			210
+4	231			280			211			260
+5	281			99999			261			99999
+end

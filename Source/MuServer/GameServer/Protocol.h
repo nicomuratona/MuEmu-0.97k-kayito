@@ -39,7 +39,7 @@ struct PMSG_MAIN_CHECK_RECV
 
 struct PMSG_LIVE_CLIENT_RECV
 {
-	PBMSG_HEAD header; // C1:0E
+	PBMSG_HEAD header; // C3:0E
 	DWORD TickCount;
 	WORD PhysiSpeed;
 	WORD MagicSpeed;
@@ -332,6 +332,12 @@ struct PMSG_CHARACTER_CREATION_ENABLE_SEND
 {
 	PBMSG_HEAD header; // C1:DE
 	BYTE result;
+};
+
+struct PMSG_CHARACTER_MAX_LEVEL_SEND
+{
+	PBMSG_HEAD header; // C1:DF
+	DWORD MaxCharacterLevel;
 };
 
 struct PMSG_CONNECT_CLIENT_SEND
@@ -675,6 +681,8 @@ void GCMonsterDieSend(int aIndex, int bIndex, int experience, int damage, BYTE f
 void GCRewardExperienceSend(int aIndex, int experience);
 
 void GCCharacterCreationEnableSend(int aIndex, BYTE result);
+
+void GCCharacterMaxLevelSend(int aIndex, DWORD MaxLevel);
 
 void GCConnectClientSend(int aIndex, BYTE result);
 

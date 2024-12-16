@@ -7,6 +7,9 @@
 // System Include
 #include <windows.h>
 #include <winsock2.h>
+#include <WS2tcpip.h>
+#include <iphlpapi.h>
+#include <icmpapi.h>
 #include <MMSystem.h>
 #include <math.h>
 #include <vector>
@@ -23,6 +26,7 @@
 #include <mbstring.h>
 #include <fstream>
 #include <deque>
+#include <chrono>
 
 // General Includes
 #include "Console.h"
@@ -36,6 +40,7 @@
 
 // Libraries
 #pragma comment(lib,"ws2_32.lib")
+#pragma comment(lib,"iphlpapi.lib")
 #pragma comment(lib,"version.lib")
 #pragma comment(lib,"Rpcrt4.lib")
 #pragma comment(lib,"Opengl32.lib")

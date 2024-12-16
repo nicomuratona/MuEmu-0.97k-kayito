@@ -84,61 +84,97 @@ void CCustomMonster::Init()
 
 	SetCompleteHook(0xE8, 0x004C07C2, &this->CreateCustomMonster);
 
-	SetCompleteHook(0xE9, 0x0044AE03, &this->CustomMonsterDie);
+	SetCompleteHook(0xE9, 0x0044ADFC, &this->CustomMonsterDie);
 
 	SetCompleteHook(0xE9, 0x00456AEB, &this->CustomMonsterGolden);
 
 	SetCompleteHook(0xE9, 0x0048FBFA, &this->CustomNpcTalk);
 }
 
+void OpenMonsterModel(CUSTOM_MONSTER_INFO* lpInfo)
+{
+	int Index = MAX_MODELS + lpInfo->Index;
+
+	DWORD b = gLoadModels.GetModels() + (188 * Index);
+
+	if (*(BYTE*)0x0055A7C4 && (*(short*)(b + 0x26) > 0 || *(short*)(b + 0x24) > 0)) // if (b->NumActions > 0 && b->NumMeshs > 0)
+	{
+		return;
+	}
+
+	char path[MAX_PATH] = { 0 };
+
+	wsprintf(path, "Data\\%s", lpInfo->FolderName);
+
+	gLoadModels.MyAccessModel(Index, path, lpInfo->ModelName);
+
+	if (*(short*)(b + 0x24) == 0) // if (b->NumMeshs == 0)
+	{
+		return;
+	}
+
+	gLoadModels.MyOpenTexture(Index, lpInfo->FolderName);
+
+	*(float*)(*(DWORD*)(b + 0x30) + 4) = 0.25f; // b->Actions[MONSTER01_STOP1].PlaySpeed = 0.25f;
+
+	*(float*)(*(DWORD*)(b + 0x30) + 20) = 0.2f; // b->Actions[MONSTER01_STOP2].PlaySpeed = 0.2f;
+
+	*(float*)(*(DWORD*)(b + 0x30) + 36) = 0.34f; // b->Actions[MONSTER01_WALK].PlaySpeed = 0.34f;
+
+	*(float*)(*(DWORD*)(b + 0x30) + 52) = 0.33f; // b->Actions[MONSTER01_ATTACK1].PlaySpeed = 0.33f;
+
+	*(float*)(*(DWORD*)(b + 0x30) + 68) = 0.33f; // b->Actions[MONSTER01_ATTACK2].PlaySpeed = 0.33f;
+
+	*(float*)(*(DWORD*)(b + 0x30) + 84) = 0.5f; // b->Actions[MONSTER01_SHOCK].PlaySpeed = 0.5f;
+
+	*(float*)(*(DWORD*)(b + 0x30) + 100) = 0.55f; // b->Actions[MONSTER01_DIE].PlaySpeed = 0.55f;
+
+	*(bool*)(*(DWORD*)(b + 0x30) + 96) = true; // b->Actions[MONSTER01_DIE].Loop = true;
+}
+
+void OpenNpcModel(CUSTOM_MONSTER_INFO* lpInfo)
+{
+	int Index = MAX_MODELS + lpInfo->Index;
+
+	DWORD b = gLoadModels.GetModels() + (188 * Index);
+
+	if (*(BYTE*)0x0055A7C4 && *(short*)(b + 0x26) > 0) // if (b->NumActions > 0)
+	{
+		return;
+	}
+
+	char path[MAX_PATH] = { 0 };
+
+	wsprintf(path, "Data\\%s", lpInfo->FolderName);
+
+	gLoadModels.MyAccessModel(Index, path, lpInfo->ModelName);
+
+	for (int i = 0; i < *(short*)(b + 0x26); i++) // for (int i = 0; i < b->NumActions; i++)
+	{
+		*(float*)(*(DWORD*)(b + 0x30) + 4 + 16 * i) = 0.25f; // b->Actions[i].PlaySpeed = 0.25f;
+	}
+
+	if (*(short*)(b + 0x24) > 0) // if (b->NumMeshs > 0)
+	{
+		gLoadModels.MyOpenTexture(Index, lpInfo->FolderName);
+	}
+}
+
 DWORD CCustomMonster::CreateCustomMonster(int Type, int PositionX, int PositionY, int Key)
 {
 	CUSTOM_MONSTER_INFO* lpInfo = gCustomMonster.GetInfoByIndex(Type);
 
-	if (lpInfo) // Is Custom Monster
+	if (lpInfo != NULL) // Is Custom Monster
 	{
-		int Index = MONSTER_BASE_MODEL + Type;
+		int Index = MAX_MODELS + lpInfo->Index;
 
-		DWORD b = Models + (188 * Index);
-
-		if (!*(BYTE*)0x0055A7C4 || *(short*)(b + 0x26) <= 0) // if (b->NumActions <= 0)
+		if (lpInfo->MonsterType != 0) // Is Monster
 		{
-			char path[MAX_PATH] = { 0 };
-
-			wsprintf(path, "Data\\%s", lpInfo->FolderName);
-
-			gLoadModels.MyAccessModel(Index, path, lpInfo->ModelName);
-
-			if (*(short*)(b + 0x24) > 0) // if (b->NumMeshs != 0)
-			{
-				gLoadModels.MyOpenTexture(Index, lpInfo->FolderName);
-			}
-
-			if (lpInfo->MonsterType != 0) // Is Monster
-			{
-				*(float*)(*(DWORD*)(b + 0x30) + 4) = 0.25f; // b->Actions[MONSTER01_STOP1].PlaySpeed = 0.25f;
-
-				*(float*)(*(DWORD*)(b + 0x30) + 20) = 0.2f; // b->Actions[MONSTER01_STOP2].PlaySpeed = 0.2f;
-
-				*(float*)(*(DWORD*)(b + 0x30) + 36) = 0.34f; // b->Actions[MONSTER01_WALK].PlaySpeed = 0.34f;
-
-				*(float*)(*(DWORD*)(b + 0x30) + 52) = 0.33f; // b->Actions[MONSTER01_ATTACK1].PlaySpeed = 0.33f;
-
-				*(float*)(*(DWORD*)(b + 0x30) + 68) = 0.33f; // b->Actions[MONSTER01_ATTACK2].PlaySpeed = 0.33f;
-
-				*(float*)(*(DWORD*)(b + 0x30) + 84) = 0.5f; // b->Actions[MONSTER01_SHOCK].PlaySpeed = 0.5f;
-
-				*(float*)(*(DWORD*)(b + 0x30) + 100) = 0.55f; // b->Actions[MONSTER01_DIE].PlaySpeed = 0.55f;
-
-				*(bool*)(*(DWORD*)(b + 0x30) + 96) = true; // b->Actions[MONSTER01_DIE].Loop = true;
-			}
-			else // Is NPC
-			{
-				for (int i = 0; i < *(short*)(b + 0x26); i++) // for (int i = 0; i < b->NumActions; i++)
-				{
-					*(float*)(*(DWORD*)(b + 0x30) + 4 + 16 * i) = 0.25f; // b->Actions[i].PlaySpeed = 0.25f;
-				}
-			}
+			OpenMonsterModel(lpInfo);
+		}
+		else
+		{
+			OpenNpcModel(lpInfo);
 		}
 
 		DWORD c = CreateCharacter(Key, Index, PositionX, PositionY, 0.0f);
@@ -164,21 +200,21 @@ DWORD CCustomMonster::CreateCustomMonster(int Type, int PositionX, int PositionY
 _declspec(naked) void CCustomMonster::CustomMonsterDie()
 {
 	static DWORD jmpOnOk = 0x0044AE22;
-	static DWORD jmpOnNot = 0x0044AE09;
+	static DWORD jmpOnNot = 0x0044AE03;
 
 	static int Index;
-	static CUSTOM_MONSTER_INFO* lpInfo;
 
 	_asm
 	{
-		Mov Index, Edx;
-		Sub Index, MONSTER_BASE_MODEL;
+		Mov Ecx, Dword Ptr Ds : [Ebp + 0xC] ;
+		Movsx Edx, Word Ptr Ds : [Ecx + 0x2] ;
 		Pushad;
+		Mov Ecx, Dword Ptr Ds : [Ebp + 0x8] ;
+		Movzx Edx, Byte Ptr Ds : [Ecx + 0x2EB] ;
+		Mov Index, Edx;
 	}
 
-	lpInfo = gCustomMonster.GetInfoByIndex(Index);
-
-	if (lpInfo)
+	if (gCustomMonster.GetInfoByIndex(Index) == NULL)
 	{
 		goto EXIT;
 	}
@@ -186,8 +222,7 @@ _declspec(naked) void CCustomMonster::CustomMonsterDie()
 	_asm
 	{
 		Popad;
-		Cmp Edx, 0x10E;
-		Jmp[jmpOnNot];
+		Jmp[jmpOnOk];
 	}
 
 EXIT:
@@ -195,7 +230,7 @@ EXIT:
 	_asm
 	{
 		Popad;
-		Jmp[jmpOnOk];
+		Jmp[jmpOnNot];
 	}
 }
 

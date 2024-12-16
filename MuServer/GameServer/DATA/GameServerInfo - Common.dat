@@ -63,10 +63,10 @@ GoldenArcherRewardItemIndex = 459	; 459 = Box of Luck
 ;==================================================
 ; Experience Settings
 ;==================================================
-AddExperienceRate_AL0 = 9999
-AddExperienceRate_AL1 = 9999
-AddExperienceRate_AL2 = 9999
-AddExperienceRate_AL3 = 9999
+AddExperienceRate_AL0 = 100
+AddExperienceRate_AL1 = 100
+AddExperienceRate_AL2 = 100
+AddExperienceRate_AL3 = 100
 AddEventExperienceRate_AL0 = 1
 AddEventExperienceRate_AL1 = 1
 AddEventExperienceRate_AL2 = 1
@@ -116,7 +116,7 @@ ShopItemBlockSellOnMaxMoney = 1
 ;==================================================
 ; Level Up Settings
 ;==================================================
-MaxCharacterLevel = 1000
+MaxCharacterLevel = 400
 MaxLevelUp = 1
 MaxLevelUpEvent = 1
 MaxStatPoint_AL0 = 32767

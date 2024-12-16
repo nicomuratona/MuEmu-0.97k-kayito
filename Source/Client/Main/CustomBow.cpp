@@ -36,7 +36,7 @@ void CCustomBow::SetInfo(CUSTOM_BOW_INFO info)
 	this->m_CustomBowInfo[info.ItemIndex] = info;
 }
 
-CUSTOM_BOW_INFO* CCustomBow::GetInfoByItem(int ItemIndex)
+CUSTOM_BOW_INFO* CCustomBow::GetInfoByIndex(int ItemIndex)
 {
 	if (ItemIndex < 0 || (ItemIndex / MAX_ITEM_TYPE) != 4)
 	{
@@ -55,7 +55,7 @@ CUSTOM_BOW_INFO* CCustomBow::GetInfoByItem(int ItemIndex)
 
 int CCustomBow::GetBowHandByItem(int ItemIndex)
 {
-	CUSTOM_BOW_INFO* info = this->GetInfoByItem(ItemIndex);
+	CUSTOM_BOW_INFO* info = this->GetInfoByIndex(ItemIndex);
 
 	if (info != NULL)
 	{
@@ -75,7 +75,7 @@ int CCustomBow::GetBowHandByItem(int ItemIndex)
 
 bool CCustomBow::IsCustomBow(int ItemIndex)
 {
-	CUSTOM_BOW_INFO* info = this->GetInfoByItem(ItemIndex);
+	CUSTOM_BOW_INFO* info = this->GetInfoByIndex(ItemIndex);
 
 	if (info != NULL)
 	{
@@ -87,7 +87,7 @@ bool CCustomBow::IsCustomBow(int ItemIndex)
 
 bool CCustomBow::IsCustomCrossbow(int ItemIndex)
 {
-	CUSTOM_BOW_INFO* info = this->GetInfoByItem(ItemIndex);
+	CUSTOM_BOW_INFO* info = this->GetInfoByIndex(ItemIndex);
 
 	if (info != NULL)
 	{
@@ -99,7 +99,7 @@ bool CCustomBow::IsCustomCrossbow(int ItemIndex)
 
 int CCustomBow::GetSkillEffect(int ItemIndex)
 {
-	CUSTOM_BOW_INFO* lpInfo = this->GetInfoByItem(ItemIndex);
+	CUSTOM_BOW_INFO* lpInfo = this->GetInfoByIndex(ItemIndex);
 
 	if (lpInfo == NULL)
 	{

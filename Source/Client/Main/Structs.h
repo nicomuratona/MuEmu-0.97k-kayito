@@ -123,3 +123,8 @@ struct MONSTER_SCRIPT
 	WORD Level;
 	MONSTER_ATTRIBUTE Attribute;
 };
+
+struct BMD
+{
+	BYTE Data[188];
+};

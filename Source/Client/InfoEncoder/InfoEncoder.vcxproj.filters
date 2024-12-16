@@ -63,6 +63,12 @@
     <ClInclude Include="CustomBow.h">
       <Filter>Item</Filter>
     </ClInclude>
+    <ClInclude Include="CustomWing.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemPosition.h">
+      <Filter>Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCRC32.cpp">
@@ -93,6 +99,12 @@
       <Filter>Monster</Filter>
     </ClCompile>
     <ClCompile Include="CustomBow.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomWing.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemPosition.cpp">
       <Filter>Item</Filter>
     </ClCompile>
   </ItemGroup>

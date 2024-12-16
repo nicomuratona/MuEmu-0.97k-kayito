@@ -33,3 +33,5 @@
 #pragma comment(lib,"dbghelp.lib")
 
 typedef unsigned __int64 QWORD;
+
+#define DWORD_MAX 4294967295

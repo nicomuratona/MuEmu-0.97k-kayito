@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Patchs.h"
+#include "LoadModels.h"
 #include "PrintPlayer.h"
 #include "Protect.h"
 #include "Protocol.h"
@@ -1849,7 +1850,7 @@ bool CPatchs::AttackStage(DWORD c, DWORD o)
 	{
 		case SKILL_DEATH_STAB:
 		{
-			DWORD b = Models + (0xBC * *(short*)(o + 2)); // BMD* b = &Models[o->Type];
+			DWORD b = gLoadModels.GetModels() + (0xBC * *(short*)(o + 2)); // BMD* b = &Models[o->Type];
 
 			if (AttackTime == 8)
 			{
@@ -1863,9 +1864,9 @@ bool CPatchs::AttackStage(DWORD c, DWORD o)
 
 				int LinkBone = *(BYTE*)(c + 24 * Hand + 0x274);
 
-				float* BoneTransform = (float*)(*(DWORD*)(o + 276) + 48 * LinkBone);
+				float* pBoneTransform = (float*)(*(DWORD*)(o + 276) + 48 * LinkBone);
 
-				TransformPosition(b, BoneTransform, Position2, (float*)(o + 392), true);
+				TransformPosition(b, pBoneTransform, Position2, (float*)(o + 392), true);
 
 				float fDistance = 300.0f;
 
@@ -1938,7 +1939,7 @@ bool CPatchs::AttackStage(DWORD c, DWORD o)
 
 		case SKILL_IMPALE:
 		{
-			DWORD b = Models + (0xBC * *(short*)(o + 2)); // BMD* b = &Models[o->Type];
+			DWORD b = gLoadModels.GetModels() + (0xBC * *(short*)(o + 2)); // BMD* b = &Models[o->Type];
 
 			vec3_t p;
 
@@ -1955,9 +1956,9 @@ bool CPatchs::AttackStage(DWORD c, DWORD o)
 
 				int LinkBone = *(BYTE*)(c + 24 * Hand + 0x274);
 
-				float* BoneTransform = (float*)(*(DWORD*)(o + 276) + 48 * LinkBone);
+				float* pBoneTransform = (float*)(*(DWORD*)(o + 276) + 48 * LinkBone);
 
-				TransformPosition(b, BoneTransform, Position2, p, true);
+				TransformPosition(b, pBoneTransform, Position2, p, true);
 
 				CreateEffect(497, p, (float*)(o + 28), Light, *(short*)(c + 8 * (3 * Hand + 78)), o, -1, 0, 0);
 			}
@@ -2214,7 +2215,7 @@ void CPatchs::CalcFPS()
 
 	DeltaT = ((dif) ? dif : 0.1f) / CLOCKS_PER_SEC;
 
-	FPS = (1.0f / dif) * CLOCKS_PER_SEC;
+	FPS = CLOCKS_PER_SEC / ((dif) ? dif : 0.1f);
 
 	WorldTime = (float)clock();
 }
