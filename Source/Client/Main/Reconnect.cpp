@@ -202,7 +202,7 @@ void CReconnect::ReconnectToGameServer()
 {
 	if (this->ReconnectCreateConnection(this->GameServerAddress, this->GameServerPort) != FALSE)
 	{
-		*(DWORD*)(g_bGameServerConnected) = TRUE;
+		g_bGameServerConnected = TRUE;
 
 		this->ReconnectSetInfo(RECONNECT_STATUS_RECONNECT, RECONNECT_PROGRESS_CONNECTED, 10000, 30000);
 	}
@@ -285,14 +285,14 @@ __declspec(naked) void CReconnect::ReconnectCheckConnection()
 
 BOOL CReconnect::ReconnectCloseSocket(DWORD This)
 {
-	if (*(BOOL*)g_bGameServerConnected != FALSE)
+	if (g_bGameServerConnected != FALSE)
 	{
 		if (gHackCheck.CheckSocketPort(pSocket))
 		{
 			gReconnect.ReconnectOnCloseSocket();
 		}
 
-		*(BOOL*)g_bGameServerConnected = FALSE;
+		g_bGameServerConnected = FALSE;
 	}
 
 	closesocket(pSocket);

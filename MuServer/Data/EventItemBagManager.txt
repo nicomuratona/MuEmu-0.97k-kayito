@@ -11,12 +11,17 @@
 14,011		9		*		*		//Box of Kundun 2
 14,011		10		*		*		//Box of Kundun 3
 14,011		11		*		*		//Box of Kundun 4
-*		*		*		0		//Blood Castle 1
-*		*		*		1		//Blood Castle 2
-*		*		*		2		//Blood Castle 3
-*		*		*		3		//Blood Castle 4
-*		*		*		4		//Blood Castle 5
-*		*		*		5		//Blood Castle 6
+14,011		12		*		*		//Box of Kundun 5
+*		*		*		0		//Devil Square 1
+*		*		*		1		//Devil Square 2
+*		*		*		2		//Devil Square 3
+*		*		*		3		//Devil Square 4
+*		*		*		4		//Blood Castle 1
+*		*		*		5		//Blood Castle 2
+*		*		*		6		//Blood Castle 3
+*		*		*		7		//Blood Castle 4
+*		*		*		8		//Blood Castle 5
+*		*		*		9		//Blood Castle 6
 *		*		43		*		//Golden Budge Dragon
 *		*		78		*		//Golden Goblin
 *		*		54		*		//Golden Soldier

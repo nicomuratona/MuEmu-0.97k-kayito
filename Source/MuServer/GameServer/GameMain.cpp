@@ -37,8 +37,6 @@ void GameMainInit(HWND hwnd)
 
 	gServerInfo.ReadInit();
 
-	gObjSetExperienceTable();
-
 	gMonsterManager.SetMonsterData();
 
 	gJoinServerConnection.Init(hwnd, "JoinServerConnection", JoinServerProtocolCore);

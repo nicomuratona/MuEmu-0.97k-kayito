@@ -4,6 +4,7 @@
 #include "ItemOption.h"
 #include "CustomItem.h"
 #include "CustomBow.h"
+#include "CustomWing.h"
 
 CItem gItem;
 
@@ -41,6 +42,8 @@ void CItem::Init()
 	SetCompleteHook(0xE9, 0x0047C690, &this->ItemValue);
 
 	SetCompleteHook(0xE9, 0x004C3EF0, &this->ConvertRepairGold);
+	
+	SetByte(0x004C5EC4, 0xEB); // Skip reducing damage in staffs
 }
 
 void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
@@ -109,7 +112,8 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 	{
 		ip->Part = EQUIPMENT_BOOTS;
 	}
-	else if (ip->Type >= GET_ITEM(12, 0) && ip->Type <= GET_ITEM(12, 6)) // Wings
+	else if (ip->Type >= GET_ITEM(12, 0) && ip->Type <= GET_ITEM(12, 6) // Wings
+		 || gCustomWing.GetInfoByIndex(ip->Type) != NULL) // Custom Wings
 	{
 		ip->Part = EQUIPMENT_WING;
 	}
@@ -130,11 +134,11 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 		ip->Part = -1;
 	}
 
-	int m_Level = ((Attribute1 >> 3) & 0xF);
+	int m_Level = GET_ITEM_OPT_LEVEL(Attribute1);
 
-	int m_Excellent = (Attribute2 & 63);
+	int m_Excellent = GET_ITEM_OPT_EXC(Attribute2);
 
-	int ExceOption = (Attribute2 & 63);
+	int ExceOption = GET_ITEM_OPT_EXC(Attribute2);
 
 	if (ip->Type == GET_ITEM(0, 19) || ip->Type == GET_ITEM(2, 13) || ip->Type == GET_ITEM(4, 18) || ip->Type == GET_ITEM(5, 10)) // Sword of Archangel,Scepter of Archangel,Crossbow of Archangel,Staff of Archangel
 	{
@@ -213,7 +217,8 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 		{
 			ip->RequireLevel = ItemInfo->RequireLevel;
 		}
-		else if ((ip->Type >= GET_ITEM(12, 3) && ip->Type <= GET_ITEM(12, 6))) // Wings
+		else if ((ip->Type >= GET_ITEM(12, 3) && ip->Type <= GET_ITEM(12, 6)) // Wings
+			 || gCustomWing.GetInfoByIndex(ip->Type) != NULL) // Custom Wings
 		{
 			ip->RequireLevel = ItemInfo->RequireLevel + (m_Level * 5);
 		}
@@ -336,9 +341,13 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 				ip->Defense += (((ip->Defense * 12) / ItemInfo->Level) + (ItemInfo->Level / 5)) + 4;
 			}
 
-			if ((ip->Type >= GET_ITEM(12, 3) && ip->Type <= GET_ITEM(12, 6))) // 2sd Wings
+			if ((ip->Type >= GET_ITEM(12, 3) && ip->Type <= GET_ITEM(12, 6))) // Wings
 			{
 				ip->Defense += (m_Level * 2);
+			}
+			else if (gCustomWing.GetInfoByIndex(ip->Type) != NULL) // Custom Wings
+			{
+				ip->Defense += gCustomWing.GetCustomWingDefense(ip->Type, m_Level);
 			}
 			else
 			{
@@ -376,11 +385,11 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 
 	std::deque<std::pair<int, int>> ToInsertOptions;
 
-	BYTE SkillOption = (Attribute1 / 128) & 1;
+	BYTE SkillOption = GET_ITEM_OPT_SKILL(Attribute1);
 
-	BYTE LuckOption = (Attribute1 / 4) & 1;
+	BYTE LuckOption = GET_ITEM_OPT_LUCK(Attribute1);
 
-	BYTE AdditionalOption = (Attribute1 & 3) + ((Attribute2 & 64) / 16);
+	BYTE AdditionalOption = GET_ITEM_OPT_OPT(Attribute1, Attribute2);
 
 	BYTE pItemOption = 0;
 
@@ -411,6 +420,13 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 
 		switch (ip->Type)
 		{
+			case GET_ITEM(12, 0): // Wings of Elf
+			{
+				ip->RequireStrength += (AdditionalOption * 4);
+
+				break;
+			}
+
 			case GET_ITEM(12, 1): // Wings of Angel
 			{
 				ip->RequireStrength += (AdditionalOption * 4);
@@ -455,14 +471,15 @@ void CItem::ItemConvert(ITEM* ip, BYTE Attribute1, BYTE Attribute2)
 
 			default:
 			{
-				ip->RequireStrength += ((ip->Type < GET_ITEM(12, 0)) ? (AdditionalOption * 4) : 0);
+				ip->RequireStrength += ((gCustomWing.GetInfoByIndex(ip->Type) != NULL) ? (AdditionalOption * 4) : 0);
 
 				break;
 			}
 		}
 	}
 
-	if (ip->Type >= GET_ITEM(12, 0) && ip->Type <= GET_ITEM(12, 6))
+	if (ip->Type >= GET_ITEM(12, 0) && ip->Type <= GET_ITEM(12, 6) // Wings
+	    || gCustomWing.GetInfoByIndex(ip->Type) != NULL) // Custom Wings
 	{
 		ToInsertOptions.insert(ToInsertOptions.end(), ToInsertLuckOption.begin(), ToInsertLuckOption.end());
 	}
@@ -995,7 +1012,7 @@ WORD CItem::myCalcMaxDurability(ITEM* ip, ITEM_ATTRIBUTE* p, int Level)
 
 	if (ip->Type != GET_ITEM(0, 19) && ip->Type != GET_ITEM(4, 18) && ip->Type != GET_ITEM(5, 10) && ip->Part != EQUIPMENT_WING) // Sword of Archangel, Crossbow of Archangel, Staff of Archangel & Wings
 	{
-		if ((ip->Option1 & 63) != 0)
+		if (GET_ITEM_OPT_EXC(ip->Option1) != 0)
 		{
 			dur += 15;
 		}
@@ -1011,11 +1028,11 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 		return 0;
 	}
 
-	BYTE m_ItemLevel = (ip->Level >> 3) & 15;
-	BYTE m_ItemSkill = (ip->Level >> 7) & 1;
-	BYTE m_ItemLuck = (ip->Level >> 2) & 1;
-	BYTE m_ItemAddOption = (ip->Level & 3) + ((ip->Option1 & 64) / 16);
-	BYTE m_ItemExcellent = (ip->Option1 & 63);
+	BYTE m_ItemLevel = GET_ITEM_OPT_LEVEL(ip->Level);
+	BYTE m_ItemSkill = GET_ITEM_OPT_SKILL(ip->Level);
+	BYTE m_ItemLuck = GET_ITEM_OPT_LUCK(ip->Level);
+	BYTE m_ItemAddOption = GET_ITEM_OPT_OPT(ip->Level, ip->Option1);
+	BYTE m_ItemExcellent = GET_ITEM_OPT_EXC(ip->Option1);
 
 	DWORD m_BuyMoney = 0;
 
@@ -1042,7 +1059,7 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 
 	int value = 0;
 
-	if (gItemValue.GetItemValue(ip, &value) != false)
+	if (gItemValue.GetItemValue(ip, &value))
 	{
 		m_BuyMoney = value;
 
@@ -1103,7 +1120,7 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 			}
 		}
 
-		if (((ip->Type / MAX_ITEM_TYPE) == 12 && ip->Type > GET_ITEM(12, 6)) || (ip->Type / MAX_ITEM_TYPE) == 13 || (ip->Type / MAX_ITEM_TYPE) == 15)
+		if (((ip->Type / MAX_ITEM_TYPE) == 12 && ip->Type > GET_ITEM(12, 6) && gCustomWing.GetInfoByIndex(ip->Type) == NULL) || (ip->Type / MAX_ITEM_TYPE) == 13 || (ip->Type / MAX_ITEM_TYPE) == 15)
 		{
 			price = ((ItemLevel * ItemLevel) * ItemLevel) + 100;
 
@@ -1171,7 +1188,8 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 				}
 			}
 
-			if ((ip->Type >= GET_ITEM(12, 0) && ip->Type <= GET_ITEM(12, 6))) // Wings
+			if ((ip->Type >= GET_ITEM(12, 0) && ip->Type <= GET_ITEM(12, 6)) // Wings
+			    || gCustomWing.GetInfoByIndex(ip->Type) != NULL) // Custom Wings
 			{
 				price = ((((ItemLevel + 40) * ItemLevel) * ItemLevel) * 11) + 40000000;
 			}
@@ -1240,6 +1258,10 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 
 DWORD CItem::ConvertRepairGold(int Gold, int Durability, int MaxDurability, short Type, char* Text)
 {
+	float m_Durability = (float)Durability;
+
+	float m_BaseDurability = (float)MaxDurability;
+
 	int RepairMoney = 0;
 
 	RepairMoney = Gold / 3;
@@ -1254,9 +1276,9 @@ DWORD CItem::ConvertRepairGold(int Gold, int Durability, int MaxDurability, shor
 
 	float sq2 = sqrt(sq1);
 
-	float value = ((((3.0f * sq1) * sq2) * (1.0f - ((float)Durability / (float)MaxDurability))) + 1.0f);
+	float value = ((((3.0f * sq1) * sq2) * (1.0f - (m_Durability / m_BaseDurability))) + 1.0f);
 
-	if ((float)Durability <= 0)
+	if (m_Durability <= 0)
 	{
 		value *= 1.4f;
 	}

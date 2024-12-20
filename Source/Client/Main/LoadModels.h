@@ -16,9 +16,13 @@ public:
 
 	BITMAP_t* GetBitmap(int uiTextureNumber);
 
+	DWORD GetModels();
+
 private:
 
 	void SetTexturesOffset();
+
+	void SetModelsOffset();
 
 	void CheckModelExists(int Model, char* SubFolder, char* filename);
 
@@ -35,6 +39,8 @@ private:
 	BITMAP_t lpTextures[TOTAL_TEXTURE];
 
 	short TextureCount;
+
+	BMD lpModels[TOTAL_MODELS];
 };
 
 extern CLoadModels gLoadModels;

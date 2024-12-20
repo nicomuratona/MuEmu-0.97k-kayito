@@ -53,6 +53,15 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{c2cb8b9d-6921-4790-b2ec-ea1e226efb9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Item\Customs">
+      <UniqueIdentifier>{dbffc622-fb04-48e6-9193-343a29da2827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item\Properties">
+      <UniqueIdentifier>{7e5b8df5-4c51-4d90-96b6-44b72d865e8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item\Management">
+      <UniqueIdentifier>{32fa9f53-9629-4679-b8e7-ad339fb2f028}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCRC32.H">
@@ -100,23 +109,11 @@
     <ClInclude Include="MoveList.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="ItemValue.h">
-      <Filter>Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemStack.h">
-      <Filter>Item</Filter>
-    </ClInclude>
     <ClInclude Include="MapManager.h">
       <Filter>Map</Filter>
     </ClInclude>
     <ClInclude Include="ServerList.h">
       <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadModels.h">
-      <Filter>Item</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomItem.h">
-      <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>Sound</Filter>
@@ -169,23 +166,11 @@
     <ClInclude Include="Structs.h">
       <Filter>Core\Defines</Filter>
     </ClInclude>
-    <ClInclude Include="ItemManager.h">
-      <Filter>Item</Filter>
-    </ClInclude>
     <ClInclude Include="Buff.h">
       <Filter>Fixes</Filter>
     </ClInclude>
-    <ClInclude Include="CustomGlow.h">
-      <Filter>Item</Filter>
-    </ClInclude>
     <ClInclude Include="OptionsMenu.h">
       <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemOption.h">
-      <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resource Files</Filter>
@@ -205,8 +190,41 @@
     <ClInclude Include="CustomMonster.h">
       <Filter>Monster</Filter>
     </ClInclude>
+    <ClInclude Include="PingSystem.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
     <ClInclude Include="CustomBow.h">
-      <Filter>Item</Filter>
+      <Filter>Item\Customs</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomItem.h">
+      <Filter>Item\Customs</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomGlow.h">
+      <Filter>Item\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemOption.h">
+      <Filter>Item\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemStack.h">
+      <Filter>Item\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemValue.h">
+      <Filter>Item\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Item\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemManager.h">
+      <Filter>Item\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadModels.h">
+      <Filter>Item\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomWing.h">
+      <Filter>Item\Customs</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemPosition.h">
+      <Filter>Item\Properties</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -255,23 +273,11 @@
     <ClCompile Include="MoveList.cpp">
       <Filter>Interface</Filter>
     </ClCompile>
-    <ClCompile Include="ItemValue.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemStack.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
     <ClCompile Include="MapManager.cpp">
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="ServerList.cpp">
       <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadModels.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
-    <ClCompile Include="CustomItem.cpp">
-      <Filter>Item</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp">
       <Filter>Sound</Filter>
@@ -312,23 +318,11 @@
     <ClCompile Include="Reconnect.cpp">
       <Filter>Connection</Filter>
     </ClCompile>
-    <ClCompile Include="ItemManager.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
     <ClCompile Include="Buff.cpp">
       <Filter>Fixes</Filter>
     </ClCompile>
-    <ClCompile Include="CustomGlow.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
     <ClCompile Include="OptionsMenu.cpp">
       <Filter>Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemOption.cpp">
-      <Filter>Item</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Input</Filter>
@@ -345,8 +339,41 @@
     <ClCompile Include="CustomMonster.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
+    <ClCompile Include="PingSystem.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
     <ClCompile Include="CustomBow.cpp">
-      <Filter>Item</Filter>
+      <Filter>Item\Customs</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomItem.cpp">
+      <Filter>Item\Customs</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomGlow.cpp">
+      <Filter>Item\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemOption.cpp">
+      <Filter>Item\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemStack.cpp">
+      <Filter>Item\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemValue.cpp">
+      <Filter>Item\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Item\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemManager.cpp">
+      <Filter>Item\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadModels.cpp">
+      <Filter>Item\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomWing.cpp">
+      <Filter>Item\Customs</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemPosition.cpp">
+      <Filter>Item\Properties</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

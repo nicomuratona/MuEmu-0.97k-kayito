@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Item.h"
+#include "CustomWing.h"
 #include "ItemManager.h"
 #include "ItemOption.h"
 #include "ItemValue.h"
@@ -286,7 +287,8 @@ void CItem::Convert(int index, BYTE SkillOption, BYTE LuckOption, BYTE AddOption
 		{
 			this->m_RequireLevel = ItemInfo.RequireLevel;
 		}
-		else if ((this->m_Index >= GET_ITEM(12, 3) && this->m_Index <= GET_ITEM(12, 6))) // Wings
+		else if ((this->m_Index >= GET_ITEM(12, 3) && this->m_Index <= GET_ITEM(12, 6)) // Wings
+			|| gCustomWing.CheckCustomWingByItem(this->m_Index)) // Custom Wings
 		{
 			this->m_RequireLevel = ItemInfo.RequireLevel + (this->m_Level * 5);
 		}
@@ -433,6 +435,10 @@ void CItem::Convert(int index, BYTE SkillOption, BYTE LuckOption, BYTE AddOption
 			{
 				this->m_Defense += (this->m_Level * 2);
 			}
+			else if (gCustomWing.CheckCustomWingByItem(this->m_Index)) // Custom Wings
+			{
+				this->m_Defense += gCustomWing.GetCustomWingDefense(this->m_Index, this->m_Level);
+			}
 			else
 			{
 				this->m_Defense += (this->m_Level * 3);
@@ -502,6 +508,13 @@ void CItem::Convert(int index, BYTE SkillOption, BYTE LuckOption, BYTE AddOption
 
 		switch (this->m_Index)
 		{
+			case GET_ITEM(12, 0): // Wings of Elf
+			{
+				this->m_RequireStrength += (this->m_AddOption * 4);
+
+				break;
+			}
+
 			case GET_ITEM(12, 1): // Wings of Angel
 			{
 				this->m_RequireStrength += (this->m_AddOption * 4);
@@ -546,7 +559,7 @@ void CItem::Convert(int index, BYTE SkillOption, BYTE LuckOption, BYTE AddOption
 
 			default:
 			{
-				this->m_RequireStrength += ((this->m_Index < GET_ITEM(12, 0)) ? (this->m_AddOption * 4) : 0);
+				this->m_RequireStrength += ((gCustomWing.CheckCustomWingByItem(this->m_Index)) ? (this->m_AddOption * 4) : 0);
 
 				break;
 			}
@@ -557,7 +570,8 @@ void CItem::Convert(int index, BYTE SkillOption, BYTE LuckOption, BYTE AddOption
 		this->m_AddOption = 0;
 	}
 
-	if (this->m_Index >= GET_ITEM(12, 0) && this->m_Index <= GET_ITEM(12, 6))
+	if (this->m_Index >= GET_ITEM(12, 0) && this->m_Index <= GET_ITEM(12, 6) // Wings
+	    || gCustomWing.CheckCustomWingByItem(this->m_Index)) // Custom Wings
 	{
 		ToInsertOptions.insert(ToInsertOptions.end(), ToInsertLuckOption.begin(), ToInsertLuckOption.end());
 	}
@@ -707,7 +721,7 @@ void CItem::Value()
 			}
 		}
 
-		if (((this->m_Index / MAX_ITEM_TYPE) == 12 && this->m_Index > GET_ITEM(12, 6)) || (this->m_Index / MAX_ITEM_TYPE) == 13 || (this->m_Index / MAX_ITEM_TYPE) == 15)
+		if (((this->m_Index / MAX_ITEM_TYPE) == 12 && this->m_Index > GET_ITEM(12, 6) && !gCustomWing.CheckCustomWingByItem(this->m_Index)) || (this->m_Index / MAX_ITEM_TYPE) == 13 || (this->m_Index / MAX_ITEM_TYPE) == 15)
 		{
 			price = ((ItemLevel * ItemLevel) * ItemLevel) + 100;
 
@@ -775,7 +789,8 @@ void CItem::Value()
 				}
 			}
 
-			if ((this->m_Index >= GET_ITEM(12, 0) && this->m_Index <= GET_ITEM(12, 6))) // Wings
+			if ((this->m_Index >= GET_ITEM(12, 0) && this->m_Index <= GET_ITEM(12, 6)) // Wings
+			    || gCustomWing.CheckCustomWingByItem(this->m_Index)) // Custom Wings
 			{
 				price = ((((ItemLevel + 40) * ItemLevel) * ItemLevel) * 11) + 40000000;
 			}

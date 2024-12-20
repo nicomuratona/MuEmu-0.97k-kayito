@@ -36,6 +36,12 @@ struct PMSG_BLOOD_CASTLE_ENTER_RECV
 //************ GameServer -> Client ************//
 //**********************************************//
 
+struct PMSG_BLOOD_CASTLE_REQ_LEVELS_SEND
+{
+	PBMSG_HEAD header; // C1:8F
+	int m_BloodCastleRequiredLevel[MAX_BC_LEVEL][4];
+};
+
 struct PMSG_BLOOD_CASTLE_SCORE_SEND
 {
 #pragma pack(1)
@@ -274,6 +280,8 @@ public:
 
 	void StartBC();
 
+	void GCRequiredLevelsSend(int aIndex);
+
 private:
 
 	BLOOD_CASTLE_LEVEL m_BloodCastleLevel[MAX_BC_LEVEL];
@@ -293,6 +301,8 @@ private:
 	int m_BloodCastleMoneyTable[MAX_BC_LEVEL][2];
 
 	int m_BloodCastleNpcLife[MAX_BC_LEVEL][2];
+
+	int m_BloodCastleRequiredLevel[MAX_BC_LEVEL][4];
 };
 
 extern CBloodCastle gBloodCastle;

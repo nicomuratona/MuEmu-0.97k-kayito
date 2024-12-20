@@ -66,29 +66,20 @@ void CHealthBar::Init()
 		SetCompleteHook(0xE8, 0x004BC0AE, &this->DrawHealthBar);
 	}
 
-	if ((gProtect.m_MainInfo.HealthBarType & 2) == 2)
-	{
-		SetByte(0x004CB739, 0x4F);
+	SetByte(0x004CB739, 0x4F);
 
-		SetCompleteHook(0xE9, 0x004CB7AD, &this->DrawPointingHealthBar);
-	}
+	SetCompleteHook(0xE9, 0x004CB7AD, &this->DrawPointingHealthBar);
 }
 
 void CHealthBar::DrawHealthBar()
 {
-	((void(*)())0x004BCA20)();
+	((void(_cdecl*)())0x004BCA20)();
 
-	DWORD ViewportAddress;
-	MONSTER_HEALTH_BAR* lpHealthBar;
-	vec3_t Angle;
-	int PosX, PosY;
 	float LifeBarWidth = 70.0f;
-	char* MonsterName;
-	char LifeDisplay[64];
 
 	for (int n = 0; n < MAX_MAIN_VIEWPORT; n++)
 	{
-		ViewportAddress = *(DWORD*)(0x07ABF5D0) + (n * 916);
+		DWORD ViewportAddress = *(DWORD*)(0x07ABF5D0) + (n * 916);
 
 		if (!ViewportAddress)
 		{
@@ -100,7 +91,7 @@ void CHealthBar::DrawHealthBar()
 			continue;
 		}
 
-		lpHealthBar = gHealthBar.GetHealthBar(*(WORD*)(ViewportAddress + 0x1DC), *(BYTE*)(ViewportAddress + 0x84));
+		MONSTER_HEALTH_BAR* lpHealthBar = gHealthBar.GetHealthBar(*(WORD*)(ViewportAddress + 0x1DC), *(BYTE*)(ViewportAddress + 0x84));
 
 		if (lpHealthBar == 0)
 		{
@@ -112,11 +103,15 @@ void CHealthBar::DrawHealthBar()
 			continue;
 		}
 
+		vec3_t Angle = { 0.0f, 0.0f, 0.0f };
+
 		Angle[0] = *(float*)(ViewportAddress + 0x10);
 
 		Angle[1] = *(float*)(ViewportAddress + 0x14);
 
 		Angle[2] = *(float*)(ViewportAddress + 0x12C) + *(float*)(ViewportAddress + 0x18) + 100.0f;
+
+		int PosX = 0, PosY = 0;
 
 		Projection(Angle, &PosX, &PosY);
 
@@ -126,9 +121,9 @@ void CHealthBar::DrawHealthBar()
 		{
 			EnableAlphaTest(true);
 
-			MonsterName = (char*)(ViewportAddress + 0x1C1);
+			char LifeDisplay[64];
 
-			wsprintf(LifeDisplay, "%s: %d%%", MonsterName, lpHealthBar->rateHP);
+			wsprintf(LifeDisplay, "%s: %d%%", (char*)(ViewportAddress + 0x1C1), lpHealthBar->rateHP);
 
 			SelectObject(m_hFontDC, g_hFont);
 
@@ -161,10 +156,11 @@ __declspec(naked) void CHealthBar::DrawPointingHealthBar()
 {
 	static DWORD jmpBack = 0x004CB9D5;
 	static DWORD ViewportAddress;
-	static MONSTER_HEALTH_BAR* lpHealthBar;
 	static float PosX, PosY;
-	static float LifeBarWidth = 200.0f;
 	static char* MonsterName;
+
+	static MONSTER_HEALTH_BAR* lpHealthBar;
+	static float LifeBarWidth = 200.0f;
 	static char LifeDisplay[64];
 
 	_asm
@@ -182,6 +178,11 @@ __declspec(naked) void CHealthBar::DrawPointingHealthBar()
 	if (*(WORD*)(ViewportAddress + 0x2EB) == 200) //Soccer Ball
 	{
 		goto EXIT;
+	}
+
+	if ((gProtect.m_MainInfo.HealthBarType & 2) != 2)
+	{
+		goto NORMAL_NAME;
 	}
 
 	lpHealthBar = gHealthBar.GetHealthBar(*(WORD*)(ViewportAddress + 0x1DC), *(BYTE*)(ViewportAddress + 0x84));
@@ -228,6 +229,32 @@ __declspec(naked) void CHealthBar::DrawPointingHealthBar()
 	RenderText((int)PosX, (int)PosY, LifeDisplay, (int)LifeBarWidth * WindowWidth / 640, RT3_SORT_CENTER, NULL);
 
 	DisableAlphaBlend();
+
+	goto EXIT;
+
+NORMAL_NAME:
+
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+	glEnable(GL_TEXTURE_2D);
+
+	MonsterName = (char*)(ViewportAddress + 0x1C1);
+
+	EnableAlphaTest(true);
+
+	PosY = 10.0f;
+
+	SelectObject(m_hFontDC, g_hFont);
+
+	SetBackgroundTextColor = Color4b(100, 0, 0, 255);
+
+	SetTextColor = Color4b(255, 255, 255, 255);
+
+	RenderText(CenterTextPosX(MonsterName, 320), (int)PosY, MonsterName, 0, RT3_SORT_LEFT, NULL);
+
+	DisableAlphaBlend();
+
+	SetBackgroundTextColor = Color4b(0, 0, 0, 0);
 
 EXIT:
 

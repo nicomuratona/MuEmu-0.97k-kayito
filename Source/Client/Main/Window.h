@@ -42,6 +42,8 @@ private:
 
 	HICON m_WindowIcon;
 
+	char m_WindowName[256];
+
 public:
 
 	bool m_WindowMode;

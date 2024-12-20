@@ -1,0 +1,29 @@
+//********************************************************************************************************//
+//********************************************************************************************************//
+//********************************************************************************************************//
+//******** CUSTOM WING
+//******** Developer: Nico
+//******** MAX WINGS: 6
+//********
+//******** Wing Index -> Index of the item (format XX,XXX)
+//******** Defense ConstA -> ConstantA to add defense to the item (Defense = Defense + DefenseConstA * ItemLevel)
+//******** IncDmg ConstA -> ConstantA to add damage increment to the item (Damage = (Damage * (IncDmgConstA + (ItemLevel * IncDmgConstB)) / 100))
+//******** IncDmg ConstB -> ConstantB to add damage increment to the item (Damage = (Damage * (IncDmgConstA + (ItemLevel * IncDmgConstB)) / 100))
+//******** DecDmg ConstA -> ConstantA to add damage decrease to the item (Damage = (Damage * (DecDmgConstA + (ItemLevel * DecDmgConstB)) / 100))
+//******** DecDmg ConstB -> ConstantB to add damage decrease to the item (Damage = (Damage * (DecDmgConstA + (ItemLevel * DecDmgConstB)) / 100))
+//******** Model Name -> Name of the BMD without the .bmd
+//********
+//******** Example
+//******** Wing		Defense	IncDmg	IncDmg	DecDmg	DecDmg	Model
+//******** Index	ConstA	ConstA	ConstB	ConstA	ConstB	Name
+//******** 12,20	2	32	1	25	2	"Wing20"
+//********************************************************************************************************//
+//********************************************************************************************************//
+//********************************************************************************************************//
+
+//Wing	Defense	IncDmg	IncDmg	DecDmg	DecDmg	Model
+//Index	ConstA	ConstA	ConstB	ConstA	ConstB	Name
+
+
+
+end

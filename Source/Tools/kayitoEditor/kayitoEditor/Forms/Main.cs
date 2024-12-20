@@ -538,7 +538,18 @@ namespace kayito_Editor
 
 					reader.Close();
 
-					query = $"UPDATE MEMB_INFO SET memb__pwd = '{this.Pass_Box.Text.Trim()}', sno__numb = '{this.Code_Box.Text.Trim()}', AccountLevel = {this.Vip_Level.Value}, AccountExpireDate = '{this.Vip_Date.Value.ToString("yyyy-MM-dd HH:mm:ss")}', bloc_code = {(!this.Ban_Box.Checked ? '0' : '1')}, Bloc_Expire = '{this.Ban_Date.Value.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE (memb___id = '{this.User_Box.Text.Trim()}')";
+					string AccountExpireDate;
+					string Bloc_Expire;
+
+				#if MYSQL
+					AccountExpireDate = this.Vip_Date.Value.ToString("yyyy-MM-dd HH:mm:ss");
+					Bloc_Expire = this.Ban_Date.Value.ToString("yyyy-MM-dd HH:mm:ss");
+				#else
+					AccountExpireDate = this.Vip_Date.Value.ToString("yyyy-dd-MM HH:mm:ss");
+					Bloc_Expire = this.Ban_Date.Value.ToString("yyyy-dd-MM HH:mm:ss");
+				#endif
+
+					query = $"UPDATE MEMB_INFO SET memb__pwd = '{this.Pass_Box.Text.Trim()}', sno__numb = '{this.Code_Box.Text.Trim()}', AccountLevel = {this.Vip_Level.Value}, AccountExpireDate = '{AccountExpireDate}', bloc_code = {(!this.Ban_Box.Checked ? '0' : '1')}, Bloc_Expire = '{Bloc_Expire}' WHERE (memb___id = '{this.User_Box.Text.Trim()}')";
 
 					if (MuOnline.Me_ExecuteSQL(query))
 					{
@@ -780,23 +791,7 @@ namespace kayito_Editor
 
 					reader.Close();
 
-					uint m_Level = (uint)(this.Level_Box.Value - 1);
-
-					uint dwExperience = 0;
-
-					if (m_Level > 0)
-					{
-						dwExperience = (((m_Level + 9) * m_Level) * m_Level) * 2;
-
-						if (m_Level > 255)
-						{
-							uint iLevelOverN = m_Level - 255;
-
-							dwExperience += (((iLevelOverN + 9) * iLevelOverN) * iLevelOverN) * 5;
-						}
-					}
-
-					query = $"UPDATE \"Character\" SET cLevel = {this.Level_Box.Value}, Experience = {dwExperience}, ResetCount = {this.Reset_Box.Text.Trim()}, GrandResetCount = {this.GrandReset_Box.Text.Trim()}, Class = {this.Class_Box.SelectedValue}, CtlCode = {this.Type_Box.SelectedValue}, LevelUpPoint = {this.Point_Box.Text.Trim()}, Strength = {this.Strength_Box.Text.Trim()}, Dexterity = {this.Dexterity_Box.Text.Trim()}, Vitality = {this.Vitality_Box.Text.Trim()}, Energy = {this.Energy_Box.Text.Trim()}, MapNumber = {this.Map_Box.SelectedValue}, MapPosX = {this.PosX_Box.Text.Trim()}, MapPosY = {this.PosY_Box.Text.Trim()} WHERE AccountID = '{this.User_Box.Text.Trim()}' AND Name = '{this.Name_Box.Text.Trim()}'";
+					query = $"UPDATE \"Character\" SET cLevel = {this.Level_Box.Value}, ResetCount = {this.Reset_Box.Text.Trim()}, GrandResetCount = {this.GrandReset_Box.Text.Trim()}, Class = {this.Class_Box.SelectedValue}, CtlCode = {this.Type_Box.SelectedValue}, LevelUpPoint = {this.Point_Box.Text.Trim()}, Strength = {this.Strength_Box.Text.Trim()}, Dexterity = {this.Dexterity_Box.Text.Trim()}, Vitality = {this.Vitality_Box.Text.Trim()}, Energy = {this.Energy_Box.Text.Trim()}, MapNumber = {this.Map_Box.SelectedValue}, MapPosX = {this.PosX_Box.Text.Trim()}, MapPosY = {this.PosY_Box.Text.Trim()} WHERE AccountID = '{this.User_Box.Text.Trim()}' AND Name = '{this.Name_Box.Text.Trim()}'";
 
 					if (MuOnline.Mu_ExecuteSQL(query))
 					{

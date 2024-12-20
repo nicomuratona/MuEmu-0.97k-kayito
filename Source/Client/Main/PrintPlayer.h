@@ -92,7 +92,7 @@ public:
 
 	DWORD ViewMagicSpeed;
 
-	DWORD ViewPing;
+	DWORD MaxCharacterLevel;
 };
 
 extern CPrintPlayer gPrintPlayer;

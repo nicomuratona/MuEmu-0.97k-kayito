@@ -53,8 +53,6 @@ void CMiniMap::ChangeZoom(int i)
 		this->ZoomLevel = i;
 	}
 
-	this->VisualRange = 128 - (this->ZoomLevel * 16);
-
 	DeleteObject((HGDIOBJ)this->MiniMapFont);
 
 	this->MiniMapFont = CreateFont(10 + (this->ZoomLevel * 2), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, NONANTIALIASED_QUALITY, DEFAULT_PITCH, "Verdana");
@@ -501,6 +499,8 @@ void CMiniMap::UpdateMouseMiniMap()
 
 void CMiniMap::RenderMiniMap()
 {
+	this->VisualRange = 8 * (8 - this->ZoomLevel);
+
 	this->MaxSize = 128.0f;
 
 	this->Scale = 256.0f / (this->VisualRange * 2);
@@ -890,6 +890,8 @@ void CMiniMap::UpdateMouseFullMap()
 
 void CMiniMap::RenderFullMap()
 {
+	this->VisualRange = 128 - (this->ZoomLevel * 16);
+
 	this->MaxSize = 640.0f;
 
 	this->Scale = 256.0f / (this->VisualRange * 2);

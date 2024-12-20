@@ -25,7 +25,7 @@ public:
 
 	void Load(CUSTOM_BOW_INFO* info);
 
-	CUSTOM_BOW_INFO* GetInfoByItem(int ItemIndex);
+	CUSTOM_BOW_INFO* GetInfoByIndex(int ItemIndex);
 
 	int GetBowHandByItem(int ItemIndex);
 

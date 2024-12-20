@@ -2,6 +2,7 @@
 #include "Attack.h"
 #include "BattleSoccerManager.h"
 #include "CustomSafeZone.h"
+#include "CustomWing.h"
 #include "EffectManager.h"
 #include "Guild.h"
 #include "Map.h"
@@ -522,6 +523,10 @@ void CAttack::WingSprite(LPOBJ lpObj, LPOBJ lpTarget, int* damage)
 			{
 				(*damage) = ((*damage) * (132 + (lpItem->m_Level * 1))) / 100;
 			}
+			else if (gCustomWing.CheckCustomWingByItem(lpItem->m_Index) != 0)
+			{
+				(*damage) = ((*damage) * (100 + gCustomWing.GetCustomWingIncDamage(lpItem->m_Index, lpItem->m_Level))) / 100;
+			}
 		}
 	}
 
@@ -538,6 +543,10 @@ void CAttack::WingSprite(LPOBJ lpObj, LPOBJ lpTarget, int* damage)
 			else if ((lpItem->m_Index >= GET_ITEM(12, 3) && lpItem->m_Index <= GET_ITEM(12, 6))) // 2sd wing
 			{
 				(*damage) = ((*damage) * (75 - (lpItem->m_Level * 2))) / 100;
+			}
+			else if (gCustomWing.CheckCustomWingByItem(lpItem->m_Index) != 0)
+			{
+				(*damage) = ((*damage) * (100 - gCustomWing.GetCustomWingDecDamage(lpItem->m_Index, lpItem->m_Level))) / 100;
 			}
 		}
 	}

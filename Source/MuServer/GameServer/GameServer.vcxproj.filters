@@ -360,6 +360,9 @@
     <ClInclude Include="ReadScript.h">
       <Filter>Util Files</Filter>
     </ClInclude>
+    <ClInclude Include="CustomWing.h">
+      <Filter>Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math.cpp">
@@ -646,6 +649,9 @@
     </ClCompile>
     <ClCompile Include="ReadScript.cpp">
       <Filter>Util Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomWing.cpp">
+      <Filter>Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

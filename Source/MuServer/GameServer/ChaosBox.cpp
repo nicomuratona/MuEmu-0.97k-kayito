@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ChaosBox.h"
 #include "BloodCastle.h"
+#include "CustomWing.h"
 #include "DevilSquare.h"
 #include "DSProtocol.h"
 #include "ItemOptionRate.h"
@@ -1383,13 +1384,25 @@ void CChaosBox::Wing2Mix(LPOBJ lpObj)
 
 		CRandomManager RandomManager;
 
-		RandomManager.AddElement(GET_ITEM(12, 3), 1);
+		RandomManager.AddElement(GET_ITEM(12, 3), (100 - gServerInfo.m_Wing2CustomMixRate[lpObj->AccountLevel]));
 
-		RandomManager.AddElement(GET_ITEM(12, 4), 1);
+		RandomManager.AddElement(GET_ITEM(12, 4), (100 - gServerInfo.m_Wing2CustomMixRate[lpObj->AccountLevel]));
 
-		RandomManager.AddElement(GET_ITEM(12, 5), 1);
+		RandomManager.AddElement(GET_ITEM(12, 5), (100 - gServerInfo.m_Wing2CustomMixRate[lpObj->AccountLevel]));
 
-		RandomManager.AddElement(GET_ITEM(12, 6), 1);
+		RandomManager.AddElement(GET_ITEM(12, 6), (100 - gServerInfo.m_Wing2CustomMixRate[lpObj->AccountLevel]));
+
+		for (int n = 0; n < MAX_CUSTOM_WING; n++)
+		{
+			CUSTOM_WING_INFO* lpInfo = gCustomWing.GetInfo(n);
+
+			if (lpInfo == NULL)
+			{
+				continue;
+			}
+
+			RandomManager.AddElement(lpInfo->ItemIndex, gServerInfo.m_Wing2CustomMixRate[lpObj->AccountLevel]);
+		}
 
 		RandomManager.GetRandomElement(&ItemIndex);
 

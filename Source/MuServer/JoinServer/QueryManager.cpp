@@ -734,7 +734,7 @@ void CQueryManager::GetAsBinary(std::string ColName, unsigned char* OutBuffer, i
 
 	memcpy(OutBuffer, result, OutBufferSize);
 
-	delete result;
+	delete[] result;
 }
 
 void CQueryManager::ConvertStringToBinary(char* InBuff, int InSize, unsigned char* OutBuff, int OutSize)

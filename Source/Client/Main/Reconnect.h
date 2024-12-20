@@ -64,11 +64,13 @@ public:
 
 	void ReconnectOnCharacterInfo();
 
-private:
+public:
 
 	char GameServerAddress[16];
 
 	WORD GameServerPort;
+
+private:
 
 	char ReconnectAccount[11];
 

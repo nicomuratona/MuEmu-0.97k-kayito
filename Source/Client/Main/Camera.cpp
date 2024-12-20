@@ -44,6 +44,7 @@ CCamera::CCamera()
 	SetDword(0x00511360 + 2, 0x005528CC);
 	SetDword(0x0051136C + 2, 0x005528CC);
 
+	SetFloat((DWORD)this->m_Address.Zoom, 50.0f);
 	this->SetCurrentValue();
 
 	this->m_Default.IsLoad = 0;

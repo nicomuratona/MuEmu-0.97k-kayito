@@ -41,14 +41,14 @@ void Interface::Init()
 
 void Interface::RenderLogInScene(HDC Hdc)
 {
-	SetWindowText(g_hWnd, gProtect.m_MainInfo.WindowName);
+	gWindow.ChangeWindowText();
 
 	((void(__cdecl*)(HDC Hdc)) 0x00521630)(Hdc);
 }
 
 void Interface::RenderCharacterScene(HDC Hdc)
 {
-	SetWindowText(g_hWnd, gProtect.m_MainInfo.WindowName);
+	gWindow.ChangeWindowText();
 
 	((void(__cdecl*)(HDC Hdc)) 0x00523B30)(Hdc);
 }

@@ -34,7 +34,7 @@ void CCustomGlow::SetInfo(CUSTOM_GLOW_INFO info)
 	this->m_CustomGlowInfo[info.ItemIndex] = info;
 }
 
-CUSTOM_GLOW_INFO* CCustomGlow::GetInfoByItem(int ItemIndex)
+CUSTOM_GLOW_INFO* CCustomGlow::GetInfoByIndex(int ItemIndex)
 {
 	if (ItemIndex < 0 || ItemIndex >= MAX_ITEM)
 	{
@@ -51,7 +51,7 @@ CUSTOM_GLOW_INFO* CCustomGlow::GetInfoByItem(int ItemIndex)
 
 bool CCustomGlow::GetItemGlow(int ItemIndex, float* ItemColor)
 {
-	CUSTOM_GLOW_INFO* lpInfo = this->GetInfoByItem(ItemIndex);
+	CUSTOM_GLOW_INFO* lpInfo = this->GetInfoByIndex(ItemIndex);
 
 	if (lpInfo == 0)
 	{

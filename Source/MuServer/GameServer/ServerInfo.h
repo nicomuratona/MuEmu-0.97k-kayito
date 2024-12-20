@@ -224,6 +224,7 @@ public:
 	int m_BloodCastleMixCost5[MAX_ACCOUNT_LEVEL];
 	int m_BloodCastleMixCost6[MAX_ACCOUNT_LEVEL];
 	int m_Wing2MixRate[MAX_ACCOUNT_LEVEL];
+	int m_Wing2CustomMixRate[MAX_ACCOUNT_LEVEL];
 	int m_Wing2MixCost[MAX_ACCOUNT_LEVEL];
 	int m_Wing2MixAddItemRate[MAX_ACCOUNT_LEVEL];
 	// Character

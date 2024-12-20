@@ -1,0 +1,30 @@
+//********************************************************************************************************//
+//********************************************************************************************************//
+//********************************************************************************************************//
+//******** ITEM POSITION
+//******** Developer: Nico
+//********
+//******** Index -> Index of the item (format XX,XXX)
+//******** PosX -> Change the left/right position (negative = left, positive = right, 0 = none)
+//******** PosY -> Change the up/down position (negative = down, positive = up, 0 = none)
+//******** RotX -> Change the X rotation (negative, positive, 0 = none)
+//******** RotY -> Change the Y rotation (negative, positive, 0 = none)
+//******** RotZ -> Change the Z rotation (negative, positive, 0 = none)
+//******** Scale -> Change the size of the item (default = 0.0025)
+//********
+//******** CLARIFICATION:
+//********
+//******** ALL POS, ROT AND SCALE ARE FLOAT NUMBERS WITH THIS FORMAT (NEGATIVE OPTIONAL): (-)123.123
+//********
+//******** Example
+//******** Index	PosX	PosY	RotX	RotY	RotZ	Scale
+//******** 02,008	-0.05	0.0	0.0	0.0	0.0	0.0015	// Move it to the left and smaller
+//********************************************************************************************************//
+//********************************************************************************************************//
+//********************************************************************************************************//
+
+//Index		PosX	PosY	RotX	RotY	RotZ	Scale
+
+
+
+end

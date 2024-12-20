@@ -6,6 +6,7 @@
 #include "BonusManager.h"
 #include "ChaosBox.h"
 #include "CommandManager.h"
+#include "CustomWing.h"
 #include "DevilSquare.h"
 #include "DSProtocol.h"
 #include "EffectManager.h"
@@ -1211,6 +1212,10 @@ void CObjectManager::CharacterMakePreviewCharSet(int aIndex)
 		lpObj->CharSet[5] |= 12;
 		lpObj->CharSet[9] |= TempInventory[7] - 2;
 	}
+	else if (gCustomWing.CheckCustomWingByItem(GET_ITEM(12, TempInventory[7])))
+	{
+		lpObj->CharSet[9] |= (gCustomWing.GetCustomWingIndex(GET_ITEM(12, TempInventory[7])) + 1);
+	}
 
 	if (TempInventory[8] == (MAX_ITEM_TYPE - 1))
 	{
@@ -1482,7 +1487,7 @@ bool CObjectManager::CharacterUseJewelOfBles(LPOBJ lpObj, int SourceSlot, int Ta
 		return 0;
 	}
 
-	if (lpItem->m_Index > GET_ITEM(12, 6))
+	if (lpItem->m_Index > GET_ITEM(12, 6) && !gCustomWing.CheckCustomWingByItem(lpItem->m_Index))
 	{
 		return 0;
 	}
@@ -1544,7 +1549,7 @@ bool CObjectManager::CharacterUseJewelOfSoul(LPOBJ lpObj, int SourceSlot, int Ta
 		return 0;
 	}
 
-	if (lpItem->m_Index > GET_ITEM(12, 6))
+	if (lpItem->m_Index > GET_ITEM(12, 6) && !gCustomWing.CheckCustomWingByItem(lpItem->m_Index))
 	{
 		return 0;
 	}
@@ -1627,7 +1632,7 @@ bool CObjectManager::CharacterUseJewelOfLife(LPOBJ lpObj, int SourceSlot, int Ta
 		return 0;
 	}
 
-	if (lpItem->m_Index > GET_ITEM(12, 6))
+	if (lpItem->m_Index > GET_ITEM(12, 6) && !gCustomWing.CheckCustomWingByItem(lpItem->m_Index))
 	{
 		return 0;
 	}
@@ -1639,7 +1644,7 @@ bool CObjectManager::CharacterUseJewelOfLife(LPOBJ lpObj, int SourceSlot, int Ta
 
 	if ((GetLargeRand() % 100) < gServerInfo.m_JewelOfLifeSuccessRate[lpObj->AccountLevel])
 	{
-		if (lpItem->m_AddOption == 0 && ((lpItem->m_Index >= GET_ITEM(12, 3) && lpItem->m_Index <= GET_ITEM(12, 6))))
+		if (lpItem->m_AddOption == 0 && ((lpItem->m_Index >= GET_ITEM(12, 3) && lpItem->m_Index <= GET_ITEM(12, 6)) || gCustomWing.CheckCustomWingByItem(lpItem->m_Index)))
 		{
 			lpItem->m_ExceOption &= 0xDF;
 

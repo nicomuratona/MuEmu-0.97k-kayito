@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ItemOptionRate.h"
+#include "CustomWing.h"
 #include "ItemManager.h"
 #include "ReadScript.h"
 #include "RandomManager.h"
@@ -259,6 +260,11 @@ bool CItemOptionRate::MakeExceOption(int ItemIndex, int value, BYTE* option)
 	int MaxExceOption = MAX_EXC_OPTION;
 
 	if ((ItemIndex >= GET_ITEM(12, 3) && ItemIndex <= GET_ITEM(12, 6))) // 2sd Wings
+	{
+		MaxExceOption = 3;
+	}
+
+	if (gCustomWing.CheckCustomWingByItem(ItemIndex))
 	{
 		MaxExceOption = 3;
 	}

@@ -506,7 +506,7 @@ void CSound::SetVolume(int Buffer, long vol)
 		return;
 	}
 
-	if (g_lpDSBuffer[Buffer * 4])
+	if (g_lpDSBuffer[Buffer][0])
 	{
 		if (vol > DSBVOLUME_MAX)
 		{
@@ -518,6 +518,6 @@ void CSound::SetVolume(int Buffer, long vol)
 			vol = DSBVOLUME_MIN;
 		}
 
-		g_lpDSBuffer[Buffer * 4]->SetVolume(vol);
+		g_lpDSBuffer[Buffer][0]->SetVolume(vol);
 	}
 }

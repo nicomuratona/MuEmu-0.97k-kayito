@@ -6,12 +6,6 @@
 //************ GameServer -> Client ************//
 //**********************************************//
 
-struct PMSG_LIVE_CLIENT_RECV
-{
-	PBMSG_HEAD header; // C1:0E
-	DWORD TickCount;
-};
-
 struct PMSG_NOTICE_RECV
 {
 	PBMSG_HEAD header; // C1:0D
@@ -48,13 +42,6 @@ struct PMSG_USER_DIE_RECV
 	BYTE killer[2];
 };
 
-struct PMSG_SKILL_ATTACK_SEND
-{
-	PBMSG_HEAD header; // C3:19
-	BYTE skill;
-	BYTE index[2];
-};
-
 struct PMSG_DURATION_SKILL_ATTACK_RECV
 {
 	PBMSG_HEAD header; // C3:1E
@@ -63,18 +50,6 @@ struct PMSG_DURATION_SKILL_ATTACK_RECV
 	BYTE x;
 	BYTE y;
 	BYTE dir;
-};
-
-struct PMSG_DURATION_SKILL_ATTACK_SEND
-{
-	PBMSG_HEAD header; // C3:1E
-	BYTE skill;
-	BYTE x;
-	BYTE y;
-	BYTE dir;
-	BYTE dis;
-	BYTE angle;
-	BYTE index[2];
 };
 
 struct PMSG_ITEM_GET_RECV
@@ -118,6 +93,18 @@ struct PMSG_FRUIT_RESULT_RECV
 	DWORD ViewEnergy;
 };
 
+struct PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV
+{
+	PBMSG_HEAD header; // C1:8E
+	int m_DevilSquareRequiredLevel[4][2];
+};
+
+struct PMSG_BLOOD_CASTLE_REQ_LEVELS_RECV
+{
+	PBMSG_HEAD header; // C1:8F
+	int m_BloodCastleRequiredLevel[6][4];
+};
+
 struct PMSG_REWARD_EXPERIENCE_RECV
 {
 	PBMSG_HEAD header; // C1:9C
@@ -144,6 +131,12 @@ struct PMSG_CHARACTER_CREATION_ENABLE_RECV
 {
 	PBMSG_HEAD header; // C1:DE
 	BYTE result;
+};
+
+struct PMSG_CHARACTER_MAX_LEVEL_RECV
+{
+	PBMSG_HEAD header; // C1:DF
+	DWORD MaxCharacterLevel;
 };
 
 struct PMSG_CONNECT_CLIENT_RECV
@@ -319,6 +312,33 @@ struct PMSG_HEALTH_BAR_RECV
 //************ Client -> GameServer ************//
 //**********************************************//
 
+struct PMSG_LIVE_CLIENT_SEND
+{
+	PBMSG_HEAD header; // C3:0E
+	DWORD TickCount;
+	WORD PhysiSpeed;
+	WORD MagicSpeed;
+};
+
+struct PMSG_SKILL_ATTACK_SEND
+{
+	PBMSG_HEAD header; // C3:19
+	BYTE skill;
+	BYTE index[2];
+};
+
+struct PMSG_DURATION_SKILL_ATTACK_SEND
+{
+	PBMSG_HEAD header; // C3:1E
+	BYTE skill;
+	BYTE x;
+	BYTE y;
+	BYTE dir;
+	BYTE dis;
+	BYTE angle;
+	BYTE index[2];
+};
+
 struct PMSG_CONNECT_ACCOUNT_SEND
 {
 #pragma pack(1)
@@ -372,11 +392,9 @@ private:
 
 	static void HookProtocol();
 
-	void ProtocolCompiler(BYTE* lpMsg);
+	bool ProtocolCompiler(BYTE* lpMsg);
 
-	void TranslateProtocol(BYTE head, BYTE* lpMsg, int Size);
-
-	void GCLiveClientRecv(PMSG_LIVE_CLIENT_RECV* lpMsg);
+	bool TranslateProtocol(BYTE head, BYTE* lpMsg, int Size);
 
 	void GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg);
 
@@ -386,7 +404,7 @@ private:
 
 	void GCDurationSkillAttackRecv(PMSG_DURATION_SKILL_ATTACK_RECV* lpMsg);
 
-	static void CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg);
+	void CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg);
 
 	void GCLifeRecv(PMSG_LIFE_RECV* lpMsg);
 
@@ -394,11 +412,17 @@ private:
 
 	void GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg);
 
+	void GCDevilSquareRequiredLevelsRecv(PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV* lpMsg);
+
+	void GCBloodCastleRequiredLevelsRecv(PMSG_BLOOD_CASTLE_REQ_LEVELS_RECV* lpMsg);
+
 	void GCRewardExperienceRecv(PMSG_REWARD_EXPERIENCE_RECV* lpMsg);
 
 	void GCQuestRewardRecv(PMSG_QUEST_REWARD_RECV* lpMsg);
 
 	void GCCharacterCreationEnableRecv(PMSG_CHARACTER_CREATION_ENABLE_RECV* lpMsg);
+
+	void GCCharacterMaxLevelRecv(PMSG_CHARACTER_MAX_LEVEL_RECV* lpMsg);
 
 	void GCConnectClientRecv(PMSG_CONNECT_CLIENT_RECV* lpMsg);
 
@@ -427,6 +451,8 @@ private:
 public:
 
 	void DataSend(BYTE* lpMsg, DWORD size);
+
+	void CGLiveClientSend();
 };
 
 extern CProtocol gProtocol;

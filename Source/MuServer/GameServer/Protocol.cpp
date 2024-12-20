@@ -408,16 +408,16 @@ void ProtocolCore(BYTE head, BYTE* lpMsg, int size, int aIndex, int encrypt, int
 			break;
 		}
 
-		case 0x9D:
+		case 0x9A:
 		{
-			gNpcTalk.NpcGoldenArcherRegisterLuckyNumber((PMSG_GOLDEN_ARCHER_REG_LUCKYNUM*)lpMsg, aIndex);
+			gBloodCastle.CGBloodCastleEnterRecv((PMSG_BLOOD_CASTLE_ENTER_RECV*)lpMsg, aIndex);
 
 			break;
 		}
 
-		case 0x9A:
+		case 0x9D:
 		{
-			gBloodCastle.CGBloodCastleEnterRecv((PMSG_BLOOD_CASTLE_ENTER_RECV*)lpMsg, aIndex);
+			gNpcTalk.NpcGoldenArcherRegisterLuckyNumber((PMSG_GOLDEN_ARCHER_REG_LUCKYNUM*)lpMsg, aIndex);
 
 			break;
 		}
@@ -1856,6 +1856,17 @@ void GCCharacterCreationEnableSend(int aIndex, BYTE result)
 	pMsg.header.set(0xDE, sizeof(pMsg));
 
 	pMsg.result = result;
+
+	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
+}
+
+void GCCharacterMaxLevelSend(int aIndex, DWORD MaxLevel)
+{
+	PMSG_CHARACTER_MAX_LEVEL_SEND pMsg;
+
+	pMsg.header.set(0xDF, sizeof(pMsg));
+
+	pMsg.MaxCharacterLevel = MaxLevel;
 
 	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 }

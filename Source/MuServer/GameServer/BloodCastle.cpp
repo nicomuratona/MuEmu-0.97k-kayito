@@ -73,6 +73,36 @@ CBloodCastle::CBloodCastle()
 	memset(this->m_BloodCastleMoneyTable, 0, sizeof(this->m_BloodCastleMoneyTable));
 
 	memset(this->m_BloodCastleNpcLife, 0, sizeof(this->m_BloodCastleNpcLife));
+
+	this->m_BloodCastleRequiredLevel[0][0] = 15;
+	this->m_BloodCastleRequiredLevel[0][1] = 80;
+	this->m_BloodCastleRequiredLevel[0][2] = 10;
+	this->m_BloodCastleRequiredLevel[0][3] = 60;
+
+	this->m_BloodCastleRequiredLevel[1][0] = 81;
+	this->m_BloodCastleRequiredLevel[1][1] = 130;
+	this->m_BloodCastleRequiredLevel[1][2] = 61;
+	this->m_BloodCastleRequiredLevel[1][3] = 110;
+
+	this->m_BloodCastleRequiredLevel[2][0] = 131;
+	this->m_BloodCastleRequiredLevel[2][1] = 180;
+	this->m_BloodCastleRequiredLevel[2][2] = 111;
+	this->m_BloodCastleRequiredLevel[2][3] = 160;
+
+	this->m_BloodCastleRequiredLevel[3][0] = 181;
+	this->m_BloodCastleRequiredLevel[3][1] = 230;
+	this->m_BloodCastleRequiredLevel[3][2] = 161;
+	this->m_BloodCastleRequiredLevel[3][3] = 210;
+
+	this->m_BloodCastleRequiredLevel[4][0] = 231;
+	this->m_BloodCastleRequiredLevel[4][1] = 280;
+	this->m_BloodCastleRequiredLevel[4][2] = 211;
+	this->m_BloodCastleRequiredLevel[4][3] = 260;
+
+	this->m_BloodCastleRequiredLevel[5][0] = 281;
+	this->m_BloodCastleRequiredLevel[5][1] = 99999;
+	this->m_BloodCastleRequiredLevel[5][2] = 261;
+	this->m_BloodCastleRequiredLevel[5][3] = 99999;
 }
 
 CBloodCastle::~CBloodCastle()
@@ -200,6 +230,18 @@ void CBloodCastle::Load(char* path)
 					this->m_BloodCastleNpcLife[level][0] = lpReadScript->GetAsNumber();
 
 					this->m_BloodCastleNpcLife[level][1] = lpReadScript->GetAsNumber();
+				}
+				else if (section == 5)
+				{
+					int level = lpReadScript->GetNumber();
+
+					this->m_BloodCastleRequiredLevel[level][0] = lpReadScript->GetAsNumber();
+
+					this->m_BloodCastleRequiredLevel[level][1] = lpReadScript->GetAsNumber();
+
+					this->m_BloodCastleRequiredLevel[level][2] = lpReadScript->GetAsNumber();
+
+					this->m_BloodCastleRequiredLevel[level][3] = lpReadScript->GetAsNumber();
 				}
 			}
 		}
@@ -1032,64 +1074,18 @@ int CBloodCastle::GetUserCount(BLOOD_CASTLE_LEVEL* lpLevel)
 
 int CBloodCastle::GetUserAbleLevel(LPOBJ lpObj)
 {
-	int level = -1;
+	int MinLevelIndex = (lpObj->Class == CLASS_MG) ? 2 : 0;
+	int MaxLevelIndex = (lpObj->Class == CLASS_MG) ? 3 : 1;
 
-	if (lpObj->Class == CLASS_MG)
+	for (int Level = 0; Level < MAX_BC_LEVEL; Level++)
 	{
-		if (lpObj->Level >= 10 && lpObj->Level <= 60)
+		if (lpObj->Level >= this->m_BloodCastleRequiredLevel[Level][MinLevelIndex] && lpObj->Level <= this->m_BloodCastleRequiredLevel[Level][MaxLevelIndex])
 		{
-			level = 0;
-		}
-		else if (lpObj->Level >= 61 && lpObj->Level <= 110)
-		{
-			level = 1;
-		}
-		else if (lpObj->Level >= 111 && lpObj->Level <= 160)
-		{
-			level = 2;
-		}
-		else if (lpObj->Level >= 161 && lpObj->Level <= 210)
-		{
-			level = 3;
-		}
-		else if (lpObj->Level >= 211 && lpObj->Level <= 260)
-		{
-			level = 4;
-		}
-		else if (lpObj->Level >= 261 && lpObj->Level <= gServerInfo.m_MaxCharacterLevel)
-		{
-			level = 5;
-		}
-	}
-	else
-	{
-		if (lpObj->Level >= 15 && lpObj->Level <= 80)
-		{
-			level = 0;
-		}
-		else if (lpObj->Level >= 81 && lpObj->Level <= 130)
-		{
-			level = 1;
-		}
-		else if (lpObj->Level >= 131 && lpObj->Level <= 180)
-		{
-			level = 2;
-		}
-		else if (lpObj->Level >= 181 && lpObj->Level <= 230)
-		{
-			level = 3;
-		}
-		else if (lpObj->Level >= 231 && lpObj->Level <= 280)
-		{
-			level = 4;
-		}
-		else if (lpObj->Level >= 281 && lpObj->Level <= gServerInfo.m_MaxCharacterLevel)
-		{
-			level = 5;
+			return Level;
 		}
 	}
 
-	return level;
+	return -1;
 }
 
 void CBloodCastle::GiveUserRewardExperience(BLOOD_CASTLE_LEVEL* lpLevel, int aIndex)
@@ -1698,6 +1694,8 @@ void CBloodCastle::NpcAngelMessenger(LPOBJ lpNpc, LPOBJ lpObj)
 
 		return;
 	}
+
+	this->GCRequiredLevelsSend(lpObj->Index);
 
 	PMSG_NPC_TALK_SEND pMsg;
 
@@ -2394,4 +2392,20 @@ void CBloodCastle::StartBC()
 	LogAdd(LOG_EVENT, "[Set BC Start] At %2d:%2d:00", hour, minute);
 
 	this->Init();
+}
+
+void CBloodCastle::GCRequiredLevelsSend(int aIndex)
+{
+	if (gObjIsConnectedGP(aIndex) == 0)
+	{
+		return;
+	}
+
+	PMSG_BLOOD_CASTLE_REQ_LEVELS_SEND pMsg;
+
+	pMsg.header.set(0x8F, sizeof(pMsg));
+
+	memcpy(pMsg.m_BloodCastleRequiredLevel, this->m_BloodCastleRequiredLevel, sizeof(pMsg.m_BloodCastleRequiredLevel));
+
+	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 }

@@ -21,7 +21,7 @@ CProtocol gProtocol;
 
 CProtocol::CProtocol()
 {
-
+	
 }
 
 CProtocol::~CProtocol()
@@ -31,118 +31,97 @@ CProtocol::~CProtocol()
 
 void CProtocol::Init()
 {
-	SetCompleteHook(0xE9, 0x004389D7, &this->HookProtocol);
+	SetCompleteHook(0xE9, 0x00439505, &this->HookProtocol);
 
-	SetDword(0x0041F188, 1000); // For Ping
-
-	SetCompleteHook(0xE8, 0x0043A62C, &this->CGItemGetRecv);
+	SetByte(0x004E6DA2, 0xEB); // Skip MG Level in Devil Square
 }
 
 _declspec(naked) void CProtocol::HookProtocol()
 {
-	static DWORD jmpBack = 0x004389DC;
+	static DWORD jmpCurrentPacket = 0x0043951F;
+	static DWORD jmpNextPacket = 0x004389C3;
+
+	static BYTE* lpMsg;
+	static DWORD Head;
 
 	_asm
 	{
+		Mov Edx, Dword Ptr Ds : [0x07E11DCC] ; // TotalPacketSize
+		Add Edx, Eax;
+		Mov Dword Ptr Ds : [0x07E11DCC] , Edx; // TotalPacketSize += Size;
 		Pushad;
-		Push Ebp;
-		Mov Ecx, gProtocol;
-		Call [CProtocol::ProtocolCompiler];
+		Mov lpMsg, Ebp;
+		Mov Head, Esi;
+	}
+
+	if (gProtocol.ProtocolCompiler(lpMsg))
+	{
+		goto NEXT_PACKET;
+	}
+
+	if (Head > 0xF4)
+	{
+		goto NEXT_PACKET;
+	}
+
+	_asm
+	{
 		Popad;
-		Mov Al, [Ebp + 0];
-		Xor Ebx, Ebx;
-		Jmp[jmpBack];
+		Jmp[jmpCurrentPacket];
+	}
+
+NEXT_PACKET:
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpNextPacket];
 	}
 }
 
-void CProtocol::ProtocolCompiler(BYTE* lpMsg)
+bool CProtocol::ProtocolCompiler(BYTE* lpMsg)
 {
-	int count = 0, size = 0, DecSize = 0;
+	int size = 0;
 
 	BYTE header, head;
 
-	BYTE DecBuff[MAX_MAIN_PACKET_SIZE] = { 0 };
-
-	if (lpMsg[count] == 0xC1 || lpMsg[count] == 0xC3)
+	if (lpMsg[0] == 0xC1 || lpMsg[0] == 0xC3)
 	{
-		header = lpMsg[count];
+		header = lpMsg[0];
 
-		size = lpMsg[count + 1];
+		size = lpMsg[1];
 
-		head = lpMsg[count + 2];
+		head = lpMsg[2];
 	}
-	else if (lpMsg[count] == 0xC2 || lpMsg[count] == 0xC4)
+	else if (lpMsg[0] == 0xC2 || lpMsg[0] == 0xC4)
 	{
-		header = lpMsg[count];
+		header = lpMsg[0];
 
-		size = MAKEWORD(lpMsg[count + 2], lpMsg[count + 1]);
+		size = MAKEWORD(lpMsg[2], lpMsg[1]);
 
-		head = lpMsg[count + 3];
+		head = lpMsg[3];
 	}
 	else
 	{
 		char lpszMessage[128];
 
-		wsprintf(lpszMessage, "[Connection] Protocol header error (Header: %02X)\r\n", lpMsg[count]);
+		wsprintf(lpszMessage, "[Connection] Protocol header error (Header: %02X)\r\n", lpMsg[0]);
 
 		MessageBox(NULL, lpszMessage, "Error", MB_OK);
 
-		return;
+		return false;
 	}
 
-	if (header == 0xC3 || header == 0xC4)
-	{
-		if (header == 0xC3)
-		{
-			DecSize = gPacketManager.Decrypt(&DecBuff[1], &lpMsg[count + 2], (size - 2)) + 1;
-
-			header = 0xC1;
-
-			head = DecBuff[2];
-
-			DecBuff[0] = header;
-
-			DecBuff[1] = DecSize;
-		}
-		else
-		{
-			DecSize = gPacketManager.Decrypt(&DecBuff[2], &lpMsg[count + 3], (size - 3)) + 2;
-
-			header = 0xC2;
-
-			head = DecBuff[3];
-
-			DecBuff[0] = header;
-
-			DecBuff[1] = HIBYTE(DecSize);
-
-			DecBuff[2] = LOBYTE(DecSize);
-		}
-	}
-	else
-	{
-		memcpy(DecBuff, lpMsg, size);
-
-		DecSize = size;
-	}
-
-	this->TranslateProtocol(head, DecBuff, DecSize);
+	return this->TranslateProtocol(head, lpMsg, size);
 }
 
-void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
+bool CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 {
 	//ConsoleProtocolLog(CON_PROTO_TCP_RECV, lpMsg, Size);
 
 	switch (head)
 	{
-		case 0xE:
-		{
-			this->GCLiveClientRecv((PMSG_LIVE_CLIENT_RECV*)lpMsg);
-
-			break;
-		}
-
-		case 0xD:
+		case 0x0D:
 		{
 			this->GCNoticeRecv((PMSG_NOTICE_RECV*)lpMsg);
 
@@ -168,6 +147,13 @@ void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 			this->GCDurationSkillAttackRecv((PMSG_DURATION_SKILL_ATTACK_RECV*)lpMsg);
 
 			break;
+		}
+
+		case 0x22:
+		{
+			this->CGItemGetRecv((PMSG_ITEM_GET_RECV*)lpMsg);
+
+			return true;
 		}
 
 		case 0x24:
@@ -212,6 +198,20 @@ void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 			break;
 		}
 
+		case 0x8E:
+		{
+			this->GCDevilSquareRequiredLevelsRecv((PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV*)lpMsg);
+
+			return true;
+		}
+
+		case 0x8F:
+		{
+			this->GCBloodCastleRequiredLevelsRecv((PMSG_BLOOD_CASTLE_REQ_LEVELS_RECV*)lpMsg);
+
+			return true;
+		}
+
 		case 0x9C:
 		{
 			this->GCRewardExperienceRecv((PMSG_REWARD_EXPERIENCE_RECV*)lpMsg);
@@ -230,7 +230,14 @@ void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 		{
 			this->GCCharacterCreationEnableRecv((PMSG_CHARACTER_CREATION_ENABLE_RECV*)lpMsg);
 
-			break;
+			return true;
+		}
+
+		case 0xDF:
+		{
+			this->GCCharacterMaxLevelRecv((PMSG_CHARACTER_MAX_LEVEL_RECV*)lpMsg);
+
+			return true;
 		}
 
 		case 0xF1:
@@ -312,49 +319,49 @@ void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 				{
 					this->GCNewCharacterInfoRecv((PMSG_NEW_CHARACTER_INFO_RECV*)lpMsg);
 
-					break;
+					return true;
 				}
 
 				case 0xE1:
 				{
 					this->GCNewCharacterCalcRecv((PMSG_NEW_CHARACTER_CALC_RECV*)lpMsg);
 
-					break;
+					return true;
 				}
 
 				case 0xE2:
 				{
 					this->GCHealthBarRecv((PMSG_HEALTH_BAR_RECV*)lpMsg);
 
-					break;
+					return true;
 				}
 
 				case 0xE3:
 				{
 					gItemStack.GCItemStackListRecv((PMSG_ITEM_STACK_LIST_RECV*)lpMsg);
 
-					break;
+					return true;
 				}
 
 				case 0xE4:
 				{
 					gItemValue.GCItemValueListRecv((PMSG_ITEM_VALUE_LIST_RECV*)lpMsg);
 
-					break;
+					return true;
 				}
 
 				case 0xE5:
 				{
 					gMoveList.GCMoveListRecv((PMSG_MOVE_LIST_RECV*)lpMsg);
 
-					break;
+					return true;
 				}
 
 				case 0xE6:
 				{
 					gEventTimer.GCEventTimeRecv((PMSG_EVENT_TIME_RECV*)lpMsg);
 
-					break;
+					return true;
 				}
 			}
 
@@ -369,18 +376,15 @@ void CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 				{
 					gServerList.GCCustomServerListRecv((PMSG_CUSTOM_SERVER_LIST_RECV*)lpMsg);
 
-					break;
+					return true;
 				}
 			}
 
 			break;
 		}
 	}
-}
 
-void CProtocol::GCLiveClientRecv(PMSG_LIVE_CLIENT_RECV* lpMsg)
-{
-	gPrintPlayer.ViewPing = GetTickCount() - lpMsg->TickCount;
+	return false;
 }
 
 void CProtocol::GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg)
@@ -491,7 +495,7 @@ void CProtocol::CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg)
 		if (Type == GET_ITEM(14, 13) // Jewel of Bless
 		    || Type == GET_ITEM(14, 14) // Jewel of Soul
 		    || Type == GET_ITEM(14, 16) // Jewel of Life
-		    || Type == GET_ITEM(13, 15) // Jewel of Chaos
+		    || Type == GET_ITEM(12, 15) // Jewel of Chaos
 		    || Type == GET_ITEM(14, 22)) // Jewel of Creation
 		{
 			PlayBuffer(49, Hero, FALSE);
@@ -565,6 +569,30 @@ void CProtocol::GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg)
 	}
 }
 
+void CProtocol::GCDevilSquareRequiredLevelsRecv(PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV* lpMsg)
+{
+	for (int Level = 0; Level < 4; Level++)
+	{
+		// Normal Level
+		m_iDevilSquareLimitLevel[Level][0] = lpMsg->m_DevilSquareRequiredLevel[Level][0];
+		m_iDevilSquareLimitLevel[Level][1] = lpMsg->m_DevilSquareRequiredLevel[Level][1];
+	}
+}
+
+void CProtocol::GCBloodCastleRequiredLevelsRecv(PMSG_BLOOD_CASTLE_REQ_LEVELS_RECV* lpMsg)
+{
+	for (int Level = 0; Level < 6; Level++)
+	{
+		// Normal Level
+		m_iBloodCastleLimitLevel[Level][0] = lpMsg->m_BloodCastleRequiredLevel[Level][0];
+		m_iBloodCastleLimitLevel[Level][1] = lpMsg->m_BloodCastleRequiredLevel[Level][1];
+		
+		// MG Level
+		m_iBloodCastleLimitLevel[Level + 6][0] = lpMsg->m_BloodCastleRequiredLevel[Level][2];
+		m_iBloodCastleLimitLevel[Level + 6][1] = lpMsg->m_BloodCastleRequiredLevel[Level][3];
+	}
+}
+
 void CProtocol::GCRewardExperienceRecv(PMSG_REWARD_EXPERIENCE_RECV* lpMsg)
 {
 	gPrintPlayer.ViewDamageHP = lpMsg->ViewDamageHP;
@@ -589,6 +617,11 @@ void CProtocol::GCCharacterCreationEnableRecv(PMSG_CHARACTER_CREATION_ENABLE_REC
 	SetDword(0x00522929 + 1, lpMsg->result); // Allow Create MG
 
 	SetDword(0x0052428E + 1, lpMsg->result); // Allow Create MG
+}
+
+void CProtocol::GCCharacterMaxLevelRecv(PMSG_CHARACTER_MAX_LEVEL_RECV* lpMsg)
+{
+	gPrintPlayer.MaxCharacterLevel = lpMsg->MaxCharacterLevel;
 }
 
 void CProtocol::GCConnectClientRecv(PMSG_CONNECT_CLIENT_RECV* lpMsg)
@@ -738,6 +771,10 @@ void CProtocol::GCNewCharacterCalcRecv(PMSG_NEW_CHARACTER_CALC_RECV* lpMsg)
 
 	*(WORD*)(CharacterAttribute + 0x26) = GET_MAX_WORD_VALUE(lpMsg->ViewMaxBP);
 
+	*(WORD*)(CharacterAttribute + 0x38) = GET_MAX_WORD_VALUE(lpMsg->ViewPhysiSpeed);
+
+	*(WORD*)(CharacterAttribute + 0x44) = GET_MAX_WORD_VALUE(lpMsg->ViewMagicSpeed);
+
 	STRUCT_ENCRYPT;
 
 	gPrintPlayer.ViewCurHP = lpMsg->ViewCurHP;
@@ -787,11 +824,11 @@ void CProtocol::DataSend(BYTE* lpMsg, DWORD size)
 			{
 				BYTE save = EncBuff[1];
 
-				PACKET_DECRYPT;
+				PACKET_DECRYPT(&g_byPacketSerialSend);
 
-				EncBuff[1] = (*(BYTE*)(g_byPacketSerialSend))++;
+				EncBuff[1] = (g_byPacketSerialSend)++;
 
-				PACKET_ENCRYPT;
+				PACKET_ENCRYPT(&g_byPacketSerialSend);
 
 				size = gPacketManager.Encrypt(&send[2], &EncBuff[1], (size - 1)) + 2;
 
@@ -805,11 +842,11 @@ void CProtocol::DataSend(BYTE* lpMsg, DWORD size)
 			{
 				BYTE save = EncBuff[2];
 
-				PACKET_DECRYPT;
+				PACKET_DECRYPT(&g_byPacketSerialSend);
 
-				EncBuff[2] = (*(BYTE*)(g_byPacketSerialSend))++;
+				EncBuff[2] = (g_byPacketSerialSend)++;
 
-				PACKET_ENCRYPT;
+				PACKET_ENCRYPT(&g_byPacketSerialSend);
 
 				size = gPacketManager.Encrypt(&send[3], &EncBuff[2], (size - 2)) + 3;
 
@@ -825,4 +862,38 @@ void CProtocol::DataSend(BYTE* lpMsg, DWORD size)
 
 		gHackCheck.MySend(pSocket, send, size, 0);
 	}
+}
+
+void CProtocol::CGLiveClientSend()
+{
+	PMSG_LIVE_CLIENT_SEND pMsg;
+
+	pMsg.header.setE(0x0E, sizeof(pMsg));
+
+	pMsg.TickCount = GetTickCount();
+
+	STRUCT_DECRYPT;
+
+	if (*(BYTE*)(CharacterAttribute + 0x28) & 1)
+	{
+		pMsg.PhysiSpeed = *(WORD*)(CharacterAttribute + 0x38) - 20;
+
+		pMsg.MagicSpeed = *(WORD*)(CharacterAttribute + 0x44) - 20;
+	}
+	else if (*(BYTE*)(CharacterAttribute + 0x28) & 8)
+	{
+		pMsg.PhysiSpeed = *(WORD*)(CharacterAttribute + 0x38) - 20;
+
+		pMsg.MagicSpeed = *(WORD*)(CharacterAttribute + 0x44) - 20;
+	}
+	else
+	{
+		pMsg.PhysiSpeed = *(WORD*)(CharacterAttribute + 0x38);
+
+		pMsg.MagicSpeed = *(WORD*)(CharacterAttribute + 0x44);
+	}
+
+	STRUCT_ENCRYPT;
+
+	this->DataSend((BYTE*)&pMsg, pMsg.header.size);
 }

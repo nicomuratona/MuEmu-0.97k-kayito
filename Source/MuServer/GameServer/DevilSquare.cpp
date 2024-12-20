@@ -2,6 +2,7 @@
 #include "DevilSquare.h"
 #include "DSProtocol.h"
 #include "EventSpawnMonster.h"
+#include "ItemBagManager.h"
 #include "Map.h"
 #include "ReadScript.h"
 #include "Message.h"
@@ -50,6 +51,26 @@ CDevilSquare::CDevilSquare()
 	memset(this->m_DevilSquareRewardExperience, 0, sizeof(this->m_DevilSquareRewardExperience));
 
 	memset(this->m_DevilSquareRewardMoney, 0, sizeof(this->m_DevilSquareRewardMoney));
+
+	this->m_DevilSquareRequiredLevel[0][0] = 10;
+	this->m_DevilSquareRequiredLevel[0][1] = 99;
+	this->m_DevilSquareRequiredLevel[0][2] = 10;
+	this->m_DevilSquareRequiredLevel[0][3] = 66;
+
+	this->m_DevilSquareRequiredLevel[1][0] = 100;
+	this->m_DevilSquareRequiredLevel[1][1] = 179;
+	this->m_DevilSquareRequiredLevel[1][2] = 67;
+	this->m_DevilSquareRequiredLevel[1][3] = 118;
+
+	this->m_DevilSquareRequiredLevel[2][0] = 180;
+	this->m_DevilSquareRequiredLevel[2][1] = 249;
+	this->m_DevilSquareRequiredLevel[2][2] = 119;
+	this->m_DevilSquareRequiredLevel[2][3] = 166;
+
+	this->m_DevilSquareRequiredLevel[3][0] = 250;
+	this->m_DevilSquareRequiredLevel[3][1] = 99999;
+	this->m_DevilSquareRequiredLevel[3][2] = 167;
+	this->m_DevilSquareRequiredLevel[3][3] = 99999;
 }
 
 CDevilSquare::~CDevilSquare()
@@ -169,6 +190,18 @@ void CDevilSquare::Load(char* path)
 					{
 						this->m_DevilSquareRewardMoney[level][n] = lpReadScript->GetAsNumber();
 					}
+				}
+				else if (section == 4)
+				{
+					int level = lpReadScript->GetNumber();
+
+					this->m_DevilSquareRequiredLevel[level][0] = lpReadScript->GetAsNumber();
+
+					this->m_DevilSquareRequiredLevel[level][1] = lpReadScript->GetAsNumber();
+
+					this->m_DevilSquareRequiredLevel[level][2] = lpReadScript->GetAsNumber();
+
+					this->m_DevilSquareRequiredLevel[level][3] = lpReadScript->GetAsNumber();
 				}
 			}
 		}
@@ -519,6 +552,8 @@ void CDevilSquare::SetState_CLEAN(DEVIL_SQUARE_LEVEL* lpLevel)
 
 	this->GiveUserRewardMoney(lpLevel);
 
+	this->GiveUserRewardItem(lpLevel);
+
 	this->GCDevilSquareScoreSend(lpLevel);
 
 	lpLevel->RemainTime = this->m_CloseTime * 60;
@@ -835,48 +870,18 @@ int CDevilSquare::GetUserCount(DEVIL_SQUARE_LEVEL* lpLevel)
 
 int CDevilSquare::GetUserAbleLevel(LPOBJ lpObj)
 {
-	int level = -1;
+	int MinLevelIndex = (lpObj->Class == CLASS_MG) ? 2 : 0;
+	int MaxLevelIndex = (lpObj->Class == CLASS_MG) ? 3 : 1;
 
-	if (lpObj->Class == CLASS_MG)
+	for (int Level = 0; Level < MAX_DS_LEVEL; Level++)
 	{
-		if (lpObj->Level >= 10 && lpObj->Level <= 66)
+		if (lpObj->Level >= this->m_DevilSquareRequiredLevel[Level][MinLevelIndex] && lpObj->Level <= this->m_DevilSquareRequiredLevel[Level][MaxLevelIndex])
 		{
-			level = 0;
-		}
-		else if (lpObj->Level >= 67 && lpObj->Level <= 118)
-		{
-			level = 1;
-		}
-		else if (lpObj->Level >= 119 && lpObj->Level <= 166)
-		{
-			level = 2;
-		}
-		else if (lpObj->Level >= 167 && lpObj->Level <= gServerInfo.m_MaxCharacterLevel)
-		{
-			level = 3;
-		}
-	}
-	else
-	{
-		if (lpObj->Level >= 10 && lpObj->Level <= 99)
-		{
-			level = 0;
-		}
-		else if (lpObj->Level >= 100 && lpObj->Level <= 179)
-		{
-			level = 1;
-		}
-		else if (lpObj->Level >= 180 && lpObj->Level <= 249)
-		{
-			level = 2;
-		}
-		else if (lpObj->Level >= 250 && lpObj->Level <= gServerInfo.m_MaxCharacterLevel)
-		{
-			level = 3;
+			return Level;
 		}
 	}
 
-	return level;
+	return -1;
 }
 
 void CDevilSquare::CalcUserRank(DEVIL_SQUARE_LEVEL* lpLevel)
@@ -978,6 +983,64 @@ void CDevilSquare::GiveUserRewardMoney(DEVIL_SQUARE_LEVEL* lpLevel)
 		}
 
 		GCMoneySend(lpLevel->User[n].Index, gObj[lpLevel->User[n].Index].Money);
+	}
+}
+
+void CDevilSquare::GiveUserRewardItem(DEVIL_SQUARE_LEVEL* lpLevel)
+{
+	int aIndex = -1;
+
+	for (int n = 0; n < MAX_DS_USER; n++)
+	{
+		if (OBJECT_RANGE(lpLevel->User[n].Index) == 0)
+		{
+			continue;
+		}
+
+		if (lpLevel->User[n].Rank != 0)
+		{
+			continue;
+		}
+
+		aIndex = lpLevel->User[n].Index;
+
+		break;
+	}
+
+	if (aIndex == -1)
+	{
+		return;
+	}
+
+	switch (lpLevel->Level)
+	{
+		case 0:
+		{
+			gItemBagManager.DropItemBySpecialValue(ITEM_BAG_DEVIL_SQUARE1, &gObj[aIndex], gObj[aIndex].Map, gObj[aIndex].X, gObj[aIndex].Y);
+
+			break;
+		}
+
+		case 1:
+		{
+			gItemBagManager.DropItemBySpecialValue(ITEM_BAG_DEVIL_SQUARE2, &gObj[aIndex], gObj[aIndex].Map, gObj[aIndex].X, gObj[aIndex].Y);
+
+			break;
+		}
+
+		case 2:
+		{
+			gItemBagManager.DropItemBySpecialValue(ITEM_BAG_DEVIL_SQUARE3, &gObj[aIndex], gObj[aIndex].Map, gObj[aIndex].X, gObj[aIndex].Y);
+
+			break;
+		}
+
+		case 3:
+		{
+			gItemBagManager.DropItemBySpecialValue(ITEM_BAG_DEVIL_SQUARE4, &gObj[aIndex], gObj[aIndex].Map, gObj[aIndex].X, gObj[aIndex].Y);
+
+			break;
+		}
 	}
 }
 
@@ -1168,6 +1231,8 @@ void CDevilSquare::NpcCharon(LPOBJ lpNpc, LPOBJ lpObj)
 
 		return;
 	}
+
+	this->GCRequiredLevelsSend(lpObj->Index);
 
 	PMSG_NPC_TALK_SEND pMsg;
 
@@ -1554,4 +1619,30 @@ void CDevilSquare::StartDS()
 	LogAdd(LOG_EVENT, "[Set DS Start] At %2d:%2d:00", hour, minute);
 
 	this->Init();
+}
+
+void CDevilSquare::GCRequiredLevelsSend(int aIndex)
+{
+	if (gObjIsConnectedGP(aIndex) == 0)
+	{
+		return;
+	}
+
+	LPOBJ lpObj = &gObj[aIndex];
+
+	PMSG_DEVIL_SQUARE_REQ_LEVELS_SEND pMsg;
+
+	pMsg.header.set(0x8E, sizeof(pMsg));
+
+	int MinLevelIndex = (lpObj->Class == CLASS_MG) ? 2 : 0;
+	int MaxLevelIndex = (lpObj->Class == CLASS_MG) ? 3 : 1;
+
+	for (int Level = 0; Level < MAX_DS_LEVEL; Level++)
+	{
+		pMsg.m_DevilSquareRequiredLevel[Level][0] = this->m_DevilSquareRequiredLevel[Level][MinLevelIndex];
+
+		pMsg.m_DevilSquareRequiredLevel[Level][1] = this->m_DevilSquareRequiredLevel[Level][MaxLevelIndex];
+	}
+
+	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 }

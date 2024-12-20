@@ -3,6 +3,7 @@
 #include "BloodCastle.h"
 #include "ChaosBox.h"
 #include "CommandManager.h"
+#include "CustomWing.h"
 #include "Filter.h"
 #include "FlyingDragons.h"
 #include "Fruit.h"
@@ -430,6 +431,10 @@ void DGCharacterListRecv(SDHP_CHARACTER_LIST_RECV* lpMsg)
 			info.CharSet[5] |= 12;
 			info.CharSet[9] |= TempInventory[7] - 2;
 		}
+		else if (gCustomWing.CheckCustomWingByItem(GET_ITEM(12, TempInventory[7])))
+		{
+			info.CharSet[9] |= (gCustomWing.GetCustomWingIndex(GET_ITEM(12, TempInventory[7])) + 1);
+		}
 
 		if (TempInventory[8] == (MAX_ITEM_TYPE - 1))
 		{
@@ -468,6 +473,8 @@ void DGCharacterListRecv(SDHP_CHARACTER_LIST_RECV* lpMsg)
 	DataSend(lpMsg->index, send, size);
 
 	GCCharacterCreationEnableSend(lpMsg->index, gObj[lpMsg->index].ClassCode);
+
+	GCCharacterMaxLevelSend(lpMsg->index, gServerInfo.m_MaxCharacterLevel);
 }
 
 void GDCharacterCreateSend(int aIndex, char* name, BYTE Class)

@@ -1,5 +1,7 @@
 #pragma once
 
+#define DWORD_MAX 4294967295
+
 /* VIEWPORT */
 #define MAX_MAIN_VIEWPORT 400
 #define REAL_WIDTH(width) ((width) * WindowWidth / 640)
@@ -35,17 +37,25 @@
 
 #define MAX_ITEM_INFO 4
 
+#define GET_ITEM_OPT_LEVEL(x)	((x >> 3) & 0xF) // GET_ITEM_OPT_LEVEL(TargetItem->Level)
+#define GET_ITEM_OPT_DUR(x)	((x < 0) ? (x + 256) : x) // GET_ITEM_OPT_DUR(TargetItem->Durability)
+#define GET_ITEM_OPT_SKILL(x)	((x >> 7) & 1) // GET_ITEM_OPT_SKILL(TargetItem->Level)
+#define GET_ITEM_OPT_LUCK(x)	((x >> 2) & 1) // GET_ITEM_OPT_LUCK(TargetItem->Level)
+#define GET_ITEM_OPT_OPT(x,y)	((x & 3) + ((y & 64) >> 4)) // GET_ITEM_OPT_OPT(TargetItem->Level, TargetItem->Option1)
+#define GET_ITEM_OPT_EXC(x)	(x & 0x3F) // GET_ITEM_OPT_EXC(TargetItem->Option1)
+
 /* WNDPROC */
 #define WM_AUTOCLICKTIMER 0x01
 #define WM_NPROTECT_EXIT_TWO (WM_USER + 0x2711)
 #define WINDOWMINIMIZED_TIMER 1001
 #define WM_TRAY_MODE_ICON (WM_USER+100)
 #define WM_TRAY_MODE_MESSAGE (WM_USER+101)
+#define HACK_TIMER 1000
 
 /* CHARACTER */
 #define MAX_CLASS 4
 #define MAX_RESISTANCE 4
-#define MAX_CHARACTER_LEVEL 400
+#define MAX_CHARACTER_LEVEL 1000
 
 /* MONSTER */
 #define MONSTER_BASE_MODEL 270
@@ -64,6 +74,10 @@
 #define MAX_TEXTURE 5500
 #define PLUS_TEXTURE 5500
 #define TOTAL_TEXTURE (MAX_TEXTURE + PLUS_TEXTURE)
+
+#define MAX_MODELS 963
+#define PLUS_MODELS 256
+#define TOTAL_MODELS (MAX_MODELS + PLUS_MODELS)
 
 #define MAX_BITMAP_FILE_NAME 32
 

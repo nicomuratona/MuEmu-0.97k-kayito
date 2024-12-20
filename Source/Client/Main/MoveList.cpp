@@ -14,9 +14,9 @@ CMoveList::CMoveList()
 
 	this->MainBaseHeight = 60.0f;
 
-	this->MainPosX = 1.0f;
+	this->MainPosX = 5.0f;
 
-	this->MainPosY = 1.0f;
+	this->MainPosY = 5.0f;
 
 	this->SectionWidth = 50.0f;
 

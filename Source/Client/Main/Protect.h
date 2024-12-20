@@ -6,6 +6,8 @@
 #include "ItemOption.h"
 #include "CustomMonster.h"
 #include "CustomBow.h"
+#include "CustomWing.h"
+#include "ItemPosition.h"
 
 struct MAIN_FILE_INFO
 {
@@ -31,8 +33,11 @@ struct MAIN_FILE_INFO
 	CUSTOM_GLOW_INFO CustomGlowInfo[MAX_ITEM];
 	CUSTOM_ITEM_INFO CustomItemInfo[MAX_ITEM];
 	CUSTOM_BOW_INFO CustomBowInfo[MAX_CUSTOM_BOW];
+	CUSTOM_WING_INFO CustomWingInfo[MAX_CUSTOM_WING];
 	ITEM_OPTION_INFO ItemOptionInfo[MAX_ITEM_OPTION_INFO];
 	CUSTOM_MONSTER_INFO CustomMonsterInfo[MAX_MONSTER];
+	ITEM_POSITION_INFO ItemPositionInfo[MAX_ITEM];
+
 };
 
 class CProtect

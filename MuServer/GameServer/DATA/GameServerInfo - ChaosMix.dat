@@ -241,6 +241,10 @@ BloodCastleMixCost6_AL3 = 600000
 ; AddItemRate
 ;	-1 = (Total SellPrice of every additional item inside ChaosBox) / 40000
 ;	0 ~ 100
+; CustomMixRate: Rate of generating a random Custom Wing
+;	0 = Never generate Custom Wings (Always generate S2 Only)
+;	100 = Never generate S2 Wings (Always generate Custom Wings Only)
+;	0 ~ 100
 ;==================================================
 Wing2MixRate_AL0 = -1
 Wing2MixRate_AL1 = -1
@@ -256,3 +260,8 @@ Wing2MixAddItemRate_AL0 = -1
 Wing2MixAddItemRate_AL1 = -1
 Wing2MixAddItemRate_AL2 = -1
 Wing2MixAddItemRate_AL3 = -1
+
+Wing2CustomMixRate_AL0 = 0
+Wing2CustomMixRate_AL1 = 0
+Wing2CustomMixRate_AL2 = 0
+Wing2CustomMixRate_AL3 = 0

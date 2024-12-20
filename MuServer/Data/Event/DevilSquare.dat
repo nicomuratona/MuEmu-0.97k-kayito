@@ -29,3 +29,11 @@ end
 2	50000		45000		45000		40000		40000		40000		35000		35000		35000		35000
 3	60000		55000		55000		50000		50000		50000		45000		45000		45000		45000
 end
+
+4
+//Level	MinRequiredLevel	MaxRequiredLevel	MinRequiredMGLevel	MaxRequiredMGLevel
+0	10			99			10			66
+1	100			179			67			118
+2	180			249			119			166
+3	250			99999			167			99999
+end
