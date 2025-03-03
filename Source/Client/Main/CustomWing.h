@@ -21,7 +21,7 @@ public:
 
 	virtual ~CCustomWing();
 
-	void Load(CUSTOM_WING_INFO* info);
+	void Init(CUSTOM_WING_INFO* info);
 
 	CUSTOM_WING_INFO* GetInfo(int Index);
 

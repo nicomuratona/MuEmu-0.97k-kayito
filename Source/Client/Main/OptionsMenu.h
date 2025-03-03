@@ -40,6 +40,8 @@ private:
 	void RenderGeneralTitle(float PosX, float PosY);
 	void RenderLanguage(float PosX, float PosY);
 	bool CheckLanguage(int PosX, int PosY);
+	void RenderPVPWithoutControl(float PosX, float PosY);
+	bool CheckPVPWithoutControl(int PosX, int PosY);
 	void RenderAutomaticAttack(float PosX, float PosY);
 	bool CheckAutomaticAttack(int PosX, int PosY);
 	void RenderSoundOnWhisper(float PosX, float PosY);
@@ -69,6 +71,8 @@ private:
 	bool CheckDeleteDynamicEffects(int PosX, int PosY);
 	void RenderDeleteWings(float PosX, float PosY);
 	bool CheckDeleteWings(int PosX, int PosY);
+	void RenderDeleteHPBar(float PosX, float PosY);
+	bool CheckDeleteHPBar(int PosX, int PosY);
 	void RenderDeleteInterface(float PosX, float PosY);
 	bool CheckDeleteInterface(int PosX, int PosY);
 
@@ -116,14 +120,17 @@ private:
 	int BoxWidth;
 	int BoxHeight;
 
+	/* General */
+	bool PVPWithoutControl;
+
 	/* Antilag */
-	int DeleteShadows;
-	int DeleteObjects;
-	int DeleteFloor;
-	int DeleteSkills;
-	int DeleteStaticEffects;
-	int DeleteDynamicEffects;
-	int DeleteInterface;
+	bool DeleteShadows;
+	bool DeleteObjects;
+	bool DeleteFloor;
+	bool DeleteSkills;
+	bool DeleteStaticEffects;
+	bool DeleteDynamicEffects;
+	bool DeleteInterface;
 
 	/* Resolution */
 	int Resolutions[MAX_RESOLUTION_VALUE];

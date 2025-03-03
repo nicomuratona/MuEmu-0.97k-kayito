@@ -305,9 +305,9 @@ void CMiniMap::LoadImages()
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // Set the texture filter
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER); // Set the texture wrap
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); // Set the texture wrap
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER); // Set the texture wrap
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP); // Set the texture wrap
 
 	GLfloat borderColor[] = { 0.0f, 0.0f, 0.0f, 0.0f }; // White color
 
@@ -511,10 +511,10 @@ void CMiniMap::RenderMiniMap()
 
 	this->CharPosY = *(float*)(Hero + 0x14) / 100.0f;
 
-	this->MapOffsetX = this->CharPosX - this->VisualRange;
+	this->MapOffsetX = min(max((this->CharPosX - this->VisualRange), 0), 256.0f - (this->VisualRange * 2));
 	this->MapOffsetX /= 256.0f;
 
-	this->MapOffsetY = (256.0f - this->CharPosY) - this->VisualRange;
+	this->MapOffsetY = min(max(((256.0f - this->CharPosY) - this->VisualRange), 0), 256.0f - (this->VisualRange * 2));
 	this->MapOffsetY /= 256.0f;
 
 	this->RenderMiniMapBackground();
@@ -1208,13 +1208,13 @@ void CMiniMap::RenderFullMapZoom()
 
 	DWORD backupBgTextColor = SetBackgroundTextColor;
 
-	SetBackgroundTextColor = Color4b(0, 0, 0, 0);
+	SetBackgroundTextColor = Color4b(255, 255, 255, 0);
 
 	DWORD backupTextColor = SetTextColor;
 
 	SetTextColor = Color4b(255, 0, 0, (int)(alpha * 255));
 
-	RenderText(5, CenterTextPosY(Text, 421), Text, 0, RT3_SORT_LEFT, NULL);
+	RenderText(5, CenterTextPosY(Text, 421), Text, REAL_WIDTH(60), RT3_SORT_LEFT, NULL);
 
 	SetBackgroundTextColor = backupBgTextColor;
 
@@ -1259,7 +1259,7 @@ void CMiniMap::RenderFullMapAlpha()
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	StartPosX += 27.0f;
+	StartPosX += 31.0f;
 
 	SelectObject(m_hFontDC, g_hFontBold);
 
@@ -1271,13 +1271,13 @@ void CMiniMap::RenderFullMapAlpha()
 
 	DWORD backupBgTextColor = SetBackgroundTextColor;
 
-	SetBackgroundTextColor = Color4b(0, 0, 0, 0);
+	SetBackgroundTextColor = Color4b(255, 255, 255, 0);
 
 	DWORD backupTextColor = SetTextColor;
 
 	SetTextColor = Color4b(255, 0, 0, (int)(alpha * 255));
 
-	RenderText((int)StartPosX, CenterTextPosY(Text, 421), Text, 75, RT3_SORT_LEFT, NULL);
+	RenderText((int)StartPosX, CenterTextPosY(Text, 421), Text, REAL_WIDTH(60), RT3_SORT_LEFT, NULL);
 
 	SetBackgroundTextColor = backupBgTextColor;
 

@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "Util.h"
 #include "GameMain.h"
+#include "GameServer.h"
 #include "HackCheck.h"
 #include "ItemManager.h"
 #include "Message.h"
+#include "Resource.h"
 #include "ServerInfo.h"
 #include "SocketManager.h"
 #include "Viewport.h"
@@ -459,7 +461,7 @@ void PostMessageLightGreen(char* name, char* serverName, int message, char* text
 
 void SetLargeRand()
 {
-	static std::random_device m_rd;
+	std::random_device m_rd;
 
 	seed = std::mt19937(m_rd());
 
@@ -471,4 +473,43 @@ long GetLargeRand()
 	uuid_vector_t;
 
 	return dist(seed);
+}
+
+void CreateSubMenuItem(int hBaseMenu, int hSubmenuIndex, const char* hMenuLabel)
+{
+	if (hBaseMenu != ID_STARTINVASION && hBaseMenu != ID_STARTBONUS)
+	{
+		return;
+	}
+
+	if (hSubmenuIndex < 0 || hSubmenuIndex >= 30)
+	{
+		return;
+	}
+
+	HMENU hMenu = GetMenu(hWnd); // Obtener el handle al menú principal
+
+	if (!hMenu)
+	{
+		return;
+	}
+
+	HMENU hEventsMenu = GetSubMenu(hMenu, 2); // Tercer popup es "Events"
+
+	if (!hEventsMenu)
+	{
+		return;
+	}
+
+	HMENU hMenuEvent = GetSubMenu(hEventsMenu, (hBaseMenu == ID_STARTINVASION) ? 2 : 3); // 2 = "Start Invasion" / 3 = "Start Bonus"
+
+	if (!hMenuEvent)
+	{
+		return;
+	}
+
+	AppendMenu(hMenuEvent, MF_STRING, hSubmenuIndex + hBaseMenu, hMenuLabel);
+
+	// Forzar el redibujado del menú
+	DrawMenuBar(hWnd);
 }

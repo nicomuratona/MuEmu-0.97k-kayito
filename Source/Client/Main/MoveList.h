@@ -9,6 +9,7 @@
 struct PMSG_MOVE_LIST_RECV
 {
 	PSWMSG_HEAD header; // C2:F3:E5
+	BYTE PKLimitFree;
 	BYTE count;
 };
 
@@ -17,7 +18,11 @@ struct MOVE_LIST_INFO
 	BYTE MapNumber;
 	char MapName[32];
 	bool CanMove;
-	WORD LevelMin;
+	short MinLevel;
+	short MaxLevel;
+	short MinReset;
+	short MaxReset;
+	short AccountLevel;
 	DWORD Money;
 };
 
@@ -69,11 +74,7 @@ private:
 
 	float SectionWidth;
 
-	float MapNamePosX;
-
-	float ReqLevelPosX;
-
-	float ReqMoneyPosX;
+	BYTE PKLimitFree;
 
 	std::vector<MOVE_LIST_INFO> m_MoveList;
 };

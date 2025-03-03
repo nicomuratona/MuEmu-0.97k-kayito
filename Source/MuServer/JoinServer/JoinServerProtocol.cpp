@@ -213,16 +213,13 @@ void GJConnectAccountRecv(SDHP_CONNECT_ACCOUNT_RECV* lpMsg, int index)
 
 #ifndef MYSQL
 
-	if (gQueryManager.ExecQuery("EXEC WZ_DesblocAccount '%s'", lpMsg->account) == false || gQueryManager.Fetch() == SQL_NO_DATA)
-	{
-		gQueryManager.Close();
+	gQueryManager.ExecQuery("EXEC WZ_DesblocAccount '%s'", lpMsg->account);
 
-		pMsg.result = 2;
+	gQueryManager.Close();
 
-		gSocketManager.DataSend(index, (BYTE*)&pMsg, pMsg.header.size);
+	gQueryManager.ExecQuery("EXEC WZ_DesblocCharacters '%s'", lpMsg->account);
 
-		return;
-	}
+	gQueryManager.Close();
 
 #else
 

@@ -16,6 +16,7 @@
 #include "GameMain.h"
 #include "GameMaster.h"
 #include "Gate.h"
+#include "GoldenArcherBingo.h"
 #include "Guild.h"
 #include "HackPacketCheck.h"
 #include "InvasionManager.h"
@@ -84,6 +85,8 @@ void gObjEventRunProc()
 	gInvasionManager.MainProc();
 
 	gFlyingDragons.FlyingDragonsDelete();
+
+	gGoldenArcherBingo.MainProc();
 }
 
 void gObjViewportProc()
@@ -2235,7 +2238,7 @@ void gObjSecondProc()
 			{
 				gObjCheckMapTile(lpObj, 3);
 
-				GCHealthBarSend(lpObj);
+				GCHealthBarSend(lpObj->Index);
 
 				gEventTimeManager.GCEventTimeSend(lpObj->Index);
 

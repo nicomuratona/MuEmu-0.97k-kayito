@@ -57,12 +57,13 @@
 26	"A loja está vazia"
 // Guard NPC
 27	"Foda-se!"
-// Golden Archer
-28	"%d Renas registradas com sucesso!"
-29	"%d Stones registradas com sucesso!"
-30	"Número errado"
-31	"A recompensa está desativada!"
-32	"LUCKY NUMBER: %s"
+// Golden archer
+28	"Você não tem o suficiente. %d obrigatório"
+29	"Você não pode receber um nível diferente de VIP"
+30	"Você já tem um Lucky Number"
+// Golden archer Bingo
+31	"[%s] Não houve vencedores."
+32	"[%s] Archer estará em %s (%d, %d) por %d minutos"
 // Guild
 33	"Você já está em uma guilda"
 34	"Você precisa de %d Levels para criar uma Guild"

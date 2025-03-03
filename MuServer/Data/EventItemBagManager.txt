@@ -31,4 +31,9 @@
 *		*		81		*		//Golden Vepar
 *		*		82		*		//Golden Tantalos
 *		*		83		*		//Golden Iron Wheel
+*		*		*		10		//Golden Archer Rena Reward 1
+*		*		*		11		//Golden Archer Rena Reward 2
+*		*		*		12		//Golden Archer Rena Reward 3
+*		*		*		13		//Golden Archer Rena Reward 4
+*		*		*		14		//Golden Archer Bingo
 end

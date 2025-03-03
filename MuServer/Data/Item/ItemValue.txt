@@ -1,61 +1,55 @@
-//Index		Level		Grade		Value		Comment
-04,007		0		*		100		//Bolt
-04,007		1		*		1400		//Bolt
-04,007		2		*		2200		//Bolt
-04,007		3		*		3000		//Bolt
-04,015		0		*		70		//Arrow
-04,015		1		*		1200		//Arrow
-04,015		2		*		2000		//Arrow
-04,015		3		*		2800		//Arrow
-12,015		*		*		810000		//Jewel of Chaos
-13,003		*		0		960000		//Horn of Dinorant
-13,003		*		1		1260000		//Horn of Dinorant
-13,003		*		2		1260000		//Horn of Dinorant
-13,003		*		4		1260000		//Horn of Dinorant
-13,003		*		3		1560000		//Horn of Dinorant
-13,003		*		5		1560000		//Horn of Dinorant
-13,003		*		6		1560000		//Horn of Dinorant
-13,014		0		*		180000		//Loch's Feather
-13,015		*		*		33000000	//Fruits
-13,016		1		*		15000		//Scroll of Archangel 1
-13,016		2		*		21000		//Scroll of Archangel 2
-13,016		3		*		30000		//Scroll of Archangel 3
-13,016		4		*		39000		//Scroll of Archangel 4
-13,016		5		*		48000		//Scroll of Archangel 5
-13,016		6		*		60000		//Scroll of Archangel 6
-13,017		1		*		15000		//Blood Bone 1
-13,017		2		*		21000		//Blood Bone 2
-13,017		3		*		30000		//Blood Bone 3
-13,017		4		*		39000		//Blood Bone 4
-13,017		5		*		48000		//Blood Bone 5
-13,017		6		*		60000		//Blood Bone 6
-13,018		1		*		150000		//Invisibility Cloak 1
-13,018		2		*		660000		//Invisibility Cloak 2
-13,018		3		*		720000		//Invisibility Cloak 3
-13,018		4		*		780000		//Invisibility Cloak 4
-13,018		5		*		840000		//Invisibility Cloak 5
-13,018		6		*		900000		//Invisibility Cloak 6
-14,009		1		*		1000		//Ale
-14,013		*		*		9000000		//Jewel of Bless
-14,014		*		*		6000000		//Jewel of Soul
-14,016		*		*		45000000	//Jewel of Life
-14,017		1		*		15000		//Devil's Eye 1
-14,017		2		*		21000		//Devil's Eye 2
-14,017		3		*		30000		//Devil's Eye 3
-14,017		4		*		45000		//Devil's Eye 4
-14,018		1		*		15000		//Devil's Key 1
-14,018		2		*		21000		//Devil's Key 2
-14,018		3		*		30000		//Devil's Key 3
-14,018		4		*		45000		//Devil's Key 4
-14,019		1		*		60000		//Devil's Invitation 1
-14,019		2		*		84000		//Devil's Invitation 2
-14,019		3		*		120000		//Devil's Invitation 3
-14,019		4		*		180000		//Devil's Invitation 4
-14,020		*		*		900		//Remedy of Love
-14,021		0		*		9000		//Rena
-14,022		*		*		36000000	//Jewel of Creation
-14,023		*		*		9000		//Scroll of the Emperor
-14,024		*		*		9000		//Broken Sword
-14,025		*		*		9000		//Tear of Elf
-14,026		*		*		9000		//Soul Shard of Wizard
+//Index		Level		BuyValue	SellValue	Comment
+04,007		0		100		*		// Bolt
+04,007		1		1400		*		// Bolt
+04,007		2		2200		*		// Bolt
+04,007		3		3000		*		// Bolt
+04,015		0		70		*		// Arrow
+04,015		1		1200		*		// Arrow
+04,015		2		2000		*		// Arrow
+04,015		3		2800		*		// Arrow
+12,015		*		810000		*		// Jewel of Chaos
+13,003		*		960000		*		// Horn of Dinorant
+13,014		0		180000		*		// Loch's Feather
+13,015		*		33000000	*		// Fruits
+13,016		1		15000		*		// Scroll of Archangel 1
+13,016		2		21000		*		// Scroll of Archangel 2
+13,016		3		30000		*		// Scroll of Archangel 3
+13,016		4		39000		*		// Scroll of Archangel 4
+13,016		5		48000		*		// Scroll of Archangel 5
+13,016		6		60000		*		// Scroll of Archangel 6
+13,017		1		15000		*		// Blood Bone 1
+13,017		2		21000		*		// Blood Bone 2
+13,017		3		30000		*		// Blood Bone 3
+13,017		4		39000		*		// Blood Bone 4
+13,017		5		48000		*		// Blood Bone 5
+13,017		6		60000		*		// Blood Bone 6
+13,018		1		150000		*		// Invisibility Cloak 1
+13,018		2		660000		*		// Invisibility Cloak 2
+13,018		3		720000		*		// Invisibility Cloak 3
+13,018		4		780000		*		// Invisibility Cloak 4
+13,018		5		840000		*		// Invisibility Cloak 5
+13,018		6		900000		*		// Invisibility Cloak 6
+14,009		1		1000		*		// Ale
+14,013		*		9000000		*		// Jewel of Bless
+14,014		*		6000000		*		// Jewel of Soul
+14,016		*		45000000	*		// Jewel of Life
+14,017		1		15000		*		// Devil's Eye 1
+14,017		2		21000		*		// Devil's Eye 2
+14,017		3		30000		*		// Devil's Eye 3
+14,017		4		45000		*		// Devil's Eye 4
+14,018		1		15000		*		// Devil's Key 1
+14,018		2		21000		*		// Devil's Key 2
+14,018		3		30000		*		// Devil's Key 3
+14,018		4		45000		*		// Devil's Key 4
+14,019		1		60000		*		// Devil's Invitation 1
+14,019		2		84000		*		// Devil's Invitation 2
+14,019		3		120000		*		// Devil's Invitation 3
+14,019		4		180000		*		// Devil's Invitation 4
+14,020		*		900		*		// Remedy of Love
+14,021		0		9000		*		// Rena
+14,022		*		36000000	*		// Jewel of Creation
+14,023		*		9000		*		// Scroll of the Emperor
+14,024		*		9000		*		// Broken Sword
+14,025		*		9000		*		// Tear of Elf
+14,026		*		9000		*		// Soul Shard of Wizard
 end

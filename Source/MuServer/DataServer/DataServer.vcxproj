@@ -193,7 +193,7 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="ReadScript.h" />
     <ClInclude Include="MiniDump.h" />
-    <ClInclude Include="NpcTalk.h" />
+    <ClInclude Include="GoldenArcher.h" />
     <ClInclude Include="QueryManager.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Resource.h" />
@@ -218,7 +218,7 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="ReadScript.cpp" />
     <ClCompile Include="MiniDump.cpp" />
-    <ClCompile Include="NpcTalk.cpp" />
+    <ClCompile Include="GoldenArcher.cpp" />
     <ClCompile Include="QueryManager.cpp" />
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="ServerDisplayer.cpp" />

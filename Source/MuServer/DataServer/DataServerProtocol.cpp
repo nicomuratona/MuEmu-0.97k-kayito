@@ -3,9 +3,9 @@
 #include "BadSyntax.h"
 #include "CharacterManager.h"
 #include "CommandManager.h"
+#include "GoldenArcher.h"
 #include "Guild.h"
 #include "GuildManager.h"
-#include "NpcTalk.h"
 #include "QueryManager.h"
 #include "ServerManager.h"
 #include "SocketManager.h"
@@ -162,21 +162,42 @@ void DataServerProtocolCore(int index, BYTE head, BYTE* lpMsg, int size)
 			{
 				case 0x00:
 				{
-					gNpcTalk.GDNpcGoldenArcherOpenRecv((SDHP_NPC_GOLDEN_ARCHER_OPEN_RECV*)lpMsg, index);
+					gGoldenArcher.GDGoldenArcherGetValuesRecv((SDHP_GOLDEN_ARCHER_GET_VALUES_RECV*)lpMsg, index);
 
 					break;
 				}
 
 				case 0x01:
 				{
-					gNpcTalk.GDNpcGoldenArcherRegisterCountRecv((SDHP_NPC_GOLDEN_ARCHER_REG_COUNT_RECV*)lpMsg, index);
+					gGoldenArcher.GDGoldenArcherSaveCoinRecv((SDHP_GOLDEN_ARCHER_SAVE_COIN_RECV*)lpMsg);
 
 					break;
 				}
 
 				case 0x02:
 				{
-					gNpcTalk.GDNpcGoldenArcherRegisterLuckyNumRecv((SDHP_NPC_GOLDEN_ARCHER_REG_LUCKYNUM_RECV*)lpMsg, index);
+					gGoldenArcher.GDGoldenArcherSaveLuckyNumberRecv((SDHP_GOLDEN_ARCHER_SAVE_LUCKY_NUMBER_RECV*)lpMsg);
+
+					break;
+				}
+
+				case 0x03:
+				{
+					gGoldenArcher.GDGoldenArcherRegisterLuckyNumberRecv((SDHP_GOLDEN_ARCHER_SAVE_LUCKY_NUMBER_RECV*)lpMsg, index);
+
+					break;
+				}
+
+				case 0x04:
+				{
+					gGoldenArcher.GDBingoGetWinnersRecv((SDHP_BINGO_GET_WINNERS_RECV*)lpMsg, index);
+
+					break;
+				}
+
+				case 0x05:
+				{
+					gGoldenArcher.GDBingoClearRegisteredRecv((SDHP_BINGO_CLEAR_REGISTERED_RECV*)lpMsg, index);
 
 					break;
 				}
@@ -773,22 +794,6 @@ void GDCharacterInfoRecv(SDHP_CHARACTER_INFO_RECV* lpMsg, int index)
 
 		pMsg.Money = gQueryManager.GetAsInteger("Money");
 
-	#ifndef MYSQL
-
-		pMsg.Life = (DWORD)gQueryManager.GetAsFloat("Life");
-
-		pMsg.MaxLife = (DWORD)gQueryManager.GetAsFloat("MaxLife");
-
-		pMsg.Mana = (DWORD)gQueryManager.GetAsFloat("Mana");
-
-		pMsg.MaxMana = (DWORD)gQueryManager.GetAsFloat("MaxMana");
-
-		pMsg.BP = (DWORD)gQueryManager.GetAsFloat("BP");
-
-		pMsg.MaxBP = (DWORD)gQueryManager.GetAsFloat("MaxBP");
-
-	#else
-
 		pMsg.Life = gQueryManager.GetAsInteger("Life");
 
 		pMsg.MaxLife = gQueryManager.GetAsInteger("MaxLife");
@@ -800,8 +805,6 @@ void GDCharacterInfoRecv(SDHP_CHARACTER_INFO_RECV* lpMsg, int index)
 		pMsg.BP = gQueryManager.GetAsInteger("BP");
 
 		pMsg.MaxBP = gQueryManager.GetAsInteger("MaxBP");
-
-	#endif
 
 		pMsg.Map = (BYTE)gQueryManager.GetAsInteger("MapNumber");
 
@@ -889,7 +892,7 @@ void GDCharacterInfoSaveRecv(SDHP_CHARACTER_INFO_SAVE_RECV* lpMsg)
 
 	gQueryManager.BindParameterAsBinary(4, lpMsg->Effect[0], sizeof(lpMsg->Effect));
 
-	gQueryManager.ExecQuery("UPDATE Character SET cLevel=%d,Class=%d,LevelUpPoint=%d,Experience=%d,Strength=%d,Dexterity=%d,Vitality=%d,Energy=%d,Inventory=?,MagicList=?,Money=%d,Life=%f,MaxLife=%f,Mana=%f,MaxMana=%f,BP=%f,MaxBP=%f,MapNumber=%d,MapPosX=%d,MapPosY=%d,MapDir=%d,PkCount=%d,PkLevel=%d,PkTime=%d,Quest=?,EffectList=?,FruitAddPoint=%d,FruitSubPoint=%d WHERE AccountID='%s' AND Name='%s'", lpMsg->Level, lpMsg->Class, lpMsg->LevelUpPoint, lpMsg->Experience, lpMsg->Strength, lpMsg->Dexterity, lpMsg->Vitality, lpMsg->Energy, lpMsg->Money, (float)lpMsg->Life, (float)lpMsg->MaxLife, (float)lpMsg->Mana, (float)lpMsg->MaxMana, (float)lpMsg->BP, (float)lpMsg->MaxBP, lpMsg->Map, lpMsg->X, lpMsg->Y, lpMsg->Dir, lpMsg->PKCount, lpMsg->PKLevel, lpMsg->PKTime, lpMsg->FruitAddPoint, lpMsg->FruitSubPoint, lpMsg->account, lpMsg->name);
+	gQueryManager.ExecQuery("UPDATE Character SET cLevel=%d,Class=%d,LevelUpPoint=%d,Experience=%d,Strength=%d,Dexterity=%d,Vitality=%d,Energy=%d,Inventory=?,MagicList=?,Money=%d,Life=%d,MaxLife=%d,Mana=%d,MaxMana=%d,BP=%d,MaxBP=%d,MapNumber=%d,MapPosX=%d,MapPosY=%d,MapDir=%d,PkCount=%d,PkLevel=%d,PkTime=%d,Quest=?,EffectList=?,FruitAddPoint=%d,FruitSubPoint=%d WHERE AccountID='%s' AND Name='%s'", lpMsg->Level, lpMsg->Class, lpMsg->LevelUpPoint, lpMsg->Experience, lpMsg->Strength, lpMsg->Dexterity, lpMsg->Vitality, lpMsg->Energy, lpMsg->Money, lpMsg->Life, lpMsg->MaxLife, lpMsg->Mana, lpMsg->MaxMana, lpMsg->BP, lpMsg->MaxBP, lpMsg->Map, lpMsg->X, lpMsg->Y, lpMsg->Dir, lpMsg->PKCount, lpMsg->PKLevel, lpMsg->PKTime, lpMsg->FruitAddPoint, lpMsg->FruitSubPoint, lpMsg->account, lpMsg->name);
 
 #else
 

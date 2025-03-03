@@ -57,8 +57,15 @@ MGDamageStuckRate = 10
 ;==================================================
 ; Character Damage Multiplier Settings
 ;==================================================
+DWDamageMultiplierConstA = 10
 DKDamageMultiplierConstA = 10
+FEDamageMultiplierConstA = 10
+MGDamageMultiplierConstA = 10
+
+DWDamageMultiplierMaxRate = 500
 DKDamageMultiplierMaxRate = 500
+FEDamageMultiplierMaxRate = 500
+MGDamageMultiplierMaxRate = 500
 
 ;==================================================
 ; Character Guardian Inc Damage Settings

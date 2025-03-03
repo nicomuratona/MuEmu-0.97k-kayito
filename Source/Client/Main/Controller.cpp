@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Camera.h"
 #include "Controller.h"
+#include "Camera3D.h"
 #include "EventTimer.h"
 #include "MiniMap.h"
 #include "MoveList.h"
@@ -9,35 +9,45 @@
 
 Controller gController;
 
-void Controller::Load(HINSTANCE hins)
+Controller::Controller()
 {
-	this->Instance = hins;
+	this->Instance = NULL;
 
-	if (!this->MouseHook)
-	{
-		this->MouseHook = SetWindowsHookEx(WH_MOUSE, this->Mouse, this->Instance, GetCurrentThreadId());
+	this->MouseHook = NULL;
 
-		if (!this->MouseHook)
-		{
-			return;
-		}
-	}
-
-	if (!this->KeyboardHook)
-	{
-		this->KeyboardHook = SetWindowsHookEx(WH_KEYBOARD, this->Keyboard, this->Instance, GetCurrentThreadId());
-
-		if (!this->KeyboardHook)
-		{
-			return;
-		}
-	}
+	this->KeyboardHook = NULL;
 
 	this->AutoClick = false;
 
 	this->AutoClickState = false;
+}
 
-	SetDword(0x00552398, (DWORD)&this->GetAsyncKeyStateHook);
+Controller::~Controller()
+{
+	if (this->MouseHook)
+	{
+		UnhookWindowsHookEx(this->MouseHook);
+
+		this->MouseHook = NULL;
+	}
+
+	if (this->KeyboardHook)
+	{
+		UnhookWindowsHookEx(this->KeyboardHook);
+
+		this->KeyboardHook = NULL;
+	}
+}
+
+void Controller::Init(HINSTANCE hins)
+{
+	this->Instance = hins;
+
+	this->MouseHook = SetWindowsHookEx(WH_MOUSE, this->Mouse, this->Instance, GetCurrentThreadId());
+
+	this->KeyboardHook = SetWindowsHookEx(WH_KEYBOARD, this->Keyboard, this->Instance, GetCurrentThreadId());
+
+	SetDword(0x00552398, (DWORD)&GetAsyncKeyStateCall);
 
 	SetCompleteHook(0xE8, 0x005259DD, &this->CheckKeyboardKeys);
 }
@@ -54,7 +64,7 @@ LRESULT Controller::Mouse(int nCode, WPARAM wParam, LPARAM lParam)
 			{
 				if (GetForegroundWindow() == g_hWnd)
 				{
-					gCamera.Move(HookStruct);
+					Camera3D.Move(HookStruct);
 				}
 
 				break;
@@ -64,11 +74,11 @@ LRESULT Controller::Mouse(int nCode, WPARAM wParam, LPARAM lParam)
 			{
 				if (GetForegroundWindow() == g_hWnd)
 				{
-					gCamera.SetIsMove(1);
+					Camera3D.SetIsMove(true);
 
-					gCamera.SetCursorX(HookStruct->pt.x);
+					Camera3D.SetCursorX(HookStruct->pt.x);
 
-					gCamera.SetCursorY(HookStruct->pt.y);
+					Camera3D.SetCursorY(HookStruct->pt.y);
 				}
 
 				break;
@@ -78,7 +88,7 @@ LRESULT Controller::Mouse(int nCode, WPARAM wParam, LPARAM lParam)
 			{
 				if (GetForegroundWindow() == g_hWnd)
 				{
-					gCamera.SetIsMove(0);
+					Camera3D.SetIsMove(false);
 				}
 
 				break;
@@ -88,7 +98,7 @@ LRESULT Controller::Mouse(int nCode, WPARAM wParam, LPARAM lParam)
 			{
 				if (GetForegroundWindow() == g_hWnd)
 				{
-					gCamera.Zoom(HookStruct);
+					Camera3D.Zoom(HookStruct);
 				}
 
 				break;
@@ -138,7 +148,7 @@ LRESULT Controller::Keyboard(int nCode, WPARAM wParam, LPARAM lParam)
 				{
 					if (GetForegroundWindow() == g_hWnd)
 					{
-						gCamera.Toggle();
+						Camera3D.Toggle();
 					}
 
 					break;
@@ -148,7 +158,7 @@ LRESULT Controller::Keyboard(int nCode, WPARAM wParam, LPARAM lParam)
 				{
 					if (GetForegroundWindow() == g_hWnd)
 					{
-						gCamera.Restore();
+						Camera3D.Restore();
 					}
 
 					break;
@@ -170,19 +180,9 @@ LRESULT Controller::Keyboard(int nCode, WPARAM wParam, LPARAM lParam)
 	return CallNextHookEx(gController.KeyboardHook, nCode, wParam, lParam);
 }
 
-SHORT WINAPI Controller::GetAsyncKeyStateHook(int key)
-{
-	if (GetForegroundWindow() != g_hWnd)
-	{
-		return 0;
-	}
-
-	return GetAsyncKeyState(key);
-}
-
 void Controller::CheckKeyboardKeys()
 {
-	if (((gController.GetAsyncKeyStateHook('M') >> 8) & 0x80) == 0x80) // M Pressed
+	if ((GetAsyncKeyStateCall('M') >> 0x0F)) // M Pressed
 	{
 		if (!KeyState['M'])
 		{
@@ -196,7 +196,7 @@ void Controller::CheckKeyboardKeys()
 		KeyState['M'] = 0;
 	}
 
-	if (((gController.GetAsyncKeyStateHook('H') >> 8) & 0x80) == 0x80) // H Pressed
+	if ((GetAsyncKeyStateCall('H') >> 0x0F)) // H Pressed
 	{
 		if (!KeyState['H'])
 		{
@@ -210,7 +210,7 @@ void Controller::CheckKeyboardKeys()
 		KeyState['H'] = 0;
 	}
 
-	if (((gController.GetAsyncKeyStateHook(VK_TAB) >> 8) & 0x80) == 0x80) // Tab Pressed
+	if ((GetAsyncKeyStateCall(VK_TAB) >> 0x0F)) // Tab Pressed
 	{
 		if (!KeyState[VK_TAB])
 		{
@@ -224,7 +224,7 @@ void Controller::CheckKeyboardKeys()
 		KeyState[VK_TAB] = 0;
 	}
 
-	if (((gController.GetAsyncKeyStateHook(VK_SPACE) >> 8) & 0x80) == 0x80) // Space Pressed
+	if ((GetAsyncKeyStateCall(VK_SPACE) >> 0x0F)) // Space Pressed
 	{
 		if (!KeyState[VK_SPACE])
 		{

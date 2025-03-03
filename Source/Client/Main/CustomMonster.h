@@ -19,7 +19,7 @@ public:
 
 	virtual ~CCustomMonster();
 
-	void Load(CUSTOM_MONSTER_INFO* info);
+	void Init(CUSTOM_MONSTER_INFO* info);
 
 private:
 

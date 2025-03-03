@@ -4,15 +4,17 @@ class Controller
 {
 public:
 
-	void Load(HINSTANCE hins);
+	Controller();
+
+	virtual ~Controller();
+
+	void Init(HINSTANCE hins);
 
 private:
 
 	static LRESULT WINAPI Mouse(int Code, WPARAM wParam, LPARAM lParam);
 
 	static LRESULT WINAPI Keyboard(int Code, WPARAM wParam, LPARAM lParam);
-
-	static SHORT WINAPI GetAsyncKeyStateHook(int key);
 
 	static void CheckKeyboardKeys();
 

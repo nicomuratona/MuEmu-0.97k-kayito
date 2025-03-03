@@ -160,7 +160,7 @@ namespace kayitoTools.Forms
 
 							sw.WriteLine(@"{0}	""{1}""",
 								Convert.ToInt32(row.Cells["Row_Col"].Value),
-								Globals.GetMaxStringLength(row.Cells["Text_Col"].Value.ToString(), 128));
+								Globals.GetMaxStringLength(row.Cells["Text_Col"].Value.ToString(), TextManager.MAX_TEXT_SIZE));
 						}
 
 						sw.WriteLine("end");

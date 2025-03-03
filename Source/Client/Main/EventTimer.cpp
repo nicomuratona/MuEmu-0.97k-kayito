@@ -133,7 +133,7 @@ void CEventTimer::RenderFrame()
 
 	SelectObject(m_hFontDC, g_hFontBold);
 
-	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + 5, "Event Timer", (int)(this->MainWidth - 10.0f) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + 5, "Event Timer", REAL_WIDTH((int)(this->MainWidth - 10.0f)), RT3_SORT_CENTER, NULL);
 
 	SetBackgroundTextColor = Color4b(255, 255, 255, 0);
 
@@ -153,7 +153,7 @@ void CEventTimer::RenderFrame()
 
 	SelectObject(m_hFontDC, g_hFont);
 
-	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + (int)this->MainHeight - 15, "Close", (int)(this->MainWidth - 10.0f) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+	RenderText((int)this->MainPosX + 5, (int)this->MainPosY + (int)this->MainHeight - 15, "Close", REAL_WIDTH((int)(this->MainWidth - 10.0f)), RT3_SORT_CENTER, NULL);
 
 	SetBackgroundTextColor = backupBgTextColor;
 
@@ -178,7 +178,7 @@ void CEventTimer::RenderEventsTime()
 
 		SelectObject(m_hFontDC, g_hFontBig);
 
-		RenderText((int)this->MainPosX + 5, PosY - 8, "NO EVENT INFO", (int)(this->MainWidth - 10.0f) * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+		RenderText((int)this->MainPosX + 5, PosY - 8, "NO EVENT INFO", REAL_WIDTH((int)(this->MainWidth - 10.0f)), RT3_SORT_CENTER, NULL);
 	}
 	else
 	{
@@ -186,7 +186,7 @@ void CEventTimer::RenderEventsTime()
 
 		char* buff;
 
-		for each (PMSG_EVENT_TIME lpInfo in this->m_EventTimeInfo)
+		for each(PMSG_EVENT_TIME lpInfo in this->m_EventTimeInfo)
 		{
 			if (IsWorkZone((int)this->MainPosX + 5, PosY, (int)(this->MainWidth - 10), 10))
 			{
@@ -201,7 +201,7 @@ void CEventTimer::RenderEventsTime()
 
 			SelectObject(m_hFontDC, g_hFontBold);
 
-			RenderText((int)this->MainPosX + 5, PosY, lpInfo.name, (int)(this->MainWidth - 10.0f) * WindowWidth / 640, RT3_SORT_LEFT, NULL);
+			RenderText((int)this->MainPosX + 5, PosY, lpInfo.name, REAL_WIDTH((int)(this->MainWidth - 10.0f)), RT3_SORT_LEFT, NULL);
 
 			SetBackgroundTextColor = Color4b(255, 255, 255, 0);
 

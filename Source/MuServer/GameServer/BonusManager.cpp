@@ -9,6 +9,7 @@
 #include "Monster.h"
 #include "Notice.h"
 #include "ObjectManager.h"
+#include "resource.h"
 #include "ScheduleManager.h"
 #include "ServerInfo.h"
 #include "Util.h"
@@ -85,9 +86,9 @@ void CBonusManager::Load(char* path)
 
 		this->m_BonusInfo[n].BonusTime = 0;
 
-		this->m_BonusInfo[n].AlarmTime = 0;
+		this->m_BonusInfo[n].WarningTime = 0;
 
-		this->m_BonusInfo[n].AlarmMsg = -1;
+		this->m_BonusInfo[n].WarningMsg = -1;
 
 		this->m_BonusInfo[n].StartTime.clear();
 
@@ -150,11 +151,13 @@ void CBonusManager::Load(char* path)
 
 					this->m_BonusInfo[index].BonusTime = lpReadScript->GetAsNumber();
 
-					this->m_BonusInfo[index].AlarmTime = lpReadScript->GetAsNumber();
+					this->m_BonusInfo[index].WarningTime = lpReadScript->GetAsNumber();
 
-					this->m_BonusInfo[index].AlarmMsg = lpReadScript->GetAsNumber();
+					this->m_BonusInfo[index].WarningMsg = lpReadScript->GetAsNumber();
 
 					strcpy_s(this->m_BonusInfo[index].BonusName, lpReadScript->GetAsString());
+
+					CreateSubMenuItem(ID_STARTBONUS, index, this->m_BonusInfo[index].BonusName);
 				}
 				else if (section == 2)
 				{
@@ -250,7 +253,7 @@ void CBonusManager::ProcState_BLANK(BONUS_INFO* lpInfo)
 
 void CBonusManager::ProcState_EMPTY(BONUS_INFO* lpInfo)
 {
-	if (lpInfo->RemainTime > 0 && lpInfo->RemainTime <= (lpInfo->AlarmTime * 60))
+	if (lpInfo->RemainTime > 0 && lpInfo->RemainTime <= (lpInfo->WarningTime * 60))
 	{
 		int minutes = lpInfo->RemainTime / 60;
 
@@ -259,11 +262,11 @@ void CBonusManager::ProcState_EMPTY(BONUS_INFO* lpInfo)
 			minutes--;
 		}
 
-		if (lpInfo->AlarmMinLeft != minutes)
+		if (lpInfo->MinutesLeft != minutes)
 		{
-			lpInfo->AlarmMinLeft = minutes;
+			lpInfo->MinutesLeft = minutes;
 
-			gNotice.GCNoticeSendToAll(0, lpInfo->AlarmMsg, lpInfo->BonusName, (lpInfo->AlarmMinLeft + 1));
+			gNotice.GCNoticeSendToAll(0, lpInfo->WarningMsg, lpInfo->BonusName, (lpInfo->MinutesLeft + 1));
 		}
 	}
 
@@ -330,7 +333,7 @@ void CBonusManager::SetState_EMPTY(BONUS_INFO* lpInfo)
 
 void CBonusManager::SetState_START(BONUS_INFO* lpInfo)
 {
-	lpInfo->RemainTime = lpInfo->BonusTime;
+	lpInfo->RemainTime = lpInfo->BonusTime * 60;
 
 	lpInfo->TargetTime = (int)(time(0) + lpInfo->RemainTime);
 }
@@ -483,4 +486,46 @@ int CBonusManager::GetBonusValue(LPOBJ lpObj, int BonusIndex, int BonusValue, in
 	}
 
 	return BonusValue;
+}
+
+void CBonusManager::StartBonus(int BonusIndex)
+{
+	time_t theTime = time(NULL);
+
+	tm aTime;
+
+	localtime_s(&aTime, &theTime);
+
+	int hour = aTime.tm_hour;
+
+	int minute = aTime.tm_min + 2;
+
+	if (minute >= 60)
+	{
+		hour++;
+
+		minute = minute - 60;
+	}
+
+	BONUS_START_TIME info;
+
+	info.Year = -1;
+
+	info.Month = -1;
+
+	info.Day = -1;
+
+	info.DayOfWeek = -1;
+
+	info.Hour = hour;
+
+	info.Minute = minute;
+
+	info.Second = 0;
+
+	this->m_BonusInfo[BonusIndex].StartTime.push_back(info);
+
+	LogAdd(LOG_EVENT, "[Set Bonus Start][%s] At %2d:%2d:00", this->m_BonusInfo[BonusIndex].BonusName, hour, minute);
+
+	this->Init();
 }

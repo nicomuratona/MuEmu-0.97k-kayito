@@ -23,7 +23,7 @@ public:
 
 	virtual ~CCustomBow();
 
-	void Load(CUSTOM_BOW_INFO* info);
+	void Init(CUSTOM_BOW_INFO* info);
 
 	CUSTOM_BOW_INFO* GetInfoByIndex(int ItemIndex);
 

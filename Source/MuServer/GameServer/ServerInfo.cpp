@@ -16,6 +16,8 @@
 #include "Filter.h"
 #include "GameMaster.h"
 #include "Gate.h"
+#include "GoldenArcher.h"
+#include "GoldenArcherBingo.h"
 #include "HackPacketCheck.h"
 #include "InvasionManager.h"
 #include "ItemBagManager.h"
@@ -184,6 +186,8 @@ void CServerInfo::ReadEventInfo()
 {
 	this->ReadEventInfo("GameServerInfo", ".\\Data\\GameServerInfo - Event.dat");
 
+	gGoldenArcher.ReadArcherInfo("GameServerInfo", ".\\Data\\GameServerInfo - Event.dat");
+
 	gEventSpawnMonster.Load(gPath.GetFullPath("Event\\EventSpawnMonster.dat"));
 
 	gBloodCastle.Load(gPath.GetFullPath("Event\\BloodCastle.dat"));
@@ -193,6 +197,8 @@ void CServerInfo::ReadEventInfo()
 	gDevilSquare.Load(gPath.GetFullPath("Event\\DevilSquare.dat"));
 
 	gInvasionManager.Load(gPath.GetFullPath("Event\\InvasionManager.dat"));
+
+	gGoldenArcherBingo.Load(gPath.GetFullPath("Event\\GoldenArcherBingo.dat"));
 
 	LogAdd(LOG_BLUE, "[ServerInfo] Event loaded successfully");
 }
@@ -826,9 +832,21 @@ void CServerInfo::ReadCharacterInfo(char* section, char* path)
 
 	this->m_DamageStuckRate[3] = GetPrivateProfileInt(section, "MGDamageStuckRate", 0, path);
 
-	this->m_DKDamageMultiplierConstA = GetPrivateProfileInt(section, "DKDamageMultiplierConstA", 0, path);
+	this->m_DamageMultiplierConstA[0] = GetPrivateProfileInt(section, "DWDamageMultiplierConstA", 0, path);
 
-	this->m_DKDamageMultiplierMaxRate = GetPrivateProfileInt(section, "DKDamageMultiplierMaxRate", 0, path);
+	this->m_DamageMultiplierConstA[1] = GetPrivateProfileInt(section, "DKDamageMultiplierConstA", 0, path);
+
+	this->m_DamageMultiplierConstA[2] = GetPrivateProfileInt(section, "FEDamageMultiplierConstA", 0, path);
+
+	this->m_DamageMultiplierConstA[3] = GetPrivateProfileInt(section, "MGDamageMultiplierConstA", 0, path);
+
+	this->m_DamageMultiplierMaxRate[0] = GetPrivateProfileInt(section, "DWDamageMultiplierMaxRate", 0, path);
+
+	this->m_DamageMultiplierMaxRate[1] = GetPrivateProfileInt(section, "DKDamageMultiplierMaxRate", 0, path);
+
+	this->m_DamageMultiplierMaxRate[2] = GetPrivateProfileInt(section, "FEDamageMultiplierMaxRate", 0, path);
+
+	this->m_DamageMultiplierMaxRate[3] = GetPrivateProfileInt(section, "MGDamageMultiplierMaxRate", 0, path);
 
 	this->m_SatanIncDamageConstA = GetPrivateProfileInt(section, "SatanIncDamageConstA", 0, path);
 
@@ -1310,14 +1328,6 @@ void CServerInfo::ReadCommonInfo(char* section, char* path)
 
 	this->m_GuildWarWinPointsGain_Normal = GetPrivateProfileInt(section, "GuildWarWinPointsGain_Normal", 0, path);
 
-	this->m_GoldenArcherRewardSwitch = GetPrivateProfileInt(section, "GoldenArcherRewardSwitch", 0, path);
-
-	this->m_GoldenArcherMinRenas = GetPrivateProfileInt(section, "GoldenArcherMinRenas", 0, path);
-
-	this->m_GoldenArcherMinStones = GetPrivateProfileInt(section, "GoldenArcherMinStones", 0, path);
-
-	this->m_GoldenArcherRewardItemIndex = GetPrivateProfileInt(section, "GoldenArcherRewardItemIndex", 0, path);
-
 	this->m_AddExperienceRate[0] = GetPrivateProfileInt(section, "AddExperienceRate_AL0", 0, path);
 
 	this->m_AddExperienceRate[1] = GetPrivateProfileInt(section, "AddExperienceRate_AL1", 0, path);
@@ -1409,6 +1419,16 @@ void CServerInfo::ReadCommonInfo(char* section, char* path)
 	this->m_MGCreateLevel[2] = GetPrivateProfileInt(section, "MGCreateLevel_AL2", 0, path);
 
 	this->m_MGCreateLevel[3] = GetPrivateProfileInt(section, "MGCreateLevel_AL3", 0, path);
+
+	this->m_CharacterDeleteSwitch = GetPrivateProfileInt(section, "CharacterDeleteSwitch", 0, path);
+
+	this->m_CharacterDeleteMaxLevel[0] = GetPrivateProfileInt(section, "CharacterDeleteMaxLevel_AL0", 0, path);
+
+	this->m_CharacterDeleteMaxLevel[1] = GetPrivateProfileInt(section, "CharacterDeleteMaxLevel_AL1", 0, path);
+
+	this->m_CharacterDeleteMaxLevel[2] = GetPrivateProfileInt(section, "CharacterDeleteMaxLevel_AL2", 0, path);
+
+	this->m_CharacterDeleteMaxLevel[3] = GetPrivateProfileInt(section, "CharacterDeleteMaxLevel_AL3", 0, path);
 
 	this->m_PartyLevelDifference = GetPrivateProfileInt(section, "PartyLevelDifference", 0, path);
 
@@ -1527,6 +1547,12 @@ void CServerInfo::ReadEventInfo(char* section, char* path)
 	this->m_FlyingDragonsOnlyBossMapSpawn = GetPrivateProfileInt(section, "FlyingDragonsOnlyBossMapSpawn", 0, path);
 
 	this->m_FlyingDragonsKillBossDisappear = GetPrivateProfileInt(section, "FlyingDragonsKillBossDisappear", 0, path);
+
+	this->m_GoldenArcherBingoEvent = GetPrivateProfileInt(section, "GoldenArcherBingoEvent", 0, path);
+
+	this->m_GoldenArcherWinnersAmount = GetPrivateProfileInt(section, "GoldenArcherWinnersAmount", 1, path);
+
+	this->m_GoldenArcherDeleteRegistered = GetPrivateProfileInt(section, "GoldenArcherDeleteRegistered", 1, path);
 }
 
 void CServerInfo::ReadHackInfo(char* section, char* path)

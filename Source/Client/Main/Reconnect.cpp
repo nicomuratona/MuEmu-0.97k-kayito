@@ -148,7 +148,7 @@ void CReconnect::ReconnectDrawInterface()
 
 	SetTextColor = Color4b(255, 255, 255, 255);
 
-	RenderText((int)PosX, (int)PosY + 5, buff, (int)MaxWidth * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+	RenderText((int)PosX, (int)PosY + 5, buff, REAL_WIDTH((int)MaxWidth), RT3_SORT_CENTER, NULL);
 
 	DisableAlphaBlend();
 }

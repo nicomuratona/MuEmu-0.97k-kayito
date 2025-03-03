@@ -47,4 +47,6 @@ void SetLargeRand();
 
 long GetLargeRand();
 
+void CreateSubMenuItem(int hBaseMenu, int hSubmenuIndex, const char* hMenuLabel);
+
 extern short RoadPathTable[MAX_ROAD_PATH_TABLE];

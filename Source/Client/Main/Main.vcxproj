@@ -62,7 +62,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;GLEW_STATIC;_DEBUG;_WINDOWS;_USRDLL;MAIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GLEW\Include\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -72,7 +73,8 @@
       <MapFileName>$(TargetDir)$(TargetName).map</MapFileName>
       <AdditionalDependencies>User32.lib;Shell32.lib;Advapi32.lib;Gdi32.lib;Ole32.lib;</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\GLEW\lib\;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <ProfileGuidedDatabase>$(TargetDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <IgnoreSpecificDefaultLibraries>libcmt.lib;</IgnoreSpecificDefaultLibraries>
@@ -87,7 +89,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;GLEW_STATIC;NDEBUG;_WINDOWS;_USRDLL;MAIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GLEW\Include\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -97,7 +100,8 @@
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <AdditionalDependencies>User32.lib;Shell32.lib;Advapi32.lib;Gdi32.lib;Ole32.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\GLEW\lib\;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
       <MapFileName>$(TargetDir)$(TargetName).map</MapFileName>
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <ProfileGuidedDatabase>$(TargetDir)$(TargetName).pgd</ProfileGuidedDatabase>
@@ -106,7 +110,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Buff.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="CCRC32.H" />
     <ClInclude Include="ChaosMix.h" />
     <ClInclude Include="Console.h" />
@@ -119,7 +122,9 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="EventTimer.h" />
+    <ClInclude Include="MapFog.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="GoldenArcher.h" />
     <ClInclude Include="ItemPosition.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="GuildLogo.h" />
@@ -138,7 +143,9 @@
     <ClInclude Include="MathLib.h" />
     <ClInclude Include="MoveList.h" />
     <ClInclude Include="MP3.h" />
+    <ClInclude Include="Camera3D.h" />
     <ClInclude Include="Offsets.h" />
+    <ClInclude Include="OpenglUtil.h" />
     <ClInclude Include="OptionsMenu.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="Patchs.h" />
@@ -151,7 +158,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="RightClickMove.h" />
     <ClInclude Include="ServerList.h" />
-    <ClInclude Include="SkyDome.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="stb.h" />
     <ClInclude Include="stdafx.h" />
@@ -162,7 +168,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Buff.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CCRC32.Cpp" />
     <ClCompile Include="ChaosMix.cpp" />
     <ClCompile Include="Console.cpp" />
@@ -173,7 +178,9 @@
     <ClCompile Include="CustomMonster.cpp" />
     <ClCompile Include="CustomWing.cpp" />
     <ClCompile Include="EventTimer.cpp" />
+    <ClCompile Include="MapFog.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="GoldenArcher.cpp" />
     <ClCompile Include="ItemPosition.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="GuildLogo.cpp" />
@@ -193,6 +200,8 @@
     <ClCompile Include="MathLib.cpp" />
     <ClCompile Include="MoveList.cpp" />
     <ClCompile Include="MP3.cpp" />
+    <ClCompile Include="Camera3D.cpp" />
+    <ClCompile Include="OpenglUtil.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="Patchs.cpp" />
@@ -203,7 +212,6 @@
     <ClCompile Include="Reconnect.cpp" />
     <ClCompile Include="RightClickMove.cpp" />
     <ClCompile Include="ServerList.cpp" />
-    <ClCompile Include="SkyDome.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="stb.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>

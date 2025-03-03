@@ -52,9 +52,9 @@ struct INVASION_INFO
 	int BossIndex;
 	int BossMessage;
 	int InvasionTime;
-	int AlarmMinLeft;
-	int AlarmTime;
-	int AlarmMsg;
+	int MinutesLeft;
+	int WarningTime;
+	int WarningMsg;
 	int InvasionEffect;
 	char InvasionName[32];
 	std::vector<INVASION_START_TIME> StartTime;
@@ -115,6 +115,8 @@ public:
 	void SetMonster(INVASION_INFO* lpInfo, INVASION_RESPWAN_INFO* lpRespawnInfo, INVASION_MONSTER_INFO* lpMonsterInfo);
 
 	void MonsterDieProc(LPOBJ lpObj, LPOBJ lpTarget);
+
+	void StartInvasion(int InvasionIndex);
 
 private:
 

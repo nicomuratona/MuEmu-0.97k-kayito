@@ -1,7 +1,5 @@
 #pragma once
 
-#define MAX_MAIN_VIEWPORT 400
-
 struct MONSTER_HEALTH_BAR
 {
 	WORD index;
@@ -28,6 +26,10 @@ public:
 	static void DrawHealthBar();
 
 	static void DrawPointingHealthBar();
+
+public:
+
+	bool DeleteHealthBar;
 
 private:
 

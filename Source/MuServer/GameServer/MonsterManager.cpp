@@ -3,6 +3,7 @@
 #include "BloodCastle.h"
 #include "BonusManager.h"
 #include "DevilSquare.h"
+#include "GoldenArcherBingo.h"
 #include "InvasionManager.h"
 #include "ItemManager.h"
 #include "Map.h"
@@ -280,6 +281,8 @@ void CMonsterManager::SetMonsterData()
 	gDevilSquare.Init();
 
 	gInvasionManager.Init();
+
+	gGoldenArcherBingo.Init();
 }
 
 char* CMonsterManager::GetMonsterName(int index)

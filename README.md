@@ -276,3 +276,45 @@ hacia otro archivo separado en
 - Se corrigió el problema de colisión de modelos entre monsters e items [Main.dll]
 - Se creó un cálculo de experiencia automático a partir del nivel máximo definido en `GameServerInfo - Common.dat` [GameServer.exe][Main.dll]
 - Se añadió un ItemBag para las Box of Kundun +5 y para el puesto 1º del evento DevilSquare [GameServer.exe]
+
+### Update 27:
+- Se añadieron opciones al encoder para deshabilitar visualmente resets y grand resets [Encoder/MainInfo.ini]
+    - Estos cambios influyen en el texto de la ventana y en la interface C
+- Se reconstruyó la interface C y se sincronizaron los valores con el gameserver
+- Se corrigió el error que al equipar Angel, no incrementaba el HP +50
+- Se corrigió que el mg no podía equiparse 2 staffs con click derecho
+- Se cambió que el BonusTime del BonusManager ahora es en minutos (antes en segundos) [MuServer/Data/Event/BonusManager.dat]
+- Se cambió que el MaxRegenTime del EventSpawnMonster ahora es en segundos (antes en milisegundos) [MuServer/Data/Event/EventSpawnMonster.dat]
+- Se cambió que el InvasionTime del InvasionManager ahora es en minutos (antes en segundos) [MuServer/Data/Event/InvasionManager.dat]
+- Se cambió que el RegenTime del InvasionManager ahora es en segundos (antes en milisegundos) [MuServer/Data/Event/InvasionManager.dat]
+- Se agregó poder inicializar las invasiones y los bonus desde el menu del GameServer
+- Se corrigió la cantidad de dragones que aparecían en las invasiones en los mapas Atlans e Icarus
+- Se añadió al menu de opciones antilag la opción de quitar el HPBar de los monsters [Client/Data/Local/Text_xxx.bmd]
+- Se corrigió poder hablar con npc y moverse de mapa si PkLimitFree está activo
+- Se añadió nivel mínimo y máximo, reset mínimo y máximo, y vip al MoveList
+- Se bloqueó el buff de elfa para que sólo pueda darse a los miembros del party
+- Se añadió una opción al menu de opciones para activar pvp sin presionar Ctrl [Client/Data/Local/Text_xxx.bmd]
+- Se corrigió la resolución 1366x768 que no sacaba screenshots correctamente
+- Se quitó la actualización de OpenGL hacia la 3.3 debido a reclamos por incompatibilidad con ciertas pc
+- Se corrigió la visualización de los ataques de la elfa visto desde otro personaje
+- Se eliminó el SkyDome del juego completamente
+- Se reconstruyó el sistema de Cámara 3D y se añadió un sistema de FOG
+- Se añadió el SellValue al archivo ItemValue para colocar valor de venta [MuServer/Data/Item/ItemValue.txt]
+- Se reconstruyó por completo la funcionalidad del Golden Archer, incluyendo un evento propio
+    - Reemplazar:
+        - GameServer.exe
+        - DataServer.exe
+        - Main.dll
+    - Afecta los siguientes archivos:
+        - MuServer/GameServer/DATA/GameServerInfo - Event.dat
+        - MuServer/Data/Message_xxx.txt
+        - MuServer/Data/EventItemBagManager.txt
+        - MuServer/Data/EventItemBag/
+            - 032 - Golden Archer Rena 1.txt
+            - 033 - Golden Archer Rena 2.txt
+            - 034 - Golden Archer Rena 3.txt
+            - 035 - Golden Archer Rena 4.txt
+            - 036 - Golden Archer Bingo.txt
+        - MuServer/Data/Event/GoldenArcherBingo.dat
+    - Hace falta añadir una tabla y modificar otra. De ser posible, volver a crear la base de datos con los scripts. Sino se hará un script sólo para updatear para aquellos con base de datos en uso.
+- Se corrigió un error que al atacar con Twisting Slash y luego tirar Death Stab, el arma rotando era cambiada por otras

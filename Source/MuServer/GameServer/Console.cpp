@@ -8,10 +8,9 @@ CConsole::CConsole()
 
 	this->HideConsole = true;
 
-	for (int i = 0; i < MAX_CONSOLE_OUTPUT; i++)
-	{
-		this->EnableOutput[i] = true;
-	}
+	this->EnableOutput[CON_GENERAL] = true;
+	this->EnableOutput[CON_PROTO_TCP_RECV] = false;
+	this->EnableOutput[CON_PROTO_TCP_SEND] = false;
 }
 
 CConsole::~CConsole()

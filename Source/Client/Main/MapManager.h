@@ -6,7 +6,6 @@ struct MAP_MANAGER_INFO
 	bool SwimableMap;
 	bool MapMovement;
 	BYTE MiniMap;
-	bool SkyDome;
 	char MapName[32];
 	char SongName[64];
 };
@@ -19,7 +18,7 @@ public:
 
 	virtual ~CMapManager();
 
-	void Load(MAP_MANAGER_INFO* info);
+	void Init(MAP_MANAGER_INFO* info);
 
 	void SetInfo(MAP_MANAGER_INFO info);
 
@@ -29,13 +28,11 @@ public:
 
 	BYTE GetMiniMap(int map);
 
-	bool GetSkyDome(int map);
+	bool GetMapMovement(int map);
 
 	static char* GetMapName(int MapNumber);
 
 	static void GetPartyMapName();
-
-	static void ApplyMapMovement();
 
 	static void LoadMapMusic();
 

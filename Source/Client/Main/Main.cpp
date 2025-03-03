@@ -2,7 +2,9 @@
 #include "Buff.h"
 #include "ChaosMix.h"
 #include "Controller.h"
+#include "MapFog.h"
 #include "Font.h"
+#include "GoldenArcher.h"
 #include "GuildLogo.h"
 #include "HackCheck.h"
 #include "HealthBar.h"
@@ -24,7 +26,6 @@
 #include "Protocol.h"
 #include "Reconnect.h"
 #include "RightClickMove.h"
-#include "SkyDome.h"
 #include "Sound.h"
 #include "WeaponView.h"
 #include "Window.h"
@@ -59,6 +60,10 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 		ExitProcess(0);
 	}
 
+	gWindow.Init(hins);
+
+	gController.Init(hins);
+
 	gHackCheck.Init();
 
 	gPatchs.Init();
@@ -79,13 +84,13 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 
 	gSound.Init();
 
-	gOptionsMenu.Init();
-
 	gInterface.Init();
 
 	gHealthBar.Init();
 
-	gSkyDome.Init();
+	gOptionsMenu.Init();
+
+	gMapFog.Init(gProtect.m_MainInfo.MapFogInfo);
 
 	gMiniMap.Init();
 
@@ -97,27 +102,29 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 
 	gChaosMix.Init();
 
+	gGoldenArcher.Init();
+
 	gItemStack.Init();
 
-	gItemOption.Load(gProtect.m_MainInfo.ItemOptionInfo);
+	gItemOption.Init(gProtect.m_MainInfo.ItemOptionInfo);
 
 	gItem.Init();
 
-	gMapManager.Load(gProtect.m_MainInfo.MapManager);
+	gMapManager.Init(gProtect.m_MainInfo.MapManager);
 
 	gLoadModels.Init();
 
-	gCustomGlow.Load(gProtect.m_MainInfo.CustomGlowInfo);
+	gCustomGlow.Init(gProtect.m_MainInfo.CustomGlowInfo);
 
-	gCustomItem.Load(gProtect.m_MainInfo.CustomItemInfo);
+	gCustomItem.Init(gProtect.m_MainInfo.CustomItemInfo);
 
-	gCustomBow.Load(gProtect.m_MainInfo.CustomBowInfo);
+	gCustomBow.Init(gProtect.m_MainInfo.CustomBowInfo);
 
-	gCustomWing.Load(gProtect.m_MainInfo.CustomWingInfo);
+	gCustomWing.Init(gProtect.m_MainInfo.CustomWingInfo);
 
-	gCustomMonster.Load(gProtect.m_MainInfo.CustomMonsterInfo);
+	gCustomMonster.Init(gProtect.m_MainInfo.CustomMonsterInfo);
 
-	gItemPosition.Load(gProtect.m_MainInfo.ItemPositionInfo);
+	gItemPosition.Init(gProtect.m_MainInfo.ItemPositionInfo);
 
 	gProtect.CheckClientFile();
 
@@ -131,10 +138,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 		case DLL_PROCESS_ATTACH:
 		{
 			hins = (HINSTANCE)hModule;
-
-			gWindow.WindowModeLoad(hins);
-
-			gController.Load(hins);
 
 			break;
 		}

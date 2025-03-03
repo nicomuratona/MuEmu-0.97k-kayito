@@ -116,7 +116,7 @@ namespace kayitoTools.Source_Files
 		{
 			this.m_number = -1;
 
-			this.m_string = new char[256];
+			this.m_string = new char[512];
 
 			char ch;
 

@@ -59,6 +59,9 @@
     <Filter Include="Connection\Protocols">
       <UniqueIdentifier>{87c9e7c3-6006-4827-aa75-d2e18e5aa759}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Events\GoldenArcher">
+      <UniqueIdentifier>{611b4fde-f3e4-4338-9bc6-0cdea5db1cc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="small.ico">
@@ -363,6 +366,12 @@
     <ClInclude Include="CustomWing.h">
       <Filter>Items</Filter>
     </ClInclude>
+    <ClInclude Include="GoldenArcher.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldenArcherBingo.h">
+      <Filter>Events\GoldenArcher</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math.cpp">
@@ -652,6 +661,12 @@
     </ClCompile>
     <ClCompile Include="CustomWing.cpp">
       <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldenArcher.cpp">
+      <Filter>Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldenArcherBingo.cpp">
+      <Filter>Events\GoldenArcher</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

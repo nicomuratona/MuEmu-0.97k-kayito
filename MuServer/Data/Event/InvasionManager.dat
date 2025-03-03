@@ -13,11 +13,13 @@ end
 // Invasion Effect
 // 1 = Flying Red Dragons ; 3 = Flying Golden Dragons
 
+// InvasionTime = Duration of the Invasion active (in Minutes)
+// WarningTime = Time to start the Invasion (in Minutes)
 1
-//Index	RespawnMessage	DespawnMessage	BossIndex	BossMessage	InvasionTime	AlarmTime	AlarmMsg	InvasionEffect	InvasionName
-0	19		21		55		20		60		5		18		3		"Death King"
-1	19		21		42		20		60		5		18		1		"Red Dragon"
-2	19		21		*		20		60		5		18		3		"Golden"
+//Index	RespawnMessage	DespawnMessage	BossIndex	BossMessage	InvasionTime	WarningTime	WarningMsg	InvasionEffect	InvasionName
+0	19		21		55		20		10		5		18		0		"Death King"
+1	19		21		42		20		10		5		18		1		"Red Dragon"
+2	19		21		*		20		10		5		18		3		"Golden"
 end
 
 2
@@ -42,6 +44,7 @@ end
 2	8	8	0
 end
 
+//RegenTime = In seconds
 3
 //Index	Group	MonsterClass	RegenType	RegenTime
 0	0	55		0		0

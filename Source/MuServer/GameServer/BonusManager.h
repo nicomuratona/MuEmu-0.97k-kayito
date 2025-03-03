@@ -54,9 +54,9 @@ struct BONUS_INFO
 	int StartMessage;
 	int FinalMessage;
 	int BonusTime;
-	int AlarmMinLeft;
-	int AlarmTime;
-	int AlarmMsg;
+	int MinutesLeft;
+	int WarningTime;
+	int WarningMsg;
 	char BonusName[32];
 	std::vector<BONUS_START_TIME> StartTime;
 	std::vector<BONUS_VALUE_INFO> ValueInfo;
@@ -101,6 +101,8 @@ public:
 	int GetRemainTime(int index);
 
 	int GetBonusValue(LPOBJ lpObj, int BonusIndex, int BonusValue, int ItemIndex, int ItemLevel, int MonsterClass, int MonsterLevel);
+
+	void StartBonus(int BonusIndex);
 
 private:
 

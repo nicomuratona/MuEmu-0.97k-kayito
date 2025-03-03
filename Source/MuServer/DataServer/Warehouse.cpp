@@ -37,11 +37,11 @@ void CWarehouse::GDWarehouseItemRecv(SDHP_WAREHOUSE_ITEM_RECV* lpMsg, int index)
 
 		#ifndef MYSQL
 
-			gQueryManager.ExecQuery("INSERT INTO warehouse (AccountID,Money,EndUseDate,DbVersion) VALUES ('%s',0,getdate(),3)", lpMsg->account);
+			gQueryManager.ExecQuery("INSERT INTO warehouse (AccountID,Money) VALUES ('%s',0)", lpMsg->account);
 
 		#else
 
-			gQueryManager.ExecUpdateQuery("INSERT INTO warehouse (AccountID, Money, EndUseDate, DbVersion) VALUES ('%s', 0, now(), 3)", lpMsg->account);
+			gQueryManager.ExecUpdateQuery("INSERT INTO warehouse (AccountID, Money) VALUES ('%s', 0)", lpMsg->account);
 
 		#endif
 

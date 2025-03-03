@@ -53,14 +53,6 @@ GuildWarWinPointsGain_Half = 2		; Enemy guild score < (WinScore / 2)
 GuildWarWinPointsGain_Normal = 1	; Normal win
 
 ;==================================================
-; Golden Archer Settings
-;==================================================
-GoldenArcherRewardSwitch = 1
-GoldenArcherMinRenas = 30
-GoldenArcherMinStones = 30
-GoldenArcherRewardItemIndex = 459	; 459 = Box of Luck
-
-;==================================================
 ; Experience Settings
 ;==================================================
 AddExperienceRate_AL0 = 100
@@ -137,6 +129,15 @@ MGCreateLevel_AL0 = 0
 MGCreateLevel_AL1 = 0
 MGCreateLevel_AL2 = 0
 MGCreateLevel_AL3 = 0
+
+;==================================================
+; Delete Character Settings
+;==================================================
+CharacterDeleteSwitch = 1
+CharacterDeleteMaxLevel_AL0 = 220
+CharacterDeleteMaxLevel_AL1 = 220
+CharacterDeleteMaxLevel_AL2 = 220
+CharacterDeleteMaxLevel_AL3 = 220
 
 ;==================================================
 ; Party Settings

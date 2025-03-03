@@ -19,7 +19,7 @@ CItemPosition::~CItemPosition()
 
 }
 
-void CItemPosition::Load(ITEM_POSITION_INFO* info)
+void CItemPosition::Init(ITEM_POSITION_INFO* info)
 {
 	for (int n = 0; n < MAX_ITEM; n++)
 	{
@@ -320,7 +320,7 @@ void CItemPosition::MyRenderItem3D(float sx, float sy, float Width, float Height
 
 	vec3_t Position;
 
-	CreateScreenVector((int)(sx), (int)(sy), Position);
+	MyCreateScreenVector((int)(sx), (int)(sy), Position);
 
 	if (Type == GET_ITEM(14, 11) && RealLevel == 1) // Star of Christmas
 	{

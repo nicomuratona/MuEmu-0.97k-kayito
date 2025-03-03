@@ -2065,10 +2065,6 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 		lpObj->MagicDamageMin = Energy / gServerInfo.m_DKMagicDamageMinConstA;
 
 		lpObj->MagicDamageMax = Energy / gServerInfo.m_DKMagicDamageMaxConstA;
-
-		lpObj->DKDamageMultiplierRate = 200 + (Energy / gServerInfo.m_DKDamageMultiplierConstA);
-
-		lpObj->DKDamageMultiplierRate = ((lpObj->DKDamageMultiplierRate > gServerInfo.m_DKDamageMultiplierMaxRate) ? gServerInfo.m_DKDamageMultiplierMaxRate : lpObj->DKDamageMultiplierRate);
 	}
 	else if (lpObj->Class == CLASS_FE)
 	{
@@ -2122,36 +2118,22 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 		lpObj->MagicDamageMax = Energy / gServerInfo.m_MGMagicDamageMaxConstA;
 	}
 
+	lpObj->DamageMultiplierRate = 200 + (Energy / gServerInfo.m_DamageMultiplierConstA[lpObj->Class]);
+
+	lpObj->DamageMultiplierRate = ((lpObj->DamageMultiplierRate > gServerInfo.m_DamageMultiplierMaxRate[lpObj->Class]) ? gServerInfo.m_DamageMultiplierMaxRate[lpObj->Class] : lpObj->DamageMultiplierRate);
+
 	if (Right->IsItem() != 0)
 	{
-		if (Right->m_Index >= GET_ITEM(5, 0) && Right->m_Index < GET_ITEM(6, 0))
-		{
-			lpObj->PhysiDamageMinRight += Right->GetDamageMin() / 2;
+		lpObj->PhysiDamageMinRight += Right->GetDamageMin();
 
-			lpObj->PhysiDamageMaxRight += Right->GetDamageMax() / 2;
-		}
-		else
-		{
-			lpObj->PhysiDamageMinRight += Right->GetDamageMin() / 1;
-
-			lpObj->PhysiDamageMaxRight += Right->GetDamageMax() / 1;
-		}
+		lpObj->PhysiDamageMaxRight += Right->GetDamageMax();
 	}
 
 	if (Left->IsItem() != 0)
 	{
-		if (Left->m_Index >= GET_ITEM(5, 0) && Left->m_Index < GET_ITEM(6, 0))
-		{
-			lpObj->PhysiDamageMinLeft += Left->GetDamageMin() / 2;
+		lpObj->PhysiDamageMinLeft += Left->GetDamageMin();
 
-			lpObj->PhysiDamageMaxLeft += Left->GetDamageMax() / 2;
-		}
-		else
-		{
-			lpObj->PhysiDamageMinLeft += Left->GetDamageMin() / 1;
-
-			lpObj->PhysiDamageMaxLeft += Left->GetDamageMax() / 1;
-		}
+		lpObj->PhysiDamageMaxLeft += Left->GetDamageMax();
 	}
 
 	if (lpObj->Class == CLASS_DW)
@@ -2484,6 +2466,14 @@ void CObjectManager::CharacterCalcAttribute(int aIndex)
 	lpObj->MaxLife += ((lpObj->Vitality - gDefaultClassInfo.m_DefaultClassInfo[lpObj->Class].Vitality)) * lpObj->VitalityToLife;
 
 	lpObj->MaxMana += ((lpObj->Energy - gDefaultClassInfo.m_DefaultClassInfo[lpObj->Class].Energy)) * lpObj->EnergyToMana;
+
+	if (Helper->IsItem() != 0 && Helper->m_IsValidItem != 0)
+	{
+		if (Helper->m_Index == GET_ITEM(13, 0)) // Angel
+		{
+			lpObj->AddLife += 50;
+		}
+	}
 
 	this->CharacterCalcBP(lpObj);
 

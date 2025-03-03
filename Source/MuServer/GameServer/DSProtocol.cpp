@@ -7,6 +7,8 @@
 #include "Filter.h"
 #include "FlyingDragons.h"
 #include "Fruit.h"
+#include "GoldenArcher.h"
+#include "GoldenArcherBingo.h"
 #include "GameMain.h"
 #include "Guild.h"
 #include "ItemBagManager.h"
@@ -118,21 +120,28 @@ void DataServerProtocolCore(BYTE head, BYTE* lpMsg, int size)
 			{
 				case 0x00:
 				{
-					gNpcTalk.DGNpcGoldenArcherOpenRecv((SDHP_NPC_GOLDEN_ARCHER_OPEN_RECV*)lpMsg);
+					gGoldenArcher.DGGoldenArcherGetValuesRecv((SDHP_GOLDEN_ARCHER_GET_VALUES_RECV*)lpMsg);
 
 					break;
 				}
 
-				case 0x01:
+				case 0x03:
 				{
-					gNpcTalk.DGNpcGoldenArcherRegisterCountRecv((SDHP_NPC_GOLDEN_ARCHER_REG_COUNT_RECV*)lpMsg);
+					gGoldenArcher.DGGoldenArcherRegisterLuckyRecv((SDHP_GOLDEN_ARCHER_SAVE_LUCKY_NUMBER_RECV*)lpMsg);
 
 					break;
 				}
 
-				case 0x02:
+				case 0x04:
 				{
-					gNpcTalk.DGNpcGoldenArcherRegisterLuckyNumRecv((SDHP_NPC_GOLDEN_ARCHER_REG_LUCKYNUM_RECV*)lpMsg);
+					gGoldenArcherBingo.DGBingoGetWinnersRecv((SDHP_BINGO_GET_WINNERS_RECV*)lpMsg);
+
+					break;
+				}
+
+				case 0x05:
+				{
+					gGoldenArcherBingo.DGBingoClearRegisteredRecv((SDHP_BINGO_CLEAR_REGISTERED_RECV*)lpMsg);
 
 					break;
 				}
@@ -472,9 +481,13 @@ void DGCharacterListRecv(SDHP_CHARACTER_LIST_RECV* lpMsg)
 
 	DataSend(lpMsg->index, send, size);
 
+	GCCharacterDeleteLevelSend(lpMsg->index, gServerInfo.m_CharacterDeleteMaxLevel[gObj[lpMsg->index].AccountLevel]);
+
 	GCCharacterCreationEnableSend(lpMsg->index, gObj[lpMsg->index].ClassCode);
 
 	GCCharacterMaxLevelSend(lpMsg->index, gServerInfo.m_MaxCharacterLevel);
+
+	gGoldenArcher.GDGoldenArcherGetValuesSend(lpMsg->index);
 }
 
 void GDCharacterCreateSend(int aIndex, char* name, BYTE Class)

@@ -1,11 +1,10 @@
 #include "stdafx.h"
 #include "Interface.h"
-#include "Camera.h"
+#include "Camera3D.h"
 #include "EventTimer.h"
 #include "MiniMap.h"
 #include "MoveList.h"
 #include "Protect.h"
-#include "SkyDome.h"
 #include "Window.h"
 
 Interface gInterface;
@@ -65,8 +64,6 @@ void Interface::LoadImages()
 	((void(__cdecl*)()) 0x0050EB80)(); // OpenImages
 
 	gMiniMap.LoadImages();
-
-	gSkyDome.LoadImages();
 }
 
 void Interface::MyUpdateWindowsMouse()

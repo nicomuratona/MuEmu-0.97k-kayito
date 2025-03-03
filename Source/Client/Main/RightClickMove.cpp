@@ -36,7 +36,7 @@ bool CRightClickMove::MoveItemToInterface(int MousePosX, int MousePosY, DWORD In
 {
 	((unsigned int(__thiscall*)(DWORD a1, DWORD a2)) 0x0043D8A0)(0x055C9BC8, 0x07EAA11B);
 
-	int trade_var = *(BYTE*)0x07EAA11B;
+	int trade_var = TradeOpened;
 
 	((unsigned int(__thiscall*)(DWORD a1, DWORD a2)) 0x00404040)(0x055C9BC8, 0x07EAA11B);
 
@@ -44,11 +44,11 @@ bool CRightClickMove::MoveItemToInterface(int MousePosX, int MousePosY, DWORD In
 	{
 		return gItemManager.GetInterfaceEmptySlot(*(DWORD*)0x07EA5290 + 0xF, *(DWORD*)0x07EA528C + 0x10E, OffsetTradeItems, 8, 4);
 	}
-	else if (*(BYTE*)0x07EAA11A && *(DWORD*)0x07EAA140 != 1) // Chaos Mix
+	else if (ChaosMixOpened && MixState != 1) // Chaos Mix
 	{
 		return gItemManager.GetInterfaceEmptySlot(*(DWORD*)0x07EAA0C8 + 0xF, *(DWORD*)0x07EAA0CC + 0x6E, OffsetMixItems, 8, 4);
 	}
-	else if (*(BYTE*)0x7EAA119) // Warehouse
+	else if (WarehouseOpened) // Warehouse
 	{
 		return gItemManager.GetInterfaceEmptySlot(*(DWORD*)0x07EAA0C8 + 0xF, *(DWORD*)0x07EAA0CC + 0x32, OffsetWarehouseItems, 8, 15);
 	}

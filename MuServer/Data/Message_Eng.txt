@@ -58,11 +58,12 @@
 // Guard NPC
 27	"Fuck you!"
 // Golden archer
-28	"%d Renas successfully registered!"
-29	"%d Stones successfully registered!"
-30	"Wrong Number"
-31	"The reward is disabled!"
-32	"LUCKY NUMBER: %s"
+28	"You don't have enough. %d required"
+29	"You cannot receive a different VIP level"
+30	"You already have a Lucky Number"
+// Golden archer Bingo
+31	"[%s] There were no winners."
+32	"[%s] Archer will be at %s (%d,%d) for %d minutes"
 // Guild
 33	"You are already in a guild"
 34	"You need %d Levels to create a guild"

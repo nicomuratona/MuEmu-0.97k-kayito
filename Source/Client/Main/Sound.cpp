@@ -352,7 +352,7 @@ void CSound::MyPlayMP3(char* Name, BOOL bEnforce)
 
 	gSound.MusicFileName = w_newest;
 
-	if (gMP3.Load(gSound.MusicFileName.c_str()))
+	if (gMP3.Init(gSound.MusicFileName.c_str()))
 	{
 		gConsole.Write("[Music] Now playing: %s", Name);
 

@@ -13,7 +13,7 @@ CItemOption::~CItemOption()
 
 }
 
-void CItemOption::Load(ITEM_OPTION_INFO* info)
+void CItemOption::Init(ITEM_OPTION_INFO* info)
 {
 	this->m_ItemOptionInfo.clear();
 

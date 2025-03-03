@@ -86,7 +86,7 @@
     <ClInclude Include="Guild.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NpcTalk.h">
+    <ClInclude Include="GoldenArcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
@@ -154,7 +154,7 @@
     <ClCompile Include="Guild.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NpcTalk.cpp">
+    <ClCompile Include="GoldenArcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Console.cpp">

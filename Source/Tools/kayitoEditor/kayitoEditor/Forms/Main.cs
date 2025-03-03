@@ -671,12 +671,12 @@ namespace kayito_Editor
 
 					this.Energy_Box.Text = Convert.ToString(reader.GetInt32(9));
 
-					Var = reader.GetInt16(10);
+					Var = reader.GetByte(10);
 					this.Map_Box.SelectedValue = (Import.Maps.ContainsKey(Var) ? Var : -1);
 
-					this.PosX_Box.Text = Convert.ToString(reader.GetInt16(11));
+					this.PosX_Box.Text = Convert.ToString(reader.GetByte(11));
 
-					this.PosY_Box.Text = Convert.ToString(reader.GetInt16(12));
+					this.PosY_Box.Text = Convert.ToString(reader.GetByte(12));
 				}
 
 				reader.Close();

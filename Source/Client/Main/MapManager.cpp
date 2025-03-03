@@ -18,7 +18,7 @@ CMapManager::~CMapManager()
 
 }
 
-void CMapManager::Load(MAP_MANAGER_INFO* info)
+void CMapManager::Init(MAP_MANAGER_INFO* info)
 {
 	for (int i = 0; i < MAX_MAPS; i++)
 	{
@@ -41,8 +41,6 @@ void CMapManager::Init()
 	SetCompleteHook(0xE9, 0x004EF120, &this->GetMapName);
 
 	SetCompleteHook(0xE9, 0x004EF44F, &this->GetPartyMapName);
-
-	SetCompleteHook(0xE9, 0x00524DC2, &this->ApplyMapMovement);
 
 	SetCompleteHook(0xE9, 0x00526D0C, &this->LoadMapMusic);
 
@@ -69,14 +67,14 @@ BYTE CMapManager::GetMiniMap(int map)
 	return this->m_MapManager[map].MiniMap;
 }
 
-bool CMapManager::GetSkyDome(int map)
+bool CMapManager::GetMapMovement(int map)
 {
 	if (!MAP_RANGE(map))
 	{
 		return false;
 	}
 
-	return this->m_MapManager[map].SkyDome;
+	return this->m_MapManager[map].MapMovement;
 }
 
 char* CMapManager::GetMapName(int MapNumber)
@@ -89,18 +87,18 @@ char* CMapManager::GetMapName(int MapNumber)
 		}
 		else if (MapNumber == 10)
 		{
-			return GetTextLine(55);
+			return GlobalText[55];
 		}
 		else if (MapNumber >= 11 && MapNumber <= 16)
 		{
-			return GetTextLine(56);
+			return GlobalText[56];
 		}
 		else if (MapNumber < 17)
 		{
-			return GetTextLine(MapNumber + 30);
+			return GlobalText[MapNumber + 30];
 		}
 
-		return GetTextLine(MapNumber + 40);
+		return GlobalText[MapNumber + 40];
 	}
 	
 	return "";
@@ -117,42 +115,6 @@ __declspec(naked) void CMapManager::GetPartyMapName()
 		Call[CMapManager::GetMapName];
 		Add Esp, 4;
 		Jmp[jmpBack];
-	}
-}
-
-__declspec(naked) void CMapManager::ApplyMapMovement()
-{
-	static DWORD Jmp_Back = 0x00524E07;
-	static DWORD Jmp_True = 0x00524DCB;
-
-	_asm
-	{
-		Pushad;
-	}
-
-	if (MAP_RANGE(World))
-	{
-		if (gMapManager.m_MapManager[World].MapNumber != -1)
-		{
-			if (gMapManager.m_MapManager[World].MapMovement)
-			{
-				goto JUMP_OK;
-			}
-		}
-	}
-
-	_asm
-	{
-		Popad;
-		Jmp Jmp_Back;
-	}
-
-JUMP_OK:
-
-	_asm
-	{
-		Popad;
-		Jmp Jmp_True;
 	}
 }
 

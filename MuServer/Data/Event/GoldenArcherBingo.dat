@@ -1,0 +1,17 @@
+// DOW: 1=Sunday / 2=Monday / 3=Tuesday / 4=Wednesday / 5=Thursday / 6=Friday / 7=Saturday
+0
+//Year	Month	Day	DoW	Hour	Minute	Second
+*	*	*	*	22	31	0
+end
+
+// WarningTime = Time before the Archer spawns (in Minutes)
+// EventTime = Duration of the Archer active (in Minutes)
+1
+//WarningMsg	WarningTime	StartMessage	EventTime	FinalMessage	EventName
+18		5		19		5		21		"Golden Archer Bingo"
+end
+
+2
+//Map	PosX	PosY	Direction
+8	242	52	1
+end

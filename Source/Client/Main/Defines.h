@@ -2,13 +2,17 @@
 
 #define DWORD_MAX 4294967295
 
+#define Clamp(value, min, max) ((value < min) ? min : (value > max) ? max : value)
+
 /* VIEWPORT */
 #define MAX_MAIN_VIEWPORT 400
 #define REAL_WIDTH(width) ((width) * WindowWidth / 640)
 #define REAL_HEIGHT(height) ((height) * WindowHeight / 480)
 
 /* TERRAIN */
+#define TERRAIN_SCALE 100.0f
 #define TERRAIN_SIZE 256
+#define TERRAIN_SIZE_MASK 255
 
 /* OPENGL */
 #define Color3b(r, b, g)	((g << 16) + (b << 8) + r)
@@ -87,5 +91,5 @@
 #define MAX_GATES 100
 
 /* Interfaces */
-#define CheckRightInterfaces() (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpened || GuildCreatorOpened)
+#define CheckRightInterfaces() (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpenType || GuildCreatorOpened || EventWindowOpened)
 #define CheckInputInterfaces() (InputEnable || TabInputEnable || GoldInputEnable || GuildInputEnable)

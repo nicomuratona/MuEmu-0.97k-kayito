@@ -21,7 +21,7 @@ void CCustomItem::Init()
 	}
 }
 
-void CCustomItem::Load(CUSTOM_ITEM_INFO* info)
+void CCustomItem::Init(CUSTOM_ITEM_INFO* info)
 {
 	for (int n = 0; n < MAX_ITEM; n++)
 	{

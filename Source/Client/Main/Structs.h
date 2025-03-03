@@ -24,11 +24,11 @@ struct ITEM /* Struct Size = 68 */
 	/*+37*/ BYTE Special[MAX_SPECIAL_OPTION];
 	/*+45*/ BYTE SpecialValue[MAX_SPECIAL_OPTION];
 	/*+56*/ DWORD Key;
-	/*+60*/ BYTE Color;
+	/*+60*/ BYTE Unkown;
 	/*+61*/ BYTE byColorState;
 	/*+62*/ BYTE x;
 	/*+63*/ BYTE y;
-	/*+64*/ int Number;
+	/*+64*/ BYTE Color;
 };
 
 struct ITEM_ATTRIBUTE /* Struct Size = 64 */
@@ -80,7 +80,7 @@ struct GATE_ATTRIBUTE
 
 struct PARTY_t
 {
-	char name[11];
+	char Name[11];
 	BYTE number;
 	BYTE map;
 	BYTE x;

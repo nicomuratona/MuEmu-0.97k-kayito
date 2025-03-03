@@ -658,28 +658,13 @@ void CItem::Value()
 		return;
 	}
 
-	int value = 0;
-
-	if (gItemValue.GetItemValue(this, &value) != false)
-	{
-		this->m_BuyMoney = value;
-
-		this->m_BuyMoney = ((this->m_BuyMoney >= 100) ? ((this->m_BuyMoney / 10) * 10) : this->m_BuyMoney);
-
-		this->m_BuyMoney = ((this->m_BuyMoney >= 1000) ? ((this->m_BuyMoney / 100) * 100) : this->m_BuyMoney);
-
-		this->m_SellMoney = value / 3;
-
-		this->m_SellMoney = ((this->m_SellMoney >= 100) ? ((this->m_SellMoney / 10) * 10) : this->m_SellMoney);
-
-		this->m_SellMoney = ((this->m_SellMoney >= 1000) ? ((this->m_SellMoney / 100) * 100) : this->m_SellMoney);
-
-		return;
-	}
-
 	ULONGLONG price = 0;
 
-	if (ItemInfo.Value > 0)
+	if (gItemValue.GetItemBuyValue(this, &price))
+	{
+
+	}
+	else if (ItemInfo.Value > 0)
 	{
 		price = ((ItemInfo.Value * ItemInfo.Value) * 10) / 12;
 
@@ -844,7 +829,12 @@ void CItem::Value()
 
 	this->m_BuyMoney = ((this->m_BuyMoney >= 1000) ? ((this->m_BuyMoney / 100) * 100) : this->m_BuyMoney);
 
-	this->m_SellMoney = (DWORD)(price / 3);
+	if (!gItemValue.GetItemSellValue(this, &price))
+	{
+		price = price / 3;
+	}
+
+	this->m_SellMoney = (DWORD)price;
 
 	this->m_SellMoney = ((ItemInfo.Slot >= 0 && ItemInfo.Slot <= 11) ? (this->m_SellMoney - (DWORD)((this->m_SellMoney * 0.6) * (1 - (this->m_Durability / this->m_BaseDurability)))) : this->m_SellMoney);
 

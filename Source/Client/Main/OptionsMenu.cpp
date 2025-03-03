@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "OptionsMenu.h"
 #include "Font.h"
+#include "HealthBar.h"
 #include "Language.h"
 #include "Sound.h"
 #include "Window.h"
@@ -22,38 +23,39 @@ COptionsMenu::COptionsMenu()
 
 	this->MainPosY = 60.0f;
 
-	this->DeleteShadows = GetPrivateProfileInt("Antilag", "DeleteShadows", 0, ".\\Config.ini");
-	this->DeleteObjects = GetPrivateProfileInt("Antilag", "DeleteObjects", 0, ".\\Config.ini");
-	this->DeleteFloor = GetPrivateProfileInt("Antilag", "DeleteFloor", 0, ".\\Config.ini");
-	this->DeleteSkills = GetPrivateProfileInt("Antilag", "DeleteSkills", 0, ".\\Config.ini");
-	this->DeleteStaticEffects = GetPrivateProfileInt("Antilag", "DeleteStaticEffects", 0, ".\\Config.ini");
-	this->DeleteDynamicEffects = GetPrivateProfileInt("Antilag", "DeleteDynamicEffects", 0, ".\\Config.ini");
-	this->DeleteInterface = GetPrivateProfileInt("Antilag", "DeleteInterface", 0, ".\\Config.ini");
+	this->PVPWithoutControl = false;
+	this->DeleteShadows = (GetPrivateProfileInt("Antilag", "DeleteShadows", 0, ".\\Config.ini") != 0);
+	this->DeleteObjects = (GetPrivateProfileInt("Antilag", "DeleteObjects", 0, ".\\Config.ini") != 0);
+	this->DeleteFloor = (GetPrivateProfileInt("Antilag", "DeleteFloor", 0, ".\\Config.ini") != 0);
+	this->DeleteSkills = (GetPrivateProfileInt("Antilag", "DeleteSkills", 0, ".\\Config.ini") != 0);
+	this->DeleteStaticEffects = (GetPrivateProfileInt("Antilag", "DeleteStaticEffects", 0, ".\\Config.ini") != 0);
+	this->DeleteDynamicEffects = (GetPrivateProfileInt("Antilag", "DeleteDynamicEffects", 0, ".\\Config.ini") != 0);
+	this->DeleteInterface = (GetPrivateProfileInt("Antilag", "DeleteInterface", 0, ".\\Config.ini") != 0);
 }
 
 COptionsMenu::~COptionsMenu()
 {
 	char Text[10] = { 0 };
 
-	wsprintf(Text, "%d", this->DeleteShadows);
+	wsprintf(Text, "%d", (this->DeleteShadows) ? 1 : 0);
 	WritePrivateProfileString("Antilag", "DeleteShadows", Text, ".\\Config.ini");
 
-	wsprintf(Text, "%d", this->DeleteObjects);
+	wsprintf(Text, "%d", (this->DeleteObjects) ? 1 : 0);
 	WritePrivateProfileString("Antilag", "DeleteObjects", Text, ".\\Config.ini");
 
-	wsprintf(Text, "%d", this->DeleteFloor);
+	wsprintf(Text, "%d", (this->DeleteFloor) ? 1 : 0);
 	WritePrivateProfileString("Antilag", "DeleteFloor", Text, ".\\Config.ini");
 
-	wsprintf(Text, "%d", this->DeleteSkills);
+	wsprintf(Text, "%d", (this->DeleteSkills) ? 1 : 0);
 	WritePrivateProfileString("Antilag", "DeleteSkills", Text, ".\\Config.ini");
 
-	wsprintf(Text, "%d", this->DeleteStaticEffects);
+	wsprintf(Text, "%d", (this->DeleteStaticEffects) ? 1 : 0);
 	WritePrivateProfileString("Antilag", "DeleteStaticEffects", Text, ".\\Config.ini");
 
-	wsprintf(Text, "%d", this->DeleteDynamicEffects);
+	wsprintf(Text, "%d", (this->DeleteDynamicEffects) ? 1 : 0);
 	WritePrivateProfileString("Antilag", "DeleteDynamicEffects", Text, ".\\Config.ini");
 
-	wsprintf(Text, "%d", this->DeleteInterface);
+	wsprintf(Text, "%d", (this->DeleteInterface) ? 1 : 0);
 	WritePrivateProfileString("Antilag", "DeleteInterface", Text, ".\\Config.ini");
 }
 
@@ -230,42 +232,42 @@ void COptionsMenu::RenderAllOptions()
 	DisableAlphaBlend();
 	glColor3f(0.8f, 0.6f, 0.4f);
 	RenderBitmap(240, PosX, PosY, Width, Height, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
-	sprintf_s(Text, "%s", GetTextLine(385));
+	sprintf_s(Text, "%s", GlobalText[385]);
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
 
 	/* GENERAL */
 	this->RenderBox(PosX, PosY, Width, Height);
-	sprintf_s(Text, "%s", GetTextLine(919));
+	sprintf_s(Text, "%s", GlobalText[919]);
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
 
 	/* ANTILAG */
 	this->RenderBox(PosX, PosY, Width, Height);
-	sprintf_s(Text, "%s", GetTextLine(926));
+	sprintf_s(Text, "%s", GlobalText[926]);
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
 
 	/* SCREEN */
 	this->RenderBox(PosX, PosY, Width, Height);
-	sprintf_s(Text, "%s", GetTextLine(920));
+	sprintf_s(Text, "%s", GlobalText[920]);
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
 
 	/* FONT */
 	this->RenderBox(PosX, PosY, Width, Height);
-	sprintf_s(Text, "%s", GetTextLine(921));
+	sprintf_s(Text, "%s", GlobalText[921]);
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
 
 	/* CLOSE */
 	this->RenderBox(PosX, PosY, Width, Height);
-	sprintf_s(Text, "%s", GetTextLine(388));
+	sprintf_s(Text, "%s", GlobalText[388]);
 	EnableAlphaTest(true);
 	RenderText((int)PosX, CenterTextPosY(Text, (int)(PosY + (Height / 2.0f))), Text, REAL_WIDTH((int)Width), RT3_SORT_CENTER, NULL);
 	PosY += (Height + 7.0f);
@@ -330,6 +332,9 @@ void COptionsMenu::RenderGeneral()
 		PosY += ((float)this->BoxHeight + 7.0f);
 	}
 
+	this->RenderPVPWithoutControl(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
 	this->RenderAutomaticAttack(PosX, PosY);
 	PosY += ((float)this->BoxHeight + 7.0f);
 
@@ -366,6 +371,13 @@ bool COptionsMenu::CheckGeneral()
 
 		PosY += (this->BoxHeight + 7);
 	}
+
+	if (this->CheckPVPWithoutControl(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
 
 	if (this->CheckAutomaticAttack(PosX, PosY))
 	{
@@ -423,7 +435,7 @@ void COptionsMenu::RenderGeneralTitle(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(919));
+	sprintf_s(Text, "%s", GlobalText[919]);
 
 	EnableAlphaTest(true);
 
@@ -536,13 +548,64 @@ bool COptionsMenu::CheckLanguage(int PosX, int PosY)
 	return false;
 }
 
+void COptionsMenu::RenderPVPWithoutControl(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GlobalText[936], this->PVPWithoutControl ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckPVPWithoutControl(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			this->PVPWithoutControl ^= 1u;
+
+			if (this->PVPWithoutControl)
+			{
+				SetCompleteHook(0xE9, 0x0048322F, 0x00483240);
+
+				SetCompleteHook(0xE9, 0x0044B532, 0x0044B550);
+			}
+			else
+			{
+				BYTE replace[5] = { 0x6A, 0x11, 0xFF, 0x15, 0x98 };
+
+				MemoryCpy(0x0048322F, replace, sizeof(replace));
+
+				MemoryCpy(0x0044B532, replace, sizeof(replace));
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
 void COptionsMenu::RenderAutomaticAttack(float PosX, float PosY)
 {
 	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(386), m_bAutoAttack ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[386], m_bAutoAttack ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -578,7 +641,7 @@ void COptionsMenu::RenderSoundOnWhisper(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(387), m_bWhisperSound ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[387], m_bWhisperSound ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -616,7 +679,7 @@ void COptionsMenu::RenderSoundVolume(float PosX, float PosY)
 	{
 		char Text[64] = { 0 };
 
-		sprintf_s(Text, "%s: Off", GetTextLine(922));
+		sprintf_s(Text, "%s: Off", GlobalText[922]);
 
 		EnableAlphaTest(true);
 
@@ -628,7 +691,7 @@ void COptionsMenu::RenderSoundVolume(float PosX, float PosY)
 
 		char Text[64] = { 0 };
 
-		sprintf_s(Text, "%s:", GetTextLine(922));
+		sprintf_s(Text, "%s:", GlobalText[922]);
 
 		EnableAlphaTest(true);
 
@@ -726,7 +789,7 @@ void COptionsMenu::RenderMusicVolume(float PosX, float PosY)
 	{
 		char Text[64] = { 0 };
 
-		sprintf_s(Text, "%s: Off", GetTextLine(923));
+		sprintf_s(Text, "%s: Off", GlobalText[923]);
 
 		EnableAlphaTest(true);
 
@@ -738,7 +801,7 @@ void COptionsMenu::RenderMusicVolume(float PosX, float PosY)
 
 		char Text[64] = { 0 };
 
-		sprintf_s(Text, "%s:", GetTextLine(923));
+		sprintf_s(Text, "%s:", GlobalText[923]);
 
 		EnableAlphaTest(true);
 
@@ -898,14 +961,17 @@ bool COptionsMenu::CheckMusicControls(int PosX, int PosY)
 
 void COptionsMenu::ApplyAntilagDefaults()
 {
-	/*
 	if (this->DeleteShadows)
 	{
-		SetByte(0x00441F00, 0xC3);
+		SetCompleteHook(0xE9, 0x00441F0D, 0x00442086);
+
+		SetByte(0x00441F0D + 5, 0x90);
 	}
 	else
 	{
-		SetByte(0x00441F00, 0x83);
+		BYTE replace[6] = { 0x0F, 0x84, 0x73, 0x01, 0x00, 0x00 };
+
+		MemoryCpy(0x00441F0D, replace, sizeof(replace));
 	}
 
 	if (this->DeleteObjects)
@@ -919,11 +985,11 @@ void COptionsMenu::ApplyAntilagDefaults()
 
 	if (this->DeleteFloor)
 	{
-		SetByte(0x004F9A30, 0xC3);
+		SetByte(0x004F9AC0, 0xC3);
 	}
 	else
 	{
-		SetByte(0x004F9A30, 0x8B);
+		SetByte(0x004F9AC0, 0x51);
 	}
 
 	if (this->DeleteSkills)
@@ -961,17 +1027,6 @@ void COptionsMenu::ApplyAntilagDefaults()
 		SetByte(0x00478C00, 0x83); // RenderParticles
 	}
 
-	if (this->DeleteWings)
-	{
-		SetCompleteHook(0xE9, 0x0045857F, 0x004585A8);
-	}
-	else
-	{
-		BYTE replace[5] = { 0x33, 0xC9, 0x6A, 0x00, 0x8A };
-
-		MemoryCpy(0x0045857F, replace, sizeof(replace));
-	}
-
 	if (this->DeleteInterface)
 	{
 		SetByte(0x00525483, 0x84); // Skip Move Interface
@@ -992,7 +1047,6 @@ void COptionsMenu::ApplyAntilagDefaults()
 
 		SetByte(0x0047FCE0, 0x83); // Skip Render Notices
 	}
-	*/
 }
 
 void COptionsMenu::RenderAntilag()
@@ -1026,6 +1080,9 @@ void COptionsMenu::RenderAntilag()
 	PosY += ((float)this->BoxHeight + 7.0f);
 
 	this->RenderDeleteWings(PosX, PosY);
+	PosY += ((float)this->BoxHeight + 7.0f);
+
+	this->RenderDeleteHPBar(PosX, PosY);
 	PosY += ((float)this->BoxHeight + 7.0f);
 
 	this->RenderDeleteInterface(PosX, PosY);
@@ -1089,6 +1146,13 @@ bool COptionsMenu::CheckAntilag()
 
 	PosY += (this->BoxHeight + 7);
 
+	if (this->CheckDeleteHPBar(PosX, PosY))
+	{
+		return true;
+	}
+
+	PosY += (this->BoxHeight + 7);
+
 	if (this->CheckDeleteInterface(PosX, PosY))
 	{
 		return true;
@@ -1114,7 +1178,7 @@ void COptionsMenu::RenderAntilagTitle(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(926));
+	sprintf_s(Text, "%s", GlobalText[926]);
 
 	EnableAlphaTest(true);
 
@@ -1127,7 +1191,7 @@ void COptionsMenu::RenderDeleteShadows(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(927), this->DeleteShadows ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[927], this->DeleteShadows ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1176,7 +1240,7 @@ void COptionsMenu::RenderDeleteObjects(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(928), this->DeleteObjects ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[928], this->DeleteObjects ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1221,7 +1285,7 @@ void COptionsMenu::RenderDeleteFloor(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(929), this->DeleteFloor ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[929], this->DeleteFloor ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1266,7 +1330,7 @@ void COptionsMenu::RenderDeleteSkills(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(930), this->DeleteSkills ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[930], this->DeleteSkills ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1319,7 +1383,7 @@ void COptionsMenu::RenderDeleteStaticEffects(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(931), this->DeleteStaticEffects ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[931], this->DeleteStaticEffects ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1364,7 +1428,7 @@ void COptionsMenu::RenderDeleteDynamicEffects(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(932), this->DeleteDynamicEffects ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[932], this->DeleteDynamicEffects ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1409,7 +1473,7 @@ void COptionsMenu::RenderDeleteWings(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(933), gWeaponView.DeleteWings ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[933], gWeaponView.DeleteWings ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1439,13 +1503,49 @@ bool COptionsMenu::CheckDeleteWings(int PosX, int PosY)
 	return false;
 }
 
+void COptionsMenu::RenderDeleteHPBar(float PosX, float PosY)
+{
+	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
+
+	char Text[64] = { 0 };
+
+	sprintf_s(Text, "%s: %s", GlobalText[934], gHealthBar.DeleteHealthBar ? "On" : "Off");
+
+	EnableAlphaTest(true);
+
+	RenderText((int)PosX, CenterTextPosY(Text, ((int)PosY + (this->BoxHeight / 2))), Text, REAL_WIDTH(this->BoxWidth), RT3_SORT_CENTER, NULL);
+}
+
+bool COptionsMenu::CheckDeleteHPBar(int PosX, int PosY)
+{
+	if (IsWorkZone(PosX, PosY, this->BoxWidth, this->BoxHeight))
+	{
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
+
+			MouseUpdateTime = 0;
+
+			MouseUpdateTimeMax = 6;
+
+			PlayBuffer(25, 0, 0);
+
+			gHealthBar.DeleteHealthBar ^= 1;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
 void COptionsMenu::RenderDeleteInterface(float PosX, float PosY)
 {
 	this->RenderBox(PosX, PosY, (float)this->BoxWidth, (float)this->BoxHeight);
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s: %s", GetTextLine(934), this->DeleteInterface ? "On" : "Off");
+	sprintf_s(Text, "%s: %s", GlobalText[935], this->DeleteInterface ? "On" : "Off");
 
 	EnableAlphaTest(true);
 
@@ -1568,7 +1668,7 @@ void COptionsMenu::RenderScreenTitle(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(920));
+	sprintf_s(Text, "%s", GlobalText[920]);
 
 	EnableAlphaTest(true);
 
@@ -1818,7 +1918,7 @@ void COptionsMenu::RenderFontTitle(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(921));
+	sprintf_s(Text, "%s", GlobalText[921]);
 
 	EnableAlphaTest(true);
 
@@ -2144,7 +2244,7 @@ void COptionsMenu::RenderResetFonts(float PosX, float& PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(924));
+	sprintf_s(Text, "%s", GlobalText[924]);
 
 	EnableAlphaTest(true);
 
@@ -2190,7 +2290,7 @@ void COptionsMenu::RenderClose(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(388));
+	sprintf_s(Text, "%s", GlobalText[388]);
 
 	EnableAlphaTest(true);
 
@@ -2230,7 +2330,7 @@ void COptionsMenu::RenderBack(float PosX, float PosY)
 
 	char Text[64] = { 0 };
 
-	sprintf_s(Text, "%s", GetTextLine(925));
+	sprintf_s(Text, "%s", GlobalText[925]);
 
 	EnableAlphaTest(true);
 

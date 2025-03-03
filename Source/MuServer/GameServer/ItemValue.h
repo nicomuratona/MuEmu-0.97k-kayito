@@ -13,14 +13,6 @@ struct PMSG_ITEM_VALUE_LIST_SEND
 	BYTE count;
 };
 
-struct ITEM_VALUE
-{
-	WORD Index;
-	BYTE Level;
-	BYTE Grade;
-	DWORD Value;
-};
-
 //**********************************************//
 //**********************************************//
 //**********************************************//
@@ -29,8 +21,8 @@ struct ITEM_VALUE_INFO
 {
 	int Index;
 	int Level;
-	int Grade;
-	int Value;
+	int BuyValue;
+	int SellValue;
 };
 
 class CItemValue
@@ -43,7 +35,9 @@ public:
 
 	void Load(char* path);
 
-	bool GetItemValue(CItem* lpItem, int* value);
+	bool GetItemBuyValue(CItem* lpItem, ULONGLONG* value);
+
+	bool GetItemSellValue(CItem* lpItem, ULONGLONG* value);
 
 	void GCItemValueListSend(int aIndex);
 

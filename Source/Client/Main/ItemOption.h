@@ -23,7 +23,7 @@ public:
 
 	virtual ~CItemOption();
 
-	void Load(ITEM_OPTION_INFO* info);
+	void Init(ITEM_OPTION_INFO* info);
 
 	bool GetItemOption(int index, WORD ItemIndex, BYTE ItemSkill, BYTE ItemLuck, BYTE ItemOption, BYTE ItemExcellent, BYTE* pItemOption, BYTE* pItemValue);
 

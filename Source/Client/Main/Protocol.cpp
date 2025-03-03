@@ -2,6 +2,7 @@
 #include "Protocol.h"
 #include "ChaosMix.h"
 #include "EventTimer.h"
+#include "GoldenArcher.h"
 #include "HackCheck.h"
 #include "HealthBar.h"
 #include "HWID.h"
@@ -212,6 +213,63 @@ bool CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 			return true;
 		}
 
+		case 0x94:
+		{
+			gGoldenArcher.GCGoldenArcherRecv((PMSG_NPC_GOLDEN_ARCHER_RECV*)lpMsg);
+
+			return true;
+		}
+
+		case 0x95:
+		{
+			gGoldenArcher.GCGoldenArcherRegisterRecv((PMSG_GOLDEN_ARCHER_REGISTER_RECV*)lpMsg);
+
+			return true;
+		}
+
+		case 0x96:
+		{
+			gGoldenArcher.GCGoldenArcherLuckyNumberRecv((PMSG_GOLDEN_ARCHER_LUCKY_NUMBER_RECV*)lpMsg);
+
+			return true;
+		}
+
+		case 0x97:
+		{
+			switch (((lpMsg[0] == 0xC1) ? lpMsg[3] : lpMsg[4]))
+			{
+				case 0x00:
+				{
+					gGoldenArcher.GCGoldenArcherInfoRecv((PMSG_GOLDEN_ARCHER_INFO_RECV*)lpMsg);
+
+					return true;
+				}
+
+				case 0x01:
+				{
+					gGoldenArcher.GCGoldenArcherListRecv((PMSG_GOLDEN_ARCHER_LIST_RECV*)lpMsg);
+
+					return true;
+				}
+
+				case 0x03:
+				{
+					gGoldenArcher.GCGoldenArcherRegisterLuckyRecv((PMSG_GOLDEN_ARCHER_REGISTER_LUCKY_RECV*)lpMsg);
+
+					return true;
+				}
+
+				case 0x04:
+				{
+					gGoldenArcher.GoldenArcherCloseProc();
+
+					return true;
+				}
+			}
+
+			break;
+		}
+
 		case 0x9C:
 		{
 			this->GCRewardExperienceRecv((PMSG_REWARD_EXPERIENCE_RECV*)lpMsg);
@@ -219,11 +277,25 @@ bool CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 			break;
 		}
 
+		case 0x9D:
+		{
+			gGoldenArcher.GCGoldenArcherExchangeLuckyRecv((PMSG_GOLDEN_ARCHER_EXCHANGE_LUCKY_RECV*)lpMsg);
+
+			return true;
+		}
+
 		case 0xA3:
 		{
 			this->GCQuestRewardRecv((PMSG_QUEST_REWARD_RECV*)lpMsg);
 
 			break;
+		}
+
+		case 0xDD:
+		{
+			this->GCCharacterDeleteMaxLevelRecv((PMSG_CHARACTER_DELETE_LEVEL_RECV*)lpMsg);
+
+			return true;
 		}
 
 		case 0xDE:
@@ -393,7 +465,7 @@ void CProtocol::GCNoticeRecv(PMSG_NOTICE_RECV* lpMsg)
 	{
 		char text[64] = { 0 };
 
-		sprintf_s(text, GetTextLine(486), atoi(lpMsg->message));
+		sprintf_s(text, GlobalText[486], atoi(lpMsg->message));
 
 		((void(_cdecl*)(char* strID, char* strText, int MsgType))0x00480620)((char*)0x005826D3C, text, 1);
 	}
@@ -612,6 +684,11 @@ void CProtocol::GCQuestRewardRecv(PMSG_QUEST_REWARD_RECV* lpMsg)
 	}
 }
 
+void CProtocol::GCCharacterDeleteMaxLevelRecv(PMSG_CHARACTER_DELETE_LEVEL_RECV* lpMsg)
+{
+	gPrintPlayer.MaxCharacterDeleteLevel = lpMsg->Level;
+}
+
 void CProtocol::GCCharacterCreationEnableRecv(PMSG_CHARACTER_CREATION_ENABLE_RECV* lpMsg)
 {
 	SetDword(0x00522929 + 1, lpMsg->result); // Allow Create MG
@@ -775,6 +852,16 @@ void CProtocol::GCNewCharacterCalcRecv(PMSG_NEW_CHARACTER_CALC_RECV* lpMsg)
 
 	*(WORD*)(CharacterAttribute + 0x44) = GET_MAX_WORD_VALUE(lpMsg->ViewMagicSpeed);
 
+	*(WORD*)(CharacterAttribute + 0x3A) = GET_MAX_WORD_VALUE(lpMsg->ViewAttackSuccessRate);
+
+	*(WORD*)(CharacterAttribute + 0x4E) = GET_MAX_WORD_VALUE(lpMsg->ViewDefense);
+
+	*(WORD*)(CharacterAttribute + 0x4C) = GET_MAX_WORD_VALUE(lpMsg->ViewDefenseSuccessRate);
+
+	*(WORD*)(CharacterAttribute + 0x46) = GET_MAX_WORD_VALUE(lpMsg->ViewMagicDamageMin);
+
+	*(WORD*)(CharacterAttribute + 0x48) = GET_MAX_WORD_VALUE(lpMsg->ViewMagicDamageMax);
+
 	STRUCT_ENCRYPT;
 
 	gPrintPlayer.ViewCurHP = lpMsg->ViewCurHP;
@@ -792,6 +879,24 @@ void CProtocol::GCNewCharacterCalcRecv(PMSG_NEW_CHARACTER_CALC_RECV* lpMsg)
 	gPrintPlayer.ViewPhysiSpeed = lpMsg->ViewPhysiSpeed;
 
 	gPrintPlayer.ViewMagicSpeed = lpMsg->ViewMagicSpeed;
+
+	gPrintPlayer.ViewPhysiDamageMin = lpMsg->ViewPhysiDamageMin;
+
+	gPrintPlayer.ViewPhysiDamageMax = lpMsg->ViewPhysiDamageMax;
+
+	gPrintPlayer.ViewMagicDamageMin = lpMsg->ViewMagicDamageMin;
+
+	gPrintPlayer.ViewMagicDamageMax = lpMsg->ViewMagicDamageMax;
+
+	gPrintPlayer.ViewMagicDamageRate = lpMsg->ViewMagicDamageRate;
+
+	gPrintPlayer.ViewAttackSuccessRate = lpMsg->ViewAttackSuccessRate;
+
+	gPrintPlayer.ViewDamageMultiplier = lpMsg->ViewDamageMultiplier;
+
+	gPrintPlayer.ViewDefense = lpMsg->ViewDefense;
+
+	gPrintPlayer.ViewDefenseSuccessRate = lpMsg->ViewDefenseSuccessRate;
 }
 
 void CProtocol::GCHealthBarRecv(PMSG_HEALTH_BAR_RECV* lpMsg)

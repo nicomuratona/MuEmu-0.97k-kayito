@@ -30,25 +30,29 @@ private:
 
 	static float RenderNumberBP(float x, float y, int Num, float Width, float Height);
 
-	static void RenderTextExperience(char* Dest, char* Format);
-
 	static void RenderExperience();
-
-	static void RenderTextLevelUpPoints(char* Dest, char* Format);
-
-	static void RenderTextStrength(char* Dest, char* Format);
-
-	static void RenderTextDexterity(char* Dest, char* Format);
-
-	static void RenderTextVitality(char* Dest, char* Format);
-
-	static void RenderTextEnergy(char* Dest, char* Format);
 
 	static void CalculateAttackSpeed(DWORD This);
 
 	static void SetAttackSpeed();
 
 	static void RenderDamageHP(float Position[3], int Value, float Color[3], float scale, bool bMove);
+
+	static void RenderCharacterInfoWindow(int StartPosX, int StartPosY);
+
+	void RenderCharInfo_Frame(float fPosX, float fPosY);
+
+	void RenderCharInfo_Title(int StartPosX, int StartPosY);
+
+	void RenderCharInfo_Level(int StartPosX, int StartPosY);
+
+	void RenderCharInfo_Strength(int StartPosX, int StartPosY);
+
+	void RenderCharInfo_Agility(int StartPosX, int StartPosY);
+
+	void RenderCharInfo_Vitality(int StartPosX, int StartPosY);
+
+	void RenderCharInfo_Energy(int StartPosX, int StartPosY);
 
 public:
 
@@ -92,7 +96,27 @@ public:
 
 	DWORD ViewMagicSpeed;
 
+	DWORD ViewPhysiDamageMin;
+
+	DWORD ViewPhysiDamageMax;
+
+	DWORD ViewMagicDamageMin;
+
+	DWORD ViewMagicDamageMax;
+
+	DWORD ViewMagicDamageRate;
+
+	DWORD ViewAttackSuccessRate;
+
+	DWORD ViewDamageMultiplier;
+
+	DWORD ViewDefense;
+
+	DWORD ViewDefenseSuccessRate;
+
 	DWORD MaxCharacterLevel;
+
+	DWORD MaxCharacterDeleteLevel;
 };
 
 extern CPrintPlayer gPrintPlayer;

@@ -19,7 +19,7 @@ public:
 
 	virtual ~CItemPosition();
 
-	void Load(ITEM_POSITION_INFO* info);
+	void Init(ITEM_POSITION_INFO* info);
 
 private:
 

@@ -1057,28 +1057,13 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 		return (goldType == 1) ? m_SellMoney : m_BuyMoney;
 	}
 
-	int value = 0;
-
-	if (gItemValue.GetItemValue(ip, &value))
-	{
-		m_BuyMoney = value;
-
-		m_BuyMoney = ((m_BuyMoney >= 100) ? ((m_BuyMoney / 10) * 10) : m_BuyMoney);
-
-		m_BuyMoney = ((m_BuyMoney >= 1000) ? ((m_BuyMoney / 100) * 100) : m_BuyMoney);
-
-		m_SellMoney = value / 3;
-
-		m_SellMoney = ((m_SellMoney >= 100) ? ((m_SellMoney / 10) * 10) : m_SellMoney);
-
-		m_SellMoney = ((m_SellMoney >= 1000) ? ((m_SellMoney / 100) * 100) : m_SellMoney);
-
-		return (goldType == 1) ? m_SellMoney : m_BuyMoney;
-	}
-
 	ULONGLONG price = 0;
 
-	if (ItemInfo->Value > 0)
+	if (gItemValue.GetItemBuyValue(ip, &price))
+	{
+
+	}
+	else if (ItemInfo->Value > 0)
 	{
 		price = ((ItemInfo->Value * ItemInfo->Value) * 10) / 12;
 
@@ -1245,7 +1230,12 @@ DWORD CItem::ItemValue(ITEM* ip, int goldType)
 
 	float m_BaseDurability = (float)gItem.myCalcMaxDurability(ip, ItemInfo, m_ItemLevel);
 
-	m_SellMoney = (DWORD)(price / 3);
+	if (!gItemValue.GetItemSellValue(ip, &price))
+	{
+		price = price / 3;
+	}
+
+	m_SellMoney = (DWORD)price;
 
 	m_SellMoney = ((ip->Part >= EQUIPMENT_WEAPON_RIGHT && ip->Part <= EQUIPMENT_RING_LEFT) ? (m_SellMoney - (DWORD)((m_SellMoney * 0.6) * (1 - (ip->Durability / m_BaseDurability)))) : m_SellMoney);
 

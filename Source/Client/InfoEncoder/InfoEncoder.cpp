@@ -8,6 +8,7 @@
 #include "CustomBow.h"
 #include "CustomWing.h"
 #include "ItemPosition.h"
+#include "MapFog.h"
 
 struct MAIN_FILE_INFO
 {
@@ -19,10 +20,12 @@ struct MAIN_FILE_INFO
 	char ClientSerial[17];
 	char ClientVersion[8];
 	BYTE MultiInstanceBlock;
-	char WindowName[32];
-	char ScreenShotPath[50];
-	char ClientName[32];
-	char PluginName[32];
+	char WindowName[128];
+	char ScreenShotPath[256];
+	BYTE DisableResets;
+	BYTE DisableGrandResets;
+	char ClientName[128];
+	char PluginName[128];
 	DWORD ClientCRC32;
 	DWORD PluginCRC32;
 	DWORD ReconnectTime;
@@ -37,6 +40,7 @@ struct MAIN_FILE_INFO
 	ITEM_OPTION_INFO ItemOptionInfo[MAX_ITEM_OPTION_INFO];
 	CUSTOM_MONSTER_INFO CustomMonsterInfo[MAX_MONSTER];
 	ITEM_POSITION_INFO ItemPositionInfo[MAX_ITEM];
+	MAP_FOG_INFO MapFogInfo[MAX_MAPS];
 };
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -66,6 +70,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	info.MultiInstanceBlock = GetPrivateProfileInt("ClientInfo", "BlockMultiInstance", 0, ".\\MainInfo.ini");
 	GetPrivateProfileString("ClientInfo", "WindowName", "", info.WindowName, sizeof(info.WindowName), ".\\MainInfo.ini");
 	GetPrivateProfileString("ClientInfo", "ScreenShotPath", "", info.ScreenShotPath, sizeof(info.ScreenShotPath), ".\\MainInfo.ini");
+	info.DisableResets = GetPrivateProfileInt("ClientInfo", "DisableResets", 0, ".\\MainInfo.ini");
+	info.DisableGrandResets = GetPrivateProfileInt("ClientInfo", "DisableGrandResets", 0, ".\\MainInfo.ini");
 
 	GetPrivateProfileString("CheckCRC", "ClientName", "", info.ClientName, sizeof(info.ClientName), ".\\MainInfo.ini");
 	GetPrivateProfileString("CheckCRC", "PluginName", "", info.PluginName, sizeof(info.PluginName), ".\\MainInfo.ini");
@@ -100,6 +106,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	gItemPosition.Load("ItemPosition.txt");
 
+	gMapFog.Load("MapFog.txt");
+
 	/*****************************************************************/
 	/*********************** Load struct files ***********************/
 	/*****************************************************************/
@@ -119,6 +127,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	memcpy(info.CustomMonsterInfo, gCustomMonster.m_CustomMonsterInfo, sizeof(info.CustomMonsterInfo));
 
 	memcpy(info.ItemPositionInfo, gItemPosition.m_ItemPositionInfo, sizeof(info.ItemPositionInfo));
+
+	memcpy(info.MapFogInfo, gMapFog.m_MapFog, sizeof(info.MapFogInfo));
 
 	/*=================================================================*/
 

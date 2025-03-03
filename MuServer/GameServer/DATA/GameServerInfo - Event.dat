@@ -25,3 +25,41 @@ InvasionManagerSwitch = 1
 FlyingDragonsSwitch = 1
 FlyingDragonsOnlyBossMapSpawn = 0		; Dragons will only spawn in the map of the boss
 FlyingDragonsKillBossDisappear = 0		; Dragons will disappear when the boss dies
+
+;==================================================
+; Golden Archer Settings
+;==================================================
+; Required Renas to exchange for ItemBag
+; Use 0 to disable the button
+RenaExchangeRequired1=10
+RenaExchangeRequired2=50
+RenaExchangeRequired3=100
+RenaExchangeRequired4=500
+
+; Required Stones to exchange for VIP
+; Use 0 to disable the button
+; VipTime is in hours
+StoneExchangeRequiredVIP1=100
+StoneExchangeVIPTime1=1
+
+StoneExchangeRequiredVIP2=250
+StoneExchangeVIPTime2=1
+
+StoneExchangeRequiredVIP3=500
+StoneExchangeVIPTime3=1
+
+; Required Stones to exchange for Lucky Number
+; Use 0 to disable the button
+StoneExchangeRequiredLuckyNumber=50
+
+;==================================================
+; Golden Archer Bingo Settings
+;==================================================
+; Enable / disable the Archer Bingo Event
+GoldenArcherBingoEvent=1
+
+; Define the amount of winners
+GoldenArcherWinnersAmount=1
+
+; Delete all registered at the end of the event
+GoldenArcherDeleteRegistered=1

@@ -19,6 +19,12 @@ public:
 	int GetTargetSlotEquiped(ITEM* lpItem, int slot);
 
 	void GetItemName(int iType, int iLevel, char* Text);
+
+	void MyRenderItem3D(float sx, float sy, float Width, float Height, ITEM* Item, bool PickUp);
+
+	int GetInventoryItemCount(int index, int level);
+
+	int GetInventoryItemSlot(int index, int level);
 };
 
 extern CItemManager gItemManager;

@@ -12,12 +12,12 @@ struct PMSG_ITEM_VALUE_LIST_RECV
 	BYTE count;
 };
 
-struct ITEM_VALUE
+struct ITEM_VALUE_INFO
 {
-	WORD Index;
-	BYTE Level;
-	BYTE Grade;
-	DWORD Value;
+	int Index;
+	int Level;
+	int BuyValue;
+	int SellValue;
 };
 
 //**********************************************//
@@ -32,13 +32,15 @@ public:
 
 	virtual ~CItemValue();
 
-	bool GetItemValue(ITEM* lpItem, int* value);
+	bool GetItemBuyValue(ITEM* lpItem, ULONGLONG* value);
+
+	bool GetItemSellValue(ITEM* lpItem, ULONGLONG* value);
 
 	void GCItemValueListRecv(PMSG_ITEM_VALUE_LIST_RECV* lpMsg);
 
 private:
 
-	std::vector<ITEM_VALUE> m_ItemValueInfo;
+	std::vector<ITEM_VALUE_INFO> m_ItemValueInfo;
 };
 
 extern CItemValue gItemValue;

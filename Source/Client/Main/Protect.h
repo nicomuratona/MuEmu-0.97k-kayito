@@ -8,6 +8,7 @@
 #include "CustomBow.h"
 #include "CustomWing.h"
 #include "ItemPosition.h"
+#include "MapFog.h"
 
 struct MAIN_FILE_INFO
 {
@@ -19,10 +20,12 @@ struct MAIN_FILE_INFO
 	char ClientSerial[17];
 	char ClientVersion[8];
 	BYTE MultiInstanceBlock;
-	char WindowName[32];
-	char ScreenShotPath[50];
-	char ClientName[32];
-	char PluginName[32];
+	char WindowName[128];
+	char ScreenShotPath[256];
+	BYTE DisableResets;
+	BYTE DisableGrandResets;
+	char ClientName[128];
+	char PluginName[128];
 	DWORD ClientCRC32;
 	DWORD PluginCRC32;
 	DWORD ReconnectTime;
@@ -37,6 +40,7 @@ struct MAIN_FILE_INFO
 	ITEM_OPTION_INFO ItemOptionInfo[MAX_ITEM_OPTION_INFO];
 	CUSTOM_MONSTER_INFO CustomMonsterInfo[MAX_MONSTER];
 	ITEM_POSITION_INFO ItemPositionInfo[MAX_ITEM];
+	MAP_FOG_INFO MapFogInfo[MAX_MAPS];
 
 };
 

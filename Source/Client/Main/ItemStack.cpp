@@ -79,7 +79,7 @@ _declspec(naked) void CItemStack::RenderItemNumber()
 		goto Exit;
 	}
 
-	if (gItemStack.GetItemMaxStack(((ITEM*)item)->Type, (((ITEM*)item)->Level >> 3) & 15))
+	if (gItemStack.GetItemMaxStack(((ITEM*)item)->Type, GET_ITEM_OPT_LEVEL(((ITEM*)item)->Level)))
 	{
 		goto Exit;
 	}
@@ -119,7 +119,7 @@ bool CItemStack::CanInsertItem(int MousePosX, int MousePosY, DWORD InterfaceOffs
 
 		if (pPickedItem->Type == TargetItem->Type)
 		{
-			return (gItemStack.GetItemMaxStack(pPickedItem->Type, (pPickedItem->Level >> 3) & 15) != 0);
+			return (gItemStack.GetItemMaxStack(pPickedItem->Type, GET_ITEM_OPT_LEVEL(pPickedItem->Level)) != 0);
 		}
 	}
 
@@ -128,22 +128,22 @@ bool CItemStack::CanInsertItem(int MousePosX, int MousePosY, DWORD InterfaceOffs
 
 void CItemStack::CheckItemStackClicked(ITEM* pointedItem)
 {
-	if (!gItemStack.GetItemMaxStack(pointedItem->Type, (pointedItem->Level >> 3) & 15))
+	if (!gItemStack.GetItemMaxStack(pointedItem->Type, GET_ITEM_OPT_LEVEL(pointedItem->Level)))
 	{
 		return;
 	}
 
 	((unsigned int(__thiscall*)(DWORD a1, DWORD a2)) 0x0043D8A0)(0x055C9BC8, 0x07EAA11B);
 
-	int trade_var = *(BYTE*)0x07EAA11B;
+	int trade_var = TradeOpened;
 
 	((unsigned int(__thiscall*)(DWORD a1, DWORD a2)) 0x00404040)(0x055C9BC8, 0x07EAA11B);
 
 	if (trade_var // Trade
-	    || *(BYTE*)0x07EAA11A && *(DWORD*)0x07EAA140 != 1 // Chaos Mix
-	    || *(BYTE*)0x7EAA119) // Warehouse
+	    || ChaosMixOpened && MixState != 1 // Chaos Mix
+	    || WarehouseOpened) // Warehouse
 	{
-		UIChatLogWindow_AddText("", GetTextLine(474), 2);
+		UIChatLogWindow_AddText("", GlobalText[474], 2);
 
 		return;
 	}

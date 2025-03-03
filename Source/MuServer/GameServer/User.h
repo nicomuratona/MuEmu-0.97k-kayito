@@ -3,7 +3,9 @@
 #include "Effect.h"
 #include "Item.h"
 #include "Skill.h"
+#include "GoldenArcher.h"
 #include "GuildManager.h"
+#include "DefaultClassInfo.h"
 
 #define MAX_OBJECT 10000
 #define MAX_OBJECT_MONSTER 8000
@@ -464,7 +466,7 @@ struct OBJECTSTRUCT
 	int PhysiDamageMinLeft;
 	int PhysiDamageMaxRight;
 	int PhysiDamageMinRight;
-	int DKDamageMultiplierRate;
+	int DamageMultiplierRate;
 	int AttackSuccessRate;
 	int PhysiSpeed;
 	int MagicSpeed;
@@ -528,6 +530,9 @@ struct OBJECTSTRUCT
 	BYTE LastTeleportTime;
 	BYTE ReqWarehouseOpen;
 	bool IsChaosMixCompleted;
+	int ArcherCoinCount[GOLDEN_ARCHER_MAX_COINS];
+	char ArcherLuckyNumber[13];
+	std::vector<std::string> RegisteredLuckyNumbers;
 	DWORD CharSaveTime;
 	CEffect* Effect;
 	DWORD* SkillDelay;

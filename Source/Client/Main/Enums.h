@@ -132,7 +132,7 @@ enum eResolutionValues
 	R640x480 = 0,
 	R800x600,
 	R1024x768,
-	R1280x960,
+	R1280x1024,
 	// 16:9
 	R1280x720,
 	R1366x768,
@@ -232,4 +232,24 @@ enum eModelNumbers
 	MODEL_ETC = MODEL_POTION + MAX_ITEM_TYPE,
 
 	MODEL_EVENT = 947,
+};
+
+/* Classes */
+enum eClasses
+{
+	CLASS_DARK_WIZARD = 0,
+	CLASS_DARK_KNIGHT = 1,
+	CLASS_FAIRY_ELF = 2,
+	CLASS_MAGIC_GLADIATOR = 3,
+};
+
+/* PK Level */
+enum ePkLevel
+{
+	PKLVL_FULLHERO = 1,
+	PKLVL_HERO = 2,
+	PKLVL_COMMONER = 3,
+	PKLVL_WARNING = 4,
+	PKLVL_OUTLAW = 5,
+	PKLVL_KILLER = 6
 };

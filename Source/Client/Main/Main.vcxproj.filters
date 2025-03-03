@@ -62,13 +62,19 @@
     <Filter Include="Item\Management">
       <UniqueIdentifier>{32fa9f53-9629-4679-b8e7-ad339fb2f028}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface\NPC">
+      <UniqueIdentifier>{eae93fa7-23ef-4ce5-9346-ba43057952f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\NPC\Chaos Mix">
+      <UniqueIdentifier>{26ef24a6-13b3-4bce-9b43-3c5813632027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\NPC\Golden Archer">
+      <UniqueIdentifier>{63420676-dff2-4500-bc41-d30f07f389e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCRC32.H">
       <Filter>Util Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Window</Filter>
@@ -85,9 +91,6 @@
     <ClInclude Include="HWID.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="SkyDome.h">
-      <Filter>Map</Filter>
-    </ClInclude>
     <ClInclude Include="stb.h">
       <Filter>Util Files</Filter>
     </ClInclude>
@@ -101,9 +104,6 @@
       <Filter>Visual</Filter>
     </ClInclude>
     <ClInclude Include="RightClickMove.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="ChaosMix.h">
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="MoveList.h">
@@ -226,13 +226,25 @@
     <ClInclude Include="ItemPosition.h">
       <Filter>Item\Properties</Filter>
     </ClInclude>
+    <ClInclude Include="ChaosMix.h">
+      <Filter>Interface\NPC\Chaos Mix</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldenArcher.h">
+      <Filter>Interface\NPC\Golden Archer</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera3D.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="MapFog.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenglUtil.h">
+      <Filter>Util Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCRC32.Cpp">
       <Filter>Util Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Window</Filter>
@@ -249,9 +261,6 @@
     <ClCompile Include="HWID.cpp">
       <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="SkyDome.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
     <ClCompile Include="Interface.cpp">
       <Filter>Interface</Filter>
     </ClCompile>
@@ -265,9 +274,6 @@
       <Filter>Util Files</Filter>
     </ClCompile>
     <ClCompile Include="RightClickMove.cpp">
-      <Filter>Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="ChaosMix.cpp">
       <Filter>Interface</Filter>
     </ClCompile>
     <ClCompile Include="MoveList.cpp">
@@ -374,6 +380,21 @@
     </ClCompile>
     <ClCompile Include="ItemPosition.cpp">
       <Filter>Item\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="ChaosMix.cpp">
+      <Filter>Interface\NPC\Chaos Mix</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldenArcher.cpp">
+      <Filter>Interface\NPC\Golden Archer</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera3D.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="MapFog.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenglUtil.cpp">
+      <Filter>Util Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

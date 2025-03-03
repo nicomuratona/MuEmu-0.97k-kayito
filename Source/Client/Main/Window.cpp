@@ -1,6 +1,5 @@
 ﻿#include "StdAfx.h"
 #include "Window.h"
-#include "Camera.h"
 #include "Controller.h"
 #include "Font.h"
 #include "PingSystem.h"
@@ -16,9 +15,9 @@ CWindow::CWindow()
 	this->iResolutionValues[R640x480] = std::make_pair<WORD, WORD>(640, 480);
 	this->iResolutionValues[R800x600] = std::make_pair<WORD, WORD>(800, 600);
 	this->iResolutionValues[R1024x768] = std::make_pair<WORD, WORD>(1024, 768);
-	this->iResolutionValues[R1280x960] = std::make_pair<WORD, WORD>(1280, 960);
+	this->iResolutionValues[R1280x1024] = std::make_pair<WORD, WORD>(1280, 1024);
 	this->iResolutionValues[R1280x720] = std::make_pair<WORD, WORD>(1280, 720);
-	this->iResolutionValues[R1366x768] = std::make_pair<WORD, WORD>(1360, 768);
+	this->iResolutionValues[R1366x768] = std::make_pair<WORD, WORD>(1366, 768);
 	this->iResolutionValues[R1600x900] = std::make_pair<WORD, WORD>(1600, 900);
 	this->iResolutionValues[R1920x1080] = std::make_pair<WORD, WORD>(1920, 1080);
 
@@ -56,7 +55,7 @@ CWindow::~CWindow()
 	WritePrivateProfileString("Window", "Resolution", Text, ".\\Config.ini");
 }
 
-void CWindow::WindowModeLoad(HINSTANCE hins)
+void CWindow::Init(HINSTANCE hins)
 {
 	this->Instance = hins;
 
@@ -82,7 +81,7 @@ void CWindow::WindowModeLoad(HINSTANCE hins)
 
 LONG WINAPI CWindow::FixDisplaySettingsOnClose(DEVMODEA* lpDevMode, DWORD dwFlags)
 {
-	if (gWindow.m_WindowMode == FULL_SCREEN)
+	if (!gWindow.m_WindowMode)
 	{
 		return ChangeDisplaySettings(NULL, 0);
 	}
@@ -249,21 +248,39 @@ HWND CWindow::StartWindow(HINSTANCE hCurrentInst, int nCmdShow)
 
 void CWindow::ChangeDisplaySettingsFunction()
 {
-	DEVMODE devMode = { 0 };
+	std::vector<DEVMODE> displayModes;
 
-	devMode.dmSize = sizeof(DEVMODE);
+	DEVMODE devMode = {};
 
-	devMode.dmDriverExtra = 0;
+	int modeIndex = 0;
 
-	devMode.dmPelsWidth = WindowWidth;
+	DWORD preferredBitsPerPel = 0;
 
-	devMode.dmPelsHeight = WindowHeight;
+	while (EnumDisplaySettings(NULL, modeIndex, &devMode))
+	{
+		displayModes.push_back(devMode);
 
-	devMode.dmBitsPerPel = 32;
+		if (devMode.dmBitsPerPel > preferredBitsPerPel)
+		{
+			preferredBitsPerPel = devMode.dmBitsPerPel;
+		}
 
-	devMode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
+		modeIndex++;
+	}
 
-	ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);
+	for (auto& mode : displayModes)
+	{
+		if (mode.dmPelsWidth == WindowWidth &&
+		    mode.dmPelsHeight == WindowHeight &&
+		    mode.dmBitsPerPel == preferredBitsPerPel)
+		{
+			ChangeDisplaySettings(&mode, 0);
+
+			return;
+		}
+	}
+
+	MessageBox(NULL, "It was not possible to find any compatible configuration with the selected resolution.", "Display Settings Error.", MB_OK | MB_ICONEXCLAMATION);
 }
 
 bool CWindow::CreateOpenglWindow()
@@ -313,9 +330,7 @@ bool CWindow::CreateOpenglWindow()
 		return false; // failure
 	}
 
-	HGLRC hglrcDummy = wglCreateContext(g_hDC);
-
-	if (!hglrcDummy) // Create an appropriate rendering context with the device context.
+	if (!(g_hRC = wglCreateContext(g_hDC))) // Create an appropriate rendering context with the device context.
 	{
 		KillGLWindow(); // reset the display
 
@@ -324,7 +339,7 @@ bool CWindow::CreateOpenglWindow()
 		return false; // failure
 	}
 
-	if (!wglMakeCurrent(g_hDC, hglrcDummy)) // Activate the rendering context and associate it with the device context.
+	if (!wglMakeCurrent(g_hDC, g_hRC)) // Activate the rendering context and associate it with the device context.
 	{
 		KillGLWindow(); // reset the display
 
@@ -332,40 +347,6 @@ bool CWindow::CreateOpenglWindow()
 
 		return false; // failure
 	}
-
-	if (glewInit() != GLEW_OK) // Initialize GLEW to load OpenGL extensions
-	{
-		KillGLWindow(); // reset the display
-
-		MessageBox(NULL, GlobalText[4], "Failed to initialize GLEW.", MB_OK | MB_ICONEXCLAMATION);
-
-		return false; // failure
-	}
-
-	// Now you can create an OpenGL 3.3 context
-	int attribs[] = {
-		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-		WGL_CONTEXT_MINOR_VERSION_ARB, 3,
-		WGL_CONTEXT_PROFILE_MASK_ARB,
-		WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
-		0
-	};
-
-	if (!(g_hRC = wglCreateContextAttribsARB(g_hDC, 0, attribs))) // Create the real OpenGL 3.3 context
-	{
-		KillGLWindow(); // reset the display
-
-		MessageBox(NULL, GlobalText[4], "GLEW Create Context Error.", MB_OK | MB_ICONEXCLAMATION);
-
-		return false; // failure
-	}
-
-	// Clean up the dummy context
-	wglMakeCurrent(nullptr, nullptr);
-	wglDeleteContext(hglrcDummy);
-
-	// Make the new context current
-	wglMakeCurrent(g_hDC, g_hRC);
 
 	ShowWindow(g_hWnd, SW_SHOW); // show the window
 
@@ -462,7 +443,28 @@ void CWindow::ChangeWindowText()
 	{
 		STRUCT_DECRYPT;
 
-		sprintf_s(this->m_WindowName, sizeof(this->m_WindowName), "%s || Resets: %d || GrandResets: %d || Level: %d || PING: %u ms || FPS: %.0f", (char*)(CharacterAttribute + 0x00), gPrintPlayer.ViewReset, gPrintPlayer.ViewGrandReset, *(WORD*)(CharacterAttribute + 0x0E), gPing.m_Ping, FPS);
+		sprintf_s(this->m_WindowName, sizeof(this->m_WindowName), "%s", (char*)(CharacterAttribute + 0x00));
+
+		if (!gProtect.m_MainInfo.DisableResets)
+		{
+			char Resets[64];
+			sprintf_s(Resets, sizeof(Resets), " || Resets: %d", gPrintPlayer.ViewReset);
+
+			strcat_s(this->m_WindowName, Resets);
+		}
+
+		if (!gProtect.m_MainInfo.DisableGrandResets)
+		{
+			char GrandResets[64];
+			sprintf_s(GrandResets, sizeof(GrandResets), " || GrandResets: %d", gPrintPlayer.ViewGrandReset);
+
+			strcat_s(this->m_WindowName, GrandResets);
+		}
+
+		char Text[128];
+		sprintf_s(Text, sizeof(Text), " || Level: %d || PING: %u ms || FPS: %.0f", *(WORD*)(CharacterAttribute + 0x0E), gPing.m_Ping, FPS);
+
+		strcat_s(this->m_WindowName, Text);
 
 		STRUCT_ENCRYPT;
 	}
@@ -571,7 +573,7 @@ void CWindow::ChangeWindowState(bool windowMode, bool borderless, int resolution
 
 	MoveWindow(g_hWnd, PosX, PosY, rc.right - rc.left, rc.bottom - rc.top, TRUE); // Change the size
 
-	gCamera.SetCurrentValue(); // Fix the 3d camera position
+	//gCamera.SetCurrentValue(); // Fix the 3d camera position
 
 	gFont.ReloadFont();
 }

@@ -229,12 +229,12 @@ BYTE CGuildManager::AddGuild(int index, char* szGuildName, char* szMasterName, B
 	else
 	{
 	#ifndef MYSQL
-		if (gQueryManager.GetResult(0) == 0)
+		int result = gQueryManager.GetResult(0);
 	#else
 		int result = gQueryManager.GetAsInteger("Result");
+	#endif
 
 		if (result == 1)
-	#endif
 		{
 			gQueryManager.Close();
 
@@ -306,15 +306,7 @@ BYTE CGuildManager::AddGuild(int index, char* szGuildName, char* szMasterName, B
 		{
 			gQueryManager.Close();
 
-		#ifndef MYSQL
-
-			return 6;
-
-		#else
-
 			return result;
-
-		#endif
 		}
 	}
 }
@@ -329,22 +321,10 @@ BYTE CGuildManager::DelGuild(int index, char* szGuildName)
 	}
 
 #ifndef MYSQL
-
-	lpGuildInfo->Clear();
-
-	gQueryManager.ExecQuery("DELETE FROM Guild WHERE G_Name='%s'", szGuildName);
-
-	gQueryManager.Close();
-
-	gQueryManager.ExecQuery("DELETE FROM GuildMember WHERE G_Name='%s'", szGuildName);
-
-	gQueryManager.Close();
-
-	return 1;
-
-#else
-
+	if (gQueryManager.ExecQuery("WZ_SetGuildDelete '%s'", szGuildName) == false || gQueryManager.Fetch() == SQL_NO_DATA)
+	#else
 	if (gQueryManager.ExecResultQuery("CALL WZ_SetGuildDelete('%s')", szGuildName) == false || gQueryManager.Fetch() == false)
+	#endif
 	{
 		gQueryManager.Close();
 
@@ -352,7 +332,15 @@ BYTE CGuildManager::DelGuild(int index, char* szGuildName)
 	}
 	else
 	{
+	#ifndef MYSQL
+
+		int result = gQueryManager.GetResult(0);
+
+	#else
+
 		int result = gQueryManager.GetAsInteger("Result");
+
+	#endif
 
 		gQueryManager.Close();
 
@@ -363,8 +351,6 @@ BYTE CGuildManager::DelGuild(int index, char* szGuildName)
 
 		return result;
 	}
-
-#endif
 }
 
 BYTE CGuildManager::AddGuildMember(int index, char* szGuildName, char* szGuildMember, BYTE btStatus, WORD btServer)

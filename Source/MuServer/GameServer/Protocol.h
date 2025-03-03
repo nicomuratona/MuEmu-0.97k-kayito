@@ -328,6 +328,12 @@ struct PMSG_MOVE_SEND
 	BYTE dir;
 };
 
+struct PMSG_CHARACTER_DELETE_LEVEL_SEND
+{
+	PBMSG_HEAD header; // C1:DD
+	WORD Level;
+};
+
 struct PMSG_CHARACTER_CREATION_ENABLE_SEND
 {
 	PBMSG_HEAD header; // C1:DE
@@ -568,6 +574,15 @@ struct PMSG_NEW_CHARACTER_CALC_SEND
 	DWORD ViewMaxBP;
 	DWORD ViewPhysiSpeed;
 	DWORD ViewMagicSpeed;
+	DWORD ViewPhysiDamageMin;
+	DWORD ViewPhysiDamageMax;
+	DWORD ViewMagicDamageMin;
+	DWORD ViewMagicDamageMax;
+	DWORD ViewMagicDamageRate;
+	DWORD ViewAttackSuccessRate;
+	DWORD ViewDamageMultiplier;
+	DWORD ViewDefense;
+	DWORD ViewDefenseSuccessRate;
 };
 
 struct PMSG_HEALTH_BAR_SEND
@@ -680,6 +695,8 @@ void GCMonsterDieSend(int aIndex, int bIndex, int experience, int damage, BYTE f
 
 void GCRewardExperienceSend(int aIndex, int experience);
 
+void GCCharacterDeleteLevelSend(int aIndex, WORD Level);
+
 void GCCharacterCreationEnableSend(int aIndex, BYTE result);
 
 void GCCharacterMaxLevelSend(int aIndex, DWORD MaxLevel);
@@ -712,4 +729,4 @@ void GCNewCharacterInfoSend(LPOBJ lpObj);
 
 void GCNewCharacterCalcSend(LPOBJ lpObj);
 
-void GCHealthBarSend(LPOBJ lpObj);
+void GCHealthBarSend(int aIndex);

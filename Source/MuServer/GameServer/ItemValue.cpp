@@ -60,9 +60,9 @@ void CItemValue::Load(char* path)
 
 			info.Level = lpReadScript->GetAsNumber();
 
-			info.Grade = lpReadScript->GetAsNumber();
+			info.BuyValue = lpReadScript->GetAsNumber();
 
-			info.Value = lpReadScript->GetAsNumber();
+			info.SellValue = lpReadScript->GetAsNumber();
 
 			this->m_ItemValueInfo.push_back(info);
 		}
@@ -75,7 +75,7 @@ void CItemValue::Load(char* path)
 	delete lpReadScript;
 }
 
-bool CItemValue::GetItemValue(CItem* lpItem, int* value)
+bool CItemValue::GetItemBuyValue(CItem* lpItem, ULONGLONG* value)
 {
 	for (std::vector<ITEM_VALUE_INFO>::iterator it = this->m_ItemValueInfo.begin(); it != this->m_ItemValueInfo.end(); it++)
 	{
@@ -83,17 +83,47 @@ bool CItemValue::GetItemValue(CItem* lpItem, int* value)
 		{
 			if (it->Level == -1 || it->Level == lpItem->m_Level)
 			{
-				if (it->Grade == -1 || it->Grade == lpItem->m_ExceOption)
+				if (it->BuyValue != -1)
 				{
 					if (gItemStack.GetItemMaxStack(it->Index, lpItem->m_Level) == 0 || it->Index == GET_ITEM(4, 7) || it->Index == GET_ITEM(4, 15))
 					{
-						(*value) = it->Value;
+						(*value) = (ULONGLONG)it->BuyValue;
 
 						return true;
 					}
 					else
 					{
-						(*value) = (int)(it->Value * lpItem->m_Durability);
+						(*value) = (ULONGLONG)(it->BuyValue * lpItem->m_Durability);
+
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+bool CItemValue::GetItemSellValue(CItem* lpItem, ULONGLONG* value)
+{
+	for (std::vector<ITEM_VALUE_INFO>::iterator it = this->m_ItemValueInfo.begin(); it != this->m_ItemValueInfo.end(); it++)
+	{
+		if (it->Index == lpItem->m_Index)
+		{
+			if (it->Level == -1 || it->Level == lpItem->m_Level)
+			{
+				if (it->SellValue != -1)
+				{
+					if (gItemStack.GetItemMaxStack(it->Index, lpItem->m_Level) == 0 || it->Index == GET_ITEM(4, 7) || it->Index == GET_ITEM(4, 15))
+					{
+						(*value) = (ULONGLONG)it->SellValue;
+
+						return true;
+					}
+					else
+					{
+						(*value) = (ULONGLONG)(it->SellValue * lpItem->m_Durability);
 
 						return true;
 					}
@@ -117,7 +147,7 @@ void CItemValue::GCItemValueListSend(int aIndex)
 
 	pMsg.count = 0;
 
-	ITEM_VALUE info;
+	ITEM_VALUE_INFO info;
 
 	for (std::vector<ITEM_VALUE_INFO>::iterator it = this->m_ItemValueInfo.begin(); it != this->m_ItemValueInfo.end(); it++)
 	{
@@ -125,9 +155,9 @@ void CItemValue::GCItemValueListSend(int aIndex)
 
 		info.Level = (BYTE)it->Level;
 
-		info.Grade = (BYTE)it->Grade;
+		info.BuyValue = it->BuyValue;
 
-		info.Value = it->Value;
+		info.SellValue = it->SellValue;
 
 		memcpy(&send[size], &info, sizeof(info));
 

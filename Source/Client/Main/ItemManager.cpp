@@ -2,6 +2,7 @@
 #include "ItemManager.h"
 #include "CustomBow.h"
 #include "CustomWing.h"
+#include "ItemStack.h"
 
 CItemManager gItemManager;
 
@@ -150,7 +151,7 @@ int CItemManager::GetTargetSlotEquiped(ITEM* lpItem, int slot)
 
 	if (slot == EQUIPMENT_WEAPON_RIGHT && PlayerRightHand->Type != -1 && PlayerLeftHand->Type == -1)
 	{
-		if (lpItem->Type >= GET_ITEM(0, 0) && lpItem->Type < GET_ITEM(4, 0)) // If its a sword, axe, mace or spear
+		if ((lpItem->Type >= GET_ITEM(0, 0) && lpItem->Type < GET_ITEM(4, 0)) || (lpItem->Type >= GET_ITEM(5, 0) && lpItem->Type < GET_ITEM(6, 0))) // If its a sword, axe, mace, spear or staff
 		{
 			slot = EQUIPMENT_WEAPON_LEFT;
 		}
@@ -536,4 +537,105 @@ void CItemManager::GetItemName(int iType, int iLevel, char* Text)
 			wsprintf(Text, "%s +%d", ItemInfo->Name, iLevel);
 		}
 	}
+}
+
+void CItemManager::MyRenderItem3D(float sx, float sy, float Width, float Height, ITEM* Item, bool PickUp)
+{
+	EndBitmap();
+
+	glMatrixMode(GL_PROJECTION);
+
+	glPushMatrix();
+
+	glLoadIdentity();
+
+	glViewport2(0, 0, WindowWidth, WindowHeight);
+
+	gluPerspective2(1.0f, (float)(WindowWidth / WindowHeight), 20.0f, 2000.0f);
+
+	glMatrixMode(GL_MODELVIEW);
+
+	glPushMatrix();
+
+	glLoadIdentity();
+
+	GetOpenGLMatrix(CameraMatrix);
+
+	EnableDepthTest();
+
+	EnableDepthMask();
+
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	RenderItem3D(sx, sy, Width, Height, Item->Type, Item->Level, Item->Option1, PickUp);
+
+	MyUpdateMousePosition();
+
+	glMatrixMode(GL_MODELVIEW);
+
+	glPopMatrix();
+
+	glMatrixMode(GL_PROJECTION);
+
+	glPopMatrix();
+
+	BeginBitmap();
+
+	if ((MouseX >= sx && MouseX <= sx + Width) && (MouseY >= sy && MouseY <= sy + Height))
+	{
+		EnableAlphaBlend();
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+
+		RenderItemInfo((int)(sx + (Width / 2)), (int)sy, Item, false);
+	}
+}
+
+int CItemManager::GetInventoryItemCount(int index, int level)
+{
+	int count = 0;
+
+	ITEM* item = nullptr;
+
+	for (int n = 0; n < INVENTORY_ITEM_SIZE; n++)
+	{
+			item = GetInventoryItem(n);
+
+			if (index == item->Type)
+			{
+				if (level == -1 || level == GET_ITEM_OPT_LEVEL(item->Level))
+				{
+					if (gItemStack.GetItemMaxStack(index, level) == 0)
+					{
+						count++;
+					}
+					else
+					{
+						count += item->Durability;
+					}
+				}
+			}
+	}
+
+	return count;
+}
+
+int CItemManager::GetInventoryItemSlot(int index, int level)
+{
+	ITEM* item = nullptr;
+
+	for (int n = 0; n < INVENTORY_ITEM_SIZE; n++)
+	{
+		item = GetInventoryItem(n);
+
+		if (index == item->Type)
+		{
+			if (level == -1 || level == GET_ITEM_OPT_LEVEL(item->Level))
+			{
+				return n;
+			}
+		}
+	}
+
+	return -1;
 }

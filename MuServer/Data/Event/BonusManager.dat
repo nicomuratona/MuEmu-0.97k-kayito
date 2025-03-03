@@ -4,9 +4,10 @@
 0	*	*	*	*	20	0	0
 end
 
-// Bonus Time = Minutes
+// BonusTime = Duration of the Bonus active (in Minutes)
+// WarningTime = Time to start the Bonus (in Minutes)
 1
-//Index	StartMessage	EndMessage	BonusTime	AlarmTime	AlarmMsg	BonusName
+//Index	StartMessage	EndMessage	BonusTime	WarningTime	WarningMsg	BonusName
 0	19		21		60		5		18		"Happy Hour"
 end
 

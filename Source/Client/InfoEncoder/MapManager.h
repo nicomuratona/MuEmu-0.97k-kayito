@@ -6,7 +6,6 @@ struct MAP_MANAGER_INFO
 	bool SwimableMap;
 	bool MapMovement;
 	BYTE MiniMap;
-	bool SkyDome;
 	char MapName[32];
 	char SongName[64];
 };

@@ -6,12 +6,18 @@ CHealthBar gHealthBar;
 
 CHealthBar::CHealthBar()
 {
+	this->DeleteHealthBar = (GetPrivateProfileInt("Antilag", "DeleteHealthBar", 0, ".\\Config.ini") != 0);
+
 	this->ClearHealthBar();
 }
 
 CHealthBar::~CHealthBar()
 {
+	char Text[10] = { 0 };
 
+	wsprintf(Text, "%d", (this->DeleteHealthBar) ? 1 : 0);
+
+	WritePrivateProfileString("Antilag", "DeleteHealthBar", Text, ".\\Config.ini");
 }
 
 void CHealthBar::ClearHealthBar()
@@ -74,6 +80,11 @@ void CHealthBar::Init()
 void CHealthBar::DrawHealthBar()
 {
 	((void(_cdecl*)())0x004BCA20)();
+
+	if (gHealthBar.DeleteHealthBar)
+	{
+		return;
+	}
 
 	float LifeBarWidth = 70.0f;
 
@@ -168,6 +179,11 @@ __declspec(naked) void CHealthBar::DrawPointingHealthBar()
 		Pushad;
 	}
 
+	if (gHealthBar.DeleteHealthBar)
+	{
+		goto EXIT;
+	}
+
 	ViewportAddress = CharactersClient + (SelectedCharacter * 916);
 
 	if (!ViewportAddress)
@@ -226,7 +242,7 @@ __declspec(naked) void CHealthBar::DrawPointingHealthBar()
 
 	SetTextColor = Color4b(255, 255, 255, 255);
 
-	RenderText((int)PosX, (int)PosY, LifeDisplay, (int)LifeBarWidth * WindowWidth / 640, RT3_SORT_CENTER, NULL);
+	RenderText((int)PosX, (int)PosY, LifeDisplay, REAL_WIDTH((int)LifeBarWidth), RT3_SORT_CENTER, NULL);
 
 	DisableAlphaBlend();
 

@@ -70,7 +70,7 @@ void Mp3::Cleanup()
         this->ready = false;
 }
 
-bool Mp3::Load(LPCWSTR szFile)
+bool Mp3::Init(LPCWSTR szFile)
 {
         this->Cleanup();
 

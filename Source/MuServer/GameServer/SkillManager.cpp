@@ -1906,12 +1906,12 @@ void CSkillManager::CGMultiSkillAttackRecv(PMSG_MULTI_SKILL_ATTACK_RECV* lpMsg, 
 
 void CSkillManager::CGSkillAttackRecv(PMSG_SKILL_ATTACK_RECV* lpMsg, int aIndex)
 {
-	LPOBJ lpObj = &gObj[aIndex];
-
 	if (gObjIsConnectedGS(aIndex) == 0)
 	{
 		return;
 	}
+
+	LPOBJ lpObj = &gObj[aIndex];
 
 	if (lpObj->Live == 0 || lpObj->Teleport != 0)
 	{

@@ -260,6 +260,7 @@ void AngleMatrix(const vec3_t angles, float matrix[3][4])
 	matrix[0][2] = (cr * sp * cy + -sr * -sy);
 
 	matrix[1][2] = (cr * sp * sy + -sr * cy);
+	//matrix[1][2] = (cr * sp * sy + sr * cy);
 
 	matrix[2][2] = cr * cp;
 
@@ -309,6 +310,7 @@ void AngleIMatrix(const vec3_t angles, float matrix[3][4])
 	matrix[2][0] = (cr * sp * cy + -sr * -sy);
 
 	matrix[2][1] = (cr * sp * sy + -sr * cy);
+	//matrix[2][1] = (cr * sp * sy + sr * cy);
 
 	matrix[2][2] = cr * cp;
 
@@ -518,18 +520,18 @@ void FaceNormalize(vec3_t v1, vec3_t v2, vec3_t v3, vec3_t Normal)
 
 	nz = (v2[0] - v1[0]) * (v3[1] - v1[1]) - (v3[0] - v1[0]) * (v2[1] - v1[1]);
 
-	double dot = sqrt(nx * nx + ny * ny + nz * nz);
+	float dot = sqrt(nx * nx + ny * ny + nz * nz);
 
 	if (dot == 0)
 	{
 		return;
 	}
 
-	Normal[0] = (nx / (float)dot);
+	Normal[0] = (nx / dot);
 
-	Normal[1] = (ny / (float)dot);
+	Normal[1] = (ny / dot);
 
-	Normal[2] = (nz / (float)dot);
+	Normal[2] = (nz / dot);
 }
 
 float VectorDistance2D(vec3_t va, vec3_t vb)

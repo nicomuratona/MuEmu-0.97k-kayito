@@ -127,6 +127,12 @@ struct PMSG_QUEST_REWARD_RECV
 	DWORD ViewPoint;
 };
 
+struct PMSG_CHARACTER_DELETE_LEVEL_RECV
+{
+	PBMSG_HEAD header; // C1:DD
+	WORD Level;
+};
+
 struct PMSG_CHARACTER_CREATION_ENABLE_RECV
 {
 	PBMSG_HEAD header; // C1:DE
@@ -300,6 +306,15 @@ struct PMSG_NEW_CHARACTER_CALC_RECV
 	DWORD ViewMaxBP;
 	DWORD ViewPhysiSpeed;
 	DWORD ViewMagicSpeed;
+	DWORD ViewPhysiDamageMin;
+	DWORD ViewPhysiDamageMax;
+	DWORD ViewMagicDamageMin;
+	DWORD ViewMagicDamageMax;
+	DWORD ViewMagicDamageRate;
+	DWORD ViewAttackSuccessRate;
+	DWORD ViewDamageMultiplier;
+	DWORD ViewDefense;
+	DWORD ViewDefenseSuccessRate;
 };
 
 struct PMSG_HEALTH_BAR_RECV
@@ -419,6 +434,8 @@ private:
 	void GCRewardExperienceRecv(PMSG_REWARD_EXPERIENCE_RECV* lpMsg);
 
 	void GCQuestRewardRecv(PMSG_QUEST_REWARD_RECV* lpMsg);
+
+	void GCCharacterDeleteMaxLevelRecv(PMSG_CHARACTER_DELETE_LEVEL_RECV* lpMsg);
 
 	void GCCharacterCreationEnableRecv(PMSG_CHARACTER_CREATION_ENABLE_RECV* lpMsg);
 

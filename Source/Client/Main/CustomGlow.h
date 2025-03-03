@@ -16,7 +16,7 @@ public:
 
 	virtual ~CCustomGlow();
 
-	void Load(CUSTOM_GLOW_INFO* info);
+	void Init(CUSTOM_GLOW_INFO* info);
 
 	void SetInfo(CUSTOM_GLOW_INFO info);
 

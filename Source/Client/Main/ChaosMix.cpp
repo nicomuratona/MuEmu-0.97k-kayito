@@ -63,13 +63,13 @@ _declspec(naked) void CChaosMix::ChaosMixRateSend()
 		Pushad;
 	}
 
-	if (gChaosMix.m_LastChaosValue != *(DWORD*)0x07EAA16C)
+	if (gChaosMix.m_LastChaosValue != MixType)
 	{
 		gChaosMix.m_ChaosMixRate = 0;
 
 		wsprintf(gChaosMix.m_ChaosMixMoney, "%d", 0);
 
-		gChaosMix.m_LastChaosValue = *(DWORD*)0x07EAA16C;
+		gChaosMix.m_LastChaosValue = MixType;
 
 		if (gChaosMix.m_LastChaosValue == CHAOS_MIX_CHAOS_ITEM
 		    || gChaosMix.m_LastChaosValue == CHAOS_MIX_DEVIL_SQUARE

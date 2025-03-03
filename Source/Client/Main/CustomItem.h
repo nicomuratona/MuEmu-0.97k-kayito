@@ -15,7 +15,7 @@ public:
 
 	virtual ~CCustomItem();
 
-	void Load(CUSTOM_ITEM_INFO* info);
+	void Init(CUSTOM_ITEM_INFO* info);
 
 	void SetInfo(CUSTOM_ITEM_INFO info);
 

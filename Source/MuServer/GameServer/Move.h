@@ -34,6 +34,7 @@ struct PMSG_TELEPORT_SEND
 struct PMSG_MOVE_LIST_SEND
 {
 	PSWMSG_HEAD header; // C2:F3:E5
+	BYTE PKLimitFree;
 	BYTE count;
 };
 
@@ -42,7 +43,11 @@ struct MOVE_LIST_INFO
 	BYTE MapNumber;
 	char MapName[32];
 	bool CanMove;
-	WORD LevelMin;
+	short MinLevel;
+	short MaxLevel;
+	short MinReset;
+	short MaxReset;
+	short AccountLevel;
 	DWORD Money;
 };
 

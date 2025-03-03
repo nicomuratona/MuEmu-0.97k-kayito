@@ -8,6 +8,7 @@
 #include "BloodCastle.h"
 #include "InvasionManager.h"
 #include "BonusManager.h"
+#include "GoldenArcherBingo.h"
 
 CEventTimeManager gEventTimeManager;
 
@@ -173,6 +174,40 @@ void CEventTimeManager::GCEventTimeSend(int aIndex)
 
 			pMsg.count++;
 		}
+	}
+
+	if (gServerInfo.m_GoldenArcherBingoEvent)
+	{
+		strcpy_s(info.name, gGoldenArcherBingo.GetEventName());
+
+		info.time = 0;
+
+		state = gGoldenArcherBingo.GetState();
+
+		if (state == BINGO_STATE_START)
+		{
+			info.status = EVENT_STATE_START;
+		}
+		else if (state == BINGO_STATE_EMPTY)
+		{
+			info.status = EVENT_STATE_STAND;
+
+			info.time = gGoldenArcherBingo.GetCurrentRemainTime();
+		}
+		else if (state == BINGO_STATE_STAND)
+		{
+			info.status = EVENT_STATE_OPEN;
+		}
+		else
+		{
+			info.status = EVENT_STATE_BLANK;
+		}
+
+		memcpy(&send[size], &info, sizeof(info));
+
+		size += sizeof(info);
+
+		pMsg.count++;
 	}
 
 	if (pMsg.count > 0)

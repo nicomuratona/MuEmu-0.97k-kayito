@@ -16,7 +16,7 @@ CCustomGlow::~CCustomGlow()
 
 }
 
-void CCustomGlow::Load(CUSTOM_GLOW_INFO* info)
+void CCustomGlow::Init(CUSTOM_GLOW_INFO* info)
 {
 	for (int n = 0; n < MAX_ITEM; n++)
 	{

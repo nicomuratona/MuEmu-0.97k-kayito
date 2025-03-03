@@ -24,6 +24,16 @@ void ConsoleProtocolLog(int type, BYTE* lpMsg, int size);
 
 char* ConvertModuleFileName(char* name);
 
+/*
+template <typename T>
+constexpr T Clamp(T value, T min, T max)
+{
+	return (value < min) ? min : (value > max) ? max : value;
+}
+*/
+
+SHORT WINAPI GetAsyncKeyStateCall(int key);
+
 bool FileExists(char* name);
 
 int GetTextWidth(char* buff);
@@ -32,7 +42,7 @@ int GetTextHeight(char* buff);
 
 int CenterTextPosX(char* buff, int PosX);
 
-int CenterTextPosY(char* buff, int PosY);
+int CenterTextPosY(const char* buff, int PosY);
 
 float ImgCenterScreenPosX(float Size);
 
@@ -46,14 +56,8 @@ void Encrypt(BYTE* OutBuff, BYTE* InBuff, int size);
 
 void ConvertGold(double dGold, char* szText, int iDecimals = 0);
 
-void MyRenderBitmapRotate(int Texture, float x, float y, float Width, float Height, float Rotate, float u, float v, float uWidth, float vHeight);
-
-void MyRenderBitRotate(int Texture, float x, float y, float Width, float Height, float Rotate, float u, float v, float uWidth, float vHeight);
-
-void MyRenderPointRotate(int Texture, float ix, float iy, float iWidth, float iHeight, float x, float y, float Width, float Height, float Rotate, float Rotate_Loc, float u, float v, float uWidth, float vHeight, char* Tooltip);
-
-void RenderTriangleColor(float x, float y, float Width, float Height);
-
 BYTE GetDestValue(int xPos, int yPos, int xDst, int yDst);
 
 void GetNearRandomPos(vec3_t Pos, int iRange, vec3_t NewPos);
+
+bool IsPartyMember(int index);

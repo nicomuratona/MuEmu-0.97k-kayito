@@ -57,9 +57,9 @@ public:
 
 	void GetPreviewDefense(LPOBJ lpObj, DWORD* defense);
 
-	void GetPreviewPhysiDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* MulDamage, DWORD* DivDamage);
+	void GetPreviewPhysiDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax);
 
-	void GetPreviewMagicDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* MulDamage, DWORD* DivDamage, DWORD* DamageRate);
+	void GetPreviewMagicDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* DamageRate);
 
 	void CGAttackRecv(PMSG_ATTACK_RECV* lpMsg, int aIndex);
 };

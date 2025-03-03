@@ -14,7 +14,7 @@ public:
 
 	virtual ~Mp3();
 
-	bool Load(LPCWSTR filename);
+	bool Init(LPCWSTR filename);
 
 	void Cleanup();
 

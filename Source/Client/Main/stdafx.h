@@ -20,8 +20,8 @@
 #include <time.h>
 #include <Shellapi.h>
 #include <Rpc.h>
-#include <gl/glew.h>
-#include <GL/wglew.h>
+#include <gl/GL.h>
+#include <gl/GLU.h>
 #include <dsound.h>
 #include <mbstring.h>
 #include <fstream>
@@ -36,6 +36,7 @@
 #include "Enums.h"
 #include "Structs.h"
 #include "Util.h"
+#include "OpenglUtil.h"
 #include "stb.h"
 
 // Libraries
@@ -45,4 +46,3 @@
 #pragma comment(lib,"Rpcrt4.lib")
 #pragma comment(lib,"Opengl32.lib")
 #pragma comment(lib,"glu32.lib")
-#pragma comment(lib,"glew32s.lib")

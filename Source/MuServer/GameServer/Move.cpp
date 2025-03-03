@@ -311,6 +311,8 @@ void CMove::GCMoveListSend(LPOBJ lpObj)
 
 	int size = sizeof(pMsg);
 
+	pMsg.PKLimitFree = gServerInfo.m_PKLimitFree;
+
 	pMsg.count = 0;
 
 	MOVE_LIST_INFO info;
@@ -321,11 +323,19 @@ void CMove::GCMoveListSend(LPOBJ lpObj)
 
 		memcpy(info.MapName, it->second.Name, sizeof(info.MapName));
 
-		info.CanMove = true;
+		info.MinLevel = gGate.GetMoveLevel(lpObj, info.MapNumber, it->second.MinLevel);
 
-		info.LevelMin = it->second.MinLevel;
+		info.MaxLevel = it->second.MaxLevel;
+
+		info.MinReset = it->second.MinReset;
+
+		info.MaxReset = it->second.MaxReset;
+
+		info.AccountLevel = it->second.AccountLevel;
 
 		info.Money = it->second.Money;
+
+		info.CanMove = true;
 
 		memcpy(&send[size], &info, sizeof(info));
 

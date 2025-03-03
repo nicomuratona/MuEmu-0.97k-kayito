@@ -1575,7 +1575,7 @@ void CBloodCastle::SetMonster(BLOOD_CASTLE_LEVEL* lpLevel, int MonsterClass, int
 			continue;
 		}
 
-		lpObj->MaxRegenTime = RegenTime;
+		lpObj->MaxRegenTime = RegenTime * 1000;
 
 		if (this->AddMonster(lpLevel, index) == 0)
 		{

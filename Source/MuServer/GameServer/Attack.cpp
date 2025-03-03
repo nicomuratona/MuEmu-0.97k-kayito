@@ -247,14 +247,7 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 		{
 			if (skill != SKILL_IMPALE || lpObj->Inventory[8].m_Index == GET_ITEM(13, 2) || lpObj->Inventory[8].m_Index == GET_ITEM(13, 3))
 			{
-				if (lpObj->Class == CLASS_DK)
-				{
-					damage = (damage * lpObj->DKDamageMultiplierRate) / 100;
-				}
-				else
-				{
-					damage = (damage * 200) / 100;
-				}
+				damage = (damage * lpObj->DamageMultiplierRate) / 100;
 			}
 		}
 	}
@@ -1179,7 +1172,7 @@ void CAttack::GetPreviewDefense(LPOBJ lpObj, DWORD* defense)
 	(*defense) -= ((*defense) * lpObj->EffectOption.DivDefense) / 100;
 }
 
-void CAttack::GetPreviewPhysiDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* MulDamage, DWORD* DivDamage)
+void CAttack::GetPreviewPhysiDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax)
 {
 	CItem* Right = &lpObj->Inventory[0];
 
@@ -1234,7 +1227,7 @@ void CAttack::GetPreviewPhysiDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* Damage
 	(*DamageMax) += lpObj->EffectOption.AddPhysiDamage;
 }
 
-void CAttack::GetPreviewMagicDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* MulDamage, DWORD* DivDamage, DWORD* DamageRate)
+void CAttack::GetPreviewMagicDamage(LPOBJ lpObj, DWORD* DamageMin, DWORD* DamageMax, DWORD* DamageRate)
 {
 	CItem* Right = &lpObj->Inventory[0];
 

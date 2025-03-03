@@ -5,6 +5,7 @@
 #include "Monster.h"
 #include "MonsterSetBase.h"
 #include "Notice.h"
+#include "resource.h"
 #include "ScheduleManager.h"
 #include "ServerInfo.h"
 #include "Util.h"
@@ -50,17 +51,7 @@ void CInvasionManager::Init()
 		}
 	}
 
-	for (int n = OBJECT_START_USER; n < MAX_OBJECT; n++)
-	{
-		if (gObjIsConnectedGP(n) == 0)
-		{
-			continue;
-		}
-
-		GCEventStateSend(n, 0, 1);
-
-		GCEventStateSend(n, 0, 3);
-	}
+	gFlyingDragons.Init();
 }
 
 void CInvasionManager::Load(char* path)
@@ -95,9 +86,9 @@ void CInvasionManager::Load(char* path)
 
 		this->m_InvasionInfo[n].InvasionTime = 0;
 
-		this->m_InvasionInfo[n].AlarmTime = 0;
+		this->m_InvasionInfo[n].WarningTime = 0;
 
-		this->m_InvasionInfo[n].AlarmMsg = -1;
+		this->m_InvasionInfo[n].WarningMsg = -1;
 
 		this->m_InvasionInfo[n].StartTime.clear();
 
@@ -204,13 +195,15 @@ void CInvasionManager::Load(char* path)
 
 					this->m_InvasionInfo[index].InvasionTime = lpReadScript->GetAsNumber();
 
-					this->m_InvasionInfo[index].AlarmTime = lpReadScript->GetAsNumber();
+					this->m_InvasionInfo[index].WarningTime = lpReadScript->GetAsNumber();
 
-					this->m_InvasionInfo[index].AlarmMsg = lpReadScript->GetAsNumber();
+					this->m_InvasionInfo[index].WarningMsg = lpReadScript->GetAsNumber();
 
 					this->m_InvasionInfo[index].InvasionEffect = lpReadScript->GetAsNumber();
 
 					strcpy_s(this->m_InvasionInfo[index].InvasionName, lpReadScript->GetAsString());
+
+					CreateSubMenuItem(ID_STARTINVASION, index, this->m_InvasionInfo[index].InvasionName);
 				}
 				else if (section == 2)
 				{
@@ -303,7 +296,7 @@ void CInvasionManager::ProcState_BLANK(INVASION_INFO* lpInfo)
 
 void CInvasionManager::ProcState_EMPTY(INVASION_INFO* lpInfo)
 {
-	if (lpInfo->RemainTime > 0 && lpInfo->RemainTime <= (lpInfo->AlarmTime * 60))
+	if (lpInfo->RemainTime > 0 && lpInfo->RemainTime <= (lpInfo->WarningTime * 60))
 	{
 		int minutes = lpInfo->RemainTime / 60;
 
@@ -312,11 +305,11 @@ void CInvasionManager::ProcState_EMPTY(INVASION_INFO* lpInfo)
 			minutes--;
 		}
 
-		if (lpInfo->AlarmMinLeft != minutes)
+		if (lpInfo->MinutesLeft != minutes)
 		{
-			lpInfo->AlarmMinLeft = minutes;
+			lpInfo->MinutesLeft = minutes;
 
-			gNotice.GCNoticeSendToAll(0, lpInfo->AlarmMsg, lpInfo->InvasionName, (lpInfo->AlarmMinLeft + 1));
+			gNotice.GCNoticeSendToAll(0, lpInfo->WarningMsg, lpInfo->InvasionName, (lpInfo->MinutesLeft + 1));
 		}
 	}
 
@@ -403,7 +396,7 @@ void CInvasionManager::SetState_START(INVASION_INFO* lpInfo)
 		}
 	}
 
-	lpInfo->RemainTime = lpInfo->InvasionTime;
+	lpInfo->RemainTime = lpInfo->InvasionTime * 60;
 
 	lpInfo->TargetTime = (int)(time(0) + lpInfo->RemainTime);
 }
@@ -633,7 +626,7 @@ void CInvasionManager::SetMonster(INVASION_INFO* lpInfo, INVASION_RESPWAN_INFO* 
 			continue;
 		}
 
-		lpObj->MaxRegenTime = ((lpMonsterInfo->RegenType == 0) ? (lpInfo->InvasionTime * 1000) : lpMonsterInfo->RegenTime);
+		lpObj->MaxRegenTime = ((lpMonsterInfo->RegenType == 0) ? ((lpInfo->InvasionTime * 60) * 1000) : lpMonsterInfo->RegenTime * 1000);
 
 		if (this->AddMonster(lpInfo, index) == 0)
 		{
@@ -651,12 +644,12 @@ void CInvasionManager::SetMonster(INVASION_INFO* lpInfo, INVASION_RESPWAN_INFO* 
 		{
 			if (lpObj->Class == lpInfo->BossIndex)
 			{
-				gFlyingDragons.FlyingDragonsAdd(lpObj->Map, lpInfo->InvasionTime, lpInfo->InvasionEffect);
+				gFlyingDragons.FlyingDragonsAdd(lpObj->Map, lpInfo->InvasionTime * 60, lpInfo->InvasionEffect);
 			}
 		}
 		else
 		{
-			gFlyingDragons.FlyingDragonsAdd(lpObj->Map, lpInfo->InvasionTime, lpInfo->InvasionEffect);
+			gFlyingDragons.FlyingDragonsAdd(lpObj->Map, lpInfo->InvasionTime * 60, lpInfo->InvasionEffect);
 		}
 	}
 }
@@ -697,4 +690,46 @@ void CInvasionManager::MonsterDieProc(LPOBJ lpObj, LPOBJ lpTarget)
 			}
 		}
 	}
+}
+
+void CInvasionManager::StartInvasion(int InvasionIndex)
+{
+	time_t theTime = time(NULL);
+
+	tm aTime;
+
+	localtime_s(&aTime, &theTime);
+
+	int hour = aTime.tm_hour;
+
+	int minute = aTime.tm_min + 2;
+
+	if (minute >= 60)
+	{
+		hour++;
+
+		minute = minute - 60;
+	}
+
+	INVASION_START_TIME info;
+
+	info.Year = -1;
+
+	info.Month = -1;
+
+	info.Day = -1;
+
+	info.DayOfWeek = -1;
+
+	info.Hour = hour;
+
+	info.Minute = minute;
+
+	info.Second = 0;
+
+	this->m_InvasionInfo[InvasionIndex].StartTime.push_back(info);
+
+	LogAdd(LOG_EVENT, "[Set Invasion Start][%s] At %2d:%2d:00", this->m_InvasionInfo[InvasionIndex].InvasionName, hour, minute);
+
+	this->Init();
 }

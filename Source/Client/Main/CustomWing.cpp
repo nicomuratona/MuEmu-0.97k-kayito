@@ -18,7 +18,7 @@ CCustomWing::~CCustomWing()
 
 }
 
-void CCustomWing::Load(CUSTOM_WING_INFO* info)
+void CCustomWing::Init(CUSTOM_WING_INFO* info)
 {
 	for (int n = 0; n < MAX_CUSTOM_WING; n++)
 	{

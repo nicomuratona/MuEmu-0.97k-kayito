@@ -1,0 +1,13 @@
+//======================================
+// NORMAL DROP
+//======================================
+
+0
+//EventName		DropZen	ItemDropRate	ItemDropCount	ItemDropType	Fireworks	
+"EventName"		1000	100		1		1		1
+end
+
+1
+//Item	MinLvl	MaxLvl	Skill	Luck	Opt	Exce	Comment
+14,014	0	0	0	0	0	0	// Jewel of Soul
+end

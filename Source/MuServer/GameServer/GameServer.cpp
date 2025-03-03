@@ -4,6 +4,9 @@
 #include "GameMain.h"
 #include "BloodCastle.h"
 #include "DevilSquare.h"
+#include "BonusManager.h"
+#include "InvasionManager.h"
+#include "GoldenArcherBingo.h"
 #include "JSProtocol.h"
 #include "MapManager.h"
 #include "Message.h"
@@ -357,6 +360,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					break;
 				}
 
+				case ID_STARTGOLDENARCHERBINGO:
+				{
+					gGoldenArcherBingo.StartGoldenArcherBingo();
+
+					break;
+				}
+
 				case ID_ONLINEUSERS:
 				{
 					DialogBox(hInst, (LPCTSTR)IDD_DIALOG_ONLINEUSER, hWnd, (DLGPROC)UserOnline);
@@ -416,6 +426,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 				default:
 				{
+					if (LOWORD(wParam) >= ID_STARTINVASION && LOWORD(wParam) < ID_STARTBONUS)
+					{
+						gInvasionManager.StartInvasion(LOWORD(wParam) - ID_STARTINVASION);
+
+						break;
+					}
+
+					if (LOWORD(wParam) >= ID_STARTBONUS && LOWORD(wParam) < ID_ONLINEUSERS)
+					{
+						gBonusManager.StartBonus(LOWORD(wParam) - ID_STARTBONUS);
+
+						break;
+					}
+
 					return DefWindowProc(hWnd, message, wParam, lParam);
 				}
 			}

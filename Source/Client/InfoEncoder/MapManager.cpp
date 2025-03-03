@@ -64,8 +64,6 @@ void CMapManager::Load(char* path)
 
 			info.MiniMap = lpReadScript->GetAsNumber();
 
-			info.SkyDome = (lpReadScript->GetAsNumber() != 0);
-
 			strcpy_s(info.MapName, lpReadScript->GetAsString());
 
 			strcpy_s(info.SongName, lpReadScript->GetAsString());

@@ -18,7 +18,7 @@ CCustomBow::~CCustomBow()
 
 }
 
-void CCustomBow::Load(CUSTOM_BOW_INFO* info)
+void CCustomBow::Init(CUSTOM_BOW_INFO* info)
 {
 	for (int n = 0; n < MAX_CUSTOM_BOW; n++)
 	{
@@ -1516,7 +1516,17 @@ void CCustomBow::CreateArrow(DWORD c, DWORD o, DWORD to, BYTE SkillIndex, BYTE S
 
 	int Right = *(short*)(c + 624);
 
+	if (Right != -1)
+	{
+		Right -= ITEM_BASE_MODEL;
+	}
+
 	int Left = *(short*)(c + 648);
+
+	if (Left != -1)
+	{
+		Left -= ITEM_BASE_MODEL;
+	}
 
 	if (c == Hero)
 	{

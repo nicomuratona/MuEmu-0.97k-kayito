@@ -1,6 +1,10 @@
+// WarningTime = Time to close the entrance (in Minutes)
+// NotifyTime = Time of wait to start the event (in Minutes)
+// EventTime = Duration of the event playing (in Minutes)
+// CloseTime = Time of wait before move players to Noria after event end (in Minutes)
 0
 //WarningTime	NotifyTime	EventTime	CloseTime
-5		1		5		4
+5		1		5		3
 end
 
 // DOW: 1=Sunday / 2=Monday / 3=Tuesday / 4=Wednesday / 5=Thursday / 6=Friday / 7=Saturday

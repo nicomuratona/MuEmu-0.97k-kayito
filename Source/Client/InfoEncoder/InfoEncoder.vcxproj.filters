@@ -69,6 +69,9 @@
     <ClInclude Include="ItemPosition.h">
       <Filter>Item</Filter>
     </ClInclude>
+    <ClInclude Include="MapFog.h">
+      <Filter>Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCRC32.cpp">
@@ -106,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="ItemPosition.cpp">
       <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="MapFog.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

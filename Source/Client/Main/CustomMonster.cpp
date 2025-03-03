@@ -19,7 +19,7 @@ CCustomMonster::~CCustomMonster()
 
 }
 
-void CCustomMonster::Load(CUSTOM_MONSTER_INFO* info)
+void CCustomMonster::Init(CUSTOM_MONSTER_INFO* info)
 {
 	for (int n = 0; n < MAX_MONSTER; n++)
 	{

@@ -8,7 +8,7 @@ public:
 
 	virtual ~CWindow();
 
-	void WindowModeLoad(HINSTANCE hins);
+	void Init(HINSTANCE hins);
 
 	void ToggleTrayMode();
 

@@ -134,6 +134,8 @@
     <ClInclude Include="GameMaster.h" />
     <ClInclude Include="GameServer.h" />
     <ClInclude Include="Gate.h" />
+    <ClInclude Include="GoldenArcher.h" />
+    <ClInclude Include="GoldenArcherBingo.h" />
     <ClInclude Include="Guild.h" />
     <ClInclude Include="GuildManager.h" />
     <ClInclude Include="HackCheck.h" />
@@ -234,6 +236,8 @@
     <ClCompile Include="GameMaster.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="Gate.cpp" />
+    <ClCompile Include="GoldenArcher.cpp" />
+    <ClCompile Include="GoldenArcherBingo.cpp" />
     <ClCompile Include="Guild.cpp" />
     <ClCompile Include="GuildManager.cpp" />
     <ClCompile Include="HackCheck.cpp" />

@@ -105,6 +105,9 @@ void CPatchs::Init()
 	MemorySet(0x00467222, 0x90, 5);
 	SetByte(0x00467254, 1);
 
+	// Fix Atlans and Icarus Goldens Overflow
+	MemorySet(0x00501292, 0x90, 0x0A);
+
 	SetCompleteHook(0xE9, 0x00443AAF, 0x00443D76); // Fix Dinorant Movement
 
 	SetCompleteHook(0xE8, 0x0042B33D, &this->IgnoreRandomStuck);
@@ -134,6 +137,8 @@ void CPatchs::Init()
 
 	SetCompleteHook(0xE9, 0x005123C0, &this->MyBeginBitmap);
 
+	SetCompleteHook(0xE8, 0x004BFE63, &MyGluPerspective2); // Fix Items when changing zoom
+
 	SetCompleteHook(0xE8, 0x004BC0B3, &this->RenderNumArrow);
 
 	SetCompleteHook(0xE8, 0x004BC0C1, &this->RenderEquipedHelperLife);
@@ -141,6 +146,8 @@ void CPatchs::Init()
 	SetCompleteHook(0xE8, 0x004BC0C7, &this->RenderBrokenItem);
 
 	SetCompleteHook(0xE9, 0x00406B30, &this->CheckSpecialText);
+
+	SetCompleteHook(0xE9, 0x00522597, &this->SetCharacterDeleteMaxLevel);
 
 	SetDword(0x00484D15 + 1, 0x0A); // Skip Delay Skills
 	SetDword(0x00487D81 + 1, 0x0A); // Skip Delay Skills
@@ -166,6 +173,10 @@ void CPatchs::Init()
 	SetCompleteHook(0xE9, 0x004A886B, &this->SendContinueTwisterAndEvilSpirit);
 	SetCompleteHook(0xE9, 0x004A9425, &this->SendContinueAquaBeam);
 	SetCompleteHook(0xE9, 0x004AA038, &this->SendContinueFlame);
+
+	SetCompleteHook(0xE9, 0x0046B7C0, &this->RenderWheelWeapon);
+
+	SetCompleteHook(0xE9, 0x0048AF8E, &this->SendElfBuff);
 
 	SetCompleteHook(0xE9, 0x00448930, &this->AttackStage);
 
@@ -767,13 +778,19 @@ void CPatchs::MySaveScreen()
 
 	GetLocalTime(&st);
 
-	char GFName[MAX_PATH] = { 0 };
+	sprintf_s(GrabFileName, MAX_PATH, "%s\\[%04d-%02d-%02d]%02d-%02d-%02d.jpg", gProtect.m_MainInfo.ScreenShotPath, st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
 
-	sprintf_s(GFName, "%s\\[%02d-%02d]-%02d_%02d_%02d.jpg", gProtect.m_MainInfo.ScreenShotPath, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
+	unsigned char* Buffer = new unsigned char[WindowWidth * WindowHeight * 3];
 
-	memcpy(GrabFileName, GFName, MAX_PATH);
+	glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
-	SaveScreen();
+	glReadBuffer(GL_BACK);
+
+	glReadPixels(0, 0, WindowWidth, WindowHeight, GL_RGB, GL_UNSIGNED_BYTE, Buffer);
+
+	WriteJpeg(GrabFileName, WindowWidth, WindowHeight, Buffer, 100);
+
+	delete[] Buffer;
 }
 
 void CPatchs::MyBeginBitmap()
@@ -817,7 +834,7 @@ bool CPatchs::RenderNumArrow()
 
 		char text[128] = { '\0' };
 
-		sprintf_s(text, GetTextLine(351), PlayerRightHand->Durability, MaxQuant);
+		sprintf_s(text, GlobalText[351], PlayerRightHand->Durability, MaxQuant);
 
 		SelectObject(m_hFontDC, g_hFont);
 
@@ -857,7 +874,7 @@ bool CPatchs::RenderNumArrow()
 
 		char text[128] = { '\0' };
 
-		sprintf_s(text, GetTextLine(352), PlayerLeftHand->Durability, MaxQuant);
+		sprintf_s(text, GlobalText[352], PlayerLeftHand->Durability, MaxQuant);
 
 		SelectObject(m_hFontDC, g_hFont);
 
@@ -962,7 +979,7 @@ int CPatchs::RenderEquipedHelperLife(bool RenderedArrow)
 	{
 		char text[128] = { '\0' };
 
-		sprintf_s(text, "%s", GetTextLine(356));
+		sprintf_s(text, "%s", GlobalText[356]);
 
 		SelectObject(m_hFontDC, g_hFont);
 
@@ -1057,7 +1074,7 @@ void CPatchs::RenderBrokenItem(int PosY)
 
 			SetBackgroundTextColor = Color4b(255, 10, 10, 128);
 
-			PlayerItem->Number = 8;
+			PlayerItem->Color = 8;
 		}
 		else if (PlayerItem->Durability <= (MaxDur * 0.2f))
 		{
@@ -1065,7 +1082,7 @@ void CPatchs::RenderBrokenItem(int PosY)
 
 			SetBackgroundTextColor = Color4b(0, 0, 0, 128);
 
-			PlayerItem->Number = 7;
+			PlayerItem->Color = 7;
 		}
 		else if (PlayerItem->Durability <= (MaxDur * 0.3f))
 		{
@@ -1073,7 +1090,7 @@ void CPatchs::RenderBrokenItem(int PosY)
 
 			SetBackgroundTextColor = Color4b(0, 0, 0, 128);
 
-			PlayerItem->Number = 6;
+			PlayerItem->Color = 6;
 		}
 		else if (PlayerItem->Durability <= (MaxDur * 0.5f))
 		{
@@ -1081,7 +1098,7 @@ void CPatchs::RenderBrokenItem(int PosY)
 
 			SetBackgroundTextColor = Color4b(0, 0, 0, 128);
 
-			PlayerItem->Number = 5;
+			PlayerItem->Color = 5;
 		}
 
 		sprintf_s(text, "%s (%d/%d)", ItemInfo->Name, PlayerItem->Durability, MaxDur);
@@ -1164,6 +1181,40 @@ bool CPatchs::CheckSpecialText(char* Text)
 	}
 
 	return false;
+}
+
+_declspec(naked) void CPatchs::SetCharacterDeleteMaxLevel()
+{
+	static DWORD jmpOnOk = 0x005225C6;
+	static DWORD jmpOnNot = 0x005225A5;
+	static WORD PlayerLevel;
+
+	_asm
+	{
+		Mov Ax, Word Ptr Ds : [Edx + Ecx * 4 + 0x1BE] ;
+		Mov PlayerLevel, Ax;
+		Lea Eax, Dword Ptr Ds : [Edx + Ecx * 4] ;
+		Pushad;
+	}
+
+	if (PlayerLevel >= gPrintPlayer.MaxCharacterDeleteLevel)
+	{
+		goto EXIT;
+	}
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnOk];
+	}
+
+EXIT:
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpOnNot];
+	}
 }
 
 _declspec(naked) void CPatchs::SendContinueDeathStab() // Death Stab
@@ -1793,6 +1844,118 @@ _declspec(naked) void CPatchs::SendContinueFlame() // Flame
 	}
 }
 
+void CPatchs::RenderWheelWeapon(DWORD o)
+{
+	vec3_t TempPosition, TempAngle;
+
+	VectorCopy((float*)(o + 16), TempPosition); // VectorCopy(o->Position, TempPosition);
+
+	VectorCopy((float*)(o + 28), TempAngle); // VectorCopy(o->Angle, TempAngle);
+
+	*(float*)(o + 200) = *(float*)(o + 200) - 30.0f; // o->Direction[2] -= 30;
+
+	*(float*)(o + 36) = *(float*)(o + 36) + *(float*)(o + 200); // o->Angle[2] += o->Direction[2];
+
+	*(float*)(o + 32) = 90.0f; // o->Angle[1] = 90;
+
+	*(float*)(o + 24) = *(float*)(o + 24) + 100.0f; // o->Position[2] += 100.0f;
+
+	float Alpha = *(float*)(o + 360); // float Alpha = o->Alpha;
+
+	DWORD Owner = *(DWORD*)(o + 252); // o->Owner
+
+	//int Type = *(BYTE*)(Owner + 136) + MODEL_SWORD; // int Type = o->Owner->Weapon + MODEL_SWORD;
+
+	int Type = *(WORD*)(Owner + 624); // int Type = o->Owner->Weapon + MODEL_SWORD;
+
+	DWORD b = gLoadModels.GetModels() + (0xBC * Type); // BMD* b = &Models[o->Type];
+
+	*(BYTE*)(b + 152) = *(BYTE*)(Hero + 0x1BC) & 7; // b->Skin = GetBaseClass(Hero->Class);
+
+	*(BYTE*)(b + 160) = *(BYTE*)(o + 261); // b->CurrentAction = o->CurrentAction;
+
+	VectorCopy((float*)(o + 16), (float*)(b + 108)); // VectorCopy(o->Position, b->BodyOrigin);
+
+	float TempType = *(short*)(o + 2); // float TempType = o->Type;
+
+	*(short*)(o + 2) = Type; // o->Type = Type;
+
+	ItemObjectAttribute(o);
+
+	BMD_Animation(b, BoneTransform, *(float*)(o + 264), *(float*)(o + 268), *(BYTE*)(o + 262), (float*)(o + 28), (float*)(o + 40), false, false); // b->Animation(BoneTransform, o->AnimationFrame, o->PriorAnimationFrame, o->PriorAction, o->Angle, o->HeadAngle, false, false);
+
+	vec3_t Light;
+
+	RequestTerrainLight(*(float*)(o + 16), *(float*)(o + 20), Light); // RequestTerrainLight(o->Position[0], o->Position[1], Light);
+
+	VectorAdd(Light, (float*)(o + 232), Light); // VectorAdd(Light, o->Light, Light);
+
+	RenderPartObject(o, Type, NULL, Light, Alpha, *(BYTE*)(Owner + 137) << 3, 0, true, true, true, 0, 2); // RenderPartObject(o, Type, NULL, Light, Alpha, o->Owner->WeaponLevel << 3, 0, 0, true, true, true);
+
+	*(short*)(o + 2) = (short)TempType; // o->Type = (short)TempType;
+
+	VectorCopy(TempPosition, (float*)(o + 16)); // VectorCopy(TempPosition, o->Position);
+
+	VectorCopy(TempAngle, (float*)(o + 28)); // VectorCopy(TempAngle, o->Angle);
+}
+
+_declspec(naked) void CPatchs::SendElfBuff()
+{
+	static DWORD jmpBack = 0x0048B656;
+	static DWORD jmpReturn = 0x0048B666;
+	static DWORD c;
+	static int index;
+	static int iSkill;
+
+	_asm
+	{
+		Pushad;
+	}
+
+	if (PartyNumber <= 0)
+	{
+		goto EXIT;
+	}
+
+	if (!IsPartyMember(SelectedCharacter))
+	{
+		goto EXIT;
+	}
+
+	if ((GetTickCount() - g_dwLatestMagicTick) <= 266)
+	{
+		goto SKIP;
+	}
+
+	g_dwLatestMagicTick = GetTickCount();
+
+	STRUCT_DECRYPT;
+
+	iSkill = *(BYTE*)(CharacterAttribute + 0x57 + *(DWORD*)0x07D7809C);
+
+	STRUCT_ENCRYPT;
+
+	index = *(short*)(CharactersClient + (MovementSkillTarget * 916) + 0x1DC);
+
+	gPatchs.SendRequestMagic(iSkill, index);
+
+SKIP:
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpBack];
+	}
+
+EXIT:
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpReturn];
+	}
+}
+
 void CPatchs::SendRequestMagicContinue(int skill, int x, int y, int dir, int dis, int angle, int target)
 {
 	PMSG_DURATION_SKILL_ATTACK_SEND pMsg;
@@ -2184,12 +2347,13 @@ _declspec(naked) void CPatchs::FixMoveWhileAttacking()
 		Pushad;
 	}
 
-	if (PathFinding2(PosX, PosY, TargetX, TargetY, (c + 0x354), 0.0f)
-	    // if (o->PriorAction >= PLAYER_ATTACK_FIST && o->PriorAction <= PLAYER_ATTACK_ONETOONE)
-	    && !(*(BYTE*)(c + 262) >= 34 && *(BYTE*)(c + 262) <= 67)
-	    // if (o->PriorAction >= PLAYER_ATTACK_TWO_HAND_SWORD_TWO && o->PriorAction <= PLAYER_RIDE_SKILL)
-	    && !(*(BYTE*)(c + 262) >= 81 && *(BYTE*)(c + 262) <= 91)
-	    )
+	if ((*(BYTE*)(c + 0x105) >= 34 && *(BYTE*)(c + 0x105) <= 67) // (o->CurrentAction >= PLAYER_ATTACK_FIST && o->CurrentAction <= PLAYER_ATTACK_ONETOONE)
+	    || (*(BYTE*)(c + 0x105) >= 81 && *(BYTE*)(c + 0x105) <= 92)) // (o->CurrentAction >= PLAYER_ATTACK_TWO_HAND_SWORD_TWO && o->CurrentAction <= PLAYER_DEFENSE1)
+	{
+		goto EXIT;
+	}
+
+	if (!PathFinding2(PosX, PosY, TargetX, TargetY, (c + 0x354), 0.0f))
 	{
 		goto EXIT;
 	}
@@ -2197,7 +2361,7 @@ _declspec(naked) void CPatchs::FixMoveWhileAttacking()
 	_asm
 	{
 		Popad;
-		Jmp[jmpOnNot];
+		Jmp[jmpOnOk];
 	}
 
 EXIT:
@@ -2205,7 +2369,7 @@ EXIT:
 	_asm
 	{
 		Popad;
-		Jmp[jmpOnOk];
+		Jmp[jmpOnNot];
 	}
 }
 

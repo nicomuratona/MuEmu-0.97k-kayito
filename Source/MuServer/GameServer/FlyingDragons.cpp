@@ -52,9 +52,6 @@ void CFlyingDragons::FlyingDragonsDelete() //Dragones verificar si alguno no se 
 		GCEventStateSendToAll(n, 0, this->m_FlyingDragonsInfo[n].EventIndex);
 
 		this->m_FlyingDragonsInfo[n].EventIndex = -1;
-
-		//GCEventStateSendToAll(n, 0, 1);
-		//GCEventStateSendToAll(n, 0, 3);
 	}
 }
 
@@ -103,9 +100,6 @@ void CFlyingDragons::FlyingDragonsBossDieProc(int map) //Quitar dragones al mata
 		GCEventStateSendToAll(n, 0, this->m_FlyingDragonsInfo[n].EventIndex);
 
 		this->m_FlyingDragonsInfo[n].EventIndex = -1;
-
-		//GCEventStateSendToAll(n, 0, 1);
-		//GCEventStateSendToAll(n, 0, 3);
 	}
 }
 
