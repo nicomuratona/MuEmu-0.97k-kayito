@@ -185,6 +185,13 @@ bool CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 			break;
 		}
 
+		case 0x3C:
+		{
+			this->GCTradeOkButtonRecv((PMSG_TRADE_OK_BUTTON_RECV*)lpMsg);
+
+			return true;
+		}
+
 		case 0x87:
 		{
 			gChaosMix.Clear();
@@ -639,6 +646,44 @@ void CProtocol::GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg)
 
 		gPrintPlayer.ViewEnergy = lpMsg->ViewEnergy;
 	}
+}
+
+void CProtocol::GCTradeOkButtonRecv(PMSG_TRADE_OK_BUTTON_RECV* lpMsg)
+{
+	switch (lpMsg->flag)
+	{
+		case 0: // The transaction decision button was pressed.
+		{
+			m_bYourConfirm = false;
+
+			break;
+		}
+
+		case 1: // Cancel transaction decision.
+		{
+			m_bYourConfirm = true;
+
+			break;
+		}
+
+		case 2: // Temporarily unavailable to exchange (warning that the opponent has moved in the trading window)
+		{
+			m_bMyConfirm = false;
+
+			m_bYourConfirm = false;
+
+			m_nMyTradeWait = 150;
+
+			break;
+		}
+
+		case 3: // The non-exchange status is released for a while.
+		{
+			break;
+		}
+	}
+
+	PlayBuffer(25, NULL, FALSE);
 }
 
 void CProtocol::GCDevilSquareRequiredLevelsRecv(PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV* lpMsg)

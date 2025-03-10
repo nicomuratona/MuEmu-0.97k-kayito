@@ -360,7 +360,7 @@ void CCamera3D::MyRenderNumber(vec3_t Position, int Num, vec3_t Color, float Alp
 	float yawRad = DegToRad(CameraAngle[2]);
 	float cosYaw = cos(yawRad);
 	float sinYaw = sin(yawRad);
-	float spacing = Scale * (float)sqrt(2) * 0.5f;
+	float spacing = Scale * (float)sqrt(2.0f) * 0.5f;
 
 	for (unsigned int i = 0; i < Length; i++)
 	{

@@ -93,6 +93,12 @@ struct PMSG_FRUIT_RESULT_RECV
 	DWORD ViewEnergy;
 };
 
+struct PMSG_TRADE_OK_BUTTON_RECV
+{
+	PBMSG_HEAD header; // C1:3C
+	BYTE flag;
+};
+
 struct PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV
 {
 	PBMSG_HEAD header; // C1:8E
@@ -426,6 +432,8 @@ private:
 	void GCManaRecv(PMSG_MANA_RECV* lpMsg);
 
 	void GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg);
+
+	void GCTradeOkButtonRecv(PMSG_TRADE_OK_BUTTON_RECV* lpMsg);
 
 	void GCDevilSquareRequiredLevelsRecv(PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV* lpMsg);
 

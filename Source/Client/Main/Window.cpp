@@ -573,7 +573,5 @@ void CWindow::ChangeWindowState(bool windowMode, bool borderless, int resolution
 
 	MoveWindow(g_hWnd, PosX, PosY, rc.right - rc.left, rc.bottom - rc.top, TRUE); // Change the size
 
-	//gCamera.SetCurrentValue(); // Fix the 3d camera position
-
 	gFont.ReloadFont();
 }

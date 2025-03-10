@@ -80,6 +80,10 @@
 #define RenderInventoryInterface ((void(_cdecl*)(int StartX, int StartY, int Flag)) 0x004ECBA0)
 #define CreateDialogInterface ((void(_cdecl*)(int InitialTextNumber, BYTE TextQuantity)) 0x0051D780)
 #define CreateOkMessageBox ((void(_cdecl*)(char* strMsg)) 0x0051D6F0)
+#define m_bYourConfirm *(bool*)0x07EAA0FC
+#define m_nYourTradeWait *(int*)0x07EAA100
+#define m_bMyConfirm *(bool*)0x07EAA0FD
+#define m_nMyTradeWait *(int*)0x07EAA104
 
 // Drawing
 #define RenderBitmap ((void(_cdecl*)(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)) 0x005125A0)

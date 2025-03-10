@@ -548,7 +548,6 @@ struct OBJECTSTRUCT
 	int AutoResetStats[5];
 	int CommandManagerTransaction;
 	DWORD CommandLastTick[100];
-	DWORD TradeOkTime;
 	DWORD PotionTime;
 	DWORD HPAutoRecuperationTime;
 	DWORD MPAutoRecuperationTime;

@@ -47,8 +47,6 @@ void CPatchs::Init()
 
 	SetWord(0x005615BC, (gProtect.m_MainInfo.IpAddressPort)); // IpAddressPort
 
-	SetDword(0x005267B2, (DWORD)gProtect.m_MainInfo.ScreenShotPath); //Screenshot
-
 	MemoryCpy(0x00558ED8, gProtect.m_MainInfo.IpAddress, sizeof(gProtect.m_MainInfo.IpAddress)); // IpAddress
 
 	MemoryCpy(0x00559624, gProtect.m_MainInfo.ClientSerial, sizeof(gProtect.m_MainInfo.ClientSerial)); // ClientSerial
@@ -66,7 +64,8 @@ void CPatchs::Init()
 
 	SetWord(0x00444B76, 0x19EB); //-> Uniria & Dinorant Reflect
 
-	SetCompleteHook(0xE9, 0x00526A5A, &this->ReduceCPU);
+	SetCompleteHook(0xE8, 0x00526A5A, &this->ReduceCPU);
+	SetByte(0x00526A5A + 5, 0x90);
 
 	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)this->ReduceRam, 0, 0, 0);
 
@@ -187,39 +186,26 @@ void CPatchs::Init()
 	SetCompleteHook(0xE9, 0x00501C26, &this->FixPigeons);
 }
 
-__declspec(naked) void CPatchs::ReduceCPU()
+DWORD CPatchs::ReduceCPU()
 {
-	static DWORD JmpBack = 0x00526A60;
+	Sleep(1);
 
-	__asm
-	{
-		Push 1;
-
-		Call Dword Ptr Ds : [0x00552128] ; // Sleep
-
-		Call Dword Ptr Ds : [0x00552198] ; // GetTickCount
-
-		Jmp[JmpBack];
-	}
+	return GetTickCount();
 }
 
 void CPatchs::ReduceRam(LPVOID lpThreadParameter)
 {
-	HANDLE v1;
-
-	HANDLE v2;
+	HANDLE CurrentProcess;
 
 	while (TRUE)
 	{
 		Sleep(5000);
 
-		v1 = GetCurrentProcess();
+		CurrentProcess = GetCurrentProcess();
 
-		SetProcessWorkingSetSize(v1, 0xFFFFFFFF, 0xFFFFFFFF);
+		SetProcessWorkingSetSize(CurrentProcess, 0xFFFFFFFF, 0xFFFFFFFF);
 
-		v2 = GetCurrentProcess();
-
-		SetThreadPriority(v2, -2);
+		SetThreadPriority(CurrentProcess, -2);
 	}
 }
 

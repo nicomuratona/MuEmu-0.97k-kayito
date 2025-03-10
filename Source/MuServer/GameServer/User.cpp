@@ -511,8 +511,6 @@ void gObjCharZeroSet(int aIndex)
 
 	lpObj->CommandManagerTransaction = 0;
 
-	lpObj->TradeOkTime = 0;
-
 	lpObj->PotionTime = 0;
 
 	lpObj->HPAutoRecuperationTime = 0;

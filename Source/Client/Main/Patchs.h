@@ -12,7 +12,7 @@ public:
 
 private:
 
-	static void ReduceCPU();
+	static DWORD ReduceCPU();
 
 	static void ReduceRam(LPVOID lpThreadParameter);
 

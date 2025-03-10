@@ -18,6 +18,7 @@
 #include <sqlext.h>
 #include <mbstring.h>
 #include <WS2tcpip.h>
+#include <algorithm>
 #include <vector>
 #include <fstream>
 

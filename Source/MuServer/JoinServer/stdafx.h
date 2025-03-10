@@ -17,6 +17,7 @@
 #include <sql.h>
 #include <sqlext.h>
 #include <assert.h>
+#include <algorithm>
 #include <vector>
 #include <fstream>
 #include <WS2tcpip.h>

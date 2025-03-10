@@ -949,7 +949,7 @@ void CChaosBox::FruitMix(LPOBJ lpObj)
 
 	if ((GetLargeRand() % 100) < lpObj->ChaosSuccessRate)
 	{
-		BYTE ItemLevel = GetLargeRand() % 5;
+		BYTE ItemLevel = GetLargeRand() % 4;
 
 		GDCreateItemSend(lpObj->Index, 0xFF, 0, 0, GET_ITEM(13, 15), ItemLevel, 0, 0, 0, 0, -1, 0);
 

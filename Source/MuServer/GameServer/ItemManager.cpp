@@ -1885,17 +1885,13 @@ BYTE CItemManager::MoveItemToInventoryFromTrade(LPOBJ lpObj, BYTE SourceSlot, BY
 
 	this->TradeDelItem(lpObj->Index, SourceSlot);
 
-	if (OBJECT_RANGE(lpObj->TargetNumber) != false)
+	if (OBJECT_RANGE(lpObj->TargetNumber) != 0)
 	{
 		lpObj->TradeOk = 0;
-
-		lpObj->TradeOkTime = GetTickCount();
 
 		gTrade.GCTradeOkButtonSend(lpObj->Index, 0);
 
 		gObj[lpObj->TargetNumber].TradeOk = 0;
-
-		gObj[lpObj->TargetNumber].TradeOkTime = GetTickCount();
 
 		gTrade.GCTradeOkButtonSend(lpObj->TargetNumber, 2);
 

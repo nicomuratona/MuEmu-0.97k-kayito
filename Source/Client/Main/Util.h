@@ -24,14 +24,6 @@ void ConsoleProtocolLog(int type, BYTE* lpMsg, int size);
 
 char* ConvertModuleFileName(char* name);
 
-/*
-template <typename T>
-constexpr T Clamp(T value, T min, T max)
-{
-	return (value < min) ? min : (value > max) ? max : value;
-}
-*/
-
 SHORT WINAPI GetAsyncKeyStateCall(int key);
 
 bool FileExists(char* name);
