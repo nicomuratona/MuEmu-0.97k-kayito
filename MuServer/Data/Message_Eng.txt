@@ -175,4 +175,12 @@
 105	"Requests: Auto Accept"
 // ONLINE
 106	"%d PLAYERS ONLINE"
+
+//----------------------------------------------------------------------------------------------------
+// Items
+//----------------------------------------------------------------------------------------------------
+107	"This item does not belong to you."
+108	"This is a Quest item and you are not doing that quest."
+109	"You cannot have more of this Quest item."
+110	"Your inventory is full."
 end

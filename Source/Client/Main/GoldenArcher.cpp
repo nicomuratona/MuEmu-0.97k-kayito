@@ -64,6 +64,8 @@ void CGoldenArcher::Init()
 	SetCompleteHook(0xE9, 0x0044A31A, &this->MoveCharacter_GoldenArcherMovement);
 
 	SetCompleteHook(0xE9, 0x0044AA70, &this->MoveCharacter_GoldenArcherChatMessages);
+
+	SetCompleteHook(0xE9, 0x00492AD2, &this->SendMove_GoldenArcherFixClose);
 }
 
 void CGoldenArcher::Render()
@@ -192,13 +194,16 @@ void CGoldenArcher::UpdateMouse()
 		return;
 	}
 
-	if (MouseLButton && MouseLButtonPush)
+	if (MouseOnWindow)
 	{
-		MouseLButtonPush = false;
+		if (MouseLButton && MouseLButtonPush)
+		{
+			MouseLButtonPush = false;
 
-		MouseUpdateTime = 0;
+			MouseUpdateTime = 0;
 
-		MouseUpdateTimeMax = 6;
+			MouseUpdateTimeMax = 6;
+		}
 	}
 }
 
@@ -1188,7 +1193,7 @@ bool CGoldenArcher::CheckCloseButton()
 
 			this->GoldenArcherCloseProc();
 
-			gGoldenArcher.CGGoldenArcherCloseSend();
+			this->CGGoldenArcherCloseSend();
 		}
 
 		return true;
@@ -1466,6 +1471,32 @@ _declspec(naked) void CGoldenArcher::MoveCharacter_GoldenArcherChatMessages()
 			CreateChat((char*)(c + 0x1C1), GlobalText[TextIndex], c, 0, -1);
 		}
 	}
+
+	_asm
+	{
+		Popad;
+		Jmp[jmpBack];
+	}
+}
+
+_declspec(naked) void CGoldenArcher::SendMove_GoldenArcherFixClose()
+{
+	static DWORD jmpBack = 0x00492EF3;
+
+	_asm
+	{
+		Pushad;
+	}
+
+	MouseLButtonPush = false;
+
+	MouseUpdateTime = 0;
+
+	MouseUpdateTimeMax = 6;
+
+	gGoldenArcher.GoldenArcherCloseProc();
+
+	gGoldenArcher.CGGoldenArcherCloseSend();
 
 	_asm
 	{

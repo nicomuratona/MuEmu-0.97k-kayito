@@ -318,3 +318,10 @@ hacia otro archivo separado en
         - MuServer/Data/Event/GoldenArcherBingo.dat
     - Hace falta añadir una tabla y modificar otra. De ser posible, volver a crear la base de datos con los scripts. Sino se hará un script sólo para updatear para aquellos con base de datos en uso.
 - Se corrigió un error que al atacar con Twisting Slash y luego tirar Death Stab, el arma rotando era cambiada por otras
+
+## Fixes post-update
+- Se corrigió el cierre de la ventana al moverse con el Golden Archer abierto.
+- Se añadieron los textos "Este item no te pertenece" al intentar juntar un item de otra persona
+- Se corrigió el error al intentar colocar zen superior al propio dentro del trade
+- Se corrigió el error al clickear en el NPC de Quest cuando no se cumplen los requisitos de nivel
+- Se corrigió un error que al estar utilizando el Twisting, no se podía quitar el arma

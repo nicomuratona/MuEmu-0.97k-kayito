@@ -36,9 +36,6 @@ CMap::CMap()
 	SetRect(&this->m_MapRespawn[6], 89, 135, 90, 136);
 	SetRect(&this->m_MapRespawn[7], 14, 11, 27, 23);
 	SetRect(&this->m_MapRespawn[8], 187, 54, 203, 69);
-	SetRect(&this->m_MapRespawn[33], 82, 8, 87, 14);
-	SetRect(&this->m_MapRespawn[34], 133, 41, 140, 44);
-	SetRect(&this->m_MapRespawn[51], 40, 214, 43, 224);
 }
 
 CMap::~CMap()
@@ -457,24 +454,24 @@ bool CMap::CheckItemGive(int aIndex, int index)
 		return false;
 	}
 
-	int loot = 1;
+	bool loot = true;
 
 	if (OBJECT_RANGE(this->m_Item[index].m_UserIndex) != 0 && this->m_Item[index].m_LootTime > GetTickCount() && this->m_Item[index].m_UserIndex != aIndex)
 	{
-		loot = 0;
+		loot = false;
 
 		if (this->m_Item[index].m_QuestItem == 0 && OBJECT_RANGE(lpObj->PartyNumber) != 0 && lpObj->PartyNumber == gObj[this->m_Item[index].m_UserIndex].PartyNumber)
 		{
-			loot = 1;
+			loot = true;
 		}
 	}
 
-	if (loot == 0)
+	if (!loot)
 	{
-		return false;
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(107, lpObj->Lang));
 	}
 
-	return true;
+	return loot;
 }
 
 void CMap::ItemGive(int aIndex, int index)

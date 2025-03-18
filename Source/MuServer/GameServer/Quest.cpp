@@ -125,7 +125,7 @@ QUEST_INFO* CQuest::GetInfoByIndex(LPOBJ lpObj, int QuestIndex)
 			continue;
 		}
 
-		if (this->CheckQuestRequisite(lpObj, lpInfo) == 0)
+		if (this->CheckQuestListState(lpObj, lpInfo->Index, lpInfo->CurrentState) == 0)
 		{
 			continue;
 		}
@@ -156,36 +156,6 @@ BYTE CQuest::GetQuestList(LPOBJ lpObj, int QuestIndex)
 	}
 
 	return lpObj->Quest[QuestIndex / 4];
-}
-
-bool CQuest::CheckQuestRequisite(LPOBJ lpObj, QUEST_INFO* lpInfo)
-{
-	if (this->CheckQuestListState(lpObj, lpInfo->Index, lpInfo->CurrentState) == 0)
-	{
-		return 0;
-	}
-
-	if (lpInfo->RequireIndex != -1 && this->CheckQuestListState(lpObj, lpInfo->RequireIndex, lpInfo->RequireState) == 0)
-	{
-		return 0;
-	}
-
-	if (lpInfo->RequireMinLevel != -1 && lpInfo->RequireMinLevel > lpObj->Level)
-	{
-		return 0;
-	}
-
-	if (lpInfo->RequireMaxLevel != -1 && lpInfo->RequireMaxLevel < lpObj->Level)
-	{
-		return 0;
-	}
-
-	if (lpInfo->RequireClass[lpObj->Class] == 0 || lpInfo->RequireClass[lpObj->Class] > (lpObj->ChangeUp + 1))
-	{
-		return 0;
-	}
-
-	return 1;
 }
 
 bool CQuest::CheckQuestListState(LPOBJ lpObj, int QuestIndex, int QuestState)
@@ -234,7 +204,7 @@ bool CQuest::NpcTalk(LPOBJ lpNpc, LPOBJ lpObj)
 			continue;
 		}
 
-		if (this->CheckQuestRequisite(lpObj, lpInfo) == 0)
+		if (this->CheckQuestListState(lpObj, lpInfo->Index, lpInfo->CurrentState) == 0)
 		{
 			continue;
 		}
@@ -282,6 +252,7 @@ void CQuest::CGQuestStateRecv(PMSG_QUEST_STATE_RECV* lpMsg, int aIndex)
 	if (gQuestObjective.CheckQuestObjective(lpObj, lpInfo->Index) == 0)
 	{
 		this->GCQuestResultSend(aIndex, lpInfo->Index, 0xFF, this->GetQuestList(lpObj, lpInfo->Index));
+
 		return;
 	}
 

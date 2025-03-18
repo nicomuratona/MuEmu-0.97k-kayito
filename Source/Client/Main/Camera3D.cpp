@@ -14,7 +14,7 @@ CCamera3D::CCamera3D()
 	this->m_CursorY = 0;
 
 	// Zoom Limits
-	this->m_Limits.ZoomMinLimit = 250.0f;
+	this->m_Limits.ZoomMinLimit = 150.0f;
 	this->m_Limits.ZoomMaxLimit = 2000.0f;
 	this->m_Limits.ZoomMinPrecision = 10.0f;
 	this->m_Limits.ZoomMaxPrecision = 100.0f;
@@ -38,12 +38,12 @@ CCamera3D::CCamera3D()
 	this->m_Velocity.Reduction = 0.95f;
 
 	// Default Camera Values
-	this->m_Default.ZoomDistance = 300.0f;
+	this->m_Default.ZoomDistance = 150.0f;
 	this->m_Default.HorizontalRotation = -45.0f;
 	this->m_Default.VerticalRotation = -48.5f;
 
 	// Initial Camera Values
-	this->m_Camera.ZoomDistance = 300.0f;
+	this->m_Camera.ZoomDistance = 150.0f;
 	this->m_Camera.HorizontalRotation = -45.0f;
 	this->m_Camera.VerticalRotation = -48.5f;
 
@@ -137,7 +137,7 @@ bool CCamera3D::MoveMainCamera()
 	vec3_t PositionTransform;
 	VectorRotate(Position, Matrix, PositionTransform);
 
-	vec3_t TargetPosition = { PlayerPosition[0], PlayerPosition[1], PlayerPosition[2] + 50.0f };
+	vec3_t TargetPosition = { PlayerPosition[0], PlayerPosition[1], PlayerPosition[2] + 100.0f };
 
 	VectorAdd(TargetPosition, PositionTransform, CameraPosition);
 

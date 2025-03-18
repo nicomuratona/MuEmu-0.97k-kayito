@@ -74,8 +74,6 @@ private:
 
 	static void SendContinueFlame();
 
-	static void RenderWheelWeapon(DWORD o);
-
 	static void SendElfBuff();
 
 	void SendRequestMagicContinue(int skill, int x, int y, int dir, int dis, int angle, int target);

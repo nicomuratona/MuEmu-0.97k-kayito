@@ -175,4 +175,12 @@
 105	"Solicitudes: Auto Aceptar"
 // ONLINE
 106	"%d JUGADORES ONLINE"
+
+//----------------------------------------------------------------------------------------------------
+// Items
+//----------------------------------------------------------------------------------------------------
+107	"Este item no te pertenece."
+108	"Este es un item de Quest y no estás haciendo esa quest."
+109	"No puedes tener más de este item de Quest."
+110	"Tu inventario está lleno."
 end

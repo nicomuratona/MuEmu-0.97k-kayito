@@ -175,4 +175,12 @@
 105	"Pedidos: Aceitação Automática"
 // ON-LINE
 106	"%d JOGADORES ON-LINE"
+
+//----------------------------------------------------------------------------------------------------
+// Items
+//----------------------------------------------------------------------------------------------------
+107	"Este item não pertence a você."
+108	"Este é um item de Quest e você não está fazendo essa quest."
+109	"Você não pode ter mais deste item de Quest."
+110	"Seu inventário está cheio."
 end

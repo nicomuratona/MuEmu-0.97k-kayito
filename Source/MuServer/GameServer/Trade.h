@@ -124,6 +124,8 @@ public:
 
 	void GCTradeItemAddSend(int aIndex, BYTE slot, BYTE* ItemInfo);
 
+	void GCTradeMoneyResultSend(int aIndex, BYTE result);
+
 	void GCTradeMoneySend(int aIndex, DWORD money);
 
 	void GCTradeOkButtonSend(int aIndex, BYTE flag);

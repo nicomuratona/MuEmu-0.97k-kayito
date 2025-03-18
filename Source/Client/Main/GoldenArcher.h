@@ -174,6 +174,8 @@ private: // Interfaces
 
 	static void MoveCharacter_GoldenArcherChatMessages();
 
+	static void SendMove_GoldenArcherFixClose();
+
 public: // Protocols
 
 	void GCGoldenArcherInfoRecv(PMSG_GOLDEN_ARCHER_INFO_RECV* lpMsg);

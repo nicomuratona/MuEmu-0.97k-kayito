@@ -100,8 +100,6 @@ public:
 
 	BYTE GetQuestList(LPOBJ lpObj, int QuestIndex);
 
-	bool CheckQuestRequisite(LPOBJ lpObj, QUEST_INFO* lpInfo);
-
 	bool CheckQuestListState(LPOBJ lpObj, int QuestIndex, int QuestState);
 
 	long GetQuestRewardLevelUpPoint(LPOBJ lpObj);

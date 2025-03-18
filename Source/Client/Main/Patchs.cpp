@@ -88,6 +88,8 @@ void CPatchs::Init()
 
 	SetByte(0x00515BF7, 0xEB); // Fix Trade Zen Over 50000000
 
+	SetByte(0x0051667C, 0xEB); // Fix Trade Max Amount
+
 	// Remove JPG size limit
 	MemorySet(0x005299E7, 0x90, 11);
 	MemorySet(0x005299F8, 0x90, 12);
@@ -172,8 +174,6 @@ void CPatchs::Init()
 	SetCompleteHook(0xE9, 0x004A886B, &this->SendContinueTwisterAndEvilSpirit);
 	SetCompleteHook(0xE9, 0x004A9425, &this->SendContinueAquaBeam);
 	SetCompleteHook(0xE9, 0x004AA038, &this->SendContinueFlame);
-
-	SetCompleteHook(0xE9, 0x0046B7C0, &this->RenderWheelWeapon);
 
 	SetCompleteHook(0xE9, 0x0048AF8E, &this->SendElfBuff);
 
@@ -1828,61 +1828,6 @@ _declspec(naked) void CPatchs::SendContinueFlame() // Flame
 		Popad;
 		Jmp[jmpBack];
 	}
-}
-
-void CPatchs::RenderWheelWeapon(DWORD o)
-{
-	vec3_t TempPosition, TempAngle;
-
-	VectorCopy((float*)(o + 16), TempPosition); // VectorCopy(o->Position, TempPosition);
-
-	VectorCopy((float*)(o + 28), TempAngle); // VectorCopy(o->Angle, TempAngle);
-
-	*(float*)(o + 200) = *(float*)(o + 200) - 30.0f; // o->Direction[2] -= 30;
-
-	*(float*)(o + 36) = *(float*)(o + 36) + *(float*)(o + 200); // o->Angle[2] += o->Direction[2];
-
-	*(float*)(o + 32) = 90.0f; // o->Angle[1] = 90;
-
-	*(float*)(o + 24) = *(float*)(o + 24) + 100.0f; // o->Position[2] += 100.0f;
-
-	float Alpha = *(float*)(o + 360); // float Alpha = o->Alpha;
-
-	DWORD Owner = *(DWORD*)(o + 252); // o->Owner
-
-	//int Type = *(BYTE*)(Owner + 136) + MODEL_SWORD; // int Type = o->Owner->Weapon + MODEL_SWORD;
-
-	int Type = *(WORD*)(Owner + 624); // int Type = o->Owner->Weapon + MODEL_SWORD;
-
-	DWORD b = gLoadModels.GetModels() + (0xBC * Type); // BMD* b = &Models[o->Type];
-
-	*(BYTE*)(b + 152) = *(BYTE*)(Hero + 0x1BC) & 7; // b->Skin = GetBaseClass(Hero->Class);
-
-	*(BYTE*)(b + 160) = *(BYTE*)(o + 261); // b->CurrentAction = o->CurrentAction;
-
-	VectorCopy((float*)(o + 16), (float*)(b + 108)); // VectorCopy(o->Position, b->BodyOrigin);
-
-	float TempType = *(short*)(o + 2); // float TempType = o->Type;
-
-	*(short*)(o + 2) = Type; // o->Type = Type;
-
-	ItemObjectAttribute(o);
-
-	BMD_Animation(b, BoneTransform, *(float*)(o + 264), *(float*)(o + 268), *(BYTE*)(o + 262), (float*)(o + 28), (float*)(o + 40), false, false); // b->Animation(BoneTransform, o->AnimationFrame, o->PriorAnimationFrame, o->PriorAction, o->Angle, o->HeadAngle, false, false);
-
-	vec3_t Light;
-
-	RequestTerrainLight(*(float*)(o + 16), *(float*)(o + 20), Light); // RequestTerrainLight(o->Position[0], o->Position[1], Light);
-
-	VectorAdd(Light, (float*)(o + 232), Light); // VectorAdd(Light, o->Light, Light);
-
-	RenderPartObject(o, Type, NULL, Light, Alpha, *(BYTE*)(Owner + 137) << 3, 0, true, true, true, 0, 2); // RenderPartObject(o, Type, NULL, Light, Alpha, o->Owner->WeaponLevel << 3, 0, 0, true, true, true);
-
-	*(short*)(o + 2) = (short)TempType; // o->Type = (short)TempType;
-
-	VectorCopy(TempPosition, (float*)(o + 16)); // VectorCopy(TempPosition, o->Position);
-
-	VectorCopy(TempAngle, (float*)(o + 28)); // VectorCopy(TempAngle, o->Angle);
 }
 
 _declspec(naked) void CPatchs::SendElfBuff()

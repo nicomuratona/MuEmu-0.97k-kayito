@@ -2340,6 +2340,8 @@ void CItemManager::CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg, int aIndex)
 
 	if (gQuestObjective.CanGetItem(lpObj, lpItem->m_Index, lpItem->m_Level) == 0)
 	{
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(108, lpObj->Lang));
+
 		DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 
 		return;
@@ -2347,6 +2349,8 @@ void CItemManager::CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg, int aIndex)
 
 	if (gQuestObjective.CheckQuestObjectiveItemCount(lpObj, lpItem->m_Index, lpItem->m_Level) == 0)
 	{
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(109, lpObj->Lang));
+
 		DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 
 		return;
@@ -2399,6 +2403,8 @@ void CItemManager::CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg, int aIndex)
 
 	if (pMsg.result == 0xFF)
 	{
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(110, lpObj->Lang));
+
 		DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 
 		return;

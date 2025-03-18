@@ -300,13 +300,7 @@ void CTrade::CGTradeMoneyRecv(PMSG_TRADE_MONEY_RECV* lpMsg, int aIndex)
 
 	GCMoneySend(aIndex, (lpObj->Money - lpMsg->money));
 
-	PMSG_TRADE_RESULT_SEND pMsg;
-
-	pMsg.header.set(0x3A, sizeof(pMsg));
-
-	pMsg.result = 1;
-
-	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
+	this->GCTradeMoneyResultSend(aIndex, 1);
 
 	lpObj->TradeOk = 0;
 	this->GCTradeOkButtonSend(aIndex, 0);
@@ -529,6 +523,17 @@ void CTrade::GCTradeItemAddSend(int aIndex, BYTE slot, BYTE* ItemInfo)
 	pMsg.slot = slot;
 
 	memcpy(pMsg.ItemInfo, ItemInfo, sizeof(pMsg.ItemInfo));
+
+	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
+}
+
+void CTrade::GCTradeMoneyResultSend(int aIndex, BYTE result)
+{
+	PMSG_TRADE_RESULT_SEND pMsg;
+
+	pMsg.header.set(0x3A, sizeof(pMsg));
+
+	pMsg.result = result;
 
 	DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 }
