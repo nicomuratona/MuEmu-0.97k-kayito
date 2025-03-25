@@ -603,11 +603,11 @@ void CPrintPlayer::RenderCharInfo_Strength(int StartPosX, int StartPosY)
 
 	if (this->ViewAttackSuccessRate > 0)
 	{
-		sprintf_s(Buffer, sizeof(Buffer), GlobalText[203], this->ViewPhysiDamageMin, this->ViewPhysiDamageMin, this->ViewAttackSuccessRate);
+		sprintf_s(Buffer, sizeof(Buffer), GlobalText[203], this->ViewPhysiDamageMin, this->ViewPhysiDamageMax, this->ViewAttackSuccessRate);
 	}
 	else
 	{
-		sprintf_s(Buffer, sizeof(Buffer), GlobalText[204], this->ViewPhysiDamageMin, this->ViewPhysiDamageMin);
+		sprintf_s(Buffer, sizeof(Buffer), GlobalText[204], this->ViewPhysiDamageMin, this->ViewPhysiDamageMax);
 	}
 
 	RenderText((int)fPosX, CenterTextPosY(Buffer, (int)fPosY), Buffer, REAL_WIDTH(130), RT3_SORT_LEFT, NULL);

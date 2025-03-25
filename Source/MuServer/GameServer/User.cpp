@@ -2898,35 +2898,6 @@ void gObjUseDrink(LPOBJ lpObj, int level)
 	}
 }
 
-void gObjCustomLogPlusChaosMix(LPOBJ lpObj, int type, int index)
-{
-	if (type != 1)
-	{
-		return;
-	}
-
-	if (gServerInfo.m_AnnounceChaosMix != 0)
-	{
-		ITEM_INFO ItemInfo;
-
-		if (gItemManager.GetInfo(index, &ItemInfo) != 0)
-		{
-			char buff[256];
-
-			wsprintf(buff, gServerInfo.m_AnnounceChaosMixText, lpObj->Name, ItemInfo.Name);
-
-			if (gServerInfo.m_AnnounceChaosMix == 1)
-			{
-				gNotice.GCNoticeSendToAll(0, buff);
-			}
-			else
-			{
-				GDGlobalNoticeSend(0, buff);
-			}
-		}
-	}
-}
-
 bool gObjCheckAutoParty(LPOBJ lpObj, LPOBJ lpTarget)
 {
 	if ((lpTarget->Option & 4) == 0)

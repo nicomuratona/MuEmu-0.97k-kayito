@@ -2,202 +2,331 @@
 ;==================================================
 ; Hack Settings
 ;==================================================
-CheckSpeedHack = 0
-CheckSpeedHackTolerance = 0
-CheckLatencyHack = 0
-CheckLatencyHackTolerance = 0
-CheckAutoPotionHack = 0
-CheckAutoPotionHackTolerance = 0
+; Check Physic and Magic Speed (0 = No / 1 = Yes)
+CheckSpeedHack=0
+; The tolerance for the SpeedHack when CheckSpeedHack=1
+CheckSpeedHackTolerance=0
+
+; Check Latency (0 = No / 1 = Yes)
+CheckLatencyHack=0
+; The tolerance for the Latency when CheckLatencyHack=1
+CheckLatencyHackTolerance=0
+
+; Check Potions consumption (0 = No / 1 = Yes)
+CheckAutoPotionHack=0
+; The tolerance for consuming potions when CheckAutoPotionHack=1
+CheckAutoPotionHackTolerance=0
 
 ;==================================================
 ; Common Settings
 ;==================================================
-MaxItemOption = 4
-MaxIpConnection = 10
-DisconnectOnlineAccount = 0
-PersonalCodeCheck = 0
+; Maximum Jewel of Life additional option
+MaxItemOption=4
+
+; Maximum IPs per computer
+MaxIpConnection=10
+
+; Disconnect the account when trying to connect to the same account (0 = No / 1 = Yes)
+DisconnectOnlineAccount=0
+
+; Check the personal code (0 = No / 1 = Yes)
+PersonalCodeCheck=0
 
 ;==================================================
 ; Monster Settings
 ;==================================================
-MonsterLifeRate = 100
-MonsterHealthBarSwitch = 1
+; Rate of life of all Monsters
+MonsterLifeRate=100
+
+; Send the monster's HP for the client's Health Bar (0 = No / 1 = Yes)
+MonsterHealthBarSwitch=1
 
 ;==================================================
 ; PK Settings
 ;==================================================
-NonPK = 0
-PKLimitFree = 0
-PKDownTime1 = 3600
-PKDownTime2 = 3600
+; Disable player vs player? (0 = No / 1 = Yes)
+NonPK=0
+
+; Enable PKs to Move and Talk to NPCs (0 = No / 1 = Yes)
+PKLimitFree=0
+
+; Time to decrease the Hero status (In Seconds)
+PKDownTime1=3600
+
+; Time to decrease the PK status (In Seconds)
+PKDownTime2=3600
 
 ;==================================================
 ; Guild Settings
 ;==================================================
-GuildCreateSwitch = 1	
-GuildDeleteSwitch = 1
-GuildCreateMinLevel = 100
-GuildCreateMinReset = 0
-GuildInsertMaxUser_AL0 = 40
-GuildInsertMaxUser_AL1 = 80
-GuildInsertMaxUser_AL2 = 80
-GuildInsertMaxUser_AL3 = 80
+; Enable Guild Creation (0 = No / 1 = Yes)
+GuildCreateSwitch=1
+
+; Enable Guild Delete (0 = No / 1 = Yes)
+GuildDeleteSwitch=1
+
+; Min Level required to create guild
+GuildCreateMinLevel=100
+
+; Min Reset required to create guild
+GuildCreateMinReset=0
+
+; Maximum users to insert in the guild (MAX: 40)
+GuildInsertMaxUser_AL0=40
+GuildInsertMaxUser_AL1=40
+GuildInsertMaxUser_AL2=40
+GuildInsertMaxUser_AL3=40
 
 ;==================================================
 ; Guild War/Soccer Settings
 ;==================================================
-GuildWarWinScore = 10			; Score need to win the guild war
-GuildWarSoccerWinScore = 100		; Score need to win the battle soccer
-GuildWarWinPointsGain_Max = 3		; Enemy guild score is 0
-GuildWarWinPointsGain_Half = 2		; Enemy guild score < (WinScore / 2)
-GuildWarWinPointsGain_Normal = 1	; Normal win
+; Score needed to win the guild war
+GuildWarWinScore=10
+
+; Score needed to win the battle soccer
+GuildWarSoccerWinScore=100
+
+; Points gained when enemy guild score is 0
+GuildWarWinPointsGain_Max=3
+
+; Points gained when enemy guild score is less than half
+GuildWarWinPointsGain_Half=2
+
+; Points gained in normal win
+GuildWarWinPointsGain_Normal=1	
 
 ;==================================================
 ; Experience Settings
 ;==================================================
-AddExperienceRate_AL0 = 100
-AddExperienceRate_AL1 = 100
-AddExperienceRate_AL2 = 100
-AddExperienceRate_AL3 = 100
-AddEventExperienceRate_AL0 = 1
-AddEventExperienceRate_AL1 = 1
-AddEventExperienceRate_AL2 = 1
-AddEventExperienceRate_AL3 = 1
+; Experience rate gained in the server when killing monsters
+AddExperienceRate_AL0=100
+AddExperienceRate_AL1=100
+AddExperienceRate_AL2=100
+AddExperienceRate_AL3=100
+
+; Experience rate gained in events reward (Devil Square, Blood Castle)
+AddEventExperienceRate_AL0=100
+AddEventExperienceRate_AL1=100
+AddEventExperienceRate_AL2=100
+AddEventExperienceRate_AL3=100
 
 ;==================================================
 ; Item Drop Settings
 ;==================================================
-ItemDropTime = 30
-ItemDropRate_AL0 = 100
-ItemDropRate_AL1 = 100
-ItemDropRate_AL2 = 100
-ItemDropRate_AL3 = 100
+; Time of the item on the ground (In Seconds)
+ItemDropTime=30
+
+; Rate of the drop of the items
+ItemDropRate_AL0=100
+ItemDropRate_AL1=100
+ItemDropRate_AL2=100
+ItemDropRate_AL3=100
 
 ;==================================================
 ; Money Drop Settings
 ;==================================================
-MoneyDropTime = 30
-MoneyAmountDropRate_AL0 = 50
-MoneyAmountDropRate_AL1 = 50
-MoneyAmountDropRate_AL2 = 50
-MoneyAmountDropRate_AL3 = 50
+; Time of the money on the ground (In Seconds)
+MoneyDropTime=30
+
+; Rate of the amount of droped zen
+MoneyAmountDropRate_AL0=50
+MoneyAmountDropRate_AL1=50
+MoneyAmountDropRate_AL2=50
+MoneyAmountDropRate_AL3=50
 
 ;==================================================
 ; Item Durability Settings
 ;==================================================
-WeaponDurabilityRate = 100
-ArmorDurabilityRate = 100
-WingDurabilityRate = 100
-GuardianDurabilityRate = 100
-PendantDurabilityRate = 100
-RingDurabilityRate = 100
+; Enable infinity arrows (0 = No / 1 = Yes)
+ArrowsInfiniteDurability=1
+
+; Rate of durability decrease for Weapons and Shields
+WeaponDurabilityRate=100
+
+; Rate of durability decrease for Sets
+ArmorDurabilityRate=100
+
+; Rate of durability decrease for Wings
+WingDurabilityRate=100
+
+; Rate of durability decrease for Angel, Satan, Uniria and Dinorant
+GuardianDurabilityRate=100
+
+; Rate of durability decrease for Pendants
+PendantDurabilityRate=100
+
+; Rate of durability decrease for Rings
+RingDurabilityRate=100
 
 ;==================================================
 ; Trade Item Block Settings
 ;==================================================
-TradeSwitch = 1
-TradeItemBlock = 0
-TradeItemBlockExc = 0
-TradeItemBlockSell = 0
+; Enable Trade (0 = No / 1 = Yes)
+TradeSwitch=1
+
+; Enable block trading Excellent Items (0 = No / 1 = Yes)
+TradeItemBlockExc=0
 
 ;==================================================
-; Shop Item Settings
+; Shop Item Block Settings
 ;==================================================
-ShopItemBlockSellOnMaxMoney = 1
+; Enable block selling items at maximum Zen (0 = No / 1 = Yes)
+ShopItemBlockSellOnMaxMoney=1
+
+; Enable block selling Excellent Items (0 = No / 1 = Yes)
+ShopItemBlockExc=0
 
 ;==================================================
 ; Level Up Settings
 ;==================================================
-MaxCharacterLevel = 400
-MaxLevelUp = 1
-MaxLevelUpEvent = 1
-MaxStatPoint_AL0 = 32767
-MaxStatPoint_AL1 = 32767
-MaxStatPoint_AL2 = 32767
-MaxStatPoint_AL3 = 32767
-DWLevelUpPoint = 5
-DKLevelUpPoint = 5
-FELevelUpPoint = 5
-MGLevelUpPoint = 7
-PlusStatPoint = 1
+; Maximum Character Level (MAX: 1000)
+MaxCharacterLevel=400
+
+; Maximum simultaneous levels increase per experience gained
+MaxLevelUp=1
+
+; Maximum simultaneous levels increase per experience gained in events reward (Devil Square, Blood Castle)
+MaxLevelUpEvent=1
+
+; Maximum Character Stats
+MaxStatPoint_AL0=32767
+MaxStatPoint_AL1=32767
+MaxStatPoint_AL2=32767
+MaxStatPoint_AL3=32767
+
+; Points gained per level per class
+DWLevelUpPoint=5
+DKLevelUpPoint=5
+FELevelUpPoint=5
+MGLevelUpPoint=7
+
+; Additional points gained per reset if character is 2nd class (SM, BK, ME, MG)
+PlusStatPoint=1
 
 ;==================================================
 ; Create Character Settings
 ;==================================================
-CharacterCreateSwitch = 1
-MGCreateLevel_AL0 = 0
-MGCreateLevel_AL1 = 0
-MGCreateLevel_AL2 = 0
-MGCreateLevel_AL3 = 0
+; Enable Character Creation (0 = No / 1 = Yes)
+CharacterCreateSwitch=1
+
+; Minimum Level required to create MG
+MGCreateLevel_AL0=0
+MGCreateLevel_AL1=0
+MGCreateLevel_AL2=0
+MGCreateLevel_AL3=0
 
 ;==================================================
 ; Delete Character Settings
 ;==================================================
-CharacterDeleteSwitch = 1
-CharacterDeleteMaxLevel_AL0 = 220
-CharacterDeleteMaxLevel_AL1 = 220
-CharacterDeleteMaxLevel_AL2 = 220
-CharacterDeleteMaxLevel_AL3 = 220
+; Enable Character Delete (0 = No / 1 = Yes)
+CharacterDeleteSwitch=1
+
+; Maximum Level to delete the character
+CharacterDeleteMaxLevel_AL0=220
+CharacterDeleteMaxLevel_AL1=220
+CharacterDeleteMaxLevel_AL2=220
+CharacterDeleteMaxLevel_AL3=220
 
 ;==================================================
 ; Party Settings
 ;==================================================
-PartyLevelDifference = 130
-PartyReconnectTime = 300
-PartyGeneralExperience1 = 50
-PartyGeneralExperience2 = 125
-PartyGeneralExperience3 = 150
-PartyGeneralExperience4 = 175
-PartyGeneralExperience5 = 200
-PartySpecialExperience1 = 50
-PartySpecialExperience2 = 125
-PartySpecialExperience3 = 150
-PartySpecialExperience4 = 175
-PartySpecialExperience5 = 200
+; Maximum Level difference to make a party
+PartyLevelDifference=130
+
+; Time to leave the party after disconnect (In Seconds)
+PartyReconnectTime=300
+
+; Experience rate gained in the server when in party with the same class
+PartyGeneralExperience1=50
+PartyGeneralExperience2=125
+PartyGeneralExperience3=150
+PartyGeneralExperience4=175
+PartyGeneralExperience5=200
+
+; Experience rate gained in the server when in party with different class
+PartySpecialExperience1=50
+PartySpecialExperience2=125
+PartySpecialExperience3=150
+PartySpecialExperience4=175
+PartySpecialExperience5=200
 
 ;==================================================
 ; Potion Settings
 ;==================================================
-ApplePotionRate = 10
-SmallLifePotionRate = 20
-MidleLifePotionRate = 30
-LargeLifePotionRate = 40
-SmallManaPotionRate = 20
-MidleManaPotionRate = 30
-LargeManaPotionRate = 40
+; Rate of Life recovery with Apple
+ApplePotionRate=10
+
+; Rate of Life recovery with Small Life Potion
+SmallLifePotionRate=20
+
+; Rate of Life recovery with Middle Life Potion
+MidleLifePotionRate=30
+
+; Rate of Life recovery with Large Life Potion
+LargeLifePotionRate=40
+
+; Rate of Mana recovery with Small Mana Potion
+SmallManaPotionRate=20
+
+; Rate of Mana recovery with Middle Mana Potion
+MidleManaPotionRate=30
+
+; Rate of Mana recovery with Large Mana Potion
+LargeManaPotionRate=40
 
 ;==================================================
 ; Transformation Ring Settings
 ;==================================================
-TransformationRing1 = 2
-TransformationRing2 = 7
-TransformationRing3 = 14
-TransformationRing4 = 8
-TransformationRing5 = 9
-TransformationRing6 = 41
+; Transformation ring 1 monster class (Monster index from Monster.txt)
+TransformationRing1=2
+
+; Transformation ring 2 monster class (Monster index from Monster.txt)
+TransformationRing2=7
+
+; Transformation ring 3 monster class (Monster index from Monster.txt)
+TransformationRing3=14
+
+; Transformation ring 4 monster class (Monster index from Monster.txt)
+TransformationRing4=8
+
+; Transformation ring 5 monster class (Monster index from Monster.txt)
+TransformationRing5=9
+
+; Transformation ring 6 monster class (Monster index from Monster.txt)
+TransformationRing6=41
 
 ;==================================================
 ; Jewel Settings
 ;==================================================
-JewelOfSoulSuccessRate_AL1 = 50
-JewelOfSoulSuccessRate_AL0 = 50
-JewelOfSoulSuccessRate_AL2 = 50
-JewelOfSoulSuccessRate_AL3 = 50
-JewelOfLifeSuccessRate_AL0 = 50
-JewelOfLifeSuccessRate_AL1 = 50
-JewelOfLifeSuccessRate_AL2 = 50
-JewelOfLifeSuccessRate_AL3 = 50
-JewelOfSoulAddLuckRate_AL0 = 25
-JewelOfSoulAddLuckRate_AL1 = 25
-JewelOfSoulAddLuckRate_AL2 = 25
-JewelOfSoulAddLuckRate_AL3 = 25
+; Jewel of Soul (+7/+8/+9) upgrade success rate
+JewelOfSoulSuccessRate_AL1=50
+JewelOfSoulSuccessRate_AL0=50
+JewelOfSoulSuccessRate_AL2=50
+JewelOfSoulSuccessRate_AL3=50
+
+; Additional Jewel of Soul rate when item has Luck
+JewelOfSoulAddLuckRate_AL0=25
+JewelOfSoulAddLuckRate_AL1=25
+JewelOfSoulAddLuckRate_AL2=25
+JewelOfSoulAddLuckRate_AL3=25
+
+; Jewel of Life upgrade success rate
+JewelOfLifeSuccessRate_AL0=50
+JewelOfLifeSuccessRate_AL1=50
+JewelOfLifeSuccessRate_AL2=50
+JewelOfLifeSuccessRate_AL3=50
 
 ;==================================================
 ; Fruit Settings
 ;==================================================
-FruitAddPointMin = 1
-FruitAddPointMax = 3
-FruitAddPointSuccessRate_AL0 = -1
-FruitAddPointSuccessRate_AL1 = -1
-FruitAddPointSuccessRate_AL2 = -1
-FruitAddPointSuccessRate_AL3 = -1
+; Minimum fruit additional points
+FruitAddPointMin=1
+
+; Maximum fruit additional points
+FruitAddPointMax=3
+
+; Fruit upgrade success rate
+FruitAddPointSuccessRate_AL0=-1
+FruitAddPointSuccessRate_AL1=-1
+FruitAddPointSuccessRate_AL2=-1
+FruitAddPointSuccessRate_AL3=-1

@@ -739,8 +739,6 @@ void CChaosBox::PlusItemLevelMix(LPOBJ lpObj, int type)
 
 		this->GCChaosMixSend(lpObj->Index, 1, &item);
 
-		gObjCustomLogPlusChaosMix(lpObj, type, item.m_Index);
-
 		gLog.Output(LOG_CHAOS_MIX, "[PlusItemLevelMix][Success][%s][%s] - (Type: %d, ChaosSuccessRate: %d, ChaosMoney: %d)", lpObj->Account, lpObj->Name, type, lpObj->ChaosSuccessRate, lpObj->ChaosMoney);
 	}
 	else

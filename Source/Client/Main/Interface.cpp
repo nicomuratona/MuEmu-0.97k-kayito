@@ -151,7 +151,7 @@ void Interface::DrawIMG(short ObjectID, float PosX, float PosY, float ScaleX, fl
 		this->Data[ObjectID].MaxY = PosY + this->Data[ObjectID].Height;
 	}
 
-	RenderBitmap(this->Data[ObjectID].ModelID, PosX, PosY, this->Data[ObjectID].Width, this->Data[ObjectID].Height, 0, 0, ScaleX, ScaleY, 1, 1);
+	RenderBitmap(this->Data[ObjectID].ModelID, PosX, PosY, this->Data[ObjectID].Width, this->Data[ObjectID].Height, 0, 0, ScaleX, ScaleY, true, true);
 }
 
 void Interface::DrawIMG(short ObjectID, float PosX, float PosY, float u, float v, float ScaleX, float ScaleY)

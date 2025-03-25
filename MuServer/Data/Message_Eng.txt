@@ -183,4 +183,6 @@
 108	"This is a Quest item and you are not doing that quest."
 109	"You cannot have more of this Quest item."
 110	"Your inventory is full."
+111	"You've reached the maximum zen."
+112	"You don't have enough zen."
 end

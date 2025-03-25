@@ -60,8 +60,6 @@ public:
 
 	void ReadCommonInfo(char* section, char* path);
 
-	void ReadCustomInfo(char* section, char* path);
-
 	void ReadEventInfo(char* section, char* path);
 
 	void ReadHackInfo(char* section, char* path);
@@ -86,12 +84,13 @@ public:
 	long m_DataServerPort;
 	char m_ConnectServerAddress[16];
 	long m_ConnectServerPort;
-	int m_WriteChatLog;
-	int m_WriteCommandLog;
-	int m_WriteTradeLog;
-	int m_WriteConnectLog;
-	int m_WriteHackLog;
-	int m_WriteChaosMixLog;
+	bool m_WriteGeneralLog;
+	bool m_WriteChatLog;
+	bool m_WriteCommandLog;
+	bool m_WriteTradeLog;
+	bool m_WriteConnectLog;
+	bool m_WriteHackLog;
+	bool m_WriteChaosMixLog;
 	// Hack
 	int m_CheckSpeedHack;
 	int m_CheckSpeedHackTolerance;
@@ -127,6 +126,7 @@ public:
 	int m_ItemDropRate[MAX_ACCOUNT_LEVEL];
 	int m_MoneyDropTime;
 	int m_MoneyAmountDropRate[MAX_ACCOUNT_LEVEL];
+	bool m_ArrowsInfiniteDurability;
 	int m_WeaponDurabilityRate;
 	int m_ArmorDurabilityRate;
 	int m_WingDurabilityRate;
@@ -134,9 +134,8 @@ public:
 	int m_PendantDurabilityRate;
 	int m_RingDurabilityRate;
 	int m_TradeSwitch;
-	int m_TradeItemBlock;
 	int m_TradeItemBlockExc;
-	int m_TradeItemBlockSell;
+	int m_ShopItemBlockExc;
 	int m_ShopItemBlockSellOnMaxMoney;
 	int m_MaxCharacterLevel;
 	int m_MaxLevelUp;
@@ -376,9 +375,6 @@ public:
 	int m_FireSlashConstB;
 	int m_FireSlashTime;
 	int m_FireSlashMaxRate;
-	// Custom
-	long m_AnnounceChaosMix;
-	char m_AnnounceChaosMixText[50];
 };
 
 extern CServerInfo gServerInfo;

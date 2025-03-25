@@ -60,6 +60,7 @@
 #define MAX_CLASS 4
 #define MAX_RESISTANCE 4
 #define MAX_CHARACTER_LEVEL 1000
+#define MAX_CHARACTER_ZEN 2000000000
 
 /* MONSTER */
 #define MONSTER_BASE_MODEL 270
@@ -91,5 +92,5 @@
 #define MAX_GATES 100
 
 /* Interfaces */
-#define CheckRightInterfaces() (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpenType || GuildCreatorOpened || EventWindowOpened)
+#define CheckRightInterfaces() (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpenType || GuildCreatorOpened || EventWindowOpened || QuestNPCOpened)
 #define CheckInputInterfaces() (InputEnable || TabInputEnable || GoldInputEnable || GuildInputEnable)

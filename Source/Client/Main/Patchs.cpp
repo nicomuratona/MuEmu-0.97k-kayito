@@ -86,9 +86,14 @@ void CPatchs::Init()
 
 	MemorySet(0x0042F2DF, 0x90, 0x7); // Fix Drop Zen
 
-	SetByte(0x00515BF7, 0xEB); // Fix Trade Zen Over 50000000
-
+	SetDword(0x004EB8C7, 0x0A); // Expand max digits in Zen trade
 	SetByte(0x0051667C, 0xEB); // Fix Trade Max Amount
+
+	SetDword(0x00515BF3, MAX_CHARACTER_ZEN); // Block trade/warehouse to max Zen
+	SetByte(0x00515BFB, 0x24); // Fix messagebox to max Zen
+
+	SetDword(0x004EB6BD + 6, 0x0A); // Expand max digits in Warehouse deposit
+	SetDword(0x004EB6F8 + 6, 0x0A); // Expand max digits in Warehouse extraction
 
 	// Remove JPG size limit
 	MemorySet(0x005299E7, 0x90, 11);

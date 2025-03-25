@@ -953,18 +953,6 @@ int CItem::GetDefenseSuccessRate()
 	}
 }
 
-int CItem::GetBookSuccessRate()
-{
-	if (this->IsItem() == 0 || this->m_IsValidItem == 0 || this->m_Durability == 0)
-	{
-		return 0;
-	}
-	else
-	{
-		return (this->m_MagicDamageRate / 6);
-	}
-}
-
 bool CItem::WeaponDurabilityDown(int aIndex, int defense, int type)
 {
 	if (this->m_Durability < 1)

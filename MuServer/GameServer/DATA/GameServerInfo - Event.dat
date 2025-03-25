@@ -2,29 +2,47 @@
 ;==================================================
 ; Blood Castle Event Settings
 ;==================================================
-BloodCastleEvent = 1
-BloodCastleMaxUser = 10
-BloodCastleAllowPK = 1
+; Enable Blood Castle Event (0 = No / 1 = Yes)
+BloodCastleEvent=1
+
+; Blood Castle Maximum Users per Castle
+BloodCastleMaxUser=10
+
+; Blood Castle enable PVP? (0 = No / 1 = Yes)
+BloodCastleAllowPK=1
 
 ;==================================================
 ; Bonus Manager Settings
 ;==================================================
-BonusManagerSwitch = 1
+; Enable Bonus Manager Event (0 = No / 1 = Yes)
+BonusManagerSwitch=1
 
 ;==================================================
 ; Devil Square Event Settings
 ;==================================================
-DevilSquareEvent = 1
-DevilSquareMaxUser = 15
-DevilSquareAllowPK = 1
+; Enable Devil Square Event (0 = No / 1 = Yes)
+DevilSquareEvent=1
+
+; Devil Square Maximum Users per Square
+DevilSquareMaxUser=15
+
+; Devil Square enable PVP? (0 = No / 1 = Yes)
+DevilSquareAllowPK=1
 
 ;==================================================
 ; Invasion Manager Settings
 ;==================================================
-InvasionManagerSwitch = 1
-FlyingDragonsSwitch = 1
-FlyingDragonsOnlyBossMapSpawn = 0		; Dragons will only spawn in the map of the boss
-FlyingDragonsKillBossDisappear = 0		; Dragons will disappear when the boss dies
+; Enable Invasions (0 = No / 1 = Yes)
+InvasionManagerSwitch=1
+
+; Enable Invasion Flying Dragons Effect (0 = No / 1 = Yes)
+FlyingDragonsSwitch=1
+
+; Dragons will only spawn in the map of the boss (0 = No / 1 = Yes)
+FlyingDragonsOnlyBossMapSpawn=0
+
+; Dragons will disappear when the boss dies (0 = No / 1 = Yes)
+FlyingDragonsKillBossDisappear=0
 
 ;==================================================
 ; Golden Archer Settings
@@ -55,7 +73,7 @@ StoneExchangeRequiredLuckyNumber=50
 ;==================================================
 ; Golden Archer Bingo Settings
 ;==================================================
-; Enable / disable the Archer Bingo Event
+; Enable Golden Archer Bingo Event (0 = No / 1 = Yes)
 GoldenArcherBingoEvent=1
 
 ; Define the amount of winners

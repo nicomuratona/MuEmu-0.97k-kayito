@@ -275,10 +275,14 @@
 			// 
 			// Ban_Date
 			// 
+			this.Ban_Date.CustomFormat = "dd MMMM yyyy - HH:mm";
+			this.Ban_Date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+			this.Ban_Date.ImeMode = System.Windows.Forms.ImeMode.NoControl;
 			this.Ban_Date.Location = new System.Drawing.Point(291, 165);
 			this.Ban_Date.Name = "Ban_Date";
 			this.Ban_Date.Size = new System.Drawing.Size(233, 20);
 			this.Ban_Date.TabIndex = 9;
+			this.Ban_Date.Value = new System.DateTime(2025, 3, 24, 18, 8, 29, 0);
 			// 
 			// Server_value
 			// 
@@ -440,6 +444,8 @@
 			// 
 			// Vip_Date
 			// 
+			this.Vip_Date.CustomFormat = "dd MMMM yyyy - HH:mm";
+			this.Vip_Date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
 			this.Vip_Date.Location = new System.Drawing.Point(291, 209);
 			this.Vip_Date.Name = "Vip_Date";
 			this.Vip_Date.Size = new System.Drawing.Size(233, 20);

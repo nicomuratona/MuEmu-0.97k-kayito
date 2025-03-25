@@ -797,7 +797,6 @@ void gObjTimeCheckSelfDefense(LPOBJ lpObj);
 void gObjSetPosition(int aIndex, int x, int y);
 void gObjAuthorityCodeSet(LPOBJ lpObj);
 void gObjUseDrink(LPOBJ lpObj, int level);
-void gObjCustomLogPlusChaosMix(LPOBJ lpObj, int type, int index);
 bool gObjCheckAutoParty(LPOBJ lpObj, LPOBJ lpTarget);
 
 extern int gObjCount;

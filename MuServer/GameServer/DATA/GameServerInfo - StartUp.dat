@@ -1,34 +1,71 @@
 [GameServerInfo]
-CustomerName = "Nico"
+CustomerName=Nico
 
 ;==================================================
 ; Server Settings
 ;==================================================
-ServerName = "SV1"
-WindowName = "Server 1"
-ServerCode = 0
-ServerLock = 0
-ServerPort = 55901
-ServerVersion = "0.97.11"
-ServerSerial = "TbYehR2hFUPBKgZj"
-ServerMaxUserNumber = 3
+; Name of the Server in the game
+ServerName=SV1
+
+; Name of the Window
+WindowName=Server 1
+
+; Code of the Server -> Sync with ConnectServer/ServerList
+ServerCode=0
+
+; Lock server for specific AccountLevel
+ServerLock=0
+
+; Port of the Server -> Sync with ConnectServer/ServerList
+ServerPort=55901
+
+; Version of the Server -> Sync with Encoder/MainInfo
+ServerVersion=0.97.11
+
+; Serial of the Server -> Sync with Encoder/MainInfo
+ServerSerial=TbYehR2hFUPBKgZj
+
+; Maximum users (MAX: 1000)
+ServerMaxUserNumber=3
 
 ;==================================================
 ; Connection Settings
 ;==================================================
-DataServerAddress = "127.0.0.1"
-DataServerPort = 55980
-JoinServerAddress = "127.0.0.1"
-JoinServerPort = 55990
-ConnectServerAddress = "127.0.0.1"
-ConnectServerPort = 55601
+; DataServer IP Address (use 127.0.0.1 if its in the same VPS)
+DataServerAddress=127.0.0.1
+; DataServer Port
+DataServerPort=55980
+
+; JoinServer IP Address (use 127.0.0.1 if its in the same VPS)
+JoinServerAddress=127.0.0.1
+; JoinServer Port
+JoinServerPort=55990
+
+; ConnectServer IP Address (use 127.0.0.1 if its in the same VPS)
+ConnectServerAddress=127.0.0.1
+; ConnectServer Port
+ConnectServerPort=55601
 
 ;==================================================
 ; Log Settings
 ;==================================================
-WriteChatLog = 1
-WriteCommandLog = 1
-WriteTradeLog = 1
-WriteConnectLog = 1
-WriteHackLog = 1
-WriteChaosMixLog = 1
+; Enable General Logs (0 = No / 1 = Yes)
+WriteGeneralLogs=1
+
+; Enable Chat Logs (0 = No / 1 = Yes)
+WriteChatLog=1
+
+; Enable Command Logs (0 = No / 1 = Yes)
+WriteCommandLog=1
+
+; Enable Trade Logs (0 = No / 1 = Yes)
+WriteTradeLog=1
+
+; Enable Connect Logs (0 = No / 1 = Yes)
+WriteConnectLog=1
+
+; Enable Hack Logs (0 = No / 1 = Yes)
+WriteHackLog=1
+
+; Enable Chaos Mix Logs (0 = No / 1 = Yes)
+WriteChaosMixLog=1

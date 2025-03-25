@@ -171,8 +171,6 @@ void CServerInfo::ReadCommonInfo()
 
 void CServerInfo::ReadCustomInfo()
 {
-	this->ReadCustomInfo("GameServerInfo", ".\\Data\\GameServerInfo - Custom.dat");
-
 	gCustomNpcMove.Load(gPath.GetFullPath("Custom\\CustomNpcMove.txt"));
 
 	gPKFree.Load(gPath.GetFullPath("Custom\\CustomPkFree.txt"));
@@ -418,17 +416,19 @@ void CServerInfo::ReadStartupInfo(char* section, char* path)
 
 	this->m_ConnectServerPort = GetPrivateProfileInt(section, "ConnectServerPort", 0, path);
 
-	this->m_WriteChatLog = GetPrivateProfileInt(section, "WriteChatLog", 0, path);
+	this->m_WriteGeneralLog = (GetPrivateProfileInt(section, "WriteGeneralLog", 0, path) != 0);
 
-	this->m_WriteCommandLog = GetPrivateProfileInt(section, "WriteCommandLog", 0, path);
+	this->m_WriteChatLog = (GetPrivateProfileInt(section, "WriteChatLog", 0, path) != 0);
 
-	this->m_WriteTradeLog = GetPrivateProfileInt(section, "WriteTradeLog", 0, path);
+	this->m_WriteCommandLog = (GetPrivateProfileInt(section, "WriteCommandLog", 0, path) != 0);
 
-	this->m_WriteConnectLog = GetPrivateProfileInt(section, "WriteConnectLog", 0, path);
+	this->m_WriteTradeLog = (GetPrivateProfileInt(section, "WriteTradeLog", 0, path) != 0);
 
-	this->m_WriteHackLog = GetPrivateProfileInt(section, "WriteHackLog", 0, path);
+	this->m_WriteConnectLog = (GetPrivateProfileInt(section, "WriteConnectLog", 0, path) != 0);
 
-	this->m_WriteChaosMixLog = GetPrivateProfileInt(section, "WriteChaosMixLog", 0, path);
+	this->m_WriteHackLog = (GetPrivateProfileInt(section, "WriteHackLog", 0, path) != 0);
+
+	this->m_WriteChaosMixLog = (GetPrivateProfileInt(section, "WriteChaosMixLog", 0, path) != 0);
 }
 
 void CServerInfo::ReadChaosMixInfo(char* section, char* path)
@@ -1364,6 +1364,8 @@ void CServerInfo::ReadCommonInfo(char* section, char* path)
 
 	this->m_MoneyAmountDropRate[3] = GetPrivateProfileInt(section, "MoneyAmountDropRate_AL3", 0, path);
 
+	this->m_ArrowsInfiniteDurability = (GetPrivateProfileInt(section, "ArrowsInfiniteDurability", 0, path) != 0);
+
 	this->m_WeaponDurabilityRate = GetPrivateProfileInt(section, "WeaponDurabilityRate", 0, path);
 
 	this->m_ArmorDurabilityRate = GetPrivateProfileInt(section, "ArmorDurabilityRate", 0, path);
@@ -1376,13 +1378,11 @@ void CServerInfo::ReadCommonInfo(char* section, char* path)
 
 	this->m_RingDurabilityRate = GetPrivateProfileInt(section, "RingDurabilityRate", 0, path);
 
-	this->m_TradeItemBlock = GetPrivateProfileInt(section, "TradeItemBlock", 0, path);
-
 	this->m_TradeItemBlockExc = GetPrivateProfileInt(section, "TradeItemBlockExc", 0, path);
 
-	this->m_TradeItemBlockSell = GetPrivateProfileInt(section, "TradeItemBlockSell", 0, path);
-
 	this->m_ShopItemBlockSellOnMaxMoney = GetPrivateProfileInt(section, "ShopItemBlockSellOnMaxMoney", 0, path);
+
+	this->m_ShopItemBlockExc = GetPrivateProfileInt(section, "ShopItemBlockExc", 0, path);
 
 	this->m_MaxCharacterLevel = GetPrivateProfileInt(section, "MaxCharacterLevel", 400, path);
 
@@ -1515,13 +1515,6 @@ void CServerInfo::ReadCommonInfo(char* section, char* path)
 	this->m_FruitAddPointSuccessRate[2] = GetPrivateProfileInt(section, "FruitAddPointSuccessRate_AL2", 0, path);
 
 	this->m_FruitAddPointSuccessRate[3] = GetPrivateProfileInt(section, "FruitAddPointSuccessRate_AL3", 0, path);
-}
-
-void CServerInfo::ReadCustomInfo(char* section, char* path)
-{
-	this->m_AnnounceChaosMix = GetPrivateProfileInt(section, "AnnounceChaosMix", 0, path);
-
-	GetPrivateProfileString(section, "AnnounceChaosMixText", "", this->m_AnnounceChaosMixText, sizeof(this->m_AnnounceChaosMixText), path);
 }
 
 void CServerInfo::ReadEventInfo(char* section, char* path)

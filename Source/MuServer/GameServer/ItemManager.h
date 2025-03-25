@@ -259,8 +259,6 @@ public:
 
 	bool CheckItemMoveToChaos(LPOBJ lpObj, CItem* lpItem, BYTE TargetFlag);
 
-	bool CheckItemMoveToBlock(LPOBJ lpObj, CItem* lpItem);
-
 	bool CheckItemInventorySpace(LPOBJ lpObj, int index);
 
 	bool CheckItemInventorySpace(LPOBJ lpObj, int width, int height);

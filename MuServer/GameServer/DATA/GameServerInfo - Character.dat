@@ -2,178 +2,281 @@
 ;==================================================
 ; Character Damage Rate Settings
 ;==================================================
-GeneralDamageRatePvP = 100
-GeneralDamageRatePvM = 100
-ReflectDamageRatePvP = 20
-ReflectDamageRatePvM = 100
+; damage = (damage * GeneralDamageRatePvP) / 100
+GeneralDamageRatePvP=100
+
+; damage = (damage * GeneralDamageRatePvM) / 100
+GeneralDamageRatePvM=100
+
+; damage = (damage *  ReflectDamageRatePvP) / 100
+ReflectDamageRatePvP=20
+
+; damage = (damage *  ReflectDamageRatePvM) / 100
+ReflectDamageRatePvM=100
 
 ;==================================================
 ; Character Class Damage Rate Settings
 ;==================================================
-DWDamageRatePvP = 100
-DKDamageRatePvP = 100
-FEDamageRatePvP = 100
-MGDamageRatePvP = 100
+; damage = (damage * XXDamageRatePVP) / 100
+DWDamageRatePvP=100
+DKDamageRatePvP=100
+FEDamageRatePvP=100
+MGDamageRatePvP=100
 
-DWDamageRatePvM = 100
-DKDamageRatePvM = 100
-FEDamageRatePvM = 100
-MGDamageRatePvM = 100
+; damage = (damage * XXDamageRatePVM) / 100
+DWDamageRatePvM=100
+DKDamageRatePvM=100
+FEDamageRatePvM=100
+MGDamageRatePvM=100
 
 ;==================================================
 ; Character Class x Class Damage Rate Settings
 ;==================================================
-DWDamageRateToDW = 100
-DWDamageRateToDK = 100
-DWDamageRateToFE = 100
-DWDamageRateToMG = 100
+; damage = (damage * XXDamageRateToYY) / 100
+DWDamageRateToDW=100
+DWDamageRateToDK=100
+DWDamageRateToFE=100
+DWDamageRateToMG=100
 
-DKDamageRateToDW = 100
-DKDamageRateToDK = 100
-DKDamageRateToFE = 100
-DKDamageRateToMG = 100
+DKDamageRateToDW=100
+DKDamageRateToDK=100
+DKDamageRateToFE=100
+DKDamageRateToMG=100
 
-FEDamageRateToDW = 100
-FEDamageRateToDK = 100
-FEDamageRateToFE = 100
-FEDamageRateToMG = 100
+FEDamageRateToDW=100
+FEDamageRateToDK=100
+FEDamageRateToFE=100
+FEDamageRateToMG=100
 
-MGDamageRateToDW = 100
-MGDamageRateToDK = 100
-MGDamageRateToFE = 100
-MGDamageRateToMG = 100
-
+MGDamageRateToDW=100
+MGDamageRateToDK=100
+MGDamageRateToFE=100
+MGDamageRateToMG=100
 
 ;==================================================
 ; Character Stuck Settings
 ;==================================================
-PetUniriaEnableStuck = 1
-PetDinorantEnableStuck = 1
-DWDamageStuckRate = 10
-DKDamageStuckRate = 10
-FEDamageStuckRate = 10
-MGDamageStuckRate = 10
+; Enable Stuck when using Uniria (0 = No / 1 = Yes)
+PetUniriaEnableStuck=1
+
+; Enable Stuck when using Dinorant (0 = No / 1 = Yes)
+PetDinorantEnableStuck=1
+
+; Rate of Stuck when getting damage (0 ~ 100)
+DWDamageStuckRate=10
+DKDamageStuckRate=10
+FEDamageStuckRate=10
+MGDamageStuckRate=10
 
 ;==================================================
 ; Character Damage Multiplier Settings
+; DamageMultiplierRate is used to multiply the skill damage of these skills:
+; Falling Slash, Lunge, Uppercut, Cyclone, Slash, Twisting Slash, Rageful Blow, Death Stab, Impale, Firebreath, Ice Arrow, Penetration, Fire Slash, Power Slash
 ;==================================================
-DWDamageMultiplierConstA = 10
-DKDamageMultiplierConstA = 10
-FEDamageMultiplierConstA = 10
-MGDamageMultiplierConstA = 10
+; DamageMultiplierRate = 200 + (Energy / XXDamageMultiplierConstA)
+DWDamageMultiplierConstA=10
+DKDamageMultiplierConstA=10
+FEDamageMultiplierConstA=10
+MGDamageMultiplierConstA=10
 
-DWDamageMultiplierMaxRate = 500
-DKDamageMultiplierMaxRate = 500
-FEDamageMultiplierMaxRate = 500
-MGDamageMultiplierMaxRate = 500
+; Set a maximum value for DamageMultiplierRate
+DWDamageMultiplierMaxRate=500
+DKDamageMultiplierMaxRate=500
+FEDamageMultiplierMaxRate=500
+MGDamageMultiplierMaxRate=500
 
 ;==================================================
 ; Character Guardian Inc Damage Settings
 ;==================================================
-SatanIncDamageConstA = 30
-DinorantIncDamageConstA = 15
+; damage = (damage * (100 + SatanIncDamageConstA)) / 100
+SatanIncDamageConstA=30
+
+; damage = (damage * (100 + DinorantIncDamageConstA)) / 100
+DinorantIncDamageConstA=15
 
 ;==================================================
 ; Character Guardian Dec Damage Settings
 ;==================================================
-AngelDecDamageConstA = 20
-DinorantDecDamageConstA = 10
-DinorantDecDamageConstB = 5
+; damage = (damage * (100 - AngelDecDamageConstA)) / 100
+AngelDecDamageConstA=20
+
+; damage = (damage * (100 - DinorantDecDamageConstA - DinorantDecDamageConstB)) / 100
+DinorantDecDamageConstA=10
+DinorantDecDamageConstB=5
 
 ;==================================================
 ; Character HP Recovery Settings
 ;==================================================
-DWHPRecoveryRate = 0
-DKHPRecoveryRate = 0
-FEHPRecoveryRate = 0
-MGHPRecoveryRate = 0
+; Rate of auto recover Life each second by class (without items)
+DWHPRecoveryRate=0
+DKHPRecoveryRate=0
+FEHPRecoveryRate=0
+MGHPRecoveryRate=0
 
 ;==================================================
 ; Character MP Recovery Settings
 ;==================================================
-DWMPRecoveryRate = 4
-DKMPRecoveryRate = 4
-FEMPRecoveryRate = 4
-MGMPRecoveryRate = 4
+; Rate of auto recover Mana each second by class (without items)
+DWMPRecoveryRate=4
+DKMPRecoveryRate=4
+FEMPRecoveryRate=4
+MGMPRecoveryRate=4
 
 ;==================================================
 ; Character BP Recovery Settings
 ;==================================================
-DWBPRecoveryRate = 3
-DKBPRecoveryRate = 5
-FEBPRecoveryRate = 3
-MGBPRecoveryRate = 3
+; Rate of auto recover Stamina each second by class (without items)
+DWBPRecoveryRate=3
+DKBPRecoveryRate=5
+FEBPRecoveryRate=3
+MGBPRecoveryRate=3
 
 ;==================================================
 ; Character Damage Settings
+; PhysicDamage Min & Max are used for Auto Attacks and DK/MG/ELF skills
+; MagicDamage Min & Max are used for DW/MG magic skills
 ;==================================================
-DWPhysiDamageMinConstA = 6
-DWPhysiDamageMaxConstA = 4
-DWMagicDamageMinConstA = 9
-DWMagicDamageMaxConstA = 4
-DKPhysiDamageMinConstA = 8
-DKPhysiDamageMaxConstA = 4
-DKMagicDamageMinConstA = 9
-DKMagicDamageMaxConstA = 4
-FEPhysiDamageMinConstA = 7
-FEPhysiDamageMaxConstA = 4
-FEPhysiDamageMinBowConstA = 14
-FEPhysiDamageMinBowConstB = 7
-FEPhysiDamageMaxBowConstA = 8
-FEPhysiDamageMaxBowConstB = 4
-FEMagicDamageMinConstA = 9
-FEMagicDamageMaxConstA = 4
-MGPhysiDamageMinConstA = 6
-MGPhysiDamageMinConstB = 12
-MGPhysiDamageMaxConstA = 4
-MGPhysiDamageMaxConstB = 8
-MGMagicDamageMinConstA = 9
-MGMagicDamageMaxConstA = 4
+; PhysiDamageMin = Strength / DWPhysiDamageMinConstA
+DWPhysiDamageMinConstA=6
+
+; PhysiDamageMax = Strength / DWPhysiDamageMaxConstA
+DWPhysiDamageMaxConstA=4
+
+; MagicDamageMin = Energy / DWMagicDamageMinConstA
+DWMagicDamageMinConstA=9
+
+; MagicDamageMax = Energy / DWMagicDamageMaxConstA
+DWMagicDamageMaxConstA=4
+
+; PhysiDamageMin = Strength / DKPhysiDamageMinConstA
+DKPhysiDamageMinConstA=8
+
+; PhysiDamageMax = Strength / DKPhysiDamageMaxConstA
+DKPhysiDamageMaxConstA=4
+
+; MagicDamageMin = Energy / DKMagicDamageMinConstA
+DKMagicDamageMinConstA=9
+
+; MagicDamageMax = Energy / DKMagicDamageMaxConstA
+DKMagicDamageMaxConstA=4
+
+; PhysiDamageMin = (Strength + Dexterity) / FEPhysiDamageMinConstA -> Without Bow/Crossbow
+FEPhysiDamageMinConstA=7
+
+; PhysiDamageMax = (Strength + Dexterity) / FEPhysiDamageMaxConstA -> Without Bow/Crossbow
+FEPhysiDamageMaxConstA=4
+
+; PhysiDamageMin = (Strength / FEPhysiDamageMinBowConstA) + (Dexterity / FEPhysiDamageMinBowConstB) -> With Bow/Crossbow
+FEPhysiDamageMinBowConstA=14
+FEPhysiDamageMinBowConstB=7
+
+; PhysiDamageMin = (Strength / FEPhysiDamageMaxBowConstA) + (Dexterity / FEPhysiDamageMaxBowConstB) -> With Bow/Crossbow
+FEPhysiDamageMaxBowConstA=8
+FEPhysiDamageMaxBowConstB=4
+
+; MagicDamageMin = Energy / FEMagicDamageMinConstA
+FEMagicDamageMinConstA=9
+
+; MagicDamageMax = Energy / FEMagicDamageMaxConstA
+FEMagicDamageMaxConstA=4
+
+; PhysiDamageMin = (Strength / MGPhysiDamageMinConstA) + (Energy / MGPhysiDamageMinConstB)
+MGPhysiDamageMinConstA=6
+MGPhysiDamageMinConstB=12
+
+; PhysiDamageMax = (Strength / MGPhysiDamageMaxConstA) + (Energy / MGPhysiDamageMaxConstB);
+MGPhysiDamageMaxConstA=4
+MGPhysiDamageMaxConstB=8
+
+; MagicDamageMin = Energy / MGMagicDamageMinConstA
+MGMagicDamageMinConstA=9
+
+; MagicDamageMax = Energy / MGMagicDamageMaxConstA
+MGMagicDamageMaxConstA=4
 
 ;==================================================
 ; Character Attack Success Rate Settings
+; AttackSuccessRate is used to check the Miss against the target DefenseSuccessRate
 ;==================================================
-DWAttackSuccessRateConstA = 5
-DWAttackSuccessRateConstB = 3
-DWAttackSuccessRateConstC = 2
-DWAttackSuccessRateConstD = 4
-DKAttackSuccessRateConstA = 5
-DKAttackSuccessRateConstB = 3
-DKAttackSuccessRateConstC = 2
-DKAttackSuccessRateConstD = 4
-FEAttackSuccessRateConstA = 5
-FEAttackSuccessRateConstB = 3
-FEAttackSuccessRateConstC = 2
-FEAttackSuccessRateConstD = 4
-MGAttackSuccessRateConstA = 5
-MGAttackSuccessRateConstB = 3
-MGAttackSuccessRateConstC = 2
-MGAttackSuccessRateConstD = 4
+; AttackSuccessRate = (PlayerLevel * DWAttackSuccessRateConstA) + ((Dexterity * DWAttackSuccessRateConstB) / DWAttackSuccessRateConstC) + (Strength / DWAttackSuccessRateConstD)
+DWAttackSuccessRateConstA=5
+DWAttackSuccessRateConstB=3
+DWAttackSuccessRateConstC=2
+DWAttackSuccessRateConstD=4
+
+; AttackSuccessRate = (PlayerLevel * DKAttackSuccessRateConstA) + ((Dexterity * DKAttackSuccessRateConstB) / DKAttackSuccessRateConstC) + (Strength / DKAttackSuccessRateConstD)
+DKAttackSuccessRateConstA=5
+DKAttackSuccessRateConstB=3
+DKAttackSuccessRateConstC=2
+DKAttackSuccessRateConstD=4
+
+; AttackSuccessRate = (PlayerLevel * FEAttackSuccessRateConstA) + ((Dexterity * FEAttackSuccessRateConstB) / FEAttackSuccessRateConstC) + (Strength / FEAttackSuccessRateConstD)
+FEAttackSuccessRateConstA=5
+FEAttackSuccessRateConstB=3
+FEAttackSuccessRateConstC=2
+FEAttackSuccessRateConstD=4
+
+; AttackSuccessRate = (PlayerLevel * MGAttackSuccessRateConstA) + ((Dexterity * MGAttackSuccessRateConstB) / MGAttackSuccessRateConstC) + (Strength / MGAttackSuccessRateConstD)
+MGAttackSuccessRateConstA=5
+MGAttackSuccessRateConstB=3
+MGAttackSuccessRateConstC=2
+MGAttackSuccessRateConstD=4
 
 ;==================================================
 ; Character Speed Settings
 ;==================================================
-DWPhysiSpeedConstA = 20
-DWMagicSpeedConstA = 10
-DKPhysiSpeedConstA = 15
-DKMagicSpeedConstA = 20
-FEPhysiSpeedConstA = 100
-FEMagicSpeedConstA = 200
-MGPhysiSpeedConstA = 30
-MGMagicSpeedConstA = 20
+; PhysiSpeed = Dexterity / DWPhysiSpeedConstA
+DWPhysiSpeedConstA=20
+
+; MagicSpeed = Dexterity / DWMagicSpeedConstA
+DWMagicSpeedConstA=10
+
+; PhysiSpeed = Dexterity / DKPhysiSpeedConstA
+DKPhysiSpeedConstA=15
+
+; MagicSpeed = Dexterity / DKMagicSpeedConstA
+DKMagicSpeedConstA=20
+
+; PhysiSpeed = Dexterity / FEPhysiSpeedConstA
+FEPhysiSpeedConstA=100
+
+; MagicSpeed = Dexterity / FEMagicSpeedConstA
+FEMagicSpeedConstA=200
+
+; PhysiSpeed = Dexterity / MGPhysiSpeedConstA
+MGPhysiSpeedConstA=30
+
+; MagicSpeed = Dexterity / MGMagicSpeedConstA
+MGMagicSpeedConstA=20
 
 ;==================================================
 ; Character Defense Success Rate Settings
+; DefenseSuccessRate is used to check the Miss against the attacker's AttackSuccessRate
 ;==================================================
-DWDefenseSuccessRateConstA = 3
-DKDefenseSuccessRateConstA = 3
-FEDefenseSuccessRateConstA = 4
-MGDefenseSuccessRateConstA = 3
+; DefenseSuccessRate = Dexterity / DWDefenseSuccessRateConstA
+DWDefenseSuccessRateConstA=3
+
+; DefenseSuccessRate = Dexterity / DKDefenseSuccessRateConstA
+DKDefenseSuccessRateConstA=3
+
+; DefenseSuccessRate = Dexterity / FEDefenseSuccessRateConstA
+FEDefenseSuccessRateConstA=4
+
+; DefenseSuccessRate = Dexterity / MGDefenseSuccessRateConstA
+MGDefenseSuccessRateConstA=3
 
 ;==================================================
 ; Character Defense Settings
+; Defense is used to reduce the attacker's damage
 ;==================================================
-DWDefenseConstA = 4
-DKDefenseConstA = 3
-FEDefenseConstA = 10
-MGDefenseConstA = 4
+; Defense = Dexterity / DWDefenseConstA
+DWDefenseConstA=4
+
+; Defense = Dexterity / DKDefenseConstA
+DKDefenseConstA=3
+
+; Defense = Dexterity / FEDefenseConstA
+FEDefenseConstA=10
+
+; Defense = Dexterity / MGDefenseConstA
+MGDefenseConstA=4

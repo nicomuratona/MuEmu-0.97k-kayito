@@ -716,9 +716,12 @@ bool CItemManager::CheckItemMoveToTrade(LPOBJ lpObj, CItem* lpItem, BYTE TargetF
 		return 0;
 	}
 
-	if (this->CheckItemMoveToBlock(lpObj, lpItem) == 0)
+	if (gServerInfo.m_TradeItemBlockExc != 0 && lpItem->IsExcItem() != 0 && GetExceOptionCount(lpItem->m_ExceOption) >= gServerInfo.m_TradeItemBlockExc)
 	{
-		return 0;
+		if (lpObj->Authority != 32)
+		{
+			return 0;
+		}
 	}
 
 	return 1;
@@ -752,21 +755,6 @@ bool CItemManager::CheckItemMoveToChaos(LPOBJ lpObj, CItem* lpItem, BYTE TargetF
 		{
 			return 0;
 		}
-	}
-
-	return 1;
-}
-
-bool CItemManager::CheckItemMoveToBlock(LPOBJ lpObj, CItem* lpItem)
-{
-	if (gServerInfo.m_TradeItemBlock == 0 || lpObj->Authority == 32)
-	{
-		return 1;
-	}
-
-	if (gServerInfo.m_TradeItemBlockExc != 0 && lpItem->IsExcItem() != 0 && GetExceOptionCount(lpItem->m_ExceOption) >= gServerInfo.m_TradeItemBlockExc)
-	{
-		return 0;
 	}
 
 	return 1;
@@ -1764,6 +1752,8 @@ bool CItemManager::RepairItem(LPOBJ lpObj, CItem* lpItem, int slot, int type, DW
 
 	if (lpObj->Money < ((DWORD)cost))
 	{
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(112, lpObj->Lang));
+
 		return false;
 	}
 
@@ -2362,6 +2352,8 @@ void CItemManager::CGItemGetRecv(PMSG_ITEM_GET_RECV* lpMsg, int aIndex)
 
 		if (gObjCheckMaxMoney(aIndex, lpItem->m_BuyMoney) == 0)
 		{
+			gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(111, lpObj->Lang));
+
 			lpObj->Money = MAX_MONEY;
 		}
 		else
@@ -3024,6 +3016,8 @@ void CItemManager::CGItemBuyRecv(PMSG_ITEM_BUY_RECV* lpMsg, int aIndex)
 
 	if (lpObj->Money < item.m_BuyMoney)
 	{
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(112, lpObj->Lang));
+
 		DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 
 		return;
@@ -3121,17 +3115,22 @@ void CItemManager::CGItemSellRecv(PMSG_ITEM_SELL_RECV* lpMsg, int aIndex)
 		return;
 	}
 
-	if (gServerInfo.m_TradeItemBlockSell != 0 && this->CheckItemMoveToBlock(lpObj, lpItem) == 0)
+	if (gServerInfo.m_ShopItemBlockExc != 0 && lpItem->IsExcItem() != 0 && GetExceOptionCount(lpItem->m_ExceOption) >= gServerInfo.m_ShopItemBlockExc)
 	{
-		DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
+		if (lpObj->Authority != 32)
+		{
+			DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 
-		return;
+			return;
+		}
 	}
 
 	lpItem->Value();
 
 	if (gObjCheckMaxMoney(aIndex, lpItem->m_SellMoney) == 0)
 	{
+		gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(111, lpObj->Lang));
+
 		if (gServerInfo.m_ShopItemBlockSellOnMaxMoney != 0)
 		{
 			DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);

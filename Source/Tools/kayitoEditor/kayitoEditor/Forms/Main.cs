@@ -538,18 +538,7 @@ namespace kayito_Editor
 
 					reader.Close();
 
-					string AccountExpireDate;
-					string Bloc_Expire;
-
-				#if MYSQL
-					AccountExpireDate = this.Vip_Date.Value.ToString("yyyy-MM-dd HH:mm:ss");
-					Bloc_Expire = this.Ban_Date.Value.ToString("yyyy-MM-dd HH:mm:ss");
-				#else
-					AccountExpireDate = this.Vip_Date.Value.ToString("yyyy-dd-MM HH:mm:ss");
-					Bloc_Expire = this.Ban_Date.Value.ToString("yyyy-dd-MM HH:mm:ss");
-				#endif
-
-					query = $"UPDATE MEMB_INFO SET memb__pwd = '{this.Pass_Box.Text.Trim()}', sno__numb = '{this.Code_Box.Text.Trim()}', AccountLevel = {this.Vip_Level.Value}, AccountExpireDate = '{AccountExpireDate}', bloc_code = {(!this.Ban_Box.Checked ? '0' : '1')}, Bloc_Expire = '{Bloc_Expire}' WHERE (memb___id = '{this.User_Box.Text.Trim()}')";
+					query = $"UPDATE MEMB_INFO SET memb__pwd = '{this.Pass_Box.Text.Trim()}', sno__numb = '{this.Code_Box.Text.Trim()}', AccountLevel = {this.Vip_Level.Value}, AccountExpireDate = '{this.Vip_Date.Value.ToString("yyyy-MM-ddTHH:mm:ss")}', bloc_code = {(!this.Ban_Box.Checked ? '0' : '1')}, Bloc_Expire = '{this.Ban_Date.Value.ToString("yyyy-MM-ddTHH:mm:ss")}' WHERE (memb___id = '{this.User_Box.Text.Trim()}')";
 
 					if (MuOnline.Me_ExecuteSQL(query))
 					{

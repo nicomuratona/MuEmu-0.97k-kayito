@@ -363,9 +363,19 @@ void CTrade::CGTradeOkButtonRecv(PMSG_TRADE_OK_BUTTON_RECV* lpMsg, int aIndex)
 
 		this->GCTradeResultSend(aIndex, 5);
 
+		if (gObjCheckMaxMoney(aIndex, lpTarget->TradeMoney) == 0)
+		{
+			gNotice.GCNoticeSend(lpObj->Index, 1, gMessage.GetTextMessage(111, lpObj->Lang));
+		}
+
 		this->ResetTrade(bIndex);
 
 		this->GCTradeResultSend(bIndex, 5);
+
+		if (gObjCheckMaxMoney(bIndex, lpObj->TradeMoney) == 0)
+		{
+			gNotice.GCNoticeSend(lpTarget->Index, 1, gMessage.GetTextMessage(111, lpTarget->Lang));
+		}
 
 		return;
 	}

@@ -54,8 +54,6 @@ public:
 
 	int GetDefenseSuccessRate();
 
-	int GetBookSuccessRate();
-
 	bool WeaponDurabilityDown(int aIndex, int defense, int type);
 
 	bool ArmorDurabilityDown(int aIndex, int damage);

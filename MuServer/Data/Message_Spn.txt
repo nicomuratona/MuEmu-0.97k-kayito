@@ -183,4 +183,6 @@
 108	"Este es un item de Quest y no estás haciendo esa quest."
 109	"No puedes tener más de este item de Quest."
 110	"Tu inventario está lleno."
+111	"Has alcanzado el máximo zen."
+112	"No tienes suficiente zen."
 end

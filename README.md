@@ -325,3 +325,9 @@ hacia otro archivo separado en
 - Se corrigió el error al intentar colocar zen superior al propio dentro del trade
 - Se corrigió el error al clickear en el NPC de Quest cuando no se cumplen los requisitos de nivel
 - Se corrigió un error que al estar utilizando el Twisting, no se podía quitar el arma
+- Se expandió el máximo de zen para insertar al trade/warehouse
+- Se añadió el mensaje de zen al máximo
+- Se añadió el mensaje de zen insuficiente
+- Se eliminó el log de chaos mix al subir a +11
+- Se añadió la opción Infinity Arrows al Common.dat
+- Se corrigió un error en el Kayito Editor que fallaba al cambiar la fecha de Ban y de VIP

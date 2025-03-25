@@ -45,7 +45,7 @@ void CServerDisplayer::Init(HWND hWnd)
 {
 	this->m_hwnd = hWnd;
 
-	gLog.AddLog(true, "LOG");
+	gLog.AddLog(gServerInfo.m_WriteGeneralLog, "LOG");
 
 	gLog.AddLog(gServerInfo.m_WriteChatLog, "CHAT_LOG");
 

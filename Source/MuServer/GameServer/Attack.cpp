@@ -468,7 +468,7 @@ bool CAttack::DecreaseArrow(LPOBJ lpObj)
 		{
 			return false;
 		}
-		else
+		else if (!gServerInfo.m_ArrowsInfiniteDurability)
 		{
 			gItemManager.DecreaseItemDur(lpObj, 1, 1);
 		}
@@ -480,7 +480,7 @@ bool CAttack::DecreaseArrow(LPOBJ lpObj)
 		{
 			return false;
 		}
-		else
+		else if (!gServerInfo.m_ArrowsInfiniteDurability)
 		{
 			gItemManager.DecreaseItemDur(lpObj, 0, 1);
 		}

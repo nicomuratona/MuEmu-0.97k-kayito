@@ -1,228 +1,229 @@
 [GameServerInfo]
 ;==================================================
 ; Post Command Settings
-; Normal: 0 = Gold / 1 = Blue[Party] / 2 = Green[Guild]
-; Global: 3 = Gold / 4 = Blue[Party] / 5 = Green[Guild]
+; Normal: 0 = Gold / 1 = Blue [Party] / 2 = Green [Guild]
+; Global: 3 = Gold / 4 = Blue [Party] / 5 = Green [Guild]
 ;==================================================
-CommandPostType = 3
+CommandPostType=3
 
 ;==================================================
 ; Add Point Command Settings
 ;==================================================
-; Enable Add Points Auto (0=No/1=Yes)
-CommandAddPointAutoEnable_AL0 = 1
-CommandAddPointAutoEnable_AL1 = 1
-CommandAddPointAutoEnable_AL2 = 1
-CommandAddPointAutoEnable_AL3 = 1
+; Enable Add Points Auto (0 = No / 1 = Yes)
+CommandAddPointAutoEnable_AL0=1
+CommandAddPointAutoEnable_AL1=1
+CommandAddPointAutoEnable_AL2=1
+CommandAddPointAutoEnable_AL3=1
 
 ;==================================================
 ; Reset Command Settings
 ;==================================================
-; Enable Reset Auto (0=No/1=Yes)
-CommandResetAutoEnable_AL0 = 1
-CommandResetAutoEnable_AL1 = 1
-CommandResetAutoEnable_AL2 = 1
-CommandResetAutoEnable_AL3 = 1
+; Enable Reset Auto (0 = No / 1 = Yes)
+CommandResetAutoEnable_AL0=1
+CommandResetAutoEnable_AL1=1
+CommandResetAutoEnable_AL2=1
+CommandResetAutoEnable_AL3=1
 
 ; Required level to use "/reset"
-CommandResetLevel_AL0 = 400
-CommandResetLevel_AL1 = 400
-CommandResetLevel_AL2 = 400
-CommandResetLevel_AL3 = 400
+CommandResetLevel_AL0=400
+CommandResetLevel_AL1=400
+CommandResetLevel_AL2=400
+CommandResetLevel_AL3=400
 
 ; Character level after utilizing "/reset"
-CommandResetStartLevel_AL0 = 1
-CommandResetStartLevel_AL1 = 1
-CommandResetStartLevel_AL2 = 1
-CommandResetStartLevel_AL3 = 1
+CommandResetStartLevel_AL0=1
+CommandResetStartLevel_AL1=1
+CommandResetStartLevel_AL2=1
+CommandResetStartLevel_AL3=1
 
 ; Required money to use "/reset"
-CommandResetMoney_AL0 = 0
-CommandResetMoney_AL1 = 0
-CommandResetMoney_AL2 = 0
-CommandResetMoney_AL3 = 0
+CommandResetMoney_AL0=0
+CommandResetMoney_AL1=0
+CommandResetMoney_AL2=0
+CommandResetMoney_AL3=0
 
 ; Amount of points gain after utilizing "/reset"
-CommandResetPoint_AL0 = 0
-CommandResetPoint_AL1 = 0
-CommandResetPoint_AL2 = 0
-CommandResetPoint_AL3 = 0
+CommandResetPoint_AL0=0
+CommandResetPoint_AL1=0
+CommandResetPoint_AL2=0
+CommandResetPoint_AL3=0
 
 ; Percentage of points gain after utilizing "/reset"
-CommandResetPointRateDW = 100
-CommandResetPointRateDK = 100
-CommandResetPointRateFE = 100
-CommandResetPointRateMG = 100
+CommandResetPointRateDW=100
+CommandResetPointRateDK=100
+CommandResetPointRateFE=100
+CommandResetPointRateMG=100
 
 ; Amount of resets gain after utilizing "/reset"
-CommandResetCount_AL0 = 1
-CommandResetCount_AL1 = 1
-CommandResetCount_AL2 = 1
-CommandResetCount_AL3 = 1
+CommandResetCount_AL0=1
+CommandResetCount_AL1=1
+CommandResetCount_AL2=1
+CommandResetCount_AL3=1
 
-; Check equipped items (0=No/1=Yes)
-CommandResetCheckItem_AL0 = 0
-CommandResetCheckItem_AL1 = 0
-CommandResetCheckItem_AL2 = 0
-CommandResetCheckItem_AL3 = 0
+; Check equipped items (0 = No / 1 = Yes)
+CommandResetCheckItem_AL0=0
+CommandResetCheckItem_AL1=0
+CommandResetCheckItem_AL2=0
+CommandResetCheckItem_AL3=0
 
-; Clear character stats (0=No/1=Yes)
-CommandResetStat_AL0 = 0
-CommandResetStat_AL1 = 0
-CommandResetStat_AL2 = 0
-CommandResetStat_AL3 = 0
+; Clear character stats (0 = No / 1 = Yes)
+CommandResetStat_AL0=0
+CommandResetStat_AL1=0
+CommandResetStat_AL2=0
+CommandResetStat_AL3=0
 
-; Clear character quests (0=No/1=Yes)
-CommandResetQuest_AL0 = 0
-CommandResetQuest_AL1 = 0
-CommandResetQuest_AL2 = 0
-CommandResetQuest_AL3 = 0
+; Clear character quests (0 = No / 1 = Yes)
+CommandResetQuest_AL0=0
+CommandResetQuest_AL1=0
+CommandResetQuest_AL2=0
+CommandResetQuest_AL3=0
 
-; Clear character skills (0=No/1=Yes)
-CommandResetSkill_AL0 = 0
-CommandResetSkill_AL1 = 0
-CommandResetSkill_AL2 = 0
-CommandResetSkill_AL3 = 0
+; Clear character skills (0 = No / 1 = Yes)
+CommandResetSkill_AL0=0
+CommandResetSkill_AL1=0
+CommandResetSkill_AL2=0
+CommandResetSkill_AL3=0
 
-; Move character (0=No/1=Safe Zone/2=Select Character)
-CommandResetMove_AL0 = 1
-CommandResetMove_AL1 = 1
-CommandResetMove_AL2 = 1
-CommandResetMove_AL3 = 1
+; Move character (0 = No / 1 = Safe Zone / 2 = Select Character)
+CommandResetMove_AL0=1
+CommandResetMove_AL1=1
+CommandResetMove_AL2=1
+CommandResetMove_AL3=1
 
 ; Maximum resets 
-CommandResetLimit_AL0 = 10000
-CommandResetLimit_AL1 = 10000
-CommandResetLimit_AL2 = 10000
-CommandResetLimit_AL3 = 10000
+CommandResetLimit_AL0=10000
+CommandResetLimit_AL1=10000
+CommandResetLimit_AL2=10000
+CommandResetLimit_AL3=10000
 
 ; Maximum resets per day
-CommandResetLimitDay_AL0 = 10000
-CommandResetLimitDay_AL1 = 10000
-CommandResetLimitDay_AL2 = 10000
-CommandResetLimitDay_AL3 = 10000
+CommandResetLimitDay_AL0=10000
+CommandResetLimitDay_AL1=10000
+CommandResetLimitDay_AL2=10000
+CommandResetLimitDay_AL3=10000
 
 ; Maximum resets per week
-CommandResetLimitWek_AL0 = 10000
-CommandResetLimitWek_AL1 = 10000
-CommandResetLimitWek_AL2 = 10000
-CommandResetLimitWek_AL3 = 10000
+CommandResetLimitWek_AL0=10000
+CommandResetLimitWek_AL1=10000
+CommandResetLimitWek_AL2=10000
+CommandResetLimitWek_AL3=10000
 
 ; Maximum resets per month
-CommandResetLimitMon_AL0 = 10000
-CommandResetLimitMon_AL1 = 10000
-CommandResetLimitMon_AL2 = 10000
-CommandResetLimitMon_AL3 = 10000
+CommandResetLimitMon_AL0=10000
+CommandResetLimitMon_AL1=10000
+CommandResetLimitMon_AL2=10000
+CommandResetLimitMon_AL3=10000
 
 ;==================================================
 ; Reset Command Settings
 ;==================================================
 ; Required level to use "/grandreset"
-CommandGrandResetLevel_AL0 = 400
-CommandGrandResetLevel_AL1 = 400
-CommandGrandResetLevel_AL2 = 400
-CommandGrandResetLevel_AL3 = 400
+CommandGrandResetLevel_AL0=400
+CommandGrandResetLevel_AL1=400
+CommandGrandResetLevel_AL2=400
+CommandGrandResetLevel_AL3=400
 
 ; Character level after utilizing "/grandreset"
-CommandGrandResetStartLevel_AL0 = 1
-CommandGrandResetStartLevel_AL1 = 1
-CommandGrandResetStartLevel_AL2 = 1
-CommandGrandResetStartLevel_AL3 = 1
+CommandGrandResetStartLevel_AL0=1
+CommandGrandResetStartLevel_AL1=1
+CommandGrandResetStartLevel_AL2=1
+CommandGrandResetStartLevel_AL3=1
 
 ; Required Reset to use "/grandreset" 
-CommandGrandResetReset_AL0 = 400
-CommandGrandResetReset_AL1 = 400
-CommandGrandResetReset_AL2 = 400
-CommandGrandResetReset_AL3 = 400
+CommandGrandResetReset_AL0=400
+CommandGrandResetReset_AL1=400
+CommandGrandResetReset_AL2=400
+CommandGrandResetReset_AL3=400
 
 ; Character Reset after utilizing "/grandreset"
-CommandGrandResetStartReset_AL0 = 1
-CommandGrandResetStartReset_AL1 = 1
-CommandGrandResetStartReset_AL2 = 1
-CommandGrandResetStartReset_AL3 = 1
+CommandGrandResetStartReset_AL0=1
+CommandGrandResetStartReset_AL1=1
+CommandGrandResetStartReset_AL2=1
+CommandGrandResetStartReset_AL3=1
 
 ; Required money to use "/grandreset"
-CommandGrandResetMoney_AL0 = 0
-CommandGrandResetMoney_AL1 = 0
-CommandGrandResetMoney_AL2 = 0
-CommandGrandResetMoney_AL3 = 0
+CommandGrandResetMoney_AL0=0
+CommandGrandResetMoney_AL1=0
+CommandGrandResetMoney_AL2=0
+CommandGrandResetMoney_AL3=0
 
 ; Amount of points gain after utilizing "/grandreset"
-CommandGrandResetPoint_AL0 = 0
-CommandGrandResetPoint_AL1 = 0
-CommandGrandResetPoint_AL2 = 0
-CommandGrandResetPoint_AL3 = 0
+CommandGrandResetPoint_AL0=0
+CommandGrandResetPoint_AL1=0
+CommandGrandResetPoint_AL2=0
+CommandGrandResetPoint_AL3=0
 
 ; Percentage of points gain after utilizing "/grandreset"
-CommandGrandResetPointRateDW = 100
-CommandGrandResetPointRateDK = 100
-CommandGrandResetPointRateFE = 100
-CommandGrandResetPointRateMG = 100
+CommandGrandResetPointRateDW=100
+CommandGrandResetPointRateDK=100
+CommandGrandResetPointRateFE=100
+CommandGrandResetPointRateMG=100
 
 ; Amount of grandresets gain after utilizing "/grandreset"
-CommandGrandResetCount_AL0 = 1
-CommandGrandResetCount_AL1 = 1
-CommandGrandResetCount_AL2 = 1
-CommandGrandResetCount_AL3 = 1
+CommandGrandResetCount_AL0=1
+CommandGrandResetCount_AL1=1
+CommandGrandResetCount_AL2=1
+CommandGrandResetCount_AL3=1
 
-; Check equipped items (0=No/1=Yes)
-CommandGrandResetCheckItem_AL0 = 0
-CommandGrandResetCheckItem_AL1 = 0
-CommandGrandResetCheckItem_AL2 = 0
-CommandGrandResetCheckItem_AL3 = 0
+; Check equipped items (0 = No / 1 = Yes)
+CommandGrandResetCheckItem_AL0=0
+CommandGrandResetCheckItem_AL1=0
+CommandGrandResetCheckItem_AL2=0
+CommandGrandResetCheckItem_AL3=0
 
-; Clear character stats (0=No/1=Yes)
-CommandGrandResetStat_AL0 = 0
-CommandGrandResetStat_AL1 = 0
-CommandGrandResetStat_AL2 = 0
-CommandGrandResetStat_AL3 = 0
+; Clear character stats (0 = No / 1 = Yes)
+CommandGrandResetStat_AL0=0
+CommandGrandResetStat_AL1=0
+CommandGrandResetStat_AL2=0
+CommandGrandResetStat_AL3=0
 
-; Clear character quests (0=No/1=Yes)
-CommandGrandResetQuest_AL0 = 0
-CommandGrandResetQuest_AL1 = 0
-CommandGrandResetQuest_AL2 = 0
-CommandGrandResetQuest_AL3 = 0
+; Clear character quests (0 = No / 1 = Yes)
+CommandGrandResetQuest_AL0=0
+CommandGrandResetQuest_AL1=0
+CommandGrandResetQuest_AL2=0
+CommandGrandResetQuest_AL3=0
 
-; Clear character skills (0=No/1=Yes)
-CommandGrandResetSkill_AL0 = 0
-CommandGrandResetSkill_AL1 = 0
-CommandGrandResetSkill_AL2 = 0
-CommandGrandResetSkill_AL3 = 0
+; Clear character skills (0 = No / 1 = Yes)
+CommandGrandResetSkill_AL0=0
+CommandGrandResetSkill_AL1=0
+CommandGrandResetSkill_AL2=0
+CommandGrandResetSkill_AL3=0
 
-; Move character (0=No/1=Safe Zone/2=Select Character)
-CommandGrandResetMove_AL0 = 1
-CommandGrandResetMove_AL1 = 1
-CommandGrandResetMove_AL2 = 1
-CommandGrandResetMove_AL3 = 1
+; Move character (0 = No / 1 = Safe Zone / 2 = Select Character)
+CommandGrandResetMove_AL0=1
+CommandGrandResetMove_AL1=1
+CommandGrandResetMove_AL2=1
+CommandGrandResetMove_AL3=1
 
 ; Maximum resets 
-CommandGrandResetLimit_AL0 = 10000
-CommandGrandResetLimit_AL1 = 10000
-CommandGrandResetLimit_AL2 = 10000
-CommandGrandResetLimit_AL3 = 10000
+CommandGrandResetLimit_AL0=10000
+CommandGrandResetLimit_AL1=10000
+CommandGrandResetLimit_AL2=10000
+CommandGrandResetLimit_AL3=10000
 
 ; Maximum resets per day
-CommandGrandResetLimitDay_AL0 = 10000
-CommandGrandResetLimitDay_AL1 = 10000
-CommandGrandResetLimitDay_AL2 = 10000
-CommandGrandResetLimitDay_AL3 = 10000
+CommandGrandResetLimitDay_AL0=10000
+CommandGrandResetLimitDay_AL1=10000
+CommandGrandResetLimitDay_AL2=10000
+CommandGrandResetLimitDay_AL3=10000
 
 ; Maximum resets per week
-CommandGrandResetLimitWek_AL0 = 10000
-CommandGrandResetLimitWek_AL1 = 10000
-CommandGrandResetLimitWek_AL2 = 10000
-CommandGrandResetLimitWek_AL3 = 10000
+CommandGrandResetLimitWek_AL0=10000
+CommandGrandResetLimitWek_AL1=10000
+CommandGrandResetLimitWek_AL2=10000
+CommandGrandResetLimitWek_AL3=10000
 
 ; Maximum resets per month
-CommandGrandResetLimitMon_AL0 = 10000
-CommandGrandResetLimitMon_AL1 = 10000
-CommandGrandResetLimitMon_AL2 = 10000
-CommandGrandResetLimitMon_AL3 = 10000
+CommandGrandResetLimitMon_AL0=10000
+CommandGrandResetLimitMon_AL1=10000
+CommandGrandResetLimitMon_AL2=10000
+CommandGrandResetLimitMon_AL3=10000
 
 ;==================================================
 ; Ware Command Settings
 ;==================================================
-CommandWareNumber_AL0 = 5
-CommandWareNumber_AL1 = 5
-CommandWareNumber_AL2 = 5
-CommandWareNumber_AL3 = 5
+; Number of available wares to change
+CommandWareNumber_AL0=5
+CommandWareNumber_AL1=5
+CommandWareNumber_AL2=5
+CommandWareNumber_AL3=5
