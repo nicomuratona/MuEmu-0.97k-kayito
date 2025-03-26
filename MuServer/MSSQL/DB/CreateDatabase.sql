@@ -540,22 +540,18 @@ BEGIN
 		END
 		ELSE
 		BEGIN
-			UPDATE AccountCharacter
-			SET GameID1 = CASE WHEN GameID1 IS NULL OR LEN(GameID1) = 0 THEN @inCharName ELSE GameID1 END,
-				GameID2 = CASE WHEN GameID1 IS NOT NULL AND GameID2 IS NULL OR LEN(GameID2) = 0 THEN @inCharName ELSE GameID2 END,
-				GameID3 = CASE WHEN GameID2 IS NOT NULL AND GameID3 IS NULL OR LEN(GameID3) = 0 THEN @inCharName ELSE GameID3 END,
-				GameID4 = CASE WHEN GameID3 IS NOT NULL AND GameID4 IS NULL OR LEN(GameID4) = 0 THEN @inCharName ELSE GameID4 END,
-				GameID5 = CASE WHEN GameID4 IS NOT NULL AND GameID5 IS NULL OR LEN(GameID5) = 0 THEN @inCharName ELSE GameID5 END
-			WHERE Id = @inAccountID
-
 			IF NOT EXISTS (
 				SELECT 1 FROM AccountCharacter
-				WHERE Id = @inAccountID AND 
-					  (GameID1 = @inCharName OR GameID2 = @inCharName OR GameID3 = @inCharName OR GameID4 = @inCharName OR GameID5 = @inCharName)
+				WHERE Id = @inAccountID
+					AND (GameID1 IS NULL
+						OR GameID2 IS NULL
+						OR GameID3 IS NULL
+						OR GameID4 IS NULL
+						OR GameID5 IS NULL)
 			)
 			BEGIN
 				ROLLBACK TRANSACTION
-				SELECT 3 AS Result
+				SELECT 2 AS Result
 				RETURN
 			END
 		END
@@ -608,6 +604,21 @@ BEGIN
 			DELETE FROM RankingBloodCastle WHERE Name = @inCharName
 			DELETE FROM RankingDevilSquare WHERE Name = @inCharName
 			DELETE FROM Character WHERE AccountID = @inAccountID AND Name = @inCharName
+
+			UPDATE AccountCharacter
+			SET GameID1 = NULLIF(GameID1, @inCharName),
+				GameID2 = NULLIF(GameID2, @inCharName),
+				GameID3 = NULLIF(GameID3, @inCharName),
+				GameID4 = NULLIF(GameID4, @inCharName),
+				GameID5 = NULLIF(GameID5, @inCharName),
+				GameIDC = NULLIF(GameIDC, @inCharName)
+			WHERE Id = @inAccountID
+			AND (GameID1 = @inCharName
+				OR GameID2 = @inCharName
+				OR GameID3 = @inCharName
+				OR GameID4 = @inCharName
+				OR GameID5 = @inCharName
+				OR GameIDC = @inCharName)
 
 			SET @Result = 1
 		END

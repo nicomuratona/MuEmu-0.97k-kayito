@@ -414,25 +414,17 @@ BEGIN
 		START TRANSACTION;
 		IF NOT EXISTS (SELECT 1 FROM `AccountCharacter` WHERE Id = `inAccountID`) THEN
 			INSERT INTO `AccountCharacter` (Id, GameID1) VALUES (`inAccountID`, `inCharName`);
-		ELSE
-			SELECT GameID1, GameID2, GameID3, GameID4, GameID5
-			INTO @g1, @g2, @g3, @g4, @g5
-			FROM `AccountCharacter`
-			WHERE Id = `inAccountID`;
+		ELSEIF NOT EXISTS (
+				SELECT 1 FROM `AccountCharacter`
+				WHERE Id = `inAccountID`
+					AND (GameID1 IS NULL
+						OR GameID2 IS NULL
+						OR GameID3 IS NULL
+						OR GameID4 IS NULL
+						OR GameID5 IS NULL)
 
-			IF @g1 IS NULL OR LENGTH(@g1) = 0 THEN
-				UPDATE `AccountCharacter` SET GameID1 = `inCharName` WHERE Id = `inAccountID`;
-			ELSEIF @g2 IS NULL OR LENGTH(@g2) = 0 THEN
-				UPDATE `AccountCharacter` SET GameID2 = `inCharName` WHERE Id = `inAccountID`;
-			ELSEIF @g3 IS NULL OR LENGTH(@g3) = 0 THEN
-				UPDATE `AccountCharacter` SET GameID3 = `inCharName` WHERE Id = `inAccountID`;
-			ELSEIF @g4 IS NULL OR LENGTH(@g4) = 0 THEN
-				UPDATE `AccountCharacter` SET GameID4 = `inCharName` WHERE Id = `inAccountID`;
-			ELSEIF @g5 IS NULL OR LENGTH(@g5) = 0 THEN
-				UPDATE `AccountCharacter` SET GameID5 = `inCharName` WHERE Id = `inAccountID`;
-			ELSE
+			) THEN
 				SET @Result = 2;
-			END IF;
 		END IF;
 
 		IF @Result <> 1 THEN
@@ -477,6 +469,21 @@ BEGIN
 		DELETE FROM `OptionData` WHERE Name = `inCharName`;
 		DELETE FROM `RankingBloodCastle` WHERE Name = `inCharName`;
 		DELETE FROM `RankingDevilSquare` WHERE Name = `inCharName`;
+
+		UPDATE AccountCharacter
+			SET GameID1 = NULLIF(GameID1, @inCharName),
+				GameID2 = NULLIF(GameID2, @inCharName),
+				GameID3 = NULLIF(GameID3, @inCharName),
+				GameID4 = NULLIF(GameID4, @inCharName),
+				GameID5 = NULLIF(GameID5, @inCharName),
+				GameIDC = NULLIF(GameIDC, @inCharName)
+			WHERE Id = @inAccountID
+			AND (GameID1 = @inCharName
+				OR GameID2 = @inCharName
+				OR GameID3 = @inCharName
+				OR GameID4 = @inCharName
+				OR GameID5 = @inCharName
+				OR GameIDC = @inCharName);
 	END IF;
 
 	SELECT @Result AS Result;
