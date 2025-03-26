@@ -3,7 +3,7 @@
 #include "ProtocolDefines.h"
 #include "User.h"
 
-#define MAX_WAREHOUSE_MONEY 100000000
+#define MAX_WAREHOUSE_MONEY 2000000000
 
 //**********************************************//
 //************ Client -> GameServer ************//

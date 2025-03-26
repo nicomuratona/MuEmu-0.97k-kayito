@@ -3,7 +3,7 @@
 #include "ItemManager.h"
 #include "ProtocolDefines.h"
 
-#define MAX_TRADE_MONEY 1000000000
+#define MAX_TRADE_MONEY 2000000000
 
 //**********************************************//
 //************ Client -> GameServer ************//

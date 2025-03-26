@@ -293,7 +293,7 @@ void CTrade::CGTradeMoneyRecv(PMSG_TRADE_MONEY_RECV* lpMsg, int aIndex)
 		return;
 	}
 
-	if (lpMsg->money >= MAX_TRADE_MONEY || lpObj->Money < lpMsg->money)
+	if (lpMsg->money > MAX_TRADE_MONEY || lpObj->Money < lpMsg->money)
 	{
 		return;
 	}
