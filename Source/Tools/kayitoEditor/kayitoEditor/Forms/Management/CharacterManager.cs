@@ -114,7 +114,45 @@ namespace kayito_Editor.Forms
 
 					if (result == 1)
 					{
-						MessageBox.Show($"Character created", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						query = $"SELECT GameID1, GameID2, GameID3, GameID4, GameID5 FROM AccountCharacter WHERE Id = '{this.Account_List.Text}'";
+
+					#if MYSQL
+						reader = new MySqlCommand(query, Import.Mu_Connection).ExecuteReader();
+					#else
+						reader = new OleDbCommand(query, Import.Mu_Connection).ExecuteReader();
+					#endif
+
+						string value = null;
+
+						int slot = 0;
+
+						if (reader.Read())
+						{
+							for (slot = 0; slot < 5; slot++)
+							{
+								value = Convert.ToString(reader.GetValue(slot));
+
+								if (value == "")
+								{
+									break;
+								}
+							}
+						}
+
+						reader.Close();
+
+						value = "GameID" + (slot + 1);
+
+						query = $"UPDATE AccountCharacter SET {value} = '{this.Name_Box.Text}' WHERE Id='{this.Account_List.Text}'";
+
+						if (MuOnline.Mu_ExecuteSQL(query))
+						{
+							MessageBox.Show($"Character created.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						}
+						else
+						{
+							MessageBox.Show($"Error: Character create failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						}
 					}
 					else if (result == 0)
 					{
