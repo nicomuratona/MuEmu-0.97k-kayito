@@ -151,9 +151,9 @@ void CItemValue::GCItemValueListSend(int aIndex)
 
 	for (std::vector<ITEM_VALUE_INFO>::iterator it = this->m_ItemValueInfo.begin(); it != this->m_ItemValueInfo.end(); it++)
 	{
-		info.Index = GET_MAX_WORD_VALUE(it->Index);
+		info.Index = it->Index;
 
-		info.Level = (BYTE)it->Level;
+		info.Level = it->Level;
 
 		info.BuyValue = it->BuyValue;
 
