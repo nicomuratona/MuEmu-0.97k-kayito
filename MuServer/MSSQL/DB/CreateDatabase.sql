@@ -536,7 +536,7 @@ BEGIN
 		IF NOT EXISTS (SELECT 1 FROM AccountCharacter WHERE Id = @inAccountID)
 		BEGIN
 			INSERT INTO AccountCharacter (Id, GameID1, GameID2, GameID3, GameID4, GameID5, GameIDC)
-			VALUES (@inAccountID, @inCharName, NULL, NULL, NULL, NULL, NULL)
+			VALUES (@inAccountID, NULL, NULL, NULL, NULL, NULL, NULL)
 		END
 		ELSE
 		BEGIN

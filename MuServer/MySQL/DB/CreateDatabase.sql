@@ -413,7 +413,7 @@ BEGIN
 	ELSE
 		START TRANSACTION;
 		IF NOT EXISTS (SELECT 1 FROM `AccountCharacter` WHERE Id = `inAccountID`) THEN
-			INSERT INTO `AccountCharacter` (Id, GameID1) VALUES (`inAccountID`, `inCharName`);
+			INSERT INTO `AccountCharacter` (Id) VALUES (`inAccountID`);
 		ELSEIF NOT EXISTS (
 				SELECT 1 FROM `AccountCharacter`
 				WHERE Id = `inAccountID`
