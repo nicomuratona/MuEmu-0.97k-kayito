@@ -50,7 +50,7 @@ ConnectServerPort=55601
 ; Log Settings
 ;==================================================
 ; Enable General Logs (0 = No / 1 = Yes)
-WriteGeneralLogs=1
+WriteGeneralLog=1
 
 ; Enable Chat Logs (0 = No / 1 = Yes)
 WriteChatLog=1

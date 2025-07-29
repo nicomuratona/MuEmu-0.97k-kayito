@@ -394,37 +394,37 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 
 	if (damage > 0)
 	{
-		if (effect != DAMAGE_TYPE_REFLECT && lpTarget->Type == OBJECT_USER)
-		{
-			if (lpTarget->DamageReflect > 0)
-			{
-				gObjAddMsgSendDelay(lpTarget, 10, lpObj->Index, 10, ((damage * lpTarget->DamageReflect) / 100));
-			}
-
-			if ((GetLargeRand() % 100) < lpTarget->DefensiveFullHPRestoreRate)
-			{
-				lpTarget->Life = lpTarget->MaxLife + lpTarget->AddLife;
-
-				GCLifeSend(lpTarget->Index, 0xFF, (int)lpTarget->Life);
-			}
-
-			if ((GetLargeRand() % 100) < lpTarget->DefensiveFullMPRestoreRate)
-			{
-				lpTarget->Mana = lpTarget->MaxMana + lpTarget->AddMana;
-
-				GCManaSend(lpTarget->Index, 0xFF, (int)lpTarget->Mana, lpTarget->BP);
-			}
-
-			if ((GetLargeRand() % 100) < lpTarget->DefensiveFullBPRestoreRate)
-			{
-				lpTarget->BP = lpTarget->MaxBP + lpTarget->AddBP;
-
-				GCManaSend(lpTarget->Index, 0xFF, (int)lpTarget->Mana, lpTarget->BP);
-			}
-		}
-
 		if (lpTarget->Type == OBJECT_USER)
 		{
+			if (effect != DAMAGE_TYPE_REFLECT)
+			{
+				if (lpTarget->DamageReflect > 0)
+				{
+					gObjAddMsgSendDelay(lpTarget, 10, lpObj->Index, 10, ((damage * lpTarget->DamageReflect) / 100));
+				}
+
+				if ((GetLargeRand() % 100) < lpTarget->DefensiveFullHPRestoreRate)
+				{
+					lpTarget->Life = lpTarget->MaxLife + lpTarget->AddLife;
+
+					GCLifeSend(lpTarget->Index, 0xFF, (int)lpTarget->Life);
+				}
+
+				if ((GetLargeRand() % 100) < lpTarget->DefensiveFullMPRestoreRate)
+				{
+					lpTarget->Mana = lpTarget->MaxMana + lpTarget->AddMana;
+
+					GCManaSend(lpTarget->Index, 0xFF, (int)lpTarget->Mana, lpTarget->BP);
+				}
+
+				if ((GetLargeRand() % 100) < lpTarget->DefensiveFullBPRestoreRate)
+				{
+					lpTarget->BP = lpTarget->MaxBP + lpTarget->AddBP;
+
+					GCManaSend(lpTarget->Index, 0xFF, (int)lpTarget->Mana, lpTarget->BP);
+				}
+			}
+			
 			if (lpTarget->Inventory[8].IsItem() == false || (lpTarget->Inventory[8].m_Index == GET_ITEM(13, 2) && gServerInfo.m_PetUniriaEnableStuck != 0) || (lpTarget->Inventory[8].m_Index == GET_ITEM(13, 3) && gServerInfo.m_PetDinorantEnableStuck != 0))
 			{
 				if ((GetLargeRand() % 100) < gServerInfo.m_DamageStuckRate[lpTarget->Class])
