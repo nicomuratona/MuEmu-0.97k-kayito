@@ -209,6 +209,11 @@
 #define ProtocolCore ((BOOL(*)(BYTE*))0x004389A0)
 #define TotalPacketSize *(int*)0x07E11DCC
 #define SendChat ((void(_cdecl*)(const char* Text)) 0x004C1B90)
+#define ServerNumber *(BYTE*)0x083A7C40
+#define ServerSelectHi *(int*)0x00561694
+#define ServerSelectLo *(int*)0x00561698
+#define ServerLocalSelect *(int*)0x0056169C
+#define ServerList (*(SERVER_LIST_t(*)[MAX_SERVER_HI])0x083A45D8)
 
 // OpenGL
 #define EnableAlphaTest ((void(_cdecl*)(bool DepthMask)) 0x00511680)

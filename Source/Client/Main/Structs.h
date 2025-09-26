@@ -128,3 +128,19 @@ struct BMD
 {
 	BYTE Data[188];
 };
+
+struct SERVER_t
+{
+	char IP[20];
+	WORD Port;
+	WORD Index;
+	BYTE Percent;
+};
+
+struct SERVER_LIST_t
+{
+	char Name[20];
+	BYTE Number;
+	bool extServer;
+	SERVER_t Server[MAX_SERVER_LO];
+};

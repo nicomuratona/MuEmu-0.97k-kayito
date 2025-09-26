@@ -94,3 +94,7 @@
 /* Interfaces */
 #define CheckRightInterfaces() (InventoryOpened || CharacterOpened || GuildOpened || PartyOpened || GoldenArcherOpenType || GuildCreatorOpened || EventWindowOpened || QuestNPCOpened)
 #define CheckInputInterfaces() (InputEnable || TabInputEnable || GoldInputEnable || GuildInputEnable)
+
+/* ServerList */
+#define MAX_SERVER_HI 25
+#define MAX_SERVER_LO 20

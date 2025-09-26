@@ -14,8 +14,8 @@ CCamera3D::CCamera3D()
 	this->m_CursorY = 0;
 
 	// Zoom Limits
-	this->m_Limits.ZoomMinLimit = 150.0f;
-	this->m_Limits.ZoomMaxLimit = 2000.0f;
+	this->m_Limits.ZoomMinLimit = 250.0f;
+	this->m_Limits.ZoomMaxLimit = 3000.0f;
 	this->m_Limits.ZoomMinPrecision = 10.0f;
 	this->m_Limits.ZoomMaxPrecision = 100.0f;
 
@@ -34,16 +34,16 @@ CCamera3D::CCamera3D()
 	// Velocity Values for Movements
 	this->m_Velocity.Zoom = 30.0f;
 	this->m_Velocity.Horizontal = 0.0f;
-	this->m_Velocity.Vertical = 0.2f;
+	this->m_Velocity.Vertical = 0.0f;
 	this->m_Velocity.Reduction = 0.95f;
 
 	// Default Camera Values
-	this->m_Default.ZoomDistance = 150.0f;
+	this->m_Default.ZoomDistance = 700.0f;
 	this->m_Default.HorizontalRotation = -45.0f;
 	this->m_Default.VerticalRotation = -48.5f;
 
 	// Initial Camera Values
-	this->m_Camera.ZoomDistance = 150.0f;
+	this->m_Camera.ZoomDistance = 700.0f;
 	this->m_Camera.HorizontalRotation = -45.0f;
 	this->m_Camera.VerticalRotation = -48.5f;
 
@@ -66,7 +66,8 @@ void CCamera3D::Init()
 
 bool CCamera3D::MoveMainCamera()
 {
-	CameraFOV = CalculateVFOV(90.0f, (WindowWidth) / ((float)WindowHeight));
+	//CameraFOV = CalculateVFOV(90.0f, (WindowWidth) / ((float)WindowHeight));
+	CameraFOV = 35.0f;
 
 	// Zoom
 	{
@@ -500,5 +501,5 @@ void CCamera3D::SetDefaultValue()
 
 	this->m_Velocity.Horizontal = 0.0f;
 
-	this->m_Velocity.Vertical = 0.2f;
+	this->m_Velocity.Vertical = 0.0f;
 }

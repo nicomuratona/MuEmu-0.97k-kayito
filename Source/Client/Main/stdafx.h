@@ -31,10 +31,10 @@
 // General Includes
 #include "Console.h"
 #include "MathLib.h"
-#include "Offsets.h"
 #include "Defines.h"
 #include "Enums.h"
 #include "Structs.h"
+#include "Offsets.h"
 #include "Util.h"
 #include "OpenglUtil.h"
 #include "stb.h"
