@@ -1,36 +1,39 @@
 #pragma once
 
-struct CAMERA_LIMITS
+struct CAMERA_ZOOM
 {
-	float ZoomMinLimit; // Zoom In Max
-	float ZoomMaxLimit; // Zoom Out Max
-	float ZoomMinPrecision; // Velocity per mouse scroll
-	float ZoomMaxPrecision; // Max accumulated scroll velocity
-
-	float HorizontalRotationLimit; // Horizontal rotation (360 view)
-	float HorizontalRotationMinPrecision; // Velocity per mouse horizontal movement
-	float HorizontalRotationMaxPrecision; // Max accumulated horizontal velocity
-
-	float VerticalRotationUpperLimit; // Limit to camera upper view rotation
-	float VerticalRotationLowerLimit; // Limit to camera lower view rotation
-	float VerticalRotationMinPrecision; // Velocity per mouse vertical movement
-	float VerticalRotationMaxPrecision; // Max accumulated vertical velocity
+	float MinPercent;
+	float MaxPercent;
+	float MinLimit;
+	float MaxLimit;
+	float Precision;
 };
 
-struct CURRENT_VELOCITY
+struct CAMERA_ADDR
 {
-	float Zoom;
-	float Horizontal;
-	float Vertical;
-	float Reduction;
+	float* Zoom;
+	float* RotX;
+	float* RotY;
+	float* PosZ;
+	float* ClipX[2];
+	float* ClipY[2];
+	float* ClipZ;
+	float* ClipGL;
 };
 
 struct CAMERA_INFO
 {
-	float ZoomDistance;
-	float HorizontalRotation;
-	float VerticalRotation;
+	int IsLoad;
+	float Zoom;
+	float RotX;
+	float RotY;
+	float PosZ;
+	float ClipX[2];
+	float ClipY[2];
+	float ClipZ;
+	float ClipGL;
 };
+
 
 class CCamera3D
 {
@@ -60,11 +63,7 @@ private:
 
         void Init();
 
-        static bool MoveMainCamera();
-
-	static void CreateFrustum(float Aspect, vec3_t Position);
-
-	void CreateFrustum2D(vec3_t Position);
+	void SetCurrentValue();
 
 	static void MyRenderNumber(vec3_t Position, int Num, vec3_t Color, float Alpha, float Scale);
 
@@ -78,13 +77,11 @@ private:
 
 	LONG m_CursorY;
 
-	CAMERA_LIMITS m_Limits;
+	CAMERA_ZOOM m_Zoom;
 
-	CURRENT_VELOCITY m_Velocity;
+	CAMERA_ADDR m_Address;
 
 	CAMERA_INFO m_Default;
-
-	CAMERA_INFO m_Camera;
 };
 
 extern CCamera3D Camera3D;

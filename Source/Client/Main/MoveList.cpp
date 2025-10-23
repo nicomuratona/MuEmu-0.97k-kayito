@@ -17,7 +17,9 @@ CMoveList::CMoveList()
 
 	this->MainPosY = 5.0f;
 
-	this->SectionWidth = 60.0f;
+	this->SectionWidth = 40.0f;
+
+	this->MainWidth = ((this->SectionWidth * 3.5f) + 10.0f);
 
 	this->m_MoveList.clear();
 }
@@ -124,10 +126,6 @@ void CMoveList::UpdateMouse()
 
 void CMoveList::RenderFrame()
 {
-	this->MainHeight = this->MainBaseHeight + (this->m_MoveList.size() * 12.0f);
-
-	this->MainHeight = (this->MainHeight > 430.0f) ? 430.0f : this->MainHeight;
-
 	EnableAlphaTest(true);
 
 	glColor4f(0.0f, 0.0f, 0.0f, 0.8f);
@@ -158,24 +156,17 @@ void CMoveList::RenderFrame()
 
 	int PosX = (int)this->MainPosX + 5;
 
-	RenderText(PosX, (int)this->MainPosY + 20, "Map Name", REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
+	RenderText(PosX, (int)this->MainPosY + 20, "Map", REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
 
-	PosX += ((int)this->SectionWidth + 10);
+	PosX += ((int)this->SectionWidth);
 
-	RenderText(PosX, (int)this->MainPosY + 20, "Level Min/Max", REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
+	RenderText(PosX, (int)this->MainPosY + 20, "Level", REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
 
-	PosX += ((int)this->SectionWidth + 10);
+	PosX += ((int)this->SectionWidth);
 
-	if (gProtect.m_MainInfo.DisableResets == 0)
-	{
-		RenderText(PosX, (int)this->MainPosY + 20, "Reset Min/Max", REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
+	RenderText(PosX, (int)this->MainPosY + 20, "Cost", REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
 
-		PosX += ((int)this->SectionWidth + 10);
-	}
-
-	RenderText(PosX, (int)this->MainPosY + 20, "Zen Cost", REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
-
-	PosX += ((int)this->SectionWidth + 10);
+	PosX += ((int)this->SectionWidth);
 
 	RenderText(PosX, (int)this->MainPosY + 20, "VIP", REAL_WIDTH((int)(this->SectionWidth * 0.5f)), RT3_SORT_CENTER, NULL);
 
@@ -289,8 +280,9 @@ void CMoveList::RenderMapsList()
 
 			RenderText(PosX, PosY, it->MapName, REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
 
-			PosX += ((int)this->SectionWidth + 10);
+			PosX += ((int)this->SectionWidth);
 
+			/*
 			if (it->MinLevel == -1) // MinLevel -1
 			{
 				if (it->MaxLevel == -1) // MinLevel -1, MaxLevel -1
@@ -310,42 +302,25 @@ void CMoveList::RenderMapsList()
 			{
 				wsprintf(text, "%d / %d", it->MinLevel, it->MaxLevel);
 			}
+			*/
+
+			if (it->MinLevel == -1) // MinLevel -1
+			{
+				wsprintf(text, "~");
+			}
+			else // Valid
+			{
+				wsprintf(text, "%d", it->MinLevel);
+			}
 
 			RenderText(PosX, PosY, text, REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
 
-			PosX += ((int)this->SectionWidth + 10);
-
-			if (gProtect.m_MainInfo.DisableResets == 0)
-			{
-				if (it->MinReset == -1) // MinReset -1
-				{
-					if (it->MaxReset == -1) // MinReset -1, MaxReset -1
-					{
-						wsprintf(text, "~ / ~");
-					}
-					else // MinReset -1, MaxReset valid
-					{
-						wsprintf(text, "~ / %d", it->MaxReset);
-					}
-				}
-				else if (it->MaxReset == -1) // MinReset valid, MaxReset -1
-				{
-					wsprintf(text, "%d / ~", it->MinReset);
-				}
-				else // Both Valid
-				{
-					wsprintf(text, "%d / %d", it->MinReset, it->MaxReset);
-				}
-
-				RenderText(PosX, PosY, text, REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
-
-				PosX += ((int)this->SectionWidth + 10);
-			}
+			PosX += ((int)this->SectionWidth);
 
 			ConvertGold(it->Money, text);
 			RenderText(PosX, PosY, text, REAL_WIDTH((int)this->SectionWidth), RT3_SORT_CENTER, NULL);
 
-			PosX += ((int)this->SectionWidth + 10);
+			PosX += ((int)this->SectionWidth);
 
 			if (it->AccountLevel != -1 && it->AccountLevel > 0)
 			{
@@ -437,9 +412,6 @@ void CMoveList::GCMoveListRecv(PMSG_MOVE_LIST_RECV* lpMsg)
 		return;
 	}
 
-	this->MainWidth = ((gProtect.m_MainInfo.DisableResets == 0) ? 4 : 3) * (this->SectionWidth + 10.0f);
-	this->MainWidth += ((this->SectionWidth * 0.5f) + 10.0f); // VIP
-
 	this->PKLimitFree = lpMsg->PKLimitFree;
 
 	this->m_MoveList.clear();
@@ -470,4 +442,8 @@ void CMoveList::GCMoveListRecv(PMSG_MOVE_LIST_RECV* lpMsg)
 
 		this->m_MoveList.push_back(info);
 	}
+
+	this->MainHeight = this->MainBaseHeight + (lpMsg->count * 12.0f);
+
+	this->MainHeight = (this->MainHeight > 430.0f) ? 430.0f : this->MainHeight;
 }

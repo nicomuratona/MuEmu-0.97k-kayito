@@ -91,9 +91,9 @@ _declspec(naked) void CMapFog::glEnableFog()
 
         glFogi(GL_FOG_MODE, GL_LINEAR);
 
-        glFogf(GL_FOG_START, CameraDistance);
+        glFogf(GL_FOG_START, 2000.0f);
 
-        glFogf(GL_FOG_END, CameraViewFar * 0.57f);
+        glFogf(GL_FOG_END, 2700.0f);
 
         glFogfv(GL_FOG_COLOR, FogColor);
 

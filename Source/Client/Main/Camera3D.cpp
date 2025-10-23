@@ -13,39 +13,13 @@ CCamera3D::CCamera3D()
 	this->m_CursorX = 0;
 	this->m_CursorY = 0;
 
-	// Zoom Limits
-	this->m_Limits.ZoomMinLimit = 250.0f;
-	this->m_Limits.ZoomMaxLimit = 3000.0f;
-	this->m_Limits.ZoomMinPrecision = 10.0f;
-	this->m_Limits.ZoomMaxPrecision = 100.0f;
+	this->m_Zoom.MinPercent = 50.0f;
 
-	// Horizontal Rotation Limits
-	this->m_Limits.HorizontalRotationLimit = 360.0f;
-	this->m_Limits.HorizontalRotationMinPrecision = 0.1f;
-	this->m_Limits.HorizontalRotationMaxPrecision = 5.0f;
+	this->m_Zoom.MaxPercent = 200.0f;
 
-	// Vertical Rotation Limits
-	this->m_Limits.VerticalRotationUpperLimit = -1.0f;
-	this->m_Limits.VerticalRotationLowerLimit = -85.0f;
+	this->m_Zoom.Precision = 2.0f;
 
-	this->m_Limits.VerticalRotationMinPrecision = 0.1f;
-	this->m_Limits.VerticalRotationMaxPrecision = 1.5f;
-
-	// Velocity Values for Movements
-	this->m_Velocity.Zoom = 30.0f;
-	this->m_Velocity.Horizontal = 0.0f;
-	this->m_Velocity.Vertical = 0.0f;
-	this->m_Velocity.Reduction = 0.95f;
-
-	// Default Camera Values
-	this->m_Default.ZoomDistance = 700.0f;
-	this->m_Default.HorizontalRotation = -45.0f;
-	this->m_Default.VerticalRotation = -48.5f;
-
-	// Initial Camera Values
-	this->m_Camera.ZoomDistance = 700.0f;
-	this->m_Camera.HorizontalRotation = -45.0f;
-	this->m_Camera.VerticalRotation = -48.5f;
+	this->m_Default.IsLoad = false;
 
 	this->Init();
 }
@@ -57,270 +31,36 @@ CCamera3D::~CCamera3D()
 
 void CCamera3D::Init()
 {
-	SetCompleteHook(0xE8, 0x00525ADE, &this->MoveMainCamera);
+	this->m_Address.Zoom = (float*)0x00524CC1;
 
-	SetCompleteHook(0xE9, 0x004F9050, &this->CreateFrustum);
+	this->m_Address.RotX = (float*)0x083A42C0;
+
+	this->m_Address.RotY = (float*)0x00552D54;
+
+	this->m_Address.PosZ = (float*)0x0055297C;
+
+	this->m_Address.ClipX[0] = (float*)0x004F8ED8;
+
+	this->m_Address.ClipX[1] = (float*)0x004F8EEE;
+
+	this->m_Address.ClipY[0] = (float*)0x004F8EFE;
+
+	this->m_Address.ClipY[1] = (float*)0x004F8F0E;
+
+	this->m_Address.ClipZ = (float*)0x00552CBC;
+
+	this->m_Address.ClipGL = (float*)0x00524D32;
+
+	//Fix Items
+	SetDword(0x00511332 + 2, 0x005528CC);
+	SetDword(0x00511360 + 2, 0x005528CC);
+	SetDword(0x0051136C + 2, 0x005528CC);
+
+	SetFloat((DWORD)this->m_Address.Zoom, 50.0f);
 
 	SetCompleteHook(0xE9, 0x005120C0, &this->MyRenderNumber);
-}
 
-bool CCamera3D::MoveMainCamera()
-{
-	//CameraFOV = CalculateVFOV(90.0f, (WindowWidth) / ((float)WindowHeight));
-	CameraFOV = 35.0f;
-
-	// Zoom
-	{
-		Camera3D.m_Camera.ZoomDistance += Camera3D.m_Velocity.Zoom;
-
-		Camera3D.m_Camera.ZoomDistance = Clamp(Camera3D.m_Camera.ZoomDistance, Camera3D.m_Limits.ZoomMinLimit, Camera3D.m_Limits.ZoomMaxLimit);
-
-		Camera3D.m_Velocity.Zoom *= Camera3D.m_Velocity.Reduction;
-
-		if (fabs(Camera3D.m_Velocity.Zoom) < 0.01f)
-		{
-			Camera3D.m_Velocity.Zoom = 0.0f;
-		}
-
-		CameraDistance = Camera3D.m_Camera.ZoomDistance;
-	}
-
-	// Rotación Horizontal
-	{
-		Camera3D.m_Camera.HorizontalRotation += Camera3D.m_Velocity.Horizontal;
-
-		Camera3D.m_Camera.HorizontalRotation = fmodf(Camera3D.m_Camera.HorizontalRotation, Camera3D.m_Limits.HorizontalRotationLimit);
-
-		Camera3D.m_Velocity.Horizontal *= Camera3D.m_Velocity.Reduction;
-
-		if (fabs(Camera3D.m_Velocity.Horizontal) < 0.01f)
-		{
-			Camera3D.m_Velocity.Horizontal = 0.0f;
-		}
-
-		CameraAngle[2] = Camera3D.m_Camera.HorizontalRotation;
-	}
-
-	// Rotación Vertical
-	{
-		Camera3D.m_Camera.VerticalRotation += Camera3D.m_Velocity.Vertical;
-
-		Camera3D.m_Camera.VerticalRotation = Clamp(Camera3D.m_Camera.VerticalRotation, Camera3D.m_Limits.VerticalRotationLowerLimit, Camera3D.m_Limits.VerticalRotationUpperLimit);
-
-		Camera3D.m_Velocity.Vertical *= Camera3D.m_Velocity.Reduction;
-
-		if (fabs(Camera3D.m_Velocity.Vertical) < 0.01f)
-		{
-			Camera3D.m_Velocity.Vertical = 0.0f;
-		}
-
-		CameraAngle[0] = Camera3D.m_Camera.VerticalRotation;
-	}
-
-	// ViewFar
-	{
-		float normalizedPitch = 1.0f - ((CameraAngle[0] - Camera3D.m_Limits.VerticalRotationLowerLimit) / (Camera3D.m_Limits.VerticalRotationUpperLimit - Camera3D.m_Limits.VerticalRotationLowerLimit));
-
-		CameraViewFar = 1000.0f + CameraDistance * 2.0f + normalizedPitch * 4000.0f;
-	}
-
-	// ViewNear
-	{
-		CameraViewNear = fmaxf(CameraDistance * 0.1f, 0.1f);
-	}
-
-	float Matrix[3][4];
-	AngleMatrix(CameraAngle, Matrix);
-	Matrix[1][2] *= -1.0f;
-
-	vec3_t Position = { 0.0f, 0.0f, CameraDistance };
-
-	vec3_t PositionTransform;
-	VectorRotate(Position, Matrix, PositionTransform);
-
-	vec3_t TargetPosition = { PlayerPosition[0], PlayerPosition[1], PlayerPosition[2] + 100.0f };
-
-	VectorAdd(TargetPosition, PositionTransform, CameraPosition);
-
-	CameraPosition[2] += (EarthQuake * 100.0f);
-
-	if (gMapManager.GetMapMovement(World))
-	{
-		CameraPosition[0] += ((sinf(WorldTime * 0.0005f) * 2.0f) * 30.0f);
-
-		CameraPosition[1] -= ((sinf(WorldTime * 0.0008f) * 2.5f) * 30.0f);
-	}
-
-	return false;
-}
-
-void CCamera3D::CreateFrustum(float Aspect, vec3_t Position)
-{
-	float Distance = CameraViewFar * 0.9f;
-
-	Aspect = (float)WindowWidth / 640.0f;
-
-	float Width = tanf(DegToRad(CameraFOV * 0.5f)) * Distance * Aspect + 100.0f;
-
-	float Height = Width * 3.0f / 4.0f;
-
-	vec3_t Temp[5];
-
-	Vector(0.0f, 0.0f, 0.0f, Temp[0]);
-
-	Vector(-Width, Height, -Distance, Temp[1]);
-
-	Vector(Width, Height, -Distance, Temp[2]);
-
-	Vector(Width, -Height, -Distance, Temp[3]);
-
-	Vector(-Width, -Height, -Distance, Temp[4]);
-
-	float FrustrumMinX = (float)TERRAIN_SIZE * TERRAIN_SCALE;
-
-	float FrustrumMinY = (float)TERRAIN_SIZE * TERRAIN_SCALE;
-
-	float FrustrumMaxX = 0.0f;
-
-	float FrustrumMaxY = 0.0f;
-
-	float Matrix[3][4];
-
-	GetOpenGLMatrix(Matrix);
-
-	for (int i = 0; i < 5; i++)
-	{
-		vec3_t t;
-
-		VectorIRotate(Temp[i], Matrix, t);
-
-		VectorAdd(t, CameraPosition, FrustrumVertex[i]);
-
-		if (FrustrumMinX > FrustrumVertex[i][0])
-		{
-			FrustrumMinX = FrustrumVertex[i][0];
-		}
-
-		if (FrustrumMinY > FrustrumVertex[i][1])
-		{
-			FrustrumMinY = FrustrumVertex[i][1];
-		}
-
-		if (FrustrumMaxX < FrustrumVertex[i][0])
-		{
-			FrustrumMaxX = FrustrumVertex[i][0];
-		}
-
-		if (FrustrumMaxY < FrustrumVertex[i][1])
-		{
-			FrustrumMaxY = FrustrumVertex[i][1];
-		}
-	}
-
-	int tileWidth = 4;
-
-	FrustrumBoundMinX_1 = (int)(FrustrumMinX / TERRAIN_SCALE) / tileWidth * tileWidth - tileWidth;
-	FrustrumBoundMinY_1 = (int)(FrustrumMinY / TERRAIN_SCALE) / tileWidth * tileWidth - tileWidth;
-	FrustrumBoundMaxX_1 = (int)(FrustrumMaxX / TERRAIN_SCALE) / tileWidth * tileWidth + tileWidth;
-	FrustrumBoundMaxY_1 = (int)(FrustrumMaxY / TERRAIN_SCALE) / tileWidth * tileWidth + tileWidth;
-
-	if (FrustrumBoundMinX_1 < 0)
-	{
-		FrustrumBoundMinX_1 = 0;
-	}
-	if (FrustrumBoundMinX_1 > TERRAIN_SIZE_MASK - tileWidth)
-	{
-		FrustrumBoundMinX_1 = TERRAIN_SIZE_MASK - tileWidth;
-	}
-
-	if (FrustrumBoundMinY_1 < 0)
-	{
-		FrustrumBoundMinY_1 = 0;
-	}
-	if (FrustrumBoundMinY_1 > TERRAIN_SIZE_MASK - tileWidth)
-	{
-		FrustrumBoundMinY_1 = TERRAIN_SIZE_MASK - tileWidth;
-	}
-
-	if (FrustrumBoundMaxX_1 < 0)
-	{
-		FrustrumBoundMaxX_1 = 0;
-	}
-	if (FrustrumBoundMaxX_1 > TERRAIN_SIZE_MASK - tileWidth)
-	{
-		FrustrumBoundMaxX_1 = TERRAIN_SIZE_MASK - tileWidth;
-	}
-
-	if (FrustrumBoundMaxY_1 < 0)
-	{
-		FrustrumBoundMaxY_1 = 0;
-	}
-	if (FrustrumBoundMaxY_1 > TERRAIN_SIZE_MASK - tileWidth)
-	{
-		FrustrumBoundMaxY_1 = TERRAIN_SIZE_MASK - tileWidth;
-	}
-
-	FaceNormalize(FrustrumVertex[0], FrustrumVertex[1], FrustrumVertex[2], FrustrumFaceNormal[0]);
-
-	FaceNormalize(FrustrumVertex[0], FrustrumVertex[2], FrustrumVertex[3], FrustrumFaceNormal[1]);
-
-	FaceNormalize(FrustrumVertex[0], FrustrumVertex[3], FrustrumVertex[4], FrustrumFaceNormal[2]);
-
-	FaceNormalize(FrustrumVertex[0], FrustrumVertex[4], FrustrumVertex[1], FrustrumFaceNormal[3]);
-
-	FaceNormalize(FrustrumVertex[3], FrustrumVertex[2], FrustrumVertex[1], FrustrumFaceNormal[4]);
-
-	FrustrumFaceD[0] = -DotProduct(FrustrumVertex[0], FrustrumFaceNormal[0]);
-
-	FrustrumFaceD[1] = -DotProduct(FrustrumVertex[0], FrustrumFaceNormal[1]);
-
-	FrustrumFaceD[2] = -DotProduct(FrustrumVertex[0], FrustrumFaceNormal[2]);
-
-	FrustrumFaceD[3] = -DotProduct(FrustrumVertex[0], FrustrumFaceNormal[3]);
-
-	FrustrumFaceD[4] = -DotProduct(FrustrumVertex[1], FrustrumFaceNormal[4]);
-
-	Camera3D.CreateFrustum2D(Position);
-}
-
-void CCamera3D::CreateFrustum2D(vec3_t Position)
-{
-	float divisor = (this->m_Limits.VerticalRotationLowerLimit - this->m_Limits.VerticalRotationUpperLimit) * 0.5f;
-
-	float pitch = (CameraAngle[0] - this->m_Limits.VerticalRotationUpperLimit - divisor);
-
-	float normalizedPitch = fabs(pitch / divisor);
-
-	float fWidthNear = (2.0f * CameraViewNear * tanf(DegToRad(CameraFOV * 0.5f))) + normalizedPitch * 2000.0f;
-
-	float fWidthFar = (2.0f * CameraViewFar * tanf(DegToRad(CameraFOV * 0.5f)));
-
-	float fCameraViewTarget = 500.0f + CameraDistance;
-
-	vec3_t p[4];
-	Vector(-fWidthFar, CameraViewFar - fCameraViewTarget, 0.0f, p[0]);
-	Vector(fWidthFar, CameraViewFar - fCameraViewTarget, 0.0f, p[1]);
-	Vector(fWidthNear, CameraViewNear - fCameraViewTarget, 0.0f, p[2]);
-	Vector(-fWidthNear, CameraViewNear - fCameraViewTarget, 0.0f, p[3]);
-
-	vec3_t Angle;
-	Vector(0.0f, 0.0f, -CameraAngle[2], Angle);
-
-	float Matrix[3][4];
-	AngleMatrix(Angle, Matrix);
-
-	vec3_t Frustum[4];
-
-	for (int i = 0; i < 4; i++)
-	{
-		VectorRotate(p[i], Matrix, Frustum[i]);
-
-		VectorAdd(Frustum[i], CameraPosition, Frustum[i]);
-
-		FrustrumX[i] = Frustum[i][0] * 0.01f;
-
-		FrustrumY[i] = Frustum[i][1] * 0.01f;
-	}
+	this->SetCurrentValue();
 }
 
 void CCamera3D::MyRenderNumber(vec3_t Position, int Num, vec3_t Color, float Alpha, float Scale)
@@ -387,6 +127,31 @@ void CCamera3D::Toggle()
 	{
 		this->m_Enable ^= 1;
 
+		if (!this->m_Default.IsLoad)
+		{
+			this->m_Default.Zoom = (*this->m_Address.Zoom);
+
+			this->m_Default.RotX = (*this->m_Address.RotX);
+
+			this->m_Default.RotY = (*this->m_Address.RotY);
+
+			this->m_Default.PosZ = (*this->m_Address.PosZ);
+
+			this->m_Default.ClipX[0] = (*this->m_Address.ClipX[0]);
+
+			this->m_Default.ClipX[1] = (*this->m_Address.ClipX[1]);
+
+			this->m_Default.ClipY[0] = (*this->m_Address.ClipY[0]);
+
+			this->m_Default.ClipY[1] = (*this->m_Address.ClipY[1]);
+
+			this->m_Default.ClipY[2] = (*this->m_Address.ClipY[2]);
+
+			this->m_Default.ClipGL = (*this->m_Address.ClipGL);
+
+			this->m_Default.IsLoad = true;
+		}
+
 		CreateNotice(((this->m_Enable) ? "Camara 3D Enabled" : "Camera 3D Disabled"), 1);
 	}
 }
@@ -432,27 +197,29 @@ void CCamera3D::Zoom(MOUSEHOOKSTRUCTEX* lpMouse)
 		return;
 	}
 
+	this->m_Zoom.MinLimit = (this->m_Default.Zoom / 100) * this->m_Zoom.MinPercent;
+
+	this->m_Zoom.MaxLimit = (this->m_Default.Zoom / 100) * this->m_Zoom.MaxPercent;
+
 	short wheelDelta = GET_WHEEL_DELTA_WPARAM(lpMouse->mouseData);
 
 	if (wheelDelta < 0)
 	{
-		this->m_Velocity.Zoom += this->m_Limits.ZoomMinPrecision;
-
-		if (this->m_Velocity.Zoom > this->m_Limits.ZoomMaxPrecision)
+		if ((*this->m_Address.Zoom) <= this->m_Zoom.MaxLimit)
 		{
-			this->m_Velocity.Zoom = this->m_Limits.ZoomMaxPrecision;
+			SetFloat((DWORD)this->m_Address.Zoom, ((*this->m_Address.Zoom) + this->m_Zoom.Precision));
 		}
 	}
 
 	if (wheelDelta > 0)
 	{
-		this->m_Velocity.Zoom -= this->m_Limits.ZoomMinPrecision;
-
-		if (this->m_Velocity.Zoom < -this->m_Limits.ZoomMaxPrecision)
+		if ((*this->m_Address.Zoom) >= this->m_Zoom.MinLimit)
 		{
-			this->m_Velocity.Zoom = -this->m_Limits.ZoomMaxPrecision;
+			SetFloat((DWORD)this->m_Address.Zoom, ((*this->m_Address.Zoom) - this->m_Zoom.Precision));
 		}
 	}
+
+	this->SetCurrentValue();
 }
 
 void CCamera3D::Move(MOUSEHOOKSTRUCTEX* lpMouse)
@@ -462,44 +229,95 @@ void CCamera3D::Move(MOUSEHOOKSTRUCTEX* lpMouse)
 		return;
 	}
 
-	float deltaX = (float)(lpMouse->pt.x - this->m_CursorX);
-
-	float deltaY = (float)(lpMouse->pt.y - this->m_CursorY);
-
-	this->m_Velocity.Horizontal += deltaX * this->m_Limits.HorizontalRotationMinPrecision;
-
-	this->m_Velocity.Vertical += deltaY * this->m_Limits.VerticalRotationMinPrecision;
-
-	if (this->m_Velocity.Horizontal > this->m_Limits.HorizontalRotationMaxPrecision)
+	if (this->m_CursorX < lpMouse->pt.x)
 	{
-		this->m_Velocity.Horizontal = this->m_Limits.HorizontalRotationMaxPrecision;
-	}
-	if (this->m_Velocity.Horizontal < -this->m_Limits.HorizontalRotationMaxPrecision)
-	{
-		this->m_Velocity.Horizontal = -this->m_Limits.HorizontalRotationMaxPrecision;
+		if ((*this->m_Address.RotX) > 309.0f)
+		{
+			SetFloat((DWORD)this->m_Address.RotX, -45.0f);
+		}
+		else
+		{
+			SetFloat((DWORD)this->m_Address.RotX, ((*this->m_Address.RotX) + 6.0f));
+		}
 	}
 
-	if (this->m_Velocity.Vertical > this->m_Limits.VerticalRotationMaxPrecision)
+	if (this->m_CursorX > lpMouse->pt.x)
 	{
-		this->m_Velocity.Vertical = this->m_Limits.VerticalRotationMaxPrecision;
+		if ((*this->m_Address.RotX) < -417.0f)
+		{
+			SetFloat((DWORD)this->m_Address.RotX, -45.0f);
+		}
+		else
+		{
+			SetFloat((DWORD)this->m_Address.RotX, ((*this->m_Address.RotX) - 6.0f));
+		}
 	}
-	if (this->m_Velocity.Vertical < -this->m_Limits.VerticalRotationMaxPrecision)
+
+	if (this->m_CursorY < lpMouse->pt.y)
 	{
-		this->m_Velocity.Vertical = -this->m_Limits.VerticalRotationMaxPrecision;
+		if ((*this->m_Address.RotY) > 22.5f)
+		{
+			SetFloat((DWORD)this->m_Address.RotY, ((*this->m_Address.RotY) - 2.42f));
+
+			SetFloat((DWORD)this->m_Address.PosZ, ((*this->m_Address.PosZ) - 44.0f));
+		}
+	}
+
+	if (this->m_CursorY > lpMouse->pt.y)
+	{
+		if ((*this->m_Address.RotY) < 90.0f)
+		{
+			SetFloat((DWORD)this->m_Address.RotY, ((*this->m_Address.RotY) + 2.42f));
+
+			SetFloat((DWORD)this->m_Address.PosZ, ((*this->m_Address.PosZ) + 44.0f));
+		}
 	}
 
 	this->m_CursorX = lpMouse->pt.x;
 
 	this->m_CursorY = lpMouse->pt.y;
+
+	this->SetCurrentValue();
+}
+
+void CCamera3D::SetCurrentValue()
+{
+	SetFloat((DWORD)this->m_Address.ClipX[0], (1272 + (abs(*this->m_Address.PosZ - 150) * 3) + 1000));
+
+	SetFloat((DWORD)this->m_Address.ClipX[1], (1272 + (abs(*this->m_Address.PosZ - 150) * 3) + 1000));
+
+	SetFloat((DWORD)this->m_Address.ClipY[0], (-672 - (abs(*this->m_Address.PosZ - 150) * 3) - 3000));
+
+	SetFloat((DWORD)this->m_Address.ClipY[1], (-672 - (abs(*this->m_Address.PosZ - 150) * 3) - 3000));
+
+	SetFloat((DWORD)this->m_Address.ClipZ, (1190 + (abs(*this->m_Address.PosZ - 150) * 3) + 3000));
+
+	SetFloat((DWORD)this->m_Address.ClipGL, (2000 + (abs(*this->m_Address.PosZ - 150) * 3) + 1500));
 }
 
 void CCamera3D::SetDefaultValue()
 {
-	this->m_Camera = this->m_Default;
+	if (this->m_Default.IsLoad)
+	{
+		SetFloat((DWORD)this->m_Address.Zoom, this->m_Default.Zoom);
 
-	this->m_Velocity.Zoom = 30.0f;
+		SetFloat((DWORD)this->m_Address.RotX, this->m_Default.RotX);
 
-	this->m_Velocity.Horizontal = 0.0f;
+		SetFloat((DWORD)this->m_Address.RotY, this->m_Default.RotY);
 
-	this->m_Velocity.Vertical = 0.0f;
+		SetFloat((DWORD)this->m_Address.PosZ, this->m_Default.PosZ);
+
+		SetFloat((DWORD)this->m_Address.ClipX[0], this->m_Default.ClipX[0]);
+
+		SetFloat((DWORD)this->m_Address.ClipX[1], this->m_Default.ClipX[1]);
+
+		SetFloat((DWORD)this->m_Address.ClipY[0], this->m_Default.ClipY[0]);
+
+		SetFloat((DWORD)this->m_Address.ClipY[1], this->m_Default.ClipY[1]);
+
+		SetFloat((DWORD)this->m_Address.ClipZ, this->m_Default.ClipZ);
+
+		SetFloat((DWORD)this->m_Address.ClipGL, this->m_Default.ClipGL);
+	}
+
 }
