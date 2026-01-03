@@ -182,8 +182,6 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 
 #pragma region DAMAGE_CALC
 
-	BYTE flag = 0;
-
 	BYTE miss = 0;
 
 	WORD effect = DAMAGE_TYPE_NORMAL;
@@ -392,6 +390,8 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 
 #pragma region ATTACK_FINISH
 
+	BYTE flag = 0;
+
 	if (damage > 0)
 	{
 		if (lpTarget->Type == OBJECT_USER)
@@ -424,12 +424,23 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 					GCManaSend(lpTarget->Index, 0xFF, (int)lpTarget->Mana, lpTarget->BP);
 				}
 			}
-			
-			if (lpTarget->Inventory[8].IsItem() == false || (lpTarget->Inventory[8].m_Index == GET_ITEM(13, 2) && gServerInfo.m_PetUniriaEnableStuck != 0) || (lpTarget->Inventory[8].m_Index == GET_ITEM(13, 3) && gServerInfo.m_PetDinorantEnableStuck != 0))
+
+			if ((GetLargeRand() % 100) < gServerInfo.m_DamageStuckRate[lpTarget->Class])
 			{
-				if ((GetLargeRand() % 100) < gServerInfo.m_DamageStuckRate[lpTarget->Class])
+				flag = 1;
+
+				if (lpTarget->Inventory[8].IsItem())
 				{
-					flag = 1;
+					// Uniria
+					if (lpTarget->Inventory[8].m_Index == GET_ITEM(13, 2) && gServerInfo.m_PetUniriaEnableStuck == 0)
+					{
+						flag = 0;
+					}
+					// Dinorant
+					else if (lpTarget->Inventory[8].m_Index == GET_ITEM(13, 3) && gServerInfo.m_PetDinorantEnableStuck == 0)
+					{
+						flag = 0;
+					}
 				}
 			}
 		}
