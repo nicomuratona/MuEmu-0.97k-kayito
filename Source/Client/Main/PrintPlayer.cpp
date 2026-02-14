@@ -369,7 +369,7 @@ void CPrintPlayer::RenderCharacterInfoWindow(int StartPosX, int StartPosY)
 	/***********************/
 	gPrintPlayer.RenderCharInfo_Title(StartPosX, StartPosY);
 
-	glColor3f(1.0f, 1.0f, 1.0f);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 	/***********************/
 	// Render Level, Points, Experience
