@@ -292,7 +292,7 @@ public:
 
 	bool SkillPowerSlash(int aIndex, int bIndex, CSkill* lpSkill, BYTE angle);
 
-	void ApplyFireSlashEffect(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int damage);
+	void ApplyFireSlashEffect(LPOBJ lpObj, LPOBJ lpTarget, int skill, int damage);
 
 	void CGMultiSkillAttackRecv(PMSG_MULTI_SKILL_ATTACK_RECV* lpMsg, int aIndex, bool type);
 

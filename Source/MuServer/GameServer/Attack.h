@@ -47,7 +47,7 @@ public:
 
 	bool MissCheck(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int send, int count, BYTE* miss);
 
-	bool ApplySkillEffect(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int damage);
+	bool ApplySkillEffect(LPOBJ lpObj, LPOBJ lpTarget, int skill, int damage);
 
 	int GetTargetDefense(LPOBJ lpObj, LPOBJ lpTarget, WORD* effect);
 

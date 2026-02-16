@@ -1782,7 +1782,7 @@ bool CSkillManager::SkillPowerSlash(int aIndex, int bIndex, CSkill* lpSkill, BYT
 	return true;
 }
 
-void CSkillManager::ApplyFireSlashEffect(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, int damage)
+void CSkillManager::ApplyFireSlashEffect(LPOBJ lpObj, LPOBJ lpTarget, int skill, int damage)
 {
 	int value = gServerInfo.m_FireSlashConstA + (lpObj->Strength / gServerInfo.m_FireSlashConstB);
 
@@ -1790,7 +1790,7 @@ void CSkillManager::ApplyFireSlashEffect(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lp
 
 	int count = gServerInfo.m_FireSlashTime;
 
-	gEffectManager.AddEffect(lpTarget, 0, this->GetSkillEffect(lpSkill->m_index), count, value, 0, 0, 0);
+	gEffectManager.AddEffect(lpTarget, 0, this->GetSkillEffect(skill), count, value, 0, 0, 0);
 }
 
 void CSkillManager::CGMultiSkillAttackRecv(PMSG_MULTI_SKILL_ATTACK_RECV* lpMsg, int aIndex, bool type)
