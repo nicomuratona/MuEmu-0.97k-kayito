@@ -124,17 +124,6 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 		return false;
 	}
 
-	if (lpObj->Inventory[0].m_Index == GET_ITEM(2, 4) || lpObj->Inventory[1].m_Index == GET_ITEM(2, 4) // Crystal Morning Star
-		|| lpObj->Inventory[0].m_Index == GET_ITEM(2, 5) || lpObj->Inventory[1].m_Index == GET_ITEM(2, 5)) // Crystal Sword
-	{
-		if (rand() % 20 == 0)
-		{
-			skill = SKILL_ICE;
-
-			send = true;
-		}
-	}
-
 	if (lpObj->Type == OBJECT_USER)
 	{
 		lpObj->HPAutoRecuperationTime = GetTickCount();
@@ -321,22 +310,34 @@ bool CAttack::Attack(LPOBJ lpObj, LPOBJ lpTarget, CSkill* lpSkill, bool send, in
 
 			GCManaSend(lpObj->Index, 0xFF, (int)lpObj->Mana, lpObj->BP);
 		}
+
+		if (lpObj->Inventory[0].m_Index == GET_ITEM(2, 4) || lpObj->Inventory[1].m_Index == GET_ITEM(2, 4) // Crystal Morning Star
+			|| lpObj->Inventory[0].m_Index == GET_ITEM(2, 5) || lpObj->Inventory[1].m_Index == GET_ITEM(2, 5)) // Crystal Sword
+		{
+			if (rand() % 20 == 0)
+			{
+				if (this->ApplySkillEffect(lpObj, lpTarget, SKILL_ICE, damage))
+				{
+					gSkillManager.GCSkillAttackSend(lpObj, SKILL_ICE, lpTarget->Index, 0);
+				}
+			}
+		}
 	}
 
 	if (lpSkill != 0 && count <= 1)
 	{
-		if (this->ApplySkillEffect(lpObj, lpTarget, skill, damage) == false)
+		if (this->ApplySkillEffect(lpObj, lpTarget, lpSkill->m_index, damage) == false)
 		{
 			if (send != false)
 			{
-				gSkillManager.GCSkillAttackSend(lpObj, skill, lpTarget->Index, 0);
+				gSkillManager.GCSkillAttackSend(lpObj, lpSkill->m_index, lpTarget->Index, 0);
 			}
 		}
 		else
 		{
 			if (send != false)
 			{
-				gSkillManager.GCSkillAttackSend(lpObj, skill, lpTarget->Index, 1);
+				gSkillManager.GCSkillAttackSend(lpObj, lpSkill->m_index, lpTarget->Index, 1);
 			}
 		}
 	}
