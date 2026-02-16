@@ -230,6 +230,11 @@ bool CQuestObjective::CanGetItem(LPOBJ lpObj, int ItemIndex, int ItemLevel)
 			continue;
 		}
 
+		if (lpInfo->Type != QUEST_OBJECTIVE_ITEM)
+		{
+			continue;
+		}
+
 		if (lpInfo->Index == ItemIndex && lpInfo->Level == ItemLevel)
 		{
 			return this->CheckQuestObjectiveRequisite(lpObj, lpInfo);

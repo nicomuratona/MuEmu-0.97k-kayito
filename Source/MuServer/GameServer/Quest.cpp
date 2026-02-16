@@ -125,7 +125,7 @@ QUEST_INFO* CQuest::GetInfoByIndex(LPOBJ lpObj, int QuestIndex)
 			continue;
 		}
 
-		if (this->CheckQuestListState(lpObj, lpInfo->Index, lpInfo->CurrentState) == 0)
+		if (this->CheckQuestRequisite(lpObj, lpInfo) == 0)
 		{
 			continue;
 		}
@@ -156,6 +156,46 @@ BYTE CQuest::GetQuestList(LPOBJ lpObj, int QuestIndex)
 	}
 
 	return lpObj->Quest[QuestIndex / 4];
+}
+
+BYTE CQuest::GetQuestState(LPOBJ lpObj, int QuestIndex)
+{
+	if (QuestIndex < 0 || QuestIndex >= MAX_QUEST_LIST)
+	{
+		return 0;
+	}
+
+	return (lpObj->Quest[QuestIndex / 4] >> ((QuestIndex % 4) * 2)) & 3;
+}
+
+bool CQuest::CheckQuestRequisite(LPOBJ lpObj, QUEST_INFO* lpInfo)
+{
+	if (this->CheckQuestListState(lpObj, lpInfo->Index, lpInfo->CurrentState) == 0)
+	{
+		return 0;
+	}
+
+	if (lpInfo->RequireIndex != -1 && this->CheckQuestListState(lpObj, lpInfo->RequireIndex, lpInfo->RequireState) == 0)
+	{
+		return 0;
+	}
+
+	if (lpInfo->RequireMinLevel != -1 && lpInfo->RequireMinLevel > lpObj->Level)
+	{
+		return 0;
+	}
+
+	if (lpInfo->RequireMaxLevel != -1 && lpInfo->RequireMaxLevel < lpObj->Level)
+	{
+		return 0;
+	}
+
+	if (lpInfo->RequireClass[lpObj->Class] == 0 || lpInfo->RequireClass[lpObj->Class] > (lpObj->ChangeUp + 1))
+	{
+		return 0;
+	}
+
+	return 1;
 }
 
 bool CQuest::CheckQuestListState(LPOBJ lpObj, int QuestIndex, int QuestState)
@@ -190,6 +230,10 @@ long CQuest::GetQuestRewardLevelUpPoint(LPOBJ lpObj)
 
 bool CQuest::NpcTalk(LPOBJ lpNpc, LPOBJ lpObj)
 {
+	int QuestState = -1;
+
+	int QuestIndex = -1;
+
 	for (int n = 0; n < this->m_count; n++)
 	{
 		QUEST_INFO* lpInfo = this->GetInfo(n);
@@ -204,16 +248,26 @@ bool CQuest::NpcTalk(LPOBJ lpNpc, LPOBJ lpObj)
 			continue;
 		}
 
-		if (this->CheckQuestListState(lpObj, lpInfo->Index, lpInfo->CurrentState) == 0)
+		if (QuestIndex == lpInfo->Index)
 		{
 			continue;
 		}
 
+		if (QuestState == -1 || QuestState == QUEST_FINISH)
+		{
+			QuestIndex = lpInfo->Index;
+
+			QuestState = this->GetQuestState(lpObj, lpInfo->Index);
+		}
+	}
+
+	if (QuestState != -1)
+	{
+		this->GCQuestStateSend(lpObj->Index, QuestIndex);
+
 		lpObj->Interface.use = 1;
 		lpObj->Interface.type = INTERFACE_QUEST;
 		lpObj->Interface.state = 0;
-
-		this->GCQuestStateSend(lpObj->Index, lpInfo->Index);
 
 		return 1;
 	}
@@ -322,7 +376,7 @@ void CQuest::GCQuestInfoSend(int aIndex)
 
 	pMsg.header.set(0xA0, sizeof(pMsg));
 
-	pMsg.count = this->m_count;
+	pMsg.count = MAX_QUEST_LIST / 4;
 
 	memcpy(pMsg.QuestInfo, lpObj->Quest, sizeof(pMsg.QuestInfo));
 

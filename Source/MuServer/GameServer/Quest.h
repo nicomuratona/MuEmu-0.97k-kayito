@@ -5,7 +5,7 @@
 #include "User.h"
 
 #define MAX_QUEST 500
-#define MAX_QUEST_LIST 200
+#define MAX_QUEST_LIST 192
 #define MAX_QUEST_BIT_MASK 8
 
 enum eQuestState
@@ -99,6 +99,10 @@ public:
 	bool AddQuestList(LPOBJ lpObj, int QuestIndex, int QuestState);
 
 	BYTE GetQuestList(LPOBJ lpObj, int QuestIndex);
+
+	BYTE GetQuestState(LPOBJ lpObj, int QuestIndex);
+
+	bool CheckQuestRequisite(LPOBJ lpObj, QUEST_INFO* lpInfo);
 
 	bool CheckQuestListState(LPOBJ lpObj, int QuestIndex, int QuestState);
 

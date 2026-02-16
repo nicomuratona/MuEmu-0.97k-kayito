@@ -95,6 +95,8 @@ void CPatchs::Init()
 	SetDword(0x004EB6BD + 6, 0x0A); // Expand max digits in Warehouse deposit
 	SetDword(0x004EB6F8 + 6, 0x0A); // Expand max digits in Warehouse extraction
 
+	SetByte(0x004032A8, 0x0); // Fix Quest Item Preview
+
 	// Remove JPG size limit
 	MemorySet(0x005299E7, 0x90, 11);
 	MemorySet(0x005299F8, 0x90, 12);

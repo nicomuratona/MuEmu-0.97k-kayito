@@ -59,7 +59,7 @@ void CGoldenArcher::Init()
 
 	SetCompleteHook(0xE9, 0x004E7AC0, &this->UpdateMouse);
 
-	MemorySet(0x004BFEAA, 0x90, 5); // Skip Rendering items
+	SetByte(0x004BFEA3, 0xEB); // Render potions slot
 
 	SetCompleteHook(0xE9, 0x0044A31A, &this->MoveCharacter_GoldenArcherMovement);
 

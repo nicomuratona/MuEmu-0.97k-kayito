@@ -1,13 +1,31 @@
+// Quest.txt description
+//
+// Index: Index of the Quest
+// MonsterClass: Class of the NPC you need to talk to to start this quest
+// CurrentState: Current State config for this Quest (0: Normal, 1: Accept, 2: Finish, 3: Cancel)
+// RequireIndex: Previous Quest Index required to start this quest
+// RequireState: Previous Quest State required to start this quest
+// RequireMinLevel: Minimum level required to start this quest
+// RequiredMaxLevel: Maximum level required to start this quest
+// DW,DK,FE,MG: Available to class (0: No, 1: First Evo)
+
+//****************************************************//
+// Evolution 1 Step 1 - Get the Scroll of the Emperor //
+//****************************************************//
 //Index	MonsterClass	CurrentState	RequireIndex	RequireState	RequireMinLevel	RequireMaxLevel	DW	DK	FE	MG
-0	235		3		*		*		150		*		1	1	1	0
-1	235		3		0		2		150		*		1	1	1	0
+0		235			0			*			*			150			*				1	1	1	0
+0		235			1			*			*			150			*				1	1	1	0
+0		235			2			*			*			150			*				1	1	1	0
+0		235			3			*			*			150			*				1	1	1	0
 
-0	235		0		*		*		150		*		1	1	1	0
-1	235		0		0		2		150		*		1	1	1	0
+//*********************************************************************************************//
+// Evolution 1 Step 2 - Get the Broken Sword (DK), Tear of Elf (FE), Soul Shard of Wizard (DW) //
+//*********************************************************************************************//
+//Index	MonsterClass	CurrentState	RequireIndex	RequireState	RequireMinLevel	RequireMaxLevel	DW	DK	FE	MG
 
-0	235		1		*		*		150		*		1	1	1	0
-1	235		1		0		2		150		*		1	1	1	0
+1		235			0			0			2			150			*				1	1	1	0
+1		235			1			0			2			150			*				1	1	1	0
+1		235			2			0			2			150			*				1	1	1	0
+1		235			3			0			2			150			*				1	1	1	0
 
-1	235		2		0		2		150		*		1	1	1	0
-0	235		2		*		*		150		*		1	1	1	0
 end

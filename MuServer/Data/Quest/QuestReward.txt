@@ -1,5 +1,31 @@
-//Num	Type	Index	Quant	Level	Skill	Luck	Option	Excel	RequireIndex	RequireState	DW	DK	FE	MG
-0	1	200	10	0	0	0	0	0	0		1		1	1	1	0
-0	1	200	10	0	0	0	0	0	1		1		1	1	1	0
-1	2	201	0	0	0	0	0	0	1		1		1	1	1	0
+// QuestReward.txt description
+//
+// Num: (NOT USED YET) It could be used to give multiple rewards for a single quest
+// Type: Type of the Quest Reward (1: Obtain Levelup Points, 2: Obtain Evo 1)
+// Index: Index of the client side effect (200: Obtain Levelup Points effect, 201: Obtain Evo 1 effect)
+// Value: Value to use for the Reward (Ex: Levelup Points amount)
+//*** These are not used YET ***//
+// Level: Level of the reward item
+// Skill: Skill option of the reward item
+// Luck: Luck option of the reward item
+// Option: Additional option (jewel of life) of the reward item
+// Exce: Excellent option of the reward item
+//*** These are not used YET ***//
+// RequireIndex: Index of the required quest to receive this reward
+// RequireState: State of the required quest to receive this reward
+// DW,DK,FE,MG: Available to class (0: No, 1: First Evo)
+
+
+//****************************************************//
+// Evolution 1 Step 1 - Get the Scroll of the Emperor //
+//****************************************************//
+//Num	Type	Index	Value	Level	Skill	Luck	Option	Exce	RequireIndex	RequireState	DW	DK	FE	MG
+0	1	200	10	0	0	0	0	0	0		1		1	1	1	1
+
+//*********************************************************************************************//
+// Evolution 1 Step 2 - Get the Broken Sword (DK), Tear of Elf (FE), Soul Shard of Wizard (DW) //
+//*********************************************************************************************//
+//Num	Type	Index	Value	Level	Skill	Luck	Option	Exce	RequireIndex	RequireState	DW	DK	FE	MG
+0	1	200	10	0	0	0	0	0	1		1		1	1	1	1
+1	2	201	0	0	0	0	0	0	1		1		1	1	1	1
 end
