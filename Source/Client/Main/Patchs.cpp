@@ -97,6 +97,8 @@ void CPatchs::Init()
 
 	SetByte(0x004032A8, 0x0); // Fix Quest Item Preview
 
+	SetCompleteHook(0xE9, 0x004028EA, &this->FixQuestProceedButton);
+
 	// Remove JPG size limit
 	MemorySet(0x005299E7, 0x90, 11);
 	MemorySet(0x005299F8, 0x90, 12);
@@ -243,6 +245,43 @@ __declspec(naked) void CPatchs::FixShopNpcClose()
 		Mov Bl, [Eax + 1];
 		Inc Bl;
 		Jmp jmpBack;
+	}
+}
+
+__declspec(naked) void CPatchs::FixQuestProceedButton()
+{
+	static DWORD jmpOnOk = 0x004028F2;
+	static DWORD jmpOnNot = 0x00402F18;
+
+	_asm
+	{
+		Pushad;
+	}
+
+	if (*(BYTE*)(g_csQuest + 0x1C882) == eQuestState::QUEST_CANCEL)
+	{
+		MouseLButtonPush = 0;
+
+		MouseUpdateTime = 0;
+
+		MouseUpdateTimeMax = 6;
+
+		goto EXIT;
+	}
+
+	_asm
+	{
+		Popad;
+		Mov Dword Ptr ds : [Esp + 0x28] , 0x00552460;
+		Jmp jmpOnOk;
+	}
+
+EXIT:
+
+	_asm
+	{
+		Popad;
+		Jmp jmpOnNot;
 	}
 }
 

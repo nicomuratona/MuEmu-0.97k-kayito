@@ -253,3 +253,12 @@ enum ePkLevel
 	PKLVL_OUTLAW = 5,
 	PKLVL_KILLER = 6
 };
+
+/* Quest State */
+enum eQuestState
+{
+	QUEST_NORMAL = 0,
+	QUEST_ACCEPT = 1,
+	QUEST_FINISH = 2,
+	QUEST_CANCEL = 3,
+};

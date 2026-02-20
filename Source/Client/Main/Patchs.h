@@ -18,6 +18,8 @@ private:
 
 	static void FixShopNpcClose();
 
+	static void FixQuestProceedButton();
+
 	static void IgnoreRandomStuck(DWORD c, DWORD Damage);
 
 	static void FixChasingAttackMovement();
