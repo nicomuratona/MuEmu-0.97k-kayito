@@ -36,6 +36,10 @@ private:
 
 	static BOOL ReadMainVersion();
 
+	static void MyOpenMacro(char* FileName);
+
+	static void MySaveMacro(char* FileName);
+
 	static void MySaveScreen();
 
 	static void MyBeginBitmap();

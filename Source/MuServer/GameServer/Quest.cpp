@@ -258,6 +258,11 @@ bool CQuest::NpcTalk(LPOBJ lpNpc, LPOBJ lpObj)
 			QuestIndex = lpInfo->Index;
 
 			QuestState = this->GetQuestState(lpObj, lpInfo->Index);
+
+			if (QuestState != QUEST_FINISH)
+			{
+				break;
+			}
 		}
 	}
 

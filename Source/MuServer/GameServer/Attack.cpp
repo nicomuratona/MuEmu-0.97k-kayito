@@ -775,34 +775,68 @@ bool CAttack::CheckPlayerTarget(LPOBJ lpObj, LPOBJ lpTarget)
 		return false;
 	}
 
-	if (lpObj->Guild != 0 && lpTarget->Guild != 0)
+	if (lpObj->Guild != 0 && lpObj->Guild->WarState != GUILD_WAR_STATE_NONE)
 	{
-		if (lpObj->Guild->WarState != GUILD_WAR_STATE_NONE && lpTarget->Guild->WarState != GUILD_WAR_STATE_NONE)
+		if (lpTarget->Guild == 0)
 		{
-			if (lpObj->Guild->Number == lpTarget->Guild->Number)
-			{
-				return false;
-			}
+			return false;
+		}
+
+		if (lpObj->Guild->Number == lpTarget->Guild->Number)
+		{
+			return false;
+		}
+
+		if (lpTarget->Guild->WarState == GUILD_WAR_STATE_NONE)
+		{
+			return false;
+		}
+
+		if (strcmp(lpObj->Guild->TargetGuildNode->Name, lpTarget->Guild->Name) != 0)
+		{
+			return false;
+		}
+
+		if (lpTarget->Guild->WarType == GUILD_WAR_TYPE_SOCCER && lpTarget->Map != MAP_ARENA)
+		{
+			return false;
 		}
 	}
 
-	if (gGuild.GuildWarStateCheck(lpObj, lpTarget) == false)
+	if (lpTarget->Guild != 0 && lpTarget->Guild->WarState != GUILD_WAR_STATE_NONE)
 	{
-		if (lpTarget->Guild != 0 && lpTarget->Guild->WarState != GUILD_WAR_STATE_NONE)
+		if (lpObj->Guild == 0)
 		{
-			if (lpTarget->Guild->WarType == GUILD_WAR_TYPE_SOCCER && lpTarget->Map != MAP_ARENA && gMapManager.GetMapNonPK(lpTarget->Map) == 0)
-			{
-				return true;
-			}
+			return false;
+		}
+
+		if (lpTarget->Guild->Number == lpObj->Guild->Number)
+		{
+			return false;
+		}
+
+		if (lpObj->Guild->WarState == GUILD_WAR_STATE_NONE)
+		{
+			return false;
+		}
+
+		if (strcmp(lpTarget->Guild->TargetGuildNode->Name, lpObj->Guild->Name) != 0)
+		{
+			return false;
+		}
+
+		if (lpObj->Guild->WarType == GUILD_WAR_TYPE_SOCCER && lpObj->Map != MAP_ARENA)
+		{
+			return false;
 		}
 	}
 
-	if (DS_MAP_RANGE(lpObj->Map) != false && DS_MAP_RANGE(lpTarget->Map) != false)
+	if (DS_MAP_RANGE(lpObj->Map) != 0 && DS_MAP_RANGE(lpTarget->Map) != 0)
 	{
 		return false;
 	}
 
-	if (BC_MAP_RANGE(lpObj->Map) != false && BC_MAP_RANGE(lpTarget->Map) != false)
+	if (BC_MAP_RANGE(lpObj->Map) != 0 && BC_MAP_RANGE(lpTarget->Map) != 0)
 	{
 		return false;
 	}

@@ -143,6 +143,10 @@ void CPatchs::Init()
 
 	SetCompleteHook(0xE8, 0x0041ED4C, &this->ReadMainVersion);
 
+	SetCompleteHook(0xE9, 0x0050F750, &this->MyOpenMacro);
+
+	SetCompleteHook(0xE9, 0x0050F700, &this->MySaveMacro);
+
 	SetCompleteHook(0xE8, 0x005269EC, &this->MySaveScreen);
 
 	SetCompleteHook(0xE9, 0x005123C0, &this->MyBeginBitmap);
@@ -800,6 +804,47 @@ BOOL CPatchs::ReadMainVersion()
 	}
 
 	return TRUE;
+}
+
+void CPatchs::MyOpenMacro(char* FileName)
+{
+	FILE* fp = nullptr;
+
+	if (fopen_s(&fp, FileName, "rt") != 0 || !fp)
+	{
+		return;
+	}
+
+	memset(MacroText, 0, sizeof(char) * 10 * 256);
+
+	for (int i = 0; i < 10; ++i)
+	{
+		if (!fgets(MacroText[i], 256, fp))
+		{
+			break;
+		}
+
+		MacroText[i][strcspn(MacroText[i], "\r\n")] = '\0';
+	}
+
+	fclose(fp);
+}
+
+void CPatchs::MySaveMacro(char* FileName)
+{
+	FILE* fp = nullptr;
+
+	if (fopen_s(&fp, FileName, "wt") != 0 || !fp)
+	{
+		return;
+	}
+
+	for (int i = 0; i < 10; ++i)
+	{
+		fprintf(fp, "%s\n", MacroText[i]);
+	}
+
+	fclose(fp);
 }
 
 void CPatchs::MySaveScreen()
