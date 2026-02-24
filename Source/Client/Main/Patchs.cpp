@@ -97,6 +97,9 @@ void CPatchs::Init()
 
 	SetByte(0x004032A8, 0x0); // Fix Quest Item Preview
 
+	SetByte(0x004C394A, 0x07); // Fix Item Info Window on higher resolutions
+	SetByte(0x004C3803, 0x68); // Fix Item Info Window on higher resolutions
+
 	SetCompleteHook(0xE9, 0x004028EA, &this->FixQuestProceedButton);
 
 	// Remove JPG size limit
