@@ -192,6 +192,13 @@ bool CProtocol::TranslateProtocol(BYTE head, BYTE* lpMsg, int Size)
 			return true;
 		}
 
+		case 0x61:
+		{
+			this->GCGuildWarDeclareRecv((PMSG_GUILD_WAR_DECLARE_RECV*)lpMsg);
+
+			return true;
+		}
+
 		case 0x87:
 		{
 			gChaosMix.Clear();
@@ -684,6 +691,17 @@ void CProtocol::GCTradeOkButtonRecv(PMSG_TRADE_OK_BUTTON_RECV* lpMsg)
 	}
 
 	PlayBuffer(25, NULL, FALSE);
+}
+
+void CProtocol::GCGuildWarDeclareRecv(PMSG_GUILD_WAR_DECLARE_RECV* lpMsg)
+{
+	memcpy(GuildWarName, lpMsg->GuildName, 9);
+
+	GuildWarName[8] = '\0';
+
+	SetErrorMessage(128);
+
+	EnableSoccer = lpMsg->type == GUILD_WAR_TYPE_SOCCER;
 }
 
 void CProtocol::GCDevilSquareRequiredLevelsRecv(PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV* lpMsg)

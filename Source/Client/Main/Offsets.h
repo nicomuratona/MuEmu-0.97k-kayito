@@ -40,6 +40,7 @@
 #define WorldTime *(float*)0x05826E08
 #define DeltaT *(float*)0x0055979C
 #define FPS *(float*)0x05826DF8
+#define EnableSoccer *(bool*)0x05826D31
 
 // Interface
 #define pPickedItem (&*(ITEM*)0x07E91350)
@@ -77,6 +78,7 @@
 #define MixState *(DWORD*)0x07EAA140
 #define MixType *(DWORD*)0x07EAA16C
 #define ErrorMessage *(BYTE*)0x083A7C24
+#define SetErrorMessage ((void(_cdecl*)(int message)) 0x005142D0)
 #define UpdateWindowsMouse ((void(_cdecl*)())0x004ECB00)
 #define GetScreenWidth ((int(_cdecl*)()) 0x004CB520)
 #define RenderInventoryInterface ((void(_cdecl*)(int StartX, int StartY, int Flag)) 0x004ECBA0)
@@ -86,6 +88,7 @@
 #define m_nYourTradeWait *(int*)0x07EAA100
 #define m_bMyConfirm *(bool*)0x07EAA0FD
 #define m_nMyTradeWait *(int*)0x07EAA104
+#define GuildWarName (&*(char*)0x05826BFC)
 
 // Drawing
 #define RenderBitmap ((void(_cdecl*)(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)) 0x005125A0)

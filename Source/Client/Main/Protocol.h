@@ -99,6 +99,13 @@ struct PMSG_TRADE_OK_BUTTON_RECV
 	BYTE flag;
 };
 
+struct PMSG_GUILD_WAR_DECLARE_RECV
+{
+	PBMSG_HEAD header; // C1:61
+	char GuildName[8];
+	BYTE type;
+};
+
 struct PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV
 {
 	PBMSG_HEAD header; // C1:8E
@@ -434,6 +441,8 @@ private:
 	void GCFruitResultRecv(PMSG_FRUIT_RESULT_RECV* lpMsg);
 
 	void GCTradeOkButtonRecv(PMSG_TRADE_OK_BUTTON_RECV* lpMsg);
+
+	void GCGuildWarDeclareRecv(PMSG_GUILD_WAR_DECLARE_RECV* lpMsg);
 
 	void GCDevilSquareRequiredLevelsRecv(PMSG_DEVIL_SQUARE_REQ_LEVELS_RECV* lpMsg);
 

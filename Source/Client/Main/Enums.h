@@ -262,3 +262,10 @@ enum eQuestState
 	QUEST_FINISH = 2,
 	QUEST_CANCEL = 3,
 };
+
+/* War Types */
+enum eGuildWarType
+{
+	GUILD_WAR_TYPE_NORMAL = 0,
+	GUILD_WAR_TYPE_SOCCER = 1,
+};
