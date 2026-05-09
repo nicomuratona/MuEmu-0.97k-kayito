@@ -51,6 +51,8 @@ void CMapManager::Init()
 	SetCompleteHook(0xE9, 0x00451AED, &this->SwimSoundPlay);
 
 	SetCompleteHook(0xE9, 0x004582E7, &this->SwimBackItemRender);
+
+	SetCompleteHook(0xE9, 0x00524DC2, &this->SetMapMovement);
 }
 
 /*=================================================================
@@ -259,6 +261,42 @@ __declspec(naked) void CMapManager::SwimBackItemRender()
 		if (gMapManager.m_MapManager[World].MapNumber != -1)
 		{
 			if (gMapManager.m_MapManager[World].SwimableMap)
+			{
+				goto JUMP_OK;
+			}
+		}
+	}
+
+	_asm
+	{
+		Popad;
+		Jmp Jmp_Back;
+	}
+
+JUMP_OK:
+
+	_asm
+	{
+		Popad;
+		Jmp Jmp_True;
+	}
+}
+
+_declspec(naked) void CMapManager::SetMapMovement()
+{
+	static DWORD Jmp_Back = 0x00524E07;
+	static DWORD Jmp_True = 0x00524DCB;
+
+	_asm
+	{
+		Pushad;
+	}
+
+	if (MAP_RANGE(World))
+	{
+		if (gMapManager.m_MapManager[World].MapNumber != -1)
+		{
+			if (gMapManager.m_MapManager[World].MapMovement)
 			{
 				goto JUMP_OK;
 			}

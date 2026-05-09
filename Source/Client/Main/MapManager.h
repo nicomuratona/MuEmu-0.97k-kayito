@@ -44,6 +44,8 @@ public:
 
 	static void SwimBackItemRender();
 
+	static void SetMapMovement();
+
 private:
 
 	MAP_MANAGER_INFO m_MapManager[MAX_MAPS];
