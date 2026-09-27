@@ -1977,6 +1977,8 @@ void gObjMonsterBaseAct(LPOBJ lpObj)
 					if ((attr & 1) != 1)
 					{
 						lpObj->ActionState.Attack = 1;
+
+						lpObj->ActionState.Move = 0;
 					}
 					else
 					{
