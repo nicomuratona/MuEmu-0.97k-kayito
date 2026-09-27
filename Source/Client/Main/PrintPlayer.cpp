@@ -823,14 +823,10 @@ void CPrintPlayer::RenderCharInfo_Energy(int StartPosX, int StartPosY)
 
 		fPosY += 15.0f;
 
-		if (this->ViewMagicDamageRate > 0)
-		{
-			sprintf_s(Buffer, sizeof(Buffer), GlobalText[215], this->ViewMagicDamageMin, this->ViewMagicDamageMax, this->ViewMagicDamageRate);
-		}
-		else
-		{
-			sprintf_s(Buffer, sizeof(Buffer), GlobalText[216], this->ViewMagicDamageMin, this->ViewMagicDamageMax);
-		}
+		DWORD TotalMagicMin = this->ViewMagicDamageMin + (this->ViewMagicDamageMin * this->ViewMagicDamageRate) / 100;
+		DWORD TotalMagicMax = this->ViewMagicDamageMax + (this->ViewMagicDamageMax * this->ViewMagicDamageRate) / 100;
+
+		sprintf_s(Buffer, sizeof(Buffer), GlobalText[216], TotalMagicMin, TotalMagicMax);
 
 		RenderText((int)fPosX, CenterTextPosY(Buffer, (int)fPosY), Buffer, REAL_WIDTH(130), RT3_SORT_LEFT, NULL);
 	}
