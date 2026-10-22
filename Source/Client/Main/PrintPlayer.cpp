@@ -506,7 +506,7 @@ void CPrintPlayer::RenderCharInfo_Level(int StartPosX, int StartPosY)
 	fPosY = (float)StartPosY + 85.0f;
 
 	sprintf_s(Buffer, sizeof(Buffer), GlobalText[201], this->ViewExperience, this->ViewNextExperience);
-	RenderText((int)fPosX, CenterTextPosY(Buffer, (int)fPosY), Buffer, 0, RT3_SORT_LEFT, NULL);
+	RenderText((int)fPosX, CenterTextPosY(Buffer, (int)fPosY), Buffer, REAL_WIDTH(130), RT3_SORT_LEFT, NULL);
 
 	// Render Spare Points Text
 	SetTextColor = Color4b(100, 150, 255, 255);
